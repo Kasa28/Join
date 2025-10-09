@@ -1,0 +1,114 @@
+:root{
+  --blue:#1e74ff; --blue-dark:#165bd1; --text:#222; --border:#ddd;
+  --shadow:0 8px 24px rgba(0,0,0,.08);
+  --splash-blue:#2f86ff;
+  --logo-left: 8px; 
+}
+
+@media (min-width:1440px){
+  :root{ --logo-left: calc((100vw - 1440px)/2 + 8px); }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:var(--splash-blue);
+  animation:bg_to_white 1.8s ease-in-out 0.4s forwards;
+}
+
+.content{
+  position:relative; width:100%; max-width:1440px; min-height:100vh;
+  margin:0 auto;
+  display:grid; grid-template-rows:auto 1fr auto;
+  padding:24px 16px 40px;
+  padding-top:130px; 
+}
+
+header{
+  position:absolute; top:30px; right:16px;
+  display:flex; align-items:center; gap:12px; z-index:3;
+}
+.primary-button,.signUp,.primary_button{
+  background:var(--blue); color:#fff; border:0; border-radius:10px;
+  padding:10px 16px; font-weight:600; text-decoration:none; cursor:pointer; transition:.2s;
+}
+.primary-button:hover,.signUp:hover,.primary_button:hover{ background:var(--blue-dark) }
+.clear-button{
+  background:none; border:1px solid var(--blue); color:var(--blue);
+  border-radius:10px; padding:10px 16px; font-weight:700; cursor:pointer; transition:.2s;
+}
+.clear-button:hover{ background:var(--blue); color:#fff }
+
+.login_icon{
+  position:fixed; z-index:5;
+  top:50%; left:50%; width:250px; height:250px; transform:translate(-50%,-50%);
+  animation:J_go_left 1.8s cubic-bezier(0.25,1,0.5,1) 0.4s forwards;
+}
+.login_icon .logo{
+  width:250px; height:250px;
+  filter:brightness(0) invert(1);                
+  animation:J_shrink_color 1.8s cubic-bezier(0.25,1,0.5,1) 0.4s forwards;
+}
+
+.login_form{
+  display:flex; justify-content:center;
+  opacity:0; animation:form_fade .5s ease 1.4s forwards;
+}
+.login_box{
+  width:100%; max-width:520px; margin:48px auto 0; padding:32px 28px;
+  background:#fff; border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow);
+  display:flex; flex-direction:column; align-items:center; row-gap:18px;
+}
+.login_header{text-align:center}
+.login_header h1{font-size:40px; line-height:1.2}
+.separator{ width:86px; height:4px; background:var(--blue); border-radius:4px; margin:10px auto 0 }
+
+.input_row{ position:relative; width:100%; margin:10px 0 }
+.input-font{
+  width:100%; font-size:16px; padding:12px 40px 12px 12px;
+  border:1px solid #ccc; border-radius:10px; transition:border-color .15s ease;
+}
+.input-font:focus{ outline:none; border-color:var(--blue) }
+.overlay-image{
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  width:20px; height:20px; opacity:.85; pointer-events:none;
+}
+
+.button_group{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center }
+.notUser{ display:flex; align-items:center; gap:12px; margin-top:6px }
+footer{ margin-top:auto; padding:12px 0; text-align:center }
+.footer_info{ display:flex; justify-content:center; align-items:center; gap:18px }
+.footer_info a{ color:var(--blue); text-decoration:none }
+.footer_info a:hover{ text-decoration:underline }
+@keyframes bg_to_white { to { background:#fff; } }
+
+@keyframes J_go_left{
+  0%   { top:50%; left:50%; transform:translate(-50%,-50%) scale(1); }
+  100% { top:10px; left:var(--logo-left); transform:translate(0,0) scale(1); }
+}
+
+@keyframes J_shrink_color{
+  0%   { width:250px; height:250px; filter:brightness(0) invert(1); }
+  100% { width:110px; height:110px; filter:none; }
+}
+
+@keyframes form_fade{ to { opacity:1; } }
+
+@media (prefers-reduced-motion: reduce){
+  body{ animation:none; background:#fff; }
+  .login_icon{ animation:none; top:10px; left:var(--logo-left); transform:none; }
+  .login_icon .logo{ animation:none; width:110px; height:110px; filter:none; }
+  .login_form{ animation:none; opacity:1; }
+}
+
+@media (max-width:560px){
+  header{ top:8px; right:10px }
+  .login_box{ margin-top:28px; padding:24px 18px }
+  .login_header h1{ font-size:34px }
+}
+
+html, body{ height:100% }
+body{ display:flex; flex-direction:column }
+.content{ flex:1; display:flex; flex-direction:column; justify-content:space-between }
