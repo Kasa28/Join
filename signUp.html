@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="./styles/login.css">
+    <link rel="stylesheet" href="./styles/root.css">
+</head>
+<body>
+    <div id="content_Login" class="content">
+    <div class="login_icon" aria-hidden="true">
+      <img src="./assets/img/Capa 2.svg" class="logo" alt="Join logo" />
+    </div>
+
+
+    <main>
+      <form onsubmit="login(event)" class="login_form" autocomplete="on" novalidate>
+        <div class="login_box">
+
+          <div class="login_header">
+            <h1>Sign up</h1>
+            <div class="separator"></div>
+          </div>
+
+          <div class="input_row">
+            <input id="email" name="email" type="email" placeholder="E-Mail"
+              class="default-border input-font" autocomplete="username" required
+              aria-describedby="error_message" />
+            <img src="./assets/img/mail.svg" alt="" class="overlay-image" aria-hidden="true" />
+          </div>
+
+          <div class="input_row">
+            <input id="password" name="password" type="password" placeholder="Password"
+              class="default-border input-font" autocomplete="current-password" required
+              aria-describedby="error_message">
+            <img src="./assets/img/lock.svg" alt="" class="overlay-image" aria-hidden="true" />
+          </div>
+          <span id="error_message" class="visually-hidden" role="alert"></span>
+          <div class="button">
+            <div class="button_group">
+              <button class="primary_button" type="submit">Log in</button>
+              <button onclick="guestLogin()" class="clear-button" type="button">Guest Log in</button>
+            </div>
+          </div>
+
+          <div class="notUser">
+            <span>Not a Join user?</span>
+            <a href="./signUp.html" class="signUp">Sign up</a>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <footer>
+      <div class="footer_info">
+        <a href="./privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+        <a href="./legal.html" target="_blank" rel="noopener">Legal notice</a>
+      </div>
+    </footer>
+  </div>
+
+</body>
+</html>
