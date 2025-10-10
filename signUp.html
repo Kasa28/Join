@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign up</title>
-    <link rel="stylesheet" href="./styles/root.css">
     <link rel="stylesheet" href="./styles/login.css">
+    <link rel="stylesheet" href="./styles/signUp.css">
+    <link rel="stylesheet" href="./styles/root.css">
 </head>
 <body class="signUp_body">
     <div id="content_Login" class="content">
@@ -14,9 +15,9 @@
     </div>
     
     <main>
-  <form onsubmit="login(event)" class="login_form" autocomplete="on" novalidate>
+  <form onsubmit="registerNewUser(event, 'users')" class="login_form" autocomplete="on" novalidate>
     <div class="login_box">
-
+  <a href="./login.html" class="arrow_left"></a>
       <div class="login_header">
         <h1>Sign up</h1>
         <div class="separator"></div>
@@ -86,7 +87,5 @@
         <a href="./legal.html" target="_blank" rel="noopener">Legal notice</a>
       </div>
     </footer>
-  </div>
-
 </body>
 </html>

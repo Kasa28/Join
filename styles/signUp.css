@@ -1,0 +1,73 @@
+
+body.signUp_body{
+  background: var(--splash-blue) !important;
+  animation: none !important;        
+  min-height: 100vh;
+}
+
+body.signUp_body .content{
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-top: clamp(72px, 10vh, 120px);
+  padding-left: clamp(20px, 4vw, 48px);
+  padding-right: clamp(20px, 4vw, 48px);
+}
+
+body.signUp_body .login_box{
+  width: 100%;
+  max-width: 520px;
+  margin: clamp(24px, 6vh, 64px) auto 0;
+  background: #fff;
+  color: var(--text);
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.10);
+}
+
+body.signUp_body .footer_info a{ color:#fff; }
+
+body.signUp_body .login_icon{
+  position: fixed !important;
+  top: 16px !important;
+  left: var(--logo-left) !important;   
+  width: 110px !important;
+  height: 110px !important;
+  transform: none !important;
+  z-index: 5;
+  animation: none !important;
+}
+body.signUp_body .login_icon .logo{
+  width: 110px !important;
+  height: 110px !important;
+  filter: brightness(0) invert(1) !important; 
+  animation: none !important;
+}
+
+body.signUp_body .login_form {
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+.arrow_left {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 32px;
+  height: 32px;
+
+  -webkit-mask: url(../assets/img/arrow_left.svg) no-repeat center / contain;
+  mask: url(../assets/img/arrow_left.svg) no-repeat center / contain;
+
+  background-color: var(--blue);  
+  background-image: none;           
+  filter: none;
+}
+
+.arrow_left:hover {
+  transform: scale(1.1);
+}
+
+.login_box {
+  position: relative; 
+}
+

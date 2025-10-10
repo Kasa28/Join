@@ -5,5 +5,8 @@
   --border:#ddd;
   --shadow:0 8px 24px rgba(0,0,0,.08);
   --splash-blue:#2f86ff;
-  --logo-left:8px; 
+}
+.arrow_left {
+  color: var(--blue);
+  filter: none !important;
 }
