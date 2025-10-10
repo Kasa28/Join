@@ -297,7 +297,9 @@ footer {
   }
 }
 
-.login_button[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
+.primary_button:disabled {
+  background: #cfd8dc;
+  color: #777;
+  cursor: not-allowed;
+  box-shadow: none;
 }
