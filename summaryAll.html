@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Summary</title>
     <link rel="stylesheet" href="styles/summary.css">
+    <link rel="stylesheet" href="styles/headbar.css">
+    <link rel="stylesheet" href="styles/sidemenue.css">
 
 </head>
 <body>
@@ -15,7 +17,8 @@
     <header>
         <img class="join-logo-summary-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
         <div class="header-right-part">
-            <h3 style="padding-right: 20px;"> Kanban Project Management Tool</h3>
+            <a style="padding-right: 20px;"> Kanban Project Management Tool</a>
+            <img class="margin-left-right-small img-headbar" src="" alt="?-Logo">
             <div class="guest-logo">
                 <a>G</a>
             </div>
@@ -30,26 +33,30 @@
         <div class="side-header">
 
             <div>
-                <div class="padding">
-                    <button class="primary_button">Summary</button>
-                </div>
-                <div class="padding">
-                    <button class="primary_button">Ad Task</button>
-                </div>
-                <div class="padding">
-                    <button class="primary_button">Board</button>
-                </div>
-                <div class="padding">
-                    <button class="primary_button">Contacts</button>
-                </div>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Board icon">
+                    Summary
+                </button>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Brett icon">
+                    Ad Task
+                </button>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Board-2 icon">
+                    Board
+                </button>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Kontakt icon">
+                    Contacts
+                </button>
             </div>
 
             <div class="side-header-low-section">
-                <div class="padding">
-                    <button class="primary_button padding" href="">Privacy Policy</button>
+                <div class="padding-up-down-small">
+                    <button class="button-sidebar padding-up-down-small" href="">Privacy Policy</button>
                 </div>
-                <div class="padding">
-                    <button class="primary_button padding" href="">Legal Notice</button>
+                <div class="padding-up-down-small">
+                    <button class="button-sidebar padding-up-down-small" href="">Legal Notice</button>
                 </div>
             </div>
 
@@ -61,34 +68,69 @@
             <div>
                 <h1 class="summary-h1">Good Morning</h1>
             </div>
-            <div class="summary-section-1-order">
-                <div class="summary-card row-maker">
-                    <div class="padding-card">
-                        count urgent tasks
+            <div class="margin-big">
+                <div class="summary-section-1-order">
+
+                    <div class="summary-card row-maker backgroundcolor-blue font-color-white">
+                        <div class="padding-card">
+                            <div class="display-flex padding-up-down-small">
+                                <img class="img-summary padding-right-small" src="" alt="Uhr icon">
+                                <h2>3</h2>
+                            </div>
+                            <a>Urgent Tasks</a>
+                        </div>
+                        <div class="seperator">
+                            
+                        </div>
+                        <div  class="padding-card">
+                            <h2 class="padding-up-down-small">June 31, 2033</h2>
+                            <a>deadline</a>
+                        </div>
                     </div>
-                    <div class="seperator">
-                        
+
+                    <div class="summary-card padding-card">
+                        <div class="display-flex">
+                            <img class="img-summary padding-right-small" src="" alt="board-icon">
+                            <h2>5</h2>
+                        </div>
+                        <a>Taskscounter</a>
                     </div>
-                    <div  class="padding-card">
-                        Date: 31.11.3023
+
+                </div>
+                <div class="summary-section-2-order">
+
+                    <div class="summary-card padding-card backgroundcolor-blue-light">
+                        <div class="display-flex">
+                            <img class="img-summary padding-right-small" src="" alt="Liste-icon">
+                            <h2>4</h2>
+                        </div>
+                        <a class="font-color-blue">Todo</a>
                     </div>
-                </div>
-                <div class="summary-card">
-                    Taskscounter
-                </div>
-            </div>
-            <div class="summary-section-2-order">
-                <div class="summary-card">
-                    Todo
-                </div>
-                <div class="summary-card">
-                    Progress
-                </div>
-                <div class="summary-card">
-                    Feedback
-                </div>
-                <div class="summary-card">
-                    Done
+
+                    <div class="summary-card padding-card">
+                        <div class="display-flex">
+                            <img class="img-summary padding-right-small" src="" alt="Prozess-icon">
+                            <h2>3</h2>
+                        </div>
+                        <a class="font-color-blue">Progress</a>
+                    </div>
+
+                    <div class="summary-card padding-card">
+                        <div class="display-flex">
+                            <img class="img-summary padding-right-small" src="" alt="Chat-icon">
+                            <h2>2</h2>
+                        </div>
+                        <a class="font-color-blue">Feedback</a>
+                    </div>
+
+                    <div class="summary-card padding-card">
+                        <div class="display-flex">
+                            <img class="img-summary padding-right-small" src="" alt="Hacken-icon">
+                            <h2>0</h2>
+                        </div>
+                        <a class="font-color-blue">Tasks done</a>
+                    </div>
+
                 </div>
             </div>
         </div>
