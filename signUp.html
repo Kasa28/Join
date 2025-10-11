@@ -66,14 +66,14 @@
 
        <div class="accept_row">
         <label>
-          <input type="checkbox" id="accept_terms" required>
+          <input type="checkbox" id="accept_terms" required onchange="checkPolicy()">
           I accept the <a href="./privacy.html" target="_blank">Privacy policy</a>
         </label>
       </div>
 
       <div class="button">
         <div class="button_group">
-          <button class="primary_button" type="submit">Sign up</button>
+          <button class="primary_button" type="submit" disabled>Sign up</button>
         </div>
       </div>
       </div>
@@ -87,5 +87,6 @@
         <a href="./legal.html" target="_blank" rel="noopener">Legal notice</a>
       </div>
     </footer>
+    <script src="./scripts/signUp.js"></script>
 </body>
 </html>
