@@ -24,7 +24,7 @@
       </div>
 
       <div class="input_row">
-        <input id="name" name="name" type="text"
+        <input id="name" name="name" type="text"  oninput="checkPolicyandAnswers()"
                placeholder="Name"
                class="input-font"
                autocomplete="name"
@@ -34,7 +34,7 @@
       </div>
 
       <div class="input_row">
-        <input id="email" name="email" type="email"
+        <input id="email" name="email" type="email"  oninput="checkPolicyandAnswers()"
                placeholder="E-Mail"
                class="input-font"
                autocomplete="username"
@@ -43,7 +43,7 @@
         <img src="./assets/img/mail.svg" alt="" class="overlay-image" aria-hidden="true" />
       </div>
       <div class="input_row">
-        <input id="password" name="password" type="password"
+        <input id="password" name="password" type="password" oninput="checkPolicyandAnswers()"
                placeholder="Password"
                class="input-font"
                autocomplete="new-password"
@@ -53,7 +53,7 @@
       </div>
 
       <div class="input_row">
-        <input id="confirm_password" name="confirm_password" type="password"
+        <input id="confirm_password" name="confirm_password" type="password"  oninput="checkPolicyandAnswers()"
                placeholder="Confirm Password"
                class="input-font"
                autocomplete="new-password"
@@ -66,7 +66,7 @@
 
        <div class="accept_row">
         <label>
-          <input type="checkbox" id="accept_terms" required onchange="checkPolicy()">
+          <input type="checkbox" id="accept_terms" required onchange="checkPolicyandAnswers()">
           I accept the <a href="./privacy.html" target="_blank">Privacy policy</a>
         </label>
       </div>

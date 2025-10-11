@@ -1,5 +1,11 @@
-function checkPolicy() {
-  const checkbox = document.getElementById('accept_terms'); //greift auf checkbox zu,holts raus 
-  const button = document.querySelector('.primary_button'); //greift auf button zu
-  button.disabled = !checkbox.checked; //schaut ob checkbox angeklickt ist, wenn ja dann button aktivieren,in html  schon deaktiviert deswegen wird aktiviert
+
+function checkPolicyandAnswers() {
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const checkbox = document.getElementById('accept_terms'); 
+  const button = document.querySelector('.primary_button'); 
+
+  const allFilled = name && email && password &&checkbox.checked;
+  button.disabled = !allFilled;
 }
