@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+}
+
+body {
+  color: white;
+  font-family: sans-serif;
+}
+
+.btn-with-svg {
+    display: inline-block;
+    background: url("../assets/img/icons_addTask/btn_create_task-lightblue.svg") no-repeat center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    width: 214px;  
+    height: 86px; 
+    padding: 0;
+  }
