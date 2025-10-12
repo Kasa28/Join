@@ -32,8 +32,21 @@ main {
 }
 
 .task-title {
-  color: #FFFFFF;
+  font-size: 22px;
+  border: none;
   border-bottom: 1px solid #d1d1d1;
+  padding: 12px;
+}
+
+.task-title::placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+}
+
+.section-heading {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #42526e;
 }
 
 .task-input {
@@ -64,15 +77,25 @@ main {
 .task-description {
   min-height: 120px;
   resize: vertical;
- 
+  font-family: sans-serif;
 }
+
+.task-title::placeholder,
+.task-description::placeholder,
+.task-subtask::placeholder,
+.task-date::placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+}
+
 
 .task-select {
   appearance: none;
-  background-image: url("../../assets/img/arrow_drop_down.svg");
+  background-image: url("./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 20px;
+  cursor: pointer;
 }
 
 .priority-group {
@@ -97,8 +120,9 @@ main {
 
 .task-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 32px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .btn-clear,
@@ -112,12 +136,21 @@ main {
 
 .btn-clear {
   background-color: white;
-  color: black;
+  color: #758195;
   border: 1px solid #d1d1d1;
+  margin-bottom: 40px;
 }
 
 .btn-done {
-  background-color: #29abe2;
+  background-color: #4589FF;
   color: white;
+  margin-bottom: 40px;
 }
 
+.check-icon {
+  width: 1em; 
+  height: 1em;
+  margin-left: 8px; 
+  vertical-align: middle; 
+  filter: brightness(0) invert(1);
+}

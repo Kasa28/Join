@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../styles/summary.css">
     <link rel="stylesheet" href="../styles/headbar.css">
     <link rel="stylesheet" href="../styles/sidemenue.css">
-    <link rel="stylesheet" href="./addTask.css">>
+    <link rel="stylesheet" href="./addTask.css">
 </head>
 
 <body class="add-task-page">
@@ -60,16 +60,19 @@
           
             <section class="task-input">
               <label for="description">Description</label>
+              <p class="section-heading"><strong>Description</strong> (optional)</p>
               <textarea id="description" class="task-description" name="description" placeholder="Enter a description"></textarea>
             </section>
           
             <section class="task-input">
               <label for="due-date">Due Date</label>
-              <input type="date" id="due-date" class="task-date" name="due-date">
+              <p class="section-heading"><strong>Due Date</strong></p>
+              <input type="text" id="due-date" class="task-date" name="due-date" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric">
             </section>
         
             <section class="task-input">
               <label>Priority</label>
+              <p class="section-heading"><strong>Priority</strong></p>
               <div class="priority-group">
                 <button type="button" class="priority-btn" onclick="setPriority('urgent')">Urgent</button>
                 <button type="button" class="priority-btn" onclick="setPriority('medium')">Medium</button>
@@ -79,6 +82,7 @@
           
             <section class="task-input">
               <label for="assign">Assign to</label>
+              <p class="section-heading"><strong>Asigned to</strong> (optional)</p>
               <select id="assign" class="task-select" name="assign">
                 <option value="">Select contact to assign</option>
               </select>
@@ -86,6 +90,7 @@
           
             <section class="task-input">
               <label for="category">Category</label>
+              <p class="section-heading"><strong>Category</strong></p>
               <select id="category" class="task-select" name="category">
                 <option value="">Select task category</option>
               </select>
@@ -93,12 +98,15 @@
           
             <section class="task-input">
               <label for="subtask">Subtasks</label>
+              <p class="section-heading"><strong>Subtasks</strong> (optional)</p>
               <input type="text" id="subtask" class="task-subtask" name="subtask" placeholder="Add new subtask">
             </section>
           
             <div class="task-buttons">
               <button class="btn-clear" onclick="clearForm()">Clear x</button>
-              <button class="btn-done btn-with-svg" onclick="createTask()">Create Task</button>
+              <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
+               <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
+              </button>
             </div>
       </main>
     </div>  
