@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.add-task-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.main-header-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 24px;
+  background: none;
+  margin-top: 50px;
+}
+
+.search-add {
+  display: flex;
+  align-items: center;
+ gap: 16px;
+}
+
+.search-add input {
+    width: 250px;
+    height: 40px;
+    padding: 8px;
+    font-size: 16px;
+    color: #d1d1d1;;
+    border-radius: 5px;
+    border: 1px solid #d1d1d1;
+}
+
+.btn-board-addTask {
+  width: 120px;
+  height: 40px;
+  padding: 8px;
+  font-size: 16px;
+  color: white;
+  background-color: #4589ff;
+  border: none;
+  border-radius: 5px;
+}
