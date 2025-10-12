@@ -71,7 +71,7 @@ h1{
     padding: 50px;
 }
 
-.display-flex{
+.display-flex-center-y{
     display: flex;
     align-items: center;
 }
