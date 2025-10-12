@@ -62,10 +62,7 @@ main {
   color: white;
 }
 
-.task-description,
-.task-date,
-.task-select,
-.task-subtask {
+.task-description {
   width: 100%;
   border: 1px solid #d1d1d1;
   border-radius: 8px;
@@ -88,6 +85,17 @@ main {
   opacity: 1;
 }
 
+.task-date,
+.task-select,
+.task-subtask {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  border-radius: 0;
+  padding: 12px;
+  font-size: 16px;
+  background-color: white;  
+}
 
 .task-select {
   appearance: none;
@@ -103,7 +111,9 @@ main {
   gap: 12px;
 }
 
-.priority-btn {
+.priority-btn-medium,
+.priority-btn-urgent,
+.priority-btn-low {
   flex: 1;
   padding: 12px;
   border-radius: 8px;
@@ -112,6 +122,11 @@ main {
   cursor: pointer;
   font-size: 16px;
   transition: 0.2s;
+}
+
+.priority-btn-medium {
+ background-color: #FFA800;
+ color: white;
 }
 
 .priority-btn:hover {
