@@ -17,3 +17,8 @@ body {
     height: 86px; 
     padding: 0;
   }
+
+  .main-container{
+    display: flex;
+    height: calc(100vh - 127px);
+  }
