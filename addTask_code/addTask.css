@@ -4,6 +4,27 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/img/open_sans/static/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/img/open_sans/static/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/img/open_sans/static/OpenSans-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
 .add-task-page {
   display: flex;
   flex-direction: column;
@@ -36,6 +57,8 @@ main {
   border: none;
   border-bottom: 1px solid #d1d1d1;
   padding: 12px;
+  width: 440px;
+  height: 64;
 }
 
 .task-title::placeholder {
@@ -46,7 +69,10 @@ main {
 .section-heading {
   font-size: 18px;
   margin-bottom: 8px;
-  color: #42526e;
+  color:#42526E;
+  font-family: open sans;
+  font-weight: 700;
+  font-size: 19px;
 }
 
 .task-input {
