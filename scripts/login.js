@@ -1,6 +1,4 @@
  
- //prüft ob email und passwort eingegeben wurden
- 
  function checkLogin() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -8,6 +6,3 @@
 
     button.disabled = !(email && password);
  }
-
-
- 
