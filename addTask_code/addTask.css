@@ -133,6 +133,11 @@ main {
   background-color: #e6e6e6;
 }
 
+.addTask-icons {
+  align-items: center;
+  padding-left: 10px;
+}
+
 .task-buttons {
     position: absolute;
     bottom: -40px;
