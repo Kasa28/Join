@@ -1,0 +1,46 @@
+header{
+    background-color: #4589FF;
+    height: 87px;
+    padding: 20px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-right-part{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 433px;
+    height: 56px;
+}
+
+.join-logo-summary-img{
+    filter: brightness(4);
+    width: 56px;
+    height: 68px;
+    object-fit: cover;
+}
+
+.guest-logo{
+    width: 48px;              
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+    color: #4589FF;
+    background-color: white;
+    font-size: 29px;
+    border-radius: 50%;
+    border: 3px solid #4589FF;
+    box-shadow: 0 0 0 2px #ffff;
+}
+
+.img-headbar{
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+}

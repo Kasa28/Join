@@ -1,0 +1,35 @@
+.show-contact-logo{
+    width: 108px;
+    height: 108px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #FF7A00;
+    font-size: 33px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #ffff;
+    margin: 15px 25px 15px 0; 
+
+}
+
+.show-contact-container{
+    color:black;
+    padding: 48px;
+}
+
+.edit-delete-icons{
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+}
+
+.edit-delete-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-right: 18px;
+    gap: 8px;
+    cursor: pointer;
+}

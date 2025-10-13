@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+    <link rel="stylesheet" href="../styles/summary.css">
+    <link rel="stylesheet" href="../styles/headbar.css">
+    <link rel="stylesheet" href="../styles/sidemenue.css">
+    <link rel="stylesheet" href="./addTask.css">
+</head>
+
+<body class="add-task-page">
+    <header>
+        <img class="join-logo-summary-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
+        <div class="header-right-part">
+            <a style="padding-right: 20px;"> Kanban Project Management Tool</a>
+            <img class="margin-left-right-small img-headbar" src="" alt="?-Logo">
+            <div class="guest-logo">
+                <a>G</a>
+            </div>
+        </div>
+    </header>
+  
+      <div class="layout">
+        <aside class="side-header">
+            <div>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Board icon">
+                    Summary
+                </button>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Brett icon">
+                    Ad Task
+                </button>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Board-2 icon">
+                    Board
+                </button>
+                <button class="button-sidebar display-flex">
+                    <img class="img-size-sidebar" src="" alt="Kontakt icon">
+                    Contacts
+                </button>
+            </div>
+            <div class="side-header-low-section">
+                <div class="padding-up-down-small">
+                    <button class="button-sidebar padding-up-down-small" href="">Privacy Policy</button>
+                </div>
+                <div class="padding-up-down-small">
+                    <button class="button-sidebar padding-up-down-small" href="">Legal Notice</button>
+                </div>
+            </div>
+          </aside>
+
+      <main>   
+            <section class="task-input">
+              <label for="title">Title</label>
+              <input type="text" id="title" class="task-title" name="title" placeholder="Enter a title">
+            </section>
+          
+            <section class="task-input">
+              <label for="description">Description</label>
+              <p class="section-heading"><strong>Description</strong> (optional)</p>
+              <textarea id="description" class="task-description" name="description" placeholder="Enter a description"></textarea>
+            </section>
+          
+            <section class="task-input">
+              <label for="due-date">Due Date</label>
+              <p class="section-heading"><strong>Due Date</strong></p>
+              <input type="text" id="due-date" class="task-date" name="due-date" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric">
+            </section>
+        
+            <section class="task-input">
+              <label>Priority</label>
+              <p class="section-heading"><strong>Priority</strong></p>
+              <div class="priority-group">
+                <button type="button" class="priority-btn-urgent" onclick="setPriority('urgent')">Urgent</button>
+                <button type="button" class="priority-btn-medium" onclick="setPriority('medium')">Medium</button>
+                <button type="button" class="priority-btn-low" onclick="setPriority('low')">Low</button>
+              </div>
+            </section>
+          
+            <section class="task-input">
+              <label for="assign">Assign to</label>
+              <p class="section-heading"><strong>Asigned to</strong> (optional)</p>
+              <select id="assign" class="task-select" name="assign">
+                <option value="">Select contact to assign</option>
+              </select>
+            </section>
+          
+            <section class="task-input">
+              <label for="category">Category</label>
+              <p class="section-heading"><strong>Category</strong></p>
+              <select id="category" class="task-select" name="category">
+                <option value="">Select task category</option>
+              </select>
+            </section>
+          
+            <section class="task-input">
+              <label for="subtask">Subtasks</label>
+              <p class="section-heading"><strong>Subtasks</strong> (optional)</p>
+              <input type="text" id="subtask" class="task-subtask" name="subtask" placeholder="Add new subtask">
+            </section>
+          
+            <div class="task-buttons">
+              <button class="btn-clear" onclick="clearForm()">Clear x</button>
+              <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
+               <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
+              </button>
+            </div>
+      </main>
+    </div>  
+</body>
+</html>
