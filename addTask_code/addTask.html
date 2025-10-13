@@ -11,48 +11,9 @@
 </head>
 
 <body class="add-task-page">
-    <header>
-        <img class="join-logo-summary-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
-        <div class="header-right-part">
-            <a style="padding-right: 20px;"> Kanban Project Management Tool</a>
-            <img class="margin-left-right-small img-headbar" src="" alt="?-Logo">
-            <div class="guest-logo">
-                <a>G</a>
-            </div>
-        </div>
-    </header>
-  
-      <div class="layout">
-        <aside class="side-header">
-            <div>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Board icon">
-                    Summary
-                </button>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Brett icon">
-                    Ad Task
-                </button>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Board-2 icon">
-                    Board
-                </button>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Kontakt icon">
-                    Contacts
-                </button>
-            </div>
-            <div class="side-header-low-section">
-                <div class="padding-up-down-small">
-                    <button class="button-sidebar padding-up-down-small" href="">Privacy Policy</button>
-                </div>
-                <div class="padding-up-down-small">
-                    <button class="button-sidebar padding-up-down-small" href="">Legal Notice</button>
-                </div>
-            </div>
-          </aside>
 
-      <main>   
+      <main>  
+        
             <section class="task-input">
               <label for="title">Title</label>
               <input type="text" id="title" class="task-title" name="title" placeholder="Enter a title">
@@ -101,14 +62,25 @@
               <p class="section-heading"><strong>Subtasks</strong> (optional)</p>
               <input type="text" id="subtask" class="task-subtask" name="subtask" placeholder="Add new subtask">
             </section>
+        
           
-            <div class="task-buttons">
+           
+
+      </main>
+
+       <div class="task-buttons">
               <button class="btn-clear" onclick="clearForm()">Clear x</button>
               <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
                <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
               </button>
-            </div>
-      </main>
-    </div>  
+        </div>
+
+
+      
+
+      
+    
+
+    
 </body>
 </html>

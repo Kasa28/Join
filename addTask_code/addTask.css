@@ -134,10 +134,9 @@ main {
 }
 
 .task-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+    position: absolute;
+    bottom: -40px;
+    right: 50px;
 }
 
 .btn-clear,
@@ -154,6 +153,7 @@ main {
   color: #758195;
   border: 1px solid #d1d1d1;
   margin-bottom: 40px;
+  margin-right: 10px;
 }
 
 .btn-done {
