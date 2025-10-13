@@ -43,16 +43,15 @@
 
 main {
   position: absolute;
-  left: 232px;
   right: 0;
   top: 0;
   margin-top: 96px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   width: 440px;
   height: 928px;
   padding: 64px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative; 
 }
 
 .task-title {
@@ -134,6 +133,28 @@ main {
   background-color: white;
 }
 
+.date-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.task-date {
+  width: 100%;
+  padding-right: 30px; 
+  box-sizing: border-box;
+}
+
+.event-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translateY(-50%);
+ cursor: pointer;
+}
+
 .task-select {
   appearance: none;
   background-image: url("./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
@@ -141,6 +162,10 @@ main {
   background-position: right 12px center;
   background-size: 20px;
   cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 120%;
 }
 
 .priority-group {
@@ -177,8 +202,8 @@ main {
 
 .task-buttons {
   position: absolute;
-  bottom: -480px;
-  right: 50px;
+  bottom: -350px;
+  right: 15px;
 }
 
 .btn-clear,

@@ -25,12 +25,17 @@
               <textarea id="description" class="task-description" name="description" placeholder="Enter a description"></textarea>
             </section>
           
-            <section class="task-input">
-              <label for="due-date">Due Date</label>
-              <p class="section-heading"><strong>Due Date</strong></p>
-              <input type="text" id="due-date" class="task-date" name="due-date" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric">
-   
-            </section>
+            <div class="date-input-wrapper">
+              <input 
+                type="text" 
+                id="due-date" 
+                class="task-date" 
+                name="due-date" 
+                placeholder="dd/mm/yyyy"
+                pattern="\d{2}/\d{2}/\d{4}" 
+                inputmode="numeric">
+              <img src="./icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon">
+            </div>
         
             <section class="task-input">
               <label>Priority</label>
