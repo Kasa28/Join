@@ -1,226 +1,232 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  @font-face {
-    font-family: "Open Sans";
-    src: url("../assets/img/open_sans/static/OpenSans-Regular.ttf")
-      format("truetype");
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "Open Sans";
-    src: url("../assets/img/open_sans/static/OpenSans-Bold.ttf")
-      format("truetype");
-    font-weight: 700;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "Open Sans";
-    src: url("../assets/img/open_sans/static/OpenSans-Italic.ttf")
-      format("truetype");
-    font-weight: 400;
-    font-style: italic;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  main {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-top: 96px;
-    width: 440px;
-    height: 928px;
-    padding: 64px 24px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative; 
-  }
-  
-  .task-title {
-    font-size: 22px;
-    border: none;
-    border-bottom: 1px solid #d1d1d1;
-    padding: 12px;
-    width: 100%;
-    height: 64;
-  }
-  
-  .task-title::placeholder {
-    color: #bfbfbf;
-    opacity: 1;
-  }
-  
-  .section-heading {
-    font-size: 18px;
-    margin-bottom: 8px;
-    color: #42526e;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    font-size: 19px;
-  }
-  
-  .task-input {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-  }
-  
-  .task-input label {
-    font-size: 16px;
-    font-weight: 500;
-    color: white;
-  }
-  
-  .task-description {
-    border: 1px solid #d1d1d1;
-    border-radius: 8px;
-    padding-top: 18px;
-    padding-left: 16px;
-    font-size: 19px;
-    background-color: white;
-    width: 100%;
-    height: 103px;
-    resize: vertical;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    line-height: 120%;
-  }
-  
-  .task-title::placeholder,
-  .task-description::placeholder,
-  .task-subtask::placeholder,
-  .task-date::placeholder {
-    color: #bfbfbf;
-    opacity: 1;
-    font-weight: 400;
-    font-family: 'Open Sans', sans-serif;
-    line-height: 120%;
-    font-family: 'Open Sans', sans-serif;
-  }
-  
-  .task-title::placeholder {
-    font-size: 32px;
-  }
-  
-  .task-date,
-  .task-select,
-  .task-subtask {
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid #d1d1d1;
-    border-radius: 0;
-    padding: 12px;
-    font-size: 19px;
-    background-color: white;
-  }
-  
-  .date-input-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-  }
-  
-  .task-date {
-    width: 100%;
-    padding-right: 30px; 
-    box-sizing: border-box;
-  }
-  
-  .event-icon {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    width: 24px;
-    height: 24px;
-    transform: translateY(-50%);
-   cursor: pointer;
-  }
-  
-  .task-select {
-    appearance: none;
-    background-image: url("./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 20px;
-    cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 120%;
-  }
-  
-  .priority-group {
-    display: flex;
-    gap: 12px;
-  }
-  
-  .priority-btn-medium,
-  .priority-btn-urgent,
-  .priority-btn-low {
-    flex: 1;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #d1d1d1;
-    background-color: white;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.2s;
-  }
-  
-  .priority-btn-medium {
-    background-color: #ffa800;
-    color: white;
-  }
-  
-  .priority-btn:hover {
-    background-color: #e6e6e6;
-  }
-  
-  .addTask-icons {
-    align-items: center;
-    padding-left: 10px;
-  }
-  
-  .task-buttons {
-    position: absolute;
-    bottom: -350px;
-    right: 15px;
-  }
-  
-  .btn-clear,
-  .btn-done {
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .btn-clear {
-    background-color: white;
-    color: #758195;
-    border: 1px solid #d1d1d1;
-    margin-bottom: 40px;
-    margin-right: 10px;
-  }
-  
-  .btn-done {
-    background-color: #4589ff;
-    color: white;
-    margin-bottom: 40px;
-  }
-  
-  .check-icon {
-    width: 1em;
-    height: 1em;
-    margin-left: 8px;
-    vertical-align: middle;
-    filter: brightness(0) invert(1);
-  }
-  
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/img/open_sans/static/OpenSans-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/img/open_sans/static/OpenSans-Bold.ttf")
+    format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/img/open_sans/static/OpenSans-Italic.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+main {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 96px;
+  width: 440px;
+  height: 928px;
+  padding: 64px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative; 
+}
+
+.task-title {
+  font-size: 22px;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  padding: 12px;
+  width: 100%;
+  height: 64;
+}
+
+.task-title::placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+}
+
+.section-heading {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #42526e;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+}
+
+.task-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.task-input label {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+
+.task-description {
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  padding-top: 18px;
+  padding-left: 16px;
+  font-size: 19px;
+  background-color: white;
+  width: 100%;
+  height: 103px;
+  resize: vertical;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.task-title::placeholder,
+.task-description::placeholder,
+.task-subtask::placeholder,
+.task-date::placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+  font-weight: 400;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 120%;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.task-title::placeholder {
+  font-size: 32px;
+}
+
+.task-date,
+.task-select,
+.task-subtask {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  border-radius: 0;
+  padding: 12px;
+  font-size: 19px;
+  background-color: white;
+}
+
+.date-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.date-field {
+  display: flex;
+  align-items: center; 
+  border-bottom: 1px solid #d1d1d1;
+  background-color: white;
+}
+
+.task-date {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 12px;
+  font-size: 19px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.event-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px; 
+  cursor: pointer;
+}
+
+.task-select {
+  appearance: none;
+  background-image: url("./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 120%;
+}
+
+.priority-group {
+  display: flex;
+  gap: 12px;
+}
+
+.priority-btn-medium,
+.priority-btn-urgent,
+.priority-btn-low {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d1d1;
+  background-color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.priority-btn-medium {
+  background-color: #ffa800;
+  color: white;
+}
+
+.priority-btn:hover {
+  background-color: #e6e6e6;
+}
+
+.addTask-icons {
+  align-items: center;
+  padding-left: 10px;
+}
+
+.task-buttons {
+  position: absolute;
+  bottom: -350px;
+  right: 15px;
+}
+
+.btn-clear,
+.btn-done {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-clear {
+  background-color: white;
+  color: #758195;
+  border: 1px solid #d1d1d1;
+  margin-bottom: 40px;
+  margin-right: 10px;
+}
+
+.btn-done {
+  background-color: #4589ff;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.check-icon {
+  width: 1em;
+  height: 1em;
+  margin-left: 8px;
+  vertical-align: middle;
+  filter: brightness(0) invert(1);
+}
