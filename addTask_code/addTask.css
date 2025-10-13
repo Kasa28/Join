@@ -28,19 +28,6 @@
   font-style: italic;
 }
 
-.add-task-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.layout {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-}
-
 main {
   position: absolute;
   right: 0;
@@ -139,20 +126,27 @@ main {
   width: 100%;
 }
 
+.date-field {
+  display: flex;
+  align-items: center; 
+  border-bottom: 1px solid #d1d1d1;
+  background-color: white;
+}
+
 .task-date {
-  width: 100%;
-  padding-right: 30px; 
-  box-sizing: border-box;
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 12px;
+  font-size: 19px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .event-icon {
-  position: absolute;
-  right: 8px;
-  top: 50%;
   width: 24px;
   height: 24px;
-  transform: translateY(-50%);
- cursor: pointer;
+  margin-right: 8px; 
+  cursor: pointer;
 }
 
 .task-select {
