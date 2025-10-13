@@ -5,10 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Task</title>
-  <link rel="stylesheet" href="../styles/summary.css">
-  <link rel="stylesheet" href="../styles/headbar.css">
-  <link rel="stylesheet" href="../styles/sidemenue.css">
-  <link rel="stylesheet" href="./addTask.css">
+  <link rel="stylesheet" href="./addTask_template.css">
 </head>
 
 <body class="add-task-page">
@@ -28,12 +25,11 @@
     </section>
 
     <div class="date-input-wrapper">
-      <label for="due-date">Due date</label>
       <p class="section-heading"><strong>Due date</strong></p>
       <div class="date-field">
         <input type="text" id="due-date" class="task-date" name="due-date" placeholder="dd/mm/yyyy"
           pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric">
-        <img src="./icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon">
+        <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon">
       </div>
     </div>
 
@@ -42,13 +38,13 @@
       <p class="section-heading"><strong>Priority</strong></p>
       <div class="priority-group">
         <button type="button" class="priority-btn-urgent" onclick="setPriority('urgent')">Urgent
-          <img class="addTask-icons" src="./icons_addTask/separatedAddTaskIcons/urgent_icon.svg" alt="urgent icon">
+          <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg" alt="urgent icon">
         </button>
         <button type="button" class="priority-btn-medium" onclick="setPriority('medium')">Medium
-          <img class="addTask-icons" src="./icons_addTask/separatedAddTaskIcons/sum_icon.svg" alt="sum icon">
+          <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg" alt="sum icon">
         </button>
         <button type="button" class="priority-btn-low" onclick="setPriority('low')">Low
-          <img class="addTask-icons" src="./icons_addTask/separatedAddTaskIcons/low_icon.svg"
+          <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
             alt="2 arrows in green showing up">
         </button>
       </div>
@@ -77,18 +73,11 @@
     </section>
 
   </main>
-
-  <div class="task-buttons">
-    <button class="btn-clear" onclick="clearForm()">Clear x</button>
-    <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
-      <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
-    </button>
-  </div>
-
-
-
-
-
+  
+  <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
+    <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
+  </button>
+ 
 
 
 
