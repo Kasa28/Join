@@ -1,0 +1,175 @@
+.close-icon-edit-contact{
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.capa-logo-1-edit-contact{
+    width: 55px;
+    height: 66px;
+    object-fit: cover;
+}
+
+.h2-edit-contact{
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    font-style: bold;
+}
+
+.main-container-edit-contact{
+    display: flex;
+    flex-direction: column;
+
+
+    width: 584px;
+    height: 1024px;
+
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+
+    border: solid 2px grey;
+
+    gap: 72px;
+
+}
+
+.edit-contact-headcard{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 137px;
+
+    border-top-right-radius: 30px;
+    padding: 108px 46px 108px 46px;
+    gap: 12px;
+
+    background-color: #005DFF;
+}
+
+.edit-contact-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    height: 422px;
+    width: 437px;
+
+    gap: 32px;
+
+}
+
+.edit-contact-logo{
+    width: 85px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #FF7A00;
+    font-size: 33px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #ffff;
+
+}
+
+.edit-contact-inputfield{
+    width: 422px;
+    height: 48px;
+
+    border-style: none;
+    border-bottom: solid 2px grey;
+}
+
+.input-icon-container{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.edit-contact-inputfield{
+    width: 100%;
+    padding-right: 36px; /* Platz für das Icon */
+    box-sizing: border-box;
+}
+
+.input-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none; /* Icon ist nicht klickbar */
+}
+
+.button-edit-contact{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    border: 0;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    height: 60px;
+    width: 106px;
+
+    font-size: 18px;
+}
+
+.button-edit-contact-grey{
+    background: white;
+    border: solid 2px grey;
+    color: grey;
+}
+
+
+.button-edit-contact-blue{
+    background: #4589FF;
+    border: solid 2px #4589FF;
+    width: 174px;
+    color: white;
+}
+
+.button-edit-contact-blue:hover {
+    background: grey;
+}
+
+.button-edit-contact-grey:hover {
+    background: #4589FF;
+}
+
+
+.button-edit-contact-order{
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    width: 300px;
+}
+
+.check-icon-edit-contact{
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    right: 3px;
+}
+
+.button-text-edit-contact{
+    flex: 1;
+    text-align: center;
+}
