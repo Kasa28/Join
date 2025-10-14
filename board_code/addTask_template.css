@@ -28,17 +28,47 @@
   font-style: italic;
 }
 
+.body {
+  width: 528px;
+  height: 950px;
+}
+
+.header-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 528px;
+  height: 156px;
+  padding: 72px 40px;
+  gap: 49px;
+}
+
+h1 {
+  font-family: "open sans";
+  font-size: 40px;
+}
+
+.close-btn {
+  color: #4589ff;
+  border: none;
+  background-color: transparent;
+  font-size: 24px;
+}
+
 main {
   position: absolute;
-  right: 0;
-  top: 0;
-  margin-top: 96px;
   width: 440px;
-  height: 928px;
-  padding: 64px 24px;
+  height: 770px;
+  padding-left: 24px;
   overflow-y: auto;
   overflow-x: hidden;
-  position: relative; 
+  position: relative;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+main::-webkit-scrollbar {
+  display: none; 
 }
 
 .task-title {
@@ -59,7 +89,7 @@ main {
   font-size: 18px;
   margin-bottom: 8px;
   color: #42526e;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 19px;
 }
@@ -82,12 +112,13 @@ main {
   border-radius: 8px;
   padding-top: 18px;
   padding-left: 16px;
+  margin-bottom: 18px;
   font-size: 19px;
   background-color: white;
   width: 100%;
   height: 103px;
   resize: vertical;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   line-height: 120%;
 }
@@ -99,9 +130,9 @@ main {
   color: #bfbfbf;
   opacity: 1;
   font-weight: 400;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   line-height: 120%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 .task-title::placeholder {
@@ -128,7 +159,7 @@ main {
 
 .date-field {
   display: flex;
-  align-items: center; 
+  align-items: center;
   border-bottom: 1px solid #d1d1d1;
   background-color: white;
 }
@@ -139,13 +170,13 @@ main {
   flex: 1;
   padding: 12px;
   font-size: 19px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 .event-icon {
   width: 24px;
   height: 24px;
-  margin-right: 8px; 
+  margin-right: 8px;
   cursor: pointer;
 }
 
@@ -156,7 +187,7 @@ main {
   background-position: right 12px center;
   background-size: 20px;
   cursor: pointer;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 19px;
   line-height: 120%;
@@ -200,24 +231,19 @@ main {
   right: 15px;
 }
 
-.btn-clear,
+.btn-done-wrapper {
+  width: 440px;                
+  display: flex;
+  justify-content: flex-end; 
+  margin-top: 20px;
+}
+
 .btn-done {
   padding: 12px 24px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   font-size: 16px;
-}
-
-.btn-clear {
-  background-color: white;
-  color: #758195;
-  border: 1px solid #d1d1d1;
-  margin-bottom: 40px;
-  margin-right: 10px;
-}
-
-.btn-done {
   background-color: #4589ff;
   color: white;
   margin-bottom: 40px;
