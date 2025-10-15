@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Story</title>
+    <link rel="stylesheet" href="./user_story_template.css">
+</head>
+
+<body>
+
+    <header class="header-wrapper">
+        <span class="label_user_story">User Story</span>
+        <button class="close-btn">x</button>
+
+    </header>
+    <h1 class="title">Kochwelt Page & Recipe Recommender</h1>
+    <h3>Build start page with recipe recommendation.</h3>
+
+    <main>
+        <div class="date-input-wrapper">
+            <p class="section-heading"><strong>Due date:</strong>   10/05/2023</p>
+           
+        </div>
+
+        <section class="task-input">
+            <label>Priority</label>
+            <p class="section-heading"><strong>Priority</strong></p>
+            <div class="priority-group">
+                <button type="button" class="priority-btn-urgent" onclick="setPriority('urgent')">Urgent
+                    <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg"
+                        alt="urgent icon">
+                </button>
+                <button type="button" class="priority-btn-medium" onclick="setPriority('medium')">Medium
+                    <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg"
+                        alt="sum icon">
+                </button>
+                <button type="button" class="priority-btn-low" onclick="setPriority('low')">Low
+                    <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
+                        alt="2 arrows in green showing up">
+                </button>
+            </div>
+        </section>
+
+        <section class="task-input">
+            <label for="assign">Assign to</label>
+            <p class="section-heading"><strong>Asigned to</strong> (optional)</p>
+            <select id="assign" class="task-select" name="assign">
+                <option value="">Select contact to assign</option>
+            </select>
+        </section>
+
+        <section class="task-input">
+            <label for="category">Category</label>
+            <p class="section-heading"><strong>Category</strong></p>
+            <select id="category" class="task-select" name="category">
+                <option value="">Select task category</option>
+            </select>
+        </section>
+
+        <section class="task-input">
+            <label for="subtask">Subtasks</label>
+            <p class="section-heading"><strong>Subtasks</strong> (optional)</p>
+            <input type="text" id="subtask" class="task-subtask" name="subtask" placeholder="Add new subtask">
+        </section>
+
+    </main>
+    <div class="btn-done-wrapper">
+        <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
+            <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
+        </button>
+    </div>
+</body>
+
+</html>
