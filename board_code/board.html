@@ -58,55 +58,54 @@
 
 
         <main>
-  <div class="main-header-wrapper" role="region" aria-label="Task Controls">
-    <div class="search-add">
-      <form role="search" aria-label="Search Tasks">
+     <div class="main-header-wrapper" role="region" aria-label="Task Controls">
+        <div class="search-add">
+          <form role="search" aria-label="Search Tasks">
         <div class="searchbox">
           <input type="search" name="q" placeholder="Find Task" />
           <button class="btn-icon" type="submit" aria-label="Search">🔍</button>
         </div>
-      </form>
-      <button class="btn-primary" type="button">
-  <img src="./icons_addTask_template/Capa 1.svg" alt="+ icon">
-  Add task
- </button>
+          </form>
+         <img src="./icons_addTask_template/Capa 1.svg" alt="+ icon">
+         Add task
+         </button>
 
+       </div>
     </div>
-  </div>
 
-  <div class="board">
-    <section id="todo" aria-labelledby="todo-title">
-      <div class="col-head">
+    <div class="board">
+      <section id="todo" aria-labelledby="todo-title">
+      <div class="name_from_card">
         <h2 id="todo-title">To do</h2>
         <button class="plus" type="button" aria-label="Add to To do">+</button>
       </div>
       <div class="column-body">
         <div class="empty-pill">No tasks To do</div>
       </div>
-    </section>
+      </section>
 
-    <section id="in-progress" aria-labelledby="in-progress-title">
-      <div class="col-head">
+       <section id="in-progress" aria-labelledby="in-progress-title">
+      <div class="name_from_card">
         <h2 id="in-progress-title">In progress</h2>
         <button class="plus" type="button" aria-label="Add to In progress">+</button>
       </div>
       <div class="column-body">
         <div class="empty-pill">No tasks In progress</div>
       </div>
-    </section>
+       </section>
 
-    <section id="await-feedback" aria-labelledby="await-feedback-title">
-      <div class="col-head">
+       <section id="await-feedback" aria-labelledby="await-feedback-title">
+      <div class="name_from_card">
         <h2 id="await-feedback-title">Await feedback</h2>
         <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
       </div>
       <div class="column-body">
         <div class="empty-pill">No tasks Await feedback</div>
       </div>
-    </section>
+       </section>
 
     <section id="done" aria-labelledby="done-title">
-      <div class="col-head">
+      <div class="name_from_card">
         <h2 id="done-title">Done</h2>
       </div>
       <div class="column-body">
