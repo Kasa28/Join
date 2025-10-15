@@ -1,0 +1,138 @@
+.h1-technical-task{
+    font-weight: 700;
+    font-size: 48px;
+    font-style: bold;
+    line-height: 120%;
+    letter-spacing: 0%;
+}
+
+
+.main-container-technical-task{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 528px;
+    height: 872px;
+    border-radius: 30px;
+    gap: 24px;
+
+    background-color: aquamarine;
+}
+
+
+
+.head-bar-technical-task{
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+
+    width: 448px;
+    height: 36px;
+
+    
+    background-color: white;
+}
+
+.head-sign-technical-task{
+    display: flex;
+    align-items: center;
+
+    width: 203px;
+    height: 28px;
+    border-radius: 8px;
+
+    padding: 4px 24px 4px 24px;
+    gap: 10px;
+
+    color: white;
+    background-color: #0038FF;
+}
+
+
+.headline-container-technical-task{
+
+    width: 448px;
+    height : 219px;
+}
+
+.date-container-technical-task{
+    width: 448px;
+    height: 25;
+    gap: 25px;
+}
+
+.status-font-technical-task{
+    font-size: 21px;
+    font-weight: 700;
+    font-style: bold;
+    line-height: 120%;
+    letter-spacing: 0%;
+    
+    color: #42526E;
+}
+
+.date-font-technical-task{
+    font-size: 19px;
+    font-weight: 400;
+    font-style: regular;
+    line-height: 120%;
+    letter-spacing: 0%;
+
+}
+
+.priority-container-technical-task{
+    display: flex;
+    align-items: center;
+
+    width: 448px;
+    height: 31;
+    gap: 25px;
+}
+
+.actual-priority-container-technical-task{
+    display: flex;
+    align-items: center;
+
+    width: 125px;
+    height: 31px;
+    border-radius: 10px;
+    padding: 4px 18px 4px 18px;
+    gap: 10px;
+}
+
+.assigned-to-container-technical-task{
+    display: flex;
+    flex-direction: column;
+
+    width: 448px;
+    height: 149px;
+    gap: 8px;
+}
+
+.name-letter-ball-technical-task{
+    
+
+    width: 42px;
+    height: 42px;
+    border-radius: 40px;
+
+    background-color: #00BEE8;
+}
+
+.name-letter-ball-font-technical-task{
+    font-size: 12px;
+    font-weight: 700;
+    font-style: regular;
+    line-height: 120%;
+    letter-spacing: 0%;
+    color: white;
+}
+
+.name-letter-ball-font-position-technical-task{
+    width: 28px;
+    height: 10px;
+    top: 16px;
+    left: 7px;
+}
