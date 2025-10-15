@@ -10,38 +10,41 @@
 <link rel="stylesheet" href="./board.css">
 </head>
 
-<body class="add-task-page">
+<body>
     <header>
         <img class="join-logo-summary-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
         <div class="header-right-part">
             <a style="padding-right: 20px;"> Kanban Project Management Tool</a>
-            <img class="margin-left-right-small img-headbar" src="" alt="?-Logo">
+            <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
             <div class="guest-logo">
                 <a>G</a>
             </div>
         </div>
     </header>
-  
-      <div class="layout">
-        <aside class="side-header">
+
+        <maincontainer class="main-container">
+
+        <sidebar class="side-header">
+
             <div>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Board icon">
+                <button class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="../assets/img/Vector.svg" alt="Board icon">
                     Summary
                 </button>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Brett icon">
+                <button class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="../assets/img/edit_square.svg" alt="Brett icon">
                     Ad Task
                 </button>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Board-2 icon">
+                <button class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="../assets/img/Board.svg" alt="Board-2 icon">
                     Board
                 </button>
-                <button class="button-sidebar display-flex">
-                    <img class="img-size-sidebar" src="" alt="Kontakt icon">
+                <button class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="../assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
                     Contacts
                 </button>
             </div>
+
             <div class="side-header-low-section">
                 <div class="padding-up-down-small">
                     <button class="button-sidebar padding-up-down-small" href="">Privacy Policy</button>
@@ -50,30 +53,67 @@
                     <button class="button-sidebar padding-up-down-small" href="">Legal Notice</button>
                 </div>
             </div>
-          </aside>
 
-      <main>
+        </sidebar>
 
-        <div class="main-header-wrapper" role="region" aria-label="Task Controls">
-            <div class="search-add">
-              <form role="search" aria-label="Search Tasks">
-                <input type="search" placeholder="Find Task" />
-              </form>
-              <button class="btn-board-addTask" type="button">Add Task +</button>
-            </div>
-        
-            <nav aria-label="Task categories">
-              <ul>
-                <li><a href="#todo">To Do</a></li>
-                <li><a href="#in-progress">In Progress</a></li>
-                <li><a href="#await-feedback">Await Feedback</a></li>
-                <li><a href="#done">Done</a></li>
-              </ul>
-            </nav>
-          </div>
-          
-      </main>
-      
-    </div>  
+
+        <main>
+  <div class="main-header-wrapper" role="region" aria-label="Task Controls">
+    <div class="search-add">
+      <form role="search" aria-label="Search Tasks">
+        <div class="searchbox">
+          <input type="search" name="q" placeholder="Find Task" />
+          <button class="btn-icon" type="submit" aria-label="Search">🔍</button>
+        </div>
+      </form>
+      <button class="btn-primary" type="button">
+  <img src="./icons_addTask_template/Capa 1.svg" alt="+ icon">
+  Add task
+ </button>
+
+    </div>
+  </div>
+
+  <div class="board">
+    <section id="todo" aria-labelledby="todo-title">
+      <div class="col-head">
+        <h2 id="todo-title">To do</h2>
+        <button class="plus" type="button" aria-label="Add to To do">+</button>
+      </div>
+      <div class="column-body">
+        <div class="empty-pill">No tasks To do</div>
+      </div>
+    </section>
+
+    <section id="in-progress" aria-labelledby="in-progress-title">
+      <div class="col-head">
+        <h2 id="in-progress-title">In progress</h2>
+        <button class="plus" type="button" aria-label="Add to In progress">+</button>
+      </div>
+      <div class="column-body">
+        <div class="empty-pill">No tasks In progress</div>
+      </div>
+    </section>
+
+    <section id="await-feedback" aria-labelledby="await-feedback-title">
+      <div class="col-head">
+        <h2 id="await-feedback-title">Await feedback</h2>
+        <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
+      </div>
+      <div class="column-body">
+        <div class="empty-pill">No tasks Await feedback</div>
+      </div>
+    </section>
+
+    <section id="done" aria-labelledby="done-title">
+      <div class="col-head">
+        <h2 id="done-title">Done</h2>
+      </div>
+      <div class="column-body">
+        <div class="empty-pill">No tasks Done</div>
+      </div>
+    </section>
+  </div>
+</main>
 </body>
 </html>
