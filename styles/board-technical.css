@@ -151,3 +151,50 @@
   top: 16px;
   left: 7px;
 }
+
+.user-container-technical-task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 448px;
+  height: 56px;
+  border-radius: 10px;
+  padding: 7px 16px 7px 16px;
+}
+
+.subtasks-container-technical-task {
+  display: flex;
+  flex-direction: column;
+
+  width: 448px;
+  height: 68px;
+  gap: 4px;
+}
+
+.subtasks-task-container-technical-task {
+  display: flex;
+  align-items: center;
+
+
+  padding: 6px 16px 6px 16px;
+  gap: 16px;
+}
+
+.check-box-technical-task {
+  width: 16px;
+  height: 16px;
+  top: 4px;
+  left: 4px;
+}
+
+.delete-edit-container-technical-task {
+  display: flex;
+  align-items: center;
+  justify-content:  end;
+
+  width: 158px;
+  height: 24px;
+  gap: 8px;
+
+}
