@@ -66,6 +66,7 @@
           <button class="btn-icon" type="submit" aria-label="Search">🔍</button>
         </div>
           </form>
+          <button>
          <img src="./icons_addTask_template/Capa 1.svg" alt="+ icon">
          Add task
          </button>
@@ -79,7 +80,11 @@
         <h2 id="todo-title">To do</h2>
         <button class="plus" type="button" aria-label="Add to To do">+</button>
       </div>
-      <div class="column-body">
+
+      <div class="column-body drag-area" id="drag-area-todo"
+      ondrop="moveTo('drag-area-todo')"
+      ondragleave="removeHighlight('drag-area-todo')"
+      ondragover="allowDrop(event); highlight('drag-area-todo')">
         <div class="empty-pill">No tasks To do</div>
       </div>
       </section>
@@ -89,7 +94,10 @@
         <h2 id="in-progress-title">In progress</h2>
         <button class="plus" type="button" aria-label="Add to In progress">+</button>
       </div>
-      <div class="column-body">
+      <div class="column-body drag-area" id="drag-area-in-progress"
+      ondrop="moveTo('drag-area-in-progress')"
+      ondragleave="removeHighlight('drag-area-in-progress')"
+      ondragover="allowDrop(event); highlight('drag-area-in-progress')">
         <div class="empty-pill">No tasks In progress</div>
       </div>
        </section>
@@ -99,7 +107,10 @@
         <h2 id="await-feedback-title">Await feedback</h2>
         <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
       </div>
-      <div class="column-body">
+      <div class="column-body drag-area" id="drag-area-await-feedback"
+      ondrop="moveTo('drag-area-await-feedback')"
+      ondragleave="removeHighlight('drag-area-await-feedback')"
+      ondragover="allowDrop(event); highlight('drag-area-await-feedback')">
         <div class="empty-pill">No tasks Await feedback</div>
       </div>
        </section>
@@ -108,7 +119,10 @@
       <div class="name_from_card">
         <h2 id="done-title">Done</h2>
       </div>
-      <div class="column-body">
+      <div class="column-body" id="drag-area-done"
+      ondrop="moveTo('drag-area-done')"
+      ondragleave="removeHighlight('drag-area-done')"
+      ondragover="allowDrop(event); highlight('drag-area-done')">
         <div class="empty-pill">No tasks Done</div>
       </div>
     </section>
