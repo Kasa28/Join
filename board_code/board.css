@@ -1,4 +1,4 @@
-* {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -56,7 +56,7 @@
 
 main{max-width:1200px;
   margin:0 auto;
-  padding:16px 20px 48px;
+  padding:37px;
   font-family:"Open Sans";
 }
 
@@ -111,7 +111,6 @@ main{max-width:1200px;
   gap:24px;
   margin-top:12px;
 }
-@media (max-width:1000px){.board{grid-template-columns:repeat(2,minmax(240px,1fr))}}
 @media (max-width:560px){.board{grid-template-columns:1fr}}
 
 .name_from_card{
@@ -156,3 +155,330 @@ main{max-width:1200px;
   border-radius:12px;
   box-shadow:inset 0 1px 0 rgba(0,0,0,.02)}
 
+
+
+.main-content-board .board{
+  display:grid;
+  gap:24px;
+  margin-top:12px;
+}
+
+.main-content-board .name_from_card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin:6px 0 8px;
+}
+.main-content-board .name_from_card h2{
+  margin:0;font-size:22px;font-weight:800;color:#5b6470;
+}
+
+.main-content-board .plus{
+  width:26px;height:26px;border-radius:34%;display:grid;place-items:center;
+  background:#fff;border:2px solid #3f78ff;color:#3f78ff;font-weight:800;cursor:pointer;
+  box-shadow:0 2px 8px rgba(63,120,255,.12);
+}
+
+.main-content-board .column-body{ 
+  display:flex; 
+  flex-direction:column; 
+  gap:16px; 
+  min-height:160px; 
+}
+
+.main-content-board .drag-area{
+  padding:12px;
+}
+
+.main-content-board .empty-pill{
+   display:grid; 
+   place-items:center; 
+   height:56px; 
+   color:#9aa3af; }
+
+/* ===== Kleine Karte (stark präzisiert) ===== */
+.main-content-board .task-card{
+  background:#fff;
+  color:#111;
+  border-radius:16px;
+  padding:20px;
+  cursor:grab;
+  user-select:none;
+}
+
+.main-content-board .task-card:active{ cursor:grabbing; opacity:.95; transform:scale(.998); }
+.main-content-board .task-card .badge{
+  display:inline-block;background:#ff7a00;color:#fff;padding:4px 12px;border-radius:8px;
+  font-size:14px;margin-bottom:10px;
+}
+
+
+.task-title {
+  font-size: 22px;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  padding: 12px;
+  width: 100%;
+  height: 64;
+}
+
+.task-title::placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+}
+
+.section-heading {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #42526e;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+}
+
+.task-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.task-input label {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+
+.task-description {
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  padding-top: 18px;
+  padding-left: 16px;
+  margin-bottom: 18px;
+  font-size: 19px;
+  background-color: white;
+  width: 100%;
+  height: 103px;
+  resize: vertical;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.task-title::placeholder,
+.task-description::placeholder,
+.task-subtask::placeholder,
+.task-date::placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+  line-height: 120%;
+  font-family: "Open Sans", sans-serif;
+}
+
+.task-title::placeholder {
+  font-size: 32px;
+}
+
+.task-date,
+.task-select,
+.task-subtask {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  border-radius: 0;
+  padding: 12px;
+  font-size: 19px;
+  background-color: white;
+}
+
+.date-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.date-field {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #d1d1d1;
+  background-color: white;
+}
+
+.task-date {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 12px;
+  font-size: 19px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.event-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.task-select {
+  appearance: none;
+  background-image: url("./addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 120%;
+}
+
+.priority-group {
+  display: flex;
+  gap: 12px;
+}
+
+.priority-btn-medium,
+.priority-btn-urgent,
+.priority-btn-low {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d1d1;
+  background-color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.priority-btn-medium {
+  background-color: #ffa800;
+  color: white;
+}
+
+.priority-btn:hover {
+  background-color: #e6e6e6;
+}
+
+.addTask-icons {
+  align-items: center;
+  padding-left: 10px;
+}
+
+.task-buttons {
+  position: absolute;
+  bottom: -350px;
+  right: 15px;
+}
+
+.btn-done-wrapper {
+  width: 440px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.btn-done {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: #4589ff;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.check-icon {
+  width: 1em;
+  height: 1em;
+  margin-left: 8px;
+  vertical-align: middle;
+  filter: brightness(0) invert(1);
+}
+
+
+.header-wrapper{
+  background-color: white
+}
+
+
+
+.label_user_story {
+  width: 110px;
+  height: 27px;
+  border-radius: 8px;
+  background-color: #ff7a00;
+  color: white;
+  font-family: "open sans";
+  font-weight: 400;
+  line-height: 120%;
+  font-size: 16px;
+  padding: 4px 16px;
+}
+
+.title {
+  font-family: "open sans";
+  font-size: 61px;
+  font-weight: 700;
+  width: 528px;
+  line-height: 120%;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+h3 {
+  font-family: "open sans";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 120%;
+  height: 23px;
+  padding-bottom: 47px;
+  color:#3f78ff
+}
+
+p{
+    color: #A8A8A8;
+}
+
+.close-btn {
+  color: #4589ff;
+  border: none;
+  background-color: transparent;
+  font-size: 28px;
+}
+
+.task-title {
+  font-size: 22px;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  padding: 12px;
+  width: 100%;
+  height: 64;
+}
+
+.task-title::placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+}
+
+
+
+@media screen and (max-width: 1330px) {
+  .main-header-wrapper {
+    margin-top: 20px;
+    padding: 16px 12px;
+  }
+
+  .search-add input {
+    width: 100%;
+  }
+
+  .board {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+  
+}
