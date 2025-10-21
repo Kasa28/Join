@@ -89,20 +89,17 @@ main{max-width:1200px;
 }
 .btn-icon{
   width:34px;
-  height:34px;
-  border-radius:8px;
   border:1px solid #E2E5EB;
-  background:#fff;
   cursor:pointer}
+
 .btn-primary{
   background:#3f78ff;
   color:#fff;
   border:0;
   border-radius:12px;
-  padding:10px 18px;
+  padding:16px 27px;
   font-weight:700;
   cursor:pointer;
-  box-shadow:0 6px 16px rgba(63,120,255,.18);
 }
 
 .board{
@@ -197,7 +194,7 @@ main{max-width:1200px;
    height:56px; 
    color:#9aa3af; }
 
-/* ===== Kleine Karte (stark präzisiert) ===== */
+
 .main-content-board .task-card{
   background:#fff;
   color:#111;
@@ -325,7 +322,7 @@ main{max-width:1200px;
 
 .task-select {
   appearance: none;
-  background-image: url("./addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
+ background-image: url("../addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 20px;
@@ -339,19 +336,6 @@ main{max-width:1200px;
 .priority-group {
   display: flex;
   gap: 12px;
-}
-
-.priority-btn-medium,
-.priority-btn-urgent,
-.priority-btn-low {
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #d1d1d1;
-  background-color: white;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.2s;
 }
 
 .priority-btn-medium {
@@ -405,8 +389,6 @@ main{max-width:1200px;
   background-color: white
 }
 
-
-
 .label_user_story {
   width: 110px;
   height: 27px;
@@ -426,7 +408,6 @@ main{max-width:1200px;
   font-weight: 700;
   width: 528px;
   line-height: 120%;
-  padding-left: 40px;
   padding-right: 40px;
 }
 
@@ -464,7 +445,6 @@ p{
   color: #bfbfbf;
   opacity: 1;
 }
-
 
 
 @media screen and (max-width: 1330px) {
