@@ -192,8 +192,9 @@ main{max-width:1200px;
    display:grid; 
    place-items:center; 
    height:56px; 
-   color:#9aa3af; }
-
+   color:#9aa3af; 
+   background-color: #e7e7e7;
+}
 
 .main-content-board .task-card{
   background:#fff;
