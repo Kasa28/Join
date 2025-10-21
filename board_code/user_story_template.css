@@ -144,6 +144,34 @@ main::-webkit-scrollbar {
   margin-left: 0;
   margin-top: 0;
 }
+.task-input input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #4589ff;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.task-input input[type="checkbox"]:checked {
+  background-color: white;
+  border-color: #4589ff;
+}
+
+.task-input input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 6px;
+  height: 10px;
+  border: solid #4589ff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
 
 .task-description {
   border: 1px solid #d1d1d1;
@@ -267,6 +295,8 @@ main::-webkit-scrollbar {
   bottom: -350px;
   right: 15px;
 }
+
+
 
 .btn-done-wrapper {
   width: 440px;
