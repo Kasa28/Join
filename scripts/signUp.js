@@ -1,14 +1,5 @@
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
-function signUpFunction(){
-  checkPolicyandAnswers();
-  postData("users", {name: email, password});
-}
-
-
-
-
-
 
 
 async function postData(path="", data={}) {
@@ -20,10 +11,7 @@ async function postData(path="", data={}) {
     body: JSON.stringify(data)
   });
   return responseToJson = await response.json();
-    }
-
-
-
+}
 
 
 
@@ -34,8 +22,19 @@ function checkPolicyandAnswers() {
   const checkbox = document.getElementById('accept_terms'); 
   const button = document.querySelector('.primary_button'); 
 
+  
   const allFilled = name && email && password &&checkbox.checked;
   button.disabled = !allFilled;
+
+  if(allFilled){
+    postData("users", {username: name, adress: email, key: password});
+  }
+
 }
 
 
+async function loadData(path="", data={}){
+  let response = await fetch(BASE_URL + path + ".json");
+  let responseToJson = await response.json();
+  console.log(responseToJson);
+}
