@@ -184,10 +184,6 @@ main{max-width:1200px;
   min-height:160px; 
 }
 
-.main-content-board .drag-area{
-  padding:12px;
-}
-
 .main-content-board .empty-pill{
    display:grid; 
    place-items:center; 
