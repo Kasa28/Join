@@ -1,4 +1,15 @@
-#task-modal { padding: 12px; }
+#task-modal {
+   padding: 12px;
+   background: rgba(0, 0, 0, 0.2); 
+   backdrop-filter: blur(6px);    
+   display:none; 
+   position:fixed; 
+   inset:0;
+    background:rgba(0,0,0,.35);
+    align-items:center; 
+    justify-content:center; 
+    z-index:9999;
+   }
 
 #task-modal-content{
   width: min(300px, 50vw);      
