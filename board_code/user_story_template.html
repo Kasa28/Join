@@ -21,27 +21,17 @@
     <main>
         <div class="date-input-wrapper">
             <p class="section-heading"><strong>Due date:</strong>   10/05/2023</p>
-           
         </div>
 
         <section class="task-input">
-            <label>Priority</label>
-            <p class="section-heading"><strong>Priority</strong></p>
-            <div class="priority-group">
-                <button type="button" class="priority-btn-urgent" onclick="setPriority('urgent')">Urgent
-                    <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg"
-                        alt="urgent icon">
-                </button>
-                <button type="button" class="priority-btn-medium" onclick="setPriority('medium')">Medium
-                    <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg"
-                        alt="sum icon">
-                </button>
-                <button type="button" class="priority-btn-low" onclick="setPriority('low')">Low
-                    <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
-                        alt="2 arrows in green showing up">
-                </button>
+            <div class="priority-row">
+              <p class="section-heading"><strong>Priority:</strong></p>
+              <button type="button" class="priority-btn-medium" onclick="setPriority('medium')">Medium
+                <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg"
+                  alt="sum icon">
+              </button>
             </div>
-        </section>
+          </section>
 
         <section class="task-input">
             <label for="assign">Assign to</label>

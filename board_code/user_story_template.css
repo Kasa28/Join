@@ -129,12 +129,20 @@ main::-webkit-scrollbar {
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  margin-bottom: 24px;
 }
 
 .task-input label {
+  display: flex;
   font-size: 16px;
   font-weight: 500;
   color: white;
+}
+
+.task-input label,
+.section-heading {
+  margin-left: 0;
+  margin-top: 0;
 }
 
 .task-description {
@@ -223,27 +231,26 @@ main::-webkit-scrollbar {
   line-height: 120%;
 }
 
-.priority-group {
+.priority-row {
   display: flex;
-  gap: 12px;
+  align-items: center; 
+  gap: 30px; 
 }
 
-.priority-btn-medium,
-.priority-btn-urgent,
-.priority-btn-low {
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #d1d1d1;
-  background-color: white;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.2s;
+.priority-row .section-heading {
+  margin-bottom: 0; 
 }
 
 .priority-btn-medium {
-  background-color: #ffa800;
-  color: white;
+  background: none;
+  color: black; 
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+  font-size: 19px;
+  font-family: "open sans";
 }
 
 .priority-btn:hover {
@@ -251,8 +258,9 @@ main::-webkit-scrollbar {
 }
 
 .addTask-icons {
-  align-items: center;
-  padding-left: 10px;
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) saturate(100%) invert(54%) sepia(93%) saturate(2158%) hue-rotate(3deg) brightness(103%) contrast(103%);
 }
 
 .task-buttons {
