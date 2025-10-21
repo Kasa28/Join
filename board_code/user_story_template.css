@@ -190,9 +190,11 @@ main::-webkit-scrollbar {
 }
 
 .date-input-wrapper {
-  position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 100%;
+  gap: 15px;
 }
 
 .date-field {
@@ -202,14 +204,11 @@ main::-webkit-scrollbar {
   background-color: white;
 }
 
-.task-date {
-  border: none;
-  outline: none;
-  flex: 1;
-  padding: 12px;
+.task-date-display {
   font-size: 19px;
   font-family: "Open Sans", sans-serif;
 }
+
 
 .event-icon {
   width: 24px;
