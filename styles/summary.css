@@ -3,9 +3,35 @@
 
 }
 
+@font-face {
+    font-family: "Open Sans";
+    src: url("../assets/img/open_sans/static/OpenSans-Regular.ttf")
+      format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Open Sans";
+    src: url("../assets/img/open_sans/static/OpenSans-Bold.ttf")
+      format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Open Sans";
+    src: url("../assets/img/open_sans/static/OpenSans-Italic.ttf")
+      format("truetype");
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+
 body{
     color: white;
     font-family: sans-serif;
+    font-family: "open sans";
 }
 
 h1{
