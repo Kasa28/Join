@@ -11,6 +11,7 @@ const tasks = [{
   subtasksTotal: 2
 }];
 
+
 let currentDraggedId = null;// ID der aktuell gezogenen Karte
 
 const nameOfTheCard = {// Definition der Spalten auf dem Board
@@ -27,9 +28,13 @@ window.highlight = (id) => document.getElementById(id)?.classList.add('drag-high
 window.removeHighlight = (id) => document.getElementById(id)?.classList.remove('drag-highlight');// Entfernt die Hervorhebung von Drag-Zielen
 
 window.onCardDragStart = (e, id) => {
-  currentDraggedId = id;// Setzt die aktuell gezogene Karten-ID
-  try { e.dataTransfer.setData('text/plain', String(id)); e.dataTransfer.effectAllowed='move'; }
-   catch {}// Setzt die Drag-Daten
+  currentDraggedId = id;
+  try { e.dataTransfer.setData('text/plain', String(id)); e.dataTransfer.effectAllowed = 'move'; } catch {}
+  document.body.classList.add('dragging');
+};
+
+window.onCardDragEnd = () => {
+  document.body.classList.remove('dragging');
 };
 
 window.moveTo = (statusOfCard) => {// Verschiebt die aktuell gezogene Karte in den Zielstatus
@@ -91,8 +96,6 @@ function appendCardToColumn(task){// Fügt eine Karte zu der entsprechenden Spal
   host.appendChild(renderCard(task));// Karte rendern und hinzufügen
 }
 
-
-
 function render(){// Rendert alle Aufgaben auf dem Board
   Object.values(nameOfTheCard).forEach(({ id }) => {// Alle Spalten leeren
     const el = document.getElementById(id);// Hol die Spalte
@@ -116,6 +119,7 @@ function render(){// Rendert alle Aufgaben auf dem Board
     }
   });
 }
+
 
 window.onload = render;// Initiales Rendern der Aufgaben
 
@@ -142,4 +146,53 @@ function closeTaskModal() {// Schließt das Task-Modal
   const overlay = document.getElementById('task-modal');// Hol das Modal Element
   if (overlay) overlay.style.display = 'none';// Modal ausblenden
   document.body.style.overflow = '';// Body scrollen erlauben
+}
+
+
+
+
+function searchTasks() {
+  const textofSearch = getSearchText();       // holt den Text aus dem Suchfeld
+  if (textofSearch === '') 
+    return resetSearch(); 
+
+  const found = findTasks(textofSearch);      // sucht passende Aufgaben
+  showSearchResult(found);  
+}
+
+function getSearchText() {
+  const input = document.querySelector('.board-search-input');
+  return input.value.trim().
+  toLowerCase(); // leerzeichen weg + kleinbuchstaben
+}
+
+function resetSearch() {
+  document.getElementById('search-msg').textContent = '';
+  render(); // alles wieder anzeigen
+}
+
+function findTasks(text) {
+  return tasks.filter(t =>
+    t.title.toLowerCase().includes(text) ||
+    (t.description && t.description.toLowerCase().includes(text))
+  );
+}
+
+function showSearchResult(list) {
+  const msg = document.getElementById('search-msg');
+  if (list.length === 0) {
+    msg.textContent = 'No tasks found';
+    return;
+  }
+  msg.textContent = ''; // Meldung löschen
+  renderFiltered(list); //  zeigen ergebnis
+}
+
+function renderFiltered(list) {
+  Object.values(nameOfTheCard).forEach(({ id }) =>
+    document.getElementById(id).innerHTML = ''
+  );
+  list.forEach(t =>
+    document.getElementById(nameOfTheCard[t.status].id).appendChild(renderCard(t))
+  );
 }

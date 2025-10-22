@@ -60,14 +60,25 @@
          <main class="main-content-board" role="main">
     <div class="main-header-wrapper" role="region" aria-label="Task Controls">
       <div class="search-add">
-        <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault()">
+        <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault(); searchTasks()">
+
           <div class="searchbox">
-            <input type="search" name="q" placeholder="Find Task" aria-label="Find Task">
+            <input 
+              type="search" 
+              name="q" 
+              placeholder="Find Task" 
+              aria-label="Find Task" 
+              class="board-search-input"
+              oninput="searchTasks()" 
+              onsearch="searchTasks()">
+
             <button class="btn-icon" type="submit" aria-label="Search">
               <img src="./icons_addTask_template/search.svg" alt="" aria-hidden="true">
             </button>
           </div>
         </form>
+        <div id="search-msg" style="color:red;font-size:14px;margin-top:6px;"></div>
+
 
         <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
           Add task
@@ -75,6 +86,7 @@
         </button>
       </div>
     </div>
+
 
     <div class="board">
  
