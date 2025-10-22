@@ -62,14 +62,14 @@
       <div class="search-add">
         <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault()">
           <div class="searchbox">
-            <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" />
+            <input type="search" name="q" placeholder="Find Task" aria-label="Find Task">
             <button class="btn-icon" type="submit" aria-label="Search">
               <img src="./icons_addTask_template/search.svg" alt="" aria-hidden="true">
             </button>
           </div>
         </form>
 
-        <button class="btn-primary add-task-btn" type="button">
+        <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
           Add task
           <img src="../assets/img/Group 11.svg" alt="" aria-hidden="true" height="10px">
         </button>
@@ -143,10 +143,19 @@
 </template>
 
 
-  <div id="task-modal">
+  <div id="task-modal" class="modal-overlay" onclick="if(event.target===this) closeTaskModal()">
     <div id="task-modal-content"
          style="background:#fff; border-radius:12px; padding:20px; max-width:600px; width:90%;"></div>
   </div>
+
+  <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
+  <aside class="side-panel">
+    <div id="addtask-content"></div>
+  </aside>
+</div>
+
+
+
 <script  src="../scripts/templeates.js"></script>
 <script src="../scripts/board.js"></script>
 

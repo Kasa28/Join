@@ -45,3 +45,79 @@ function bigCardHtml(t){
     </div>
   `;
 }
+
+function getAddTaskTemplate() {
+  return `
+<header class="header-wrapper">
+  <h1>Add Task</h1>
+  <button class="close-btn" onclick="closeAddTask()">x</button>
+</header>
+
+<main>
+  <section class="task-input">
+    <label for="title">Title</label>
+    <input type="text" id="title" class="task-title" name="title" placeholder="Enter a title">
+  </section>
+
+  <section class="task-input">
+    <label for="description">Description</label>
+    <p class="section-heading"><strong>Description</strong> (optional)</p>
+    <textarea id="description" class="task-description" name="description"
+      placeholder="Enter a description"></textarea>
+  </section>
+
+  <div class="date-input-wrapper">
+    <p class="section-heading"><strong>Due date</strong></p>
+    <div class="date-field">
+      <input type="text" id="due-date" class="task-date" name="due-date" placeholder="dd/mm/yyyy"
+        pattern="\\d{2}/\\d{2}/\\d{4}" inputmode="numeric">
+      <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon">
+    </div>
+  </div>
+
+  <section class="task-input">
+    <label>Priority</label>
+    <p class="section-heading"><strong>Priority</strong></p>
+    <div class="priority-group">
+      <button type="button" class="priority-btn-urgent" onclick="setPriority('urgent')">Urgent
+        <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg" alt="urgent icon">
+      </button>
+      <button type="button" class="priority-btn-medium" onclick="setPriority('medium')">Medium
+        <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg" alt="sum icon">
+      </button>
+      <button type="button" class="priority-btn-low" onclick="setPriority('low')">Low
+        <img class="addTask-icons" src="/addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
+          alt="2 arrows in green showing up">
+      </button>
+    </div>
+  </section>
+
+  <section class="task-input">
+    <label for="assign">Assign to</label>
+    <p class="section-heading"><strong>Asigned to</strong> (optional)</p>
+    <select id="assign" class="task-select" name="assign">
+      <option value="">Select contact to assign</option>
+    </select>
+  </section>
+
+  <section class="task-input">
+    <label for="category">Category</label>
+    <p class="section-heading"><strong>Category</strong></p>
+    <select id="category" class="task-select" name="category">
+      <option value="">Select task category</option>
+    </select>
+  </section>
+
+  <section class="task-input">
+    <label for="subtask">Subtasks</label>
+    <p class="section-heading"><strong>Subtasks</strong> (optional)</p>
+    <input type="text" id="subtask" class="task-subtask" name="subtask" placeholder="Add new subtask">
+  </section>
+</main>
+
+<div class="btn-done-wrapper">
+  <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
+    <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
+  </button>
+</div>`;
+}

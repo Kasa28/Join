@@ -1,108 +1,145 @@
-// Demo-Daten
+
 const tasks = [{
   id: 1,
   title: "Kochwelt Page & Recipe Recommender",
   description: "Build start page with recipe recommendation...",
   type: "User Story",
-  status: "in-progress",   // 'todo' | 'in-progress' | 'await-feedback' | 'done'
+  status: "in-progress",  
   dueDate: "10/05/2023",
   priority: "urgent",
   subtasksDone: 1,
   subtasksTotal: 2
 }];
 
-let currentDraggedId = null;
+let currentDraggedId = null;// ID der aktuell gezogenen Karte
 
-const COLS = {
+const nameOfTheCard = {// Definition der Spalten auf dem Board
   'todo':           { id: 'drag-area-todo',           empty: 'No tasks To do' },
   'in-progress':    { id: 'drag-area-in-progress',    empty: 'No tasks in Progress' },
   'await-feedback': { id: 'drag-area-await-feedback', empty: 'No tasks in Feedback' },
   'done':           { id: 'drag-area-done',           empty: 'No task in Done' },
 };
 
-window.allowDrop = (e) => { e.preventDefault(); try { e.dataTransfer.dropEffect='move'; } catch {} };
-window.highlight = (id) => document.getElementById(id)?.classList.add('drag-highlight');
-window.removeHighlight = (id) => document.getElementById(id)?.classList.remove('drag-highlight');
+window.allowDrop = (e) => { e.preventDefault();//erlaubt das Ablegen von Elementen
+   try { e.dataTransfer.dropEffect='move'; }// Setzt den Drop-Effekt
+ catch {} };// Ermöglicht das Ablegen von Elementen
+window.highlight = (id) => document.getElementById(id)?.classList.add('drag-highlight');// Hebt Drag-Ziele hervor
+window.removeHighlight = (id) => document.getElementById(id)?.classList.remove('drag-highlight');// Entfernt die Hervorhebung von Drag-Zielen
 
 window.onCardDragStart = (e, id) => {
-  currentDraggedId = id;
-  try { e.dataTransfer.setData('text/plain', String(id)); e.dataTransfer.effectAllowed='move'; } catch {}
-  document.body.classList.add('dragging');
-};
-window.onCardDragEnd = () => { document.body.classList.remove('dragging'); };
-
-window.moveTo = (targetStatus) => {
-  if (currentDraggedId == null) return;
-  const i = tasks.findIndex(t => t.id === currentDraggedId);
-  if (i > -1) { tasks[i].status = targetStatus; render(); }
+  currentDraggedId = id;// Setzt die aktuell gezogene Karten-ID
+  try { e.dataTransfer.setData('text/plain', String(id)); e.dataTransfer.effectAllowed='move'; }
+   catch {}// Setzt die Drag-Daten
 };
 
-window.openModalById = (id) => {
-  const t = tasks.find(x => x.id === id);
-  if (!t) return;
-  const m = document.getElementById('task-modal');
-  const c = document.getElementById('task-modal-content');
-  c.innerHTML = bigCardHtml(t); // <-- kommt aus templates.js
-  m.style.display = 'flex';
+window.moveTo = (statusOfCard) => {// Verschiebt die aktuell gezogene Karte in den Zielstatus
+  if (currentDraggedId == null) return;// Wenn keine Karte gezogen wird, abbrechen, nur zur sicherheitt
+  const i = tasks.findIndex(t => t.id === currentDraggedId);// Index der gezogenen Karte finden
+  if (i > -1) { tasks[i].status = statusOfCard; 
+    render();// Status aktualisieren und neu rendern
+   }
 };
-window.closeModal = () => { const m = document.getElementById('task-modal'); if (m) m.style.display='none'; };
+
+//große Karte öffnen
+window.openModalById = (id) => {// Öffnet das Task-Modal basierend auf der ID
+  const task = tasks.find(x => x.id === id);// Aufgabe anhand der ID finden
+  if (!task) return;// Wenn keine Aufgabe gefunden, abbrechen
+  const modal = document.getElementById('task-modal');// Hol das Modal-Element
+  const cart = document.getElementById('task-modal-content');// Hol das Modal-Content-Element
+  cart.innerHTML = bigCardHtml(task); //greift auf template.js zu und holt das HTML Template
+  modal.style.display = 'flex';// Modal anzeigen,sichtbar machen,ohne öffnet sich nicht
+};
+window.closeModal = () => { const modal = document.getElementById('task-modal'); if (modal) modal.style.display='none'; };// Schließt das Task-Modal
 
 
-function renderCard(t){
-  const tpl = document.getElementById('tmpl-card').content.cloneNode(true);
-  const card = tpl.querySelector('.task-card');
-  card.id = `card-${t.id}`;
+
+
+
+function renderCard(t){// Rendert eine einzelne Aufgabenkarte
+  const tpl = document.getElementById('tmpl-card').content.cloneNode(true);// Klont die Vorlage
+  const card = tpl.querySelector('.task-card');// Holt das Karten-Element
+  card.id = `card-${t.id}`;// Setzt die ID der Karte
  
-  card.setAttribute('ondragstart', `onCardDragStart(event, ${t.id})`);
-  card.setAttribute('ondragend',   `onCardDragEnd()`);
-  card.setAttribute('onclick',     `openModalById(${t.id})`);
+  card.setAttribute('ondragstart', `onCardDragStart(event, ${t.id})`);// Drag-Start-Handler
+  card.setAttribute('ondragend',   `onCardDragEnd()`);// Drag-End-Handler
+  card.setAttribute('onclick',     `openModalById(${t.id})`);// Klick-Handler zum Öffnen des Modals
 
-  tpl.querySelector('.badge').textContent = t.type;
-  tpl.querySelector('h3').textContent     = t.title;
-  tpl.querySelector('p').textContent      = t.description;
-  const fill = tpl.querySelector('.progress-fill');
-  const pct  = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;
-  fill.style.width = pct + '%';
-  tpl.querySelector('.subtasks').textContent = `${t.subtasksDone}/${t.subtasksTotal} Subtasks`;
+  tpl.querySelector('.badge').textContent = t.type;// Setzt den Typ-Badge
+  tpl.querySelector('h3').textContent     = t.title;// Setzt den Titel
+  tpl.querySelector('p').textContent      = t.description;// Setzt die Beschreibung
+  const fill = tpl.querySelector('.progress-fill');// Holt das Fortschrittsfüll-Element
+  const pct  = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;// Berechnet den Fortschrittsprozentsatz
+  fill.style.width = pct + '%';// Setzt die Breite des Füll-Elements
+  tpl.querySelector('.subtasks').textContent = `${t.subtasksDone}/${t.subtasksTotal} Subtasks`;// Setzt den Subtask-Text
 
-  return tpl;
+  return tpl;// Gibt das gerenderte Template zurück
 }
 
-function appendCardToColumn(task){
-  const byStatus = {
+
+
+
+function appendCardToColumn(task){// Fügt eine Karte zu der entsprechenden Spalte hinzu
+  const byStatus = {// Mapping von Status zu Spalten-ID
     'todo':'drag-area-todo',
     'in-progress':'drag-area-in-progress',
     'await-feedback':'drag-area-await-feedback',
     'done':'drag-area-done'
   };
-  const host = document.getElementById(byStatus[task.status]);
-  if (!host) return;
-  host.querySelector('.empty-pill')?.remove();
-  host.appendChild(renderCard(task));
+  const host = document.getElementById(byStatus[task.status]);// Hol die Spalte anhand des Status
+  if (!host) return;// Wenn die Spalte nicht existiert, überspringen
+  host.querySelector('.empty-pill')?.remove();// Entferne den leere Hinweis, falls vorhanden
+  host.appendChild(renderCard(task));// Karte rendern und hinzufügen
 }
 
-function render(){
-  Object.values(COLS).forEach(({ id }) => {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = '';
+
+
+function render(){// Rendert alle Aufgaben auf dem Board
+  Object.values(nameOfTheCard).forEach(({ id }) => {// Alle Spalten leeren
+    const el = document.getElementById(id);// Hol die Spalte
+    if (el) el.innerHTML = '';// Spalte leeren
   });
 
 
-  tasks.forEach(t => {
-    const col = COLS[t.status];
-    if (!col) return;
-    const host = document.getElementById(col.id);
-    if (!host) return;
-    host.appendChild(renderCard(t)); 
+  tasks.forEach(t => {// Jede Aufgabe in die richtige Spalte einfügen
+    const col = nameOfTheCard[t.status];// Spalte anhand des Status finden
+    if (!col) return;// Wenn kein Status gefunden, überspringen
+    const host = document.getElementById(col.id);// Hol die Spalte
+    if (!host) return;// Wenn die Spalte nicht existiert, überspringen
+    host.appendChild(renderCard(t)); // Karte rendern und hinzufügen
   });
 
 
-  Object.values(COLS).forEach(({ id, empty }) => {
-    const el = document.getElementById(id);
-    if (el && el.children.length === 0) {
-      el.innerHTML = `<div class="empty-pill">${empty}</div>`;
+  Object.values(nameOfTheCard).forEach(({ id, empty }) => {// Leere Spalten mit Hinweis füllen
+    const el = document.getElementById(id);// Hol die Spalte
+    if (el && el.children.length === 0) {// Wenn die Spalte leer ist
+      el.innerHTML = `<div class="empty-pill">${empty}</div>`;// Füge den Hinweis hinzu
     }
   });
 }
 
-window.onload = render;
+window.onload = render;// Initiales Rendern der Aufgaben
+
+
+function openAddTask(){// Öffnet das Add Task Side Panel
+  const overlay = document.getElementById('addtask-overlay');// Hol das Overlay Element
+  const content = document.getElementById('addtask-content');// Hol das Content Element
+  content.innerHTML = getAddTaskTemplate();  // holt das HTML Template
+  overlay.classList.add('open');// Overlay öffnen
+  document.body.style.overflow = 'hidden'; // Body scrollen verhindern
+}
+
+function closeAddTask(){// Schließt das Add Task Side Panel
+  const overlay = document.getElementById('addtask-overlay');// Hol das Overlay Element
+  overlay.classList.remove('open');// Overlay schließen
+  document.body.style.overflow = '';// Body scrollen erlauben
+  setTimeout(() => {// Warte bis die Animation fertig ist
+    document.getElementById('addtask-content').innerHTML = '';// Inhalt leeren
+  }, 300);// 300ms entspricht der CSS-Übergangszeit
+}
+
+
+function closeTaskModal() {// Schließt das Task-Modal
+  const overlay = document.getElementById('task-modal');// Hol das Modal Element
+  if (overlay) overlay.style.display = 'none';// Modal ausblenden
+  document.body.style.overflow = '';// Body scrollen erlauben
+}
