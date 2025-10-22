@@ -34,14 +34,26 @@ body{
     font-family: "open sans";
 }
 
-h1{
-    font-size: 80px;
+.summary-content-container{
+    width: 912px;
+    height: 442px;
+}
+
+.h1-container-summary{
+    width: 455px;
+    height: 77px;
+    gap: 22px;
+}
+
+.summary-h1{
+    font-size: 64px;
+    font-style: bold;
+    font-weight: 700px;
 }
 
 .img-summary{
-    width: 43px;
-    height: 51px;
-    margin-right: 10px;
+    width: 76px;
+    height: 76px;
     object-fit: cover;
 }
 
@@ -81,11 +93,9 @@ h1{
     color: #4589FF;
 }
 
-.seperator{
+.seperator-summary{
     width: 2px;
-    height: 176px;
     background-color: white;
-    margin: 10px 12px 0 12px;
 }
 
 .row-maker{
@@ -94,7 +104,7 @@ h1{
 }
 
 .padding-card{
-    padding: 50px;
+    padding: 20px;
 }
 
 .display-flex-center-y{
@@ -115,6 +125,16 @@ h1{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+
+    width: 912px;
+    height: 591px;
+
+    top: 265px;
+    left: 380px;
+
+    gap: 72px;
+
 }
 
 .summary-card{
@@ -137,6 +157,11 @@ h1{
     width: 100%;
 }
 
+
+.img-count-container-summary{
+    display: flex;
+    align-items: center;
+}
 
 
 
