@@ -28,10 +28,10 @@
   font-style: italic;
 }
 
-body {
+/*body {
   width: 528px;
   height: 1024px;
-}
+}*/
 
 .label-addTask_template {
   display: none;
