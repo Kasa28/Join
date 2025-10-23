@@ -51,6 +51,7 @@
   margin:0 auto;
   padding-left: 80px;
   font-family:"Open Sans";
+  max-width: 1440px;
 }
 
 .main-header-wrapper{
