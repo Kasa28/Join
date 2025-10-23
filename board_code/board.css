@@ -265,7 +265,6 @@ p{
   
 }
 
-
 .side-overlay {
   position: fixed; inset: 0;
   display: none;
@@ -273,6 +272,7 @@ p{
   background: rgba(0,0,0,.35);
   z-index: 9999;
 }
+
 .side-overlay.open { display: flex; }
 
 .side-panel {
