@@ -11,86 +11,81 @@
   <link rel="stylesheet" href="./addTask.css">
 </head>
 
-<body class="add-task-page">
+<body>
 
-  <main>
+  <main class="main-addTask_page">
 
-    <section class="task-input">
-      <label for="title">Title</label>
-      <input type="text" id="title" class="task-title" name="title" placeholder="Enter a title">
+    <section class="task-input-addTask_page">
+      <label for="title" class="label-addTask_page">Title</label>
+      <input type="text" id="title" class="task-title-addTask_page" name="title" placeholder="Enter a title">
     </section>
 
-    <section class="task-input">
-      <label for="description">Description</label>
-      <p class="section-heading"><strong>Description</strong> (optional)</p>
-      <textarea id="description" class="task-description" name="description"
+    <section class="task-input-addTask_page">
+      <label for="description" class="label-addTask_page">Description</label>
+      <p class="section-heading-addTask_page"><strong>Description</strong> (optional)</p>
+      <textarea id="description" class="task-description-addTask_page" name="description"
         placeholder="Enter a description"></textarea>
     </section>
 
-    <div class="date-input-wrapper">
-      <label for="due-date">Due date</label>
-      <p class="section-heading"><strong>Due date</strong></p>
-      <div class="date-field">
-        <input type="text" id="due-date" class="task-date" name="due-date" placeholder="dd/mm/yyyy"
+    <div class="date-input-wrapper-addTask_page">
+      <label for="due-date" class="label-addTask_page">Due date</label>
+      <p class="section-heading-addTask_page"><strong>Due date</strong></p>
+      <div class="date-field-addTask_page">
+        <input type="text" id="due-date" class="task-date-addTask_page" name="due-date" placeholder="dd/mm/yyyy"
           pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric">
-        <img src="./icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon">
+        <img src="./icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon-addTask_page">
       </div>
     </div>
 
-    <section class="task-input">
-      <label>Priority</label>
-      <p class="section-heading"><strong>Priority</strong></p>
-      <div class="priority-group">
-        <button type="button" class="priority-btn-urgent" onclick="setPriority('urgent')">Urgent
-          <img class="addTask-icons" src="./icons_addTask/separatedAddTaskIcons/urgent_icon.svg" alt="urgent icon">
+    <section class="task-input-addTask_page">
+      <label class="label-addTask_page">Priority</label>
+      <p class="section-heading-addTask_page"><strong>Priority</strong></p>
+      <div class="priority-group-addTask_page">
+        <button type="button" class="priority-btn-urgent-addTask_page" onclick="setPriority('urgent')">Urgent
+          <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/urgent_icon.svg"
+            alt="urgent icon">
         </button>
-        <button type="button" class="priority-btn-medium" onclick="setPriority('medium')">Medium
-          <img class="addTask-icons" src="./icons_addTask/separatedAddTaskIcons/sum_icon.svg" alt="sum icon">
+        <button type="button" class="priority-btn-medium-addTask_page" onclick="setPriority('medium')">Medium
+          <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/sum_icon.svg"
+            alt="sum icon">
         </button>
-        <button type="button" class="priority-btn-low" onclick="setPriority('low')">Low
-          <img class="addTask-icons" src="./icons_addTask/separatedAddTaskIcons/low_icon.svg"
+        <button type="button" class="priority-btn-low-addTask_page" onclick="setPriority('low')">Low
+          <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/low_icon.svg"
             alt="2 arrows in green showing up">
         </button>
       </div>
     </section>
 
-    <section class="task-input">
-      <label for="assign">Assign to</label>
-      <p class="section-heading"><strong>Asigned to</strong> (optional)</p>
-      <select id="assign" class="task-select" name="assign">
+    <section class="task-input-addTask_page">
+      <label for="assign" class="label-addTask_page">Assign to</label>
+      <p class="section-heading-addTask_page"><strong>Asigned to</strong> (optional)</p>
+      <select id="assign" class="task-select-addTask_page" name="assign">
         <option value="">Select contact to assign</option>
       </select>
     </section>
 
-    <section class="task-input">
-      <label for="category">Category</label>
-      <p class="section-heading"><strong>Category</strong></p>
-      <select id="category" class="task-select" name="category">
+    <section class="task-input-addTask_page">
+      <label for="category" class="label-addTask_page">Category</label>
+      <p class="section-heading-addTask_page"><strong>Category</strong></p>
+      <select id="category" class="task-select-addTask_page" name="category">
         <option value="">Select task category</option>
       </select>
     </section>
 
-    <section class="task-input">
-      <label for="subtask">Subtasks</label>
-      <p class="section-heading"><strong>Subtasks</strong> (optional)</p>
-      <input type="text" id="subtask" class="task-subtask" name="subtask" placeholder="Add new subtask">
+    <section class="task-input-addTask_page">
+      <label for="subtask" class="label-addTask_page">Subtasks</label>
+      <p class="section-heading-addTask_page"><strong>Subtasks</strong> (optional)</p>
+      <input type="text" id="subtask" class="task-subtask-addTask_page" name="subtask" placeholder="Add new subtask">
     </section>
 
   </main>
 
-  <div class="task-buttons">
-    <button class="btn-clear" onclick="clearForm()">Clear x</button>
-    <button class="btn-done btn-with-svg" onclick="createTask()">Create Task
-      <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon">
+  <div class="task-buttons-addTask_page">
+    <button class="btn-clear-addTask_page" onclick="clearForm()">Clear x</button>
+    <button class="btn-done-addTask_page btn-with-svg-addTask_page" onclick="createTask()">Create Task
+      <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_page">
     </button>
   </div>
-
-
-
-
-
-
-
 
 </body>
 
