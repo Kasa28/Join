@@ -247,13 +247,14 @@ main::-webkit-scrollbar {
 }
 
 .btn-done {
-  padding: 12px 24px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 23px;
   background-color: #4589ff;
   color: white;
+  width: 174px;
+  height: 60px;
 }
 
 
@@ -272,7 +273,6 @@ main::-webkit-scrollbar {
 .check-icon {
   width: 1em;
   height: 1em;
-  margin-left: 8px;
   vertical-align: middle;
   filter: brightness(0) invert(1);
 }
