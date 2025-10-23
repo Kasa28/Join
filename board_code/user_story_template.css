@@ -315,5 +315,38 @@ main::-webkit-scrollbar {
   color: white;
   margin-bottom: 40px;
 }
+.assigned-users {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding-left: 16px
+}
 
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.user-badge span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-family: "open sans";
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 120%;
+  color: white;
+  text-align: center;
+}
+
+.user-badge p {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  color: #000;
+  margin: 0;
+}
 
