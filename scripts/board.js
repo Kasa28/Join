@@ -99,7 +99,8 @@ function appendCardToColumn(task){// Fügt eine Karte zu der entsprechenden Spal
 function render(){// Rendert alle Aufgaben auf dem Board
   Object.values(nameOfTheCard).forEach(({ id }) => {// Alle Spalten leeren
     const el = document.getElementById(id);// Hol die Spalte
-    if (el) el.innerHTML = '';// Spalte leeren
+    el.querySelectorAll('.task-card').forEach(n => n.remove());
+
   });
 
 
@@ -189,10 +190,13 @@ function showSearchResult(list) {
 }
 
 function renderFiltered(list) {
-  Object.values(nameOfTheCard).forEach(({ id }) =>
-    document.getElementById(id).innerHTML = ''
-  );
-  list.forEach(t =>
-    document.getElementById(nameOfTheCard[t.status].id).appendChild(renderCard(t))
-  );
+  Object.values(nameOfTheCard).forEach(({ id }) => {
+    const nameOfTheCard = document.getElementById(id);
+    nameOfTheCard?.querySelectorAll('.task-card').forEach(n => n.remove());
+  });
+
+  list.forEach(t => {
+    const host = document.getElementById(nameOfTheCard[t.status].id);
+    host?.appendChild(renderCard(t));
+  });
 }
