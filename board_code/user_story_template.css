@@ -86,9 +86,9 @@ h3 {
   font-size: 32px;
 }
 
-main {
+.main_content_user_story_maya {
   position: absolute;
-  width: 440px;
+  max-width: 528px;
   height: 770px;
   padding-left: 40px;
   overflow-y: auto;

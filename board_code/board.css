@@ -51,6 +51,7 @@
   margin:0 auto;
   padding-left: 80px;
   font-family:"Open Sans";
+  max-width: 1440px;
 }
 
 .main-header-wrapper{
@@ -285,9 +286,3 @@ p{
 }
 .side-overlay.open .side-panel { transform: translateX(0); }
 .column-body:has(.task-card) > .empty-pill { display: none; }
-
-main{max-width:1200px;
-  margin:0 auto;
-  padding-left: 80px;
-  font-family:"Open Sans";
-}
