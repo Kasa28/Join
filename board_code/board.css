@@ -479,3 +479,4 @@ p{
   overflow-y: auto;
 }
 .side-overlay.open .side-panel { transform: translateX(0); }
+.column-body:has(.task-card) > .empty-pill { display: none; }
