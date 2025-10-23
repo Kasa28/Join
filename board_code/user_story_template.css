@@ -28,9 +28,13 @@
   font-style: italic;
 }
 
-.body {
-  width: 525px;
-  height: 932px;
+overall-contant{
+    width: 528px;
+   height: 1024px;
+}
+
+label {
+  display: none;
 }
 
 .header-wrapper {
@@ -58,11 +62,10 @@
   padding: 4px 16px;
 }
 
-.title {
+.h1-title {
   font-family: "open sans";
   font-size: 61px;
   font-weight: 700;
-  width: 528px;
   line-height: 120%;
   padding-left: 40px;
   padding-right: 40px;
@@ -88,7 +91,6 @@ h3 {
 
 main {
   position: absolute;
-  width: 440px;
   height: 770px;
   padding-left: 40px;
   overflow-y: auto;
