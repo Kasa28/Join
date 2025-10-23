@@ -28,9 +28,9 @@
   font-style: italic;
 }
 
-.body {
+body {
   width: 528px;
-  height: 950px;
+  height: 1024px;
 }
 label {
   display: none;
@@ -41,7 +41,7 @@ label {
   justify-content: space-between;
   width: 518px;
   height: 156px;
-  padding: 72px 40px;
+  padding: 72px 62px;
   gap: 49px;
 }
 
@@ -59,9 +59,9 @@ h1 {
 }
 
 main {
-  position: absolute;
+  position: relative;
   width: 440px;
-  height: 770px;
+  height: 769px;
   padding-left: 24px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -98,6 +98,7 @@ main::-webkit-scrollbar {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 19px;
+  margin-bottom: 8px;
 }
 
 .task-description {
@@ -235,12 +236,14 @@ main::-webkit-scrollbar {
 }
 
 .btn-done-wrapper {
-  width: 440px;                
+  position: fixed;           
+  bottom: 36px;             
+  left: 36px;               
+  width: 440px;
   display: flex;
-  justify-content: flex-end; 
-  margin-top: 20px;
-  position: relative;
-  left: 36px; 
+  justify-content: flex-end;
+  background-color: white;      
+  z-index: 10;                  
 }
 
 .btn-done {
@@ -251,8 +254,20 @@ main::-webkit-scrollbar {
   font-size: 16px;
   background-color: #4589ff;
   color: white;
-  margin-bottom: 40px;
 }
+
+
+.btn-done-wrapper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -36px;   
+  height: 36px;    
+  background: white;
+  pointer-events: none; 
+}
+
 
 .check-icon {
   width: 1em;
