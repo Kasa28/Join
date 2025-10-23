@@ -41,6 +41,9 @@
   border-radius: 30px;
   gap: 24px;
 
+  overflow: hidden;
+  overflow-y: auto;
+
   background-color: aquamarine;
 }
 
@@ -73,6 +76,16 @@
 .headline-container-technical-task {
   width: 448px;
   height: 219px;
+}
+
+.describtion-conatainer-technical-task{
+  width: 448px;
+  height: 28px;
+  left: 0px;
+}
+
+.description-font-technical-task{
+  font-size: 19px;
 }
 
 .date-container-technical-task {
@@ -146,10 +159,12 @@
 }
 
 .name-letter-ball-font-position-technical-task {
-  width: 28px;
-  height: 10px;
-  top: 16px;
-  left: 7px;
+    display: block;
+    position: relative;
+    width: 28px;
+    height: 10px;
+    top: 14px;
+    left: 12px;
 }
 
 .user-container-technical-task {
@@ -161,6 +176,15 @@
   height: 56px;
   border-radius: 10px;
   padding: 7px 16px 7px 16px;
+}
+
+.user-badge-and-name{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 216px;
+  height: 42px;
 }
 
 .subtasks-container-technical-task {
@@ -188,13 +212,34 @@
   left: 4px;
 }
 
+.delete-edit-section-technical-task{
+  width: 448px;
+  display: flex;
+  justify-content: end;
+}
+
 .delete-edit-container-technical-task {
   display: flex;
-  align-items: center;
-  justify-content:  end;
-
   width: 158px;
   height: 24px;
   gap: 8px;
 
+}
+
+.delete-button-technical-task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 81px;
+  height: 24px;
+}
+
+.edit-button-technical-task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 61px;
+  height: 24px;
 }
