@@ -59,7 +59,7 @@ h1 {
   font-size: 32px;
 }
 
-.main-maya {
+.main-addTask_template {
   position: relative;
   width: 440px;
   height: 769px;
@@ -77,7 +77,7 @@ main::-webkit-scrollbar {
   display: none; 
 }
 
-.task-title {
+.task-title-addTask_template {
   font-size: 32px;
   border: none;
   border-bottom: 1px solid #d1d1d1;
@@ -89,12 +89,7 @@ main::-webkit-scrollbar {
   margin-bottom: 24px;
 }
 
-.task-title::placeholder {
-  color: #bfbfbf;
-  opacity: 1;
-}
-
-.section-heading {
+.section-heading-addTask_template {
   color: #42526e;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
@@ -102,7 +97,7 @@ main::-webkit-scrollbar {
   margin-bottom: 8px;
 }
 
-.task-description {
+.task-description-addTask_template {
   border: 1px solid #d1d1d1;
   border-radius: 8px;
   padding-top: 18px;
@@ -119,8 +114,8 @@ main::-webkit-scrollbar {
   margin-top: 8px;
 }
 
-.task-title::placeholder,
-.task-description::placeholder,
+.task-title-addTask_template::placeholder,
+.task-description-addTask_template::placeholder,
 .task-subtask::placeholder,
 .task-date::placeholder {
   color: #bfbfbf;
@@ -131,7 +126,7 @@ main::-webkit-scrollbar {
   font-family: "Open Sans", sans-serif;
 }
 
-.task-title::placeholder {
+.task-title-addTask_template::placeholder {
   font-size: 32px;
 }
 
