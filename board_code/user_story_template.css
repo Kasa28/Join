@@ -88,7 +88,7 @@ h3 {
 
 main {
   position: absolute;
-  width: 440px;
+  max-width: 528px;
   height: 770px;
   padding-left: 40px;
   overflow-y: auto;
