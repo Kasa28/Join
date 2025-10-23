@@ -36,6 +36,7 @@ body {
 label {
   display: none;
 }
+
 .header-wrapper {
   display: flex;
   flex-direction: row;
