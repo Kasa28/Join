@@ -1,6 +1,6 @@
 *{
     margin: 0;
-
+    box-sizing: border-box;
 }
 
 @font-face {
@@ -38,16 +38,35 @@ body{
     height: 442px;
 }
 
+
 .h1-container-summary{
     width: 455px;
     height: 77px;
     gap: 22px;
 }
 
+
 .summary-h1{
     font-size: 64px;
     font-style: bold;
     font-weight: 700px;
+}
+
+
+.h2-font-summray{
+    font-size: 48px;   
+}
+
+.date-font-summary{
+    font-size: 33px;
+}
+
+
+.card-font-a-summary{
+    color: #4589FF;
+    font-size: 23px;
+    display: block;
+    text-align: center;
 }
 
 .img-summary{
@@ -88,10 +107,6 @@ body{
     color: white;
 }
 
-.font-color-blue{
-    color: #4589FF;
-}
-
 .seperator-summary{
     width: 2px;
     background-color: white;
@@ -109,11 +124,6 @@ body{
 .display-flex-center-y{
     display: flex;
     align-items: center;
-}
-
-.main-container{
-    display: flex;
-    height: calc(100vh - 127px);
 }
 
 .main-content{
@@ -142,11 +152,50 @@ body{
     margin: 15px;
 }
 
+.summary-card-high-section-summary{
+    height: 100%;
+}
+
+.summary-card-up-left{
+    width: 672px;
+    padding: 28px 48px 28px 48px;
+    gap: 35px;
+}
+
+.date-container-summary{
+    text-align: left;
+}
+
+.text-align-left-summray{
+    text-align: left;
+}
+
+.summary-card-conainer-up-right{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 208px;
+}
+
+.summary-card-content-up-right{
+    width: 124px;
+    height: 139px;
+    gap: 7px;
+}
+
+.summary-cards-low-section{
+    width: 204px;
+    height: 219px;
+    padding: 40px;
+}
+
 .summary-section-1-order{
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    height: 191px;
 }
 
 .summary-section-2-order{
@@ -160,6 +209,7 @@ body{
 .img-count-container-summary{
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 
