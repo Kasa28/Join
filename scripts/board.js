@@ -128,6 +128,8 @@ window.onload = render;// Initiales Rendern der Aufgaben
 function openAddTask(){// Öffnet das Add Task Side Panel
   const overlay = document.getElementById('addtask-overlay');// Hol das Overlay Element
   const content = document.getElementById('addtask-content');// Hol das Content Element
+  // load scoped CSS for Add Task to avoid global overrides
+  loadAddTaskCss();
   content.innerHTML = getAddTaskTemplate();  // holt das HTML Template
   overlay.classList.add('open');// Overlay öffnen
   document.body.style.overflow = 'hidden'; // Body scrollen verhindern
@@ -139,7 +141,25 @@ function closeAddTask(){// Schließt das Add Task Side Panel
   document.body.style.overflow = '';// Body scrollen erlauben
   setTimeout(() => {// Warte bis die Animation fertig ist
     document.getElementById('addtask-content').innerHTML = '';// Inhalt leeren
+    // remove add task css after closing so board styles are not affected
+    unloadAddTaskCss();
   }, 300);// 300ms entspricht der CSS-Übergangszeit
+}
+
+// Dynamically load/unload the Add Task CSS (scoped)
+function loadAddTaskCss(){
+  if (document.getElementById('addtask-css')) return;
+  const link = document.createElement('link');
+  link.id = 'addtask-css';
+  link.rel = 'stylesheet';
+  // path relative to board.html (board_code)
+  link.href = './addTask_template.css';
+  document.head.appendChild(link);
+}
+
+function unloadAddTaskCss(){
+  const el = document.getElementById('addtask-css');
+  if (el) el.remove();
 }
 
 
