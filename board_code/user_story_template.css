@@ -33,7 +33,7 @@
   height: 932px;
 }
 
-.header-wrapper {
+.header-wrapper_user-story {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -58,7 +58,7 @@
   padding: 4px 16px;
 }
 
-.title {
+.title_user-story {
   font-family: "open sans";
   font-size: 61px;
   font-weight: 700;
@@ -68,7 +68,7 @@
   padding-right: 40px;
 }
 
-h3 {
+.h3_user-story {
   font-family: "open sans";
   font-weight: 400;
   font-size: 19px;
@@ -79,14 +79,14 @@ h3 {
   margin-bottom: 24px;
 }
 
-.close-btn {
+.close-btn_user-story {
   color: #4589ff;
   border: none;
   background-color: transparent;
   font-size: 32px;
 }
 
-.main_content_user_story_maya {
+.main_content_user_story {
   position: absolute;
   max-width: 528px;
   height: 770px;
@@ -98,11 +98,11 @@ h3 {
   -ms-overflow-style: none;
 }
 
-main::-webkit-scrollbar {
+.main_content_user_story::-webkit-scrollbar {
   display: none;
 }
 
-.task-title {
+.task-title_user-story {
   font-size: 22px;
   border: none;
   border-bottom: 1px solid #d1d1d1;
@@ -111,12 +111,12 @@ main::-webkit-scrollbar {
   height: 64;
 }
 
-.task-title::placeholder {
+.task-title_user-story::placeholder {
   color: #bfbfbf;
   opacity: 1;
 }
 
-.section-heading {
+.section-heading_user-story {
   font-size: 21px;
   margin-bottom: 8px;
   color: #42526e;
@@ -124,7 +124,7 @@ main::-webkit-scrollbar {
   font-weight: 400;
 }
 
-.task-input {
+.task-input_user-story {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -132,7 +132,7 @@ main::-webkit-scrollbar {
   margin-bottom: 24px;
 }
 
-.task-input label {
+.task-input_user-story, .label_user-story {
   display: flex;
   font-size: 16px;
   font-weight: 400;
@@ -140,13 +140,14 @@ main::-webkit-scrollbar {
   gap: 16px;
 }
 
-.task-input label,
+.task-input_user-story, 
+.label_user-story,
 .section-heading {
   margin-left: 0;
   margin-top: 0;
 }
 
-.task-input input[type="checkbox"] {
+.checkbox_user-story  {
   appearance: none;
   -webkit-appearance: none;
   width: 24px;
@@ -158,12 +159,12 @@ main::-webkit-scrollbar {
   position: relative;
 }
 
-.task-input input[type="checkbox"]:checked {
+.checkbox_user-story:checked {
   background-color: white;
   border-color: #4589ff;
 }
 
-.task-input input[type="checkbox"]:checked::after {
+.checkbox_user-story:checked::after {
   content: "";
   position: absolute;
   left: 5px;
@@ -175,7 +176,7 @@ main::-webkit-scrollbar {
   transform: rotate(45deg);
 }
 
-.task-description {
+.task-description_user-story {
   border: 1px solid #d1d1d1;
   border-radius: 8px;
   padding-top: 18px;
@@ -191,10 +192,10 @@ main::-webkit-scrollbar {
   line-height: 120%;
 }
 
-.task-title::placeholder,
-.task-description::placeholder,
-.task-subtask::placeholder,
-.task-date::placeholder {
+.task-title_user-story::placeholder,
+.task-description_user-story::placeholder,
+.task-subtask_user-story::placeholder,
+.task-date_user-story::placeholder {
   color: #bfbfbf;
   opacity: 1;
   font-weight: 400;
@@ -203,13 +204,13 @@ main::-webkit-scrollbar {
   font-family: "Open Sans", sans-serif;
 }
 
-.task-title::placeholder {
+.task-title_user-story::placeholder {
   font-size: 32px;
 }
 
-.task-date,
-.task-select,
-.task-subtask {
+.task-date_user-story,
+.task-select_user-story,
+.task-subtask_user-story {
   width: 100%;
   border: none;
   border-bottom: 1px solid #d1d1d1;
@@ -219,7 +220,7 @@ main::-webkit-scrollbar {
   background-color: white;
 }
 
-.date-input-wrapper {
+.date-input-wrapper_user-story {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -228,26 +229,26 @@ main::-webkit-scrollbar {
   margin-bottom: 24px;
 }
 
-.date-field {
+.date-field_user-story {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #d1d1d1;
   background-color: white;
 }
 
-.task-date-display {
+.task-date-display_user-story {
   font-size: 19px;
   font-family: "Open Sans", sans-serif;
 }
 
-.event-icon {
+.event-icon_user-story {
   width: 24px;
   height: 24px;
   margin-right: 8px;
   cursor: pointer;
 }
 
-.task-select {
+.task-select_user-story {
   appearance: none;
   background-image: url("./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
   background-repeat: no-repeat;
@@ -260,17 +261,17 @@ main::-webkit-scrollbar {
   line-height: 120%;
 }
 
-.priority-row {
+.priority-row_user-story {
   display: flex;
   align-items: center; 
   gap: 30px; 
 }
 
-.priority-row .section-heading {
+.priority-row_user-story .section-heading_user-story {
   margin-bottom: 0; 
 }
 
-.priority-btn-medium {
+.priority-btn-medium_user-story {
   background: none;
   color: black; 
   border: none;
@@ -282,30 +283,30 @@ main::-webkit-scrollbar {
   font-family: "open sans";
 }
 
-.priority-btn:hover {
+.priority-btn_user-story:hover {
   background-color: #e6e6e6;
 }
 
-.addTask-icons {
+.addTask-icons_user-story {
   width: 17px;
   height: 7px;
   filter: brightness(0) saturate(100%) invert(54%) sepia(93%) saturate(2158%) hue-rotate(3deg) brightness(103%) contrast(103%);
 }
 
-.task-buttons {
+.task-buttons_user-story {
   position: absolute;
   bottom: -350px;
   right: 15px;
 }
 
-.btn-done-wrapper {
+.btn-done-wrapper_user-story {
   width: 440px;
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
 }
 
-.btn-done {
+.btn-done_user-story {
   padding: 12px 24px;
   border-radius: 8px;
   border: none;
@@ -315,7 +316,7 @@ main::-webkit-scrollbar {
   color: white;
   margin-bottom: 40px;
 }
-.assigned-users {
+.assigned-users_user-story {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -323,12 +324,12 @@ main::-webkit-scrollbar {
   padding-left: 16px
 }
 
-.user-badge {
+.user-badge_user-story {
   display: flex;
   align-items: center;
   gap: 16px;
 }
-.user-badge span {
+.span-user-badge_user-story {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -343,14 +344,14 @@ main::-webkit-scrollbar {
   text-align: center;
 }
 
-.user-badge p {
+.p-user-badge_user-story {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   color: #000;
   margin: 0;
 }
 
-.action-buttons {
+.action-buttons_user-story {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -358,19 +359,19 @@ main::-webkit-scrollbar {
   padding-right: 16px;
 }
 
-.action-btn {
+.action-btn_user-story {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
 }
 
-.action-icon {
+.action-icon_user-story {
   width: 24px;
   height: 24px;
 }
 
-.action-btn span {
+.action-btn_user-story span {
   font-size: 16px;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
@@ -378,7 +379,7 @@ main::-webkit-scrollbar {
   color: #2A3647;
 }
 
-.divider {
+.divider_user-story {
   width: 1px;
   height: 24px;
   background-color: #D1D1D1;
