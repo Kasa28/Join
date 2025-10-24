@@ -132,13 +132,13 @@ function openAddTask(){// Öffnet das Add Task Side Panel
   loadAddTaskCss();
   content.innerHTML = getAddTaskTemplate();  // holt das HTML Template
   overlay.classList.add('open');// Overlay öffnen
-  document.body.style.overflow = 'hidden'; // Body scrollen verhindern
+  //document.body.style.overflow = 'hidden'; // Body scrollen verhindern
 }
 
 function closeAddTask(){// Schließt das Add Task Side Panel
   const overlay = document.getElementById('addtask-overlay');// Hol das Overlay Element
   overlay.classList.remove('open');// Overlay schließen
-  document.body.style.overflow = '';// Body scrollen erlauben
+  //document.body.style.overflow = '';// Body scrollen erlauben
   setTimeout(() => {// Warte bis die Animation fertig ist
     document.getElementById('addtask-content').innerHTML = '';// Inhalt leeren
     // remove add task css after closing so board styles are not affected

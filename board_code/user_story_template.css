@@ -27,25 +27,16 @@
   font-weight: 400;
   font-style: italic;
 }
-/*
-.body {
-  width: 525px;
-  height: 932px;
-}
-  */
 
 .header-wrapper_user-story {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 500px;
-  height: 140px;
+  height: 110px;
   padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 48px;
   align-items: center;
 }
-
 
 .label_user_story {
   width: 145x;
@@ -132,7 +123,8 @@
   margin-bottom: 20px;
 }
 
-.task-input_user-story, .label_user-story {
+.task-input_user-story,
+.label_user-story {
   display: flex;
   font-size: 16px;
   font-weight: 400;
@@ -140,14 +132,14 @@
   gap: 16px;
 }
 
-.task-input_user-story, 
+.task-input_user-story,
 .label_user-story,
 .section-heading {
   margin-left: 0;
   margin-top: 0;
 }
 
-.checkbox_user-story  {
+.checkbox_user-story {
   appearance: none;
   -webkit-appearance: none;
   width: 20px;
@@ -167,9 +159,9 @@
 .checkbox_user-story:checked::after {
   content: "";
   position: absolute;
-  left: 5px;
-  top: -1px;
-  width: 8px;
+  left: 4px;
+  top: -2px;
+  width: 7px;
   height: 14px;
   border: solid #4589ff;
   border-width: 0 2px 2px 0;
@@ -263,13 +255,13 @@
 
 .priority-row_user-story {
   display: flex;
-  align-items: center; 
-  gap: 30px; 
+  align-items: center;
+  gap: 30px;
 }
 
 .priority-btn-medium_user-story {
   background: none;
-  color: black; 
+  color: black;
   border: none;
   display: flex;
   align-items: center;
@@ -286,7 +278,8 @@
 .addTask-icons_user-story {
   width: 17px;
   height: 7px;
-  filter: brightness(0) saturate(100%) invert(54%) sepia(93%) saturate(2158%) hue-rotate(3deg) brightness(103%) contrast(103%);
+  filter: brightness(0) saturate(100%) invert(54%) sepia(93%) saturate(2158%)
+    hue-rotate(3deg) brightness(103%) contrast(103%);
 }
 
 .task-buttons_user-story {
@@ -318,7 +311,7 @@
   flex-direction: column;
   gap: 16px;
   margin-bottom: 20px;
-  padding-left: 16px
+  padding-left: 16px;
 }
 
 .user-badge_user-story {
@@ -352,7 +345,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-top: 24px;
+  margin-bottom: 10px;
   padding-right: 16px;
 }
 
@@ -373,13 +366,13 @@
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   line-height: 120%;
-  color: #2A3647;
+  color: #2a3647;
 }
 
 .divider_user-story {
   width: 1px;
   height: 24px;
-  background-color: #D1D1D1;
+  background-color: #d1d1d1;
   margin-left: 6px;
   margin-right: 6px;
 }
