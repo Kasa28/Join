@@ -27,10 +27,9 @@
   font-weight: 400;
   font-style: italic;
 }
-.div-test{
-display: flex;
-flex-direction: column;
-
+.div-test {
+  display: flex;
+  flex-direction: column;
 }
 
 .label-addTask_template {
@@ -229,7 +228,7 @@ flex-direction: column;
 
 .btn-done-wrapper-addTask_template {
   bottom: 36px;
-  right: 36px;
+  right: 10px;
   width: calc(100% - 72px);
   max-width: 440px;
   display: flex;
@@ -237,16 +236,18 @@ flex-direction: column;
   z-index: 10;
 }
 
-
 .btn-done-addTask_template {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-size: 23px;
+  font-size: 20px;
+  font-family: "open sans";
   background-color: #4589ff;
   color: white;
-  width: 174px;
-  height: 60px;
+  width: 155px;
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .btn-done-wrapper-addTask_template::after {
