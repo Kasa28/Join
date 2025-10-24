@@ -69,7 +69,7 @@ function bigCardHtml(t){
 
 function getAddTaskTemplate() {
   return `
-
+  <div class="div-test">
    <header class="header-wrapper-addTask_template">
   <h1 class="h1-addTask_template">Add Task</h1>
   <button class="close-btn-addTask_template">x</button>
@@ -142,5 +142,7 @@ function getAddTaskTemplate() {
   <button class="btn-done-addTask_template btn-with-svg-addTask_template" onclick="createTask()">Create Task
     <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_template">
   </button>
-</div>`;
+   </div>
+     </div>
+   `;
 }
