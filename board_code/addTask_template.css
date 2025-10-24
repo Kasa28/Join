@@ -27,11 +27,11 @@
   font-weight: 400;
   font-style: italic;
 }
-
+/*
 body {
   width: 528px;
   height: 1024px;
-}
+}*/
 
 .label-addTask_template {
   display: none;
