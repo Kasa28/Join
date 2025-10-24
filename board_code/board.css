@@ -325,29 +325,33 @@ p {
   right: 0;
   bottom: 0;
   display: none;
-  /* justify-content: flex-end; */
   background-color: rgba(0, 0, 0, 0.35);
   z-index: 90;
 }
 
 .side-overlay.open {
   display: flex;
+  background-color: white;
 }
 
 .side-panel {
-  /* width: 520px; max-width: 95vw; height: 100%; */
   background: #fff;
   box-shadow: -12px 0 28px rgba(16, 24, 40, 0.18);
   transform: translateX(100%);
   transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
+  background: #fff;
+  overflow: hidden;
 }
 
 .side-overlay.open .side-panel {
   transform: translateX(0);
   width: 520px;
+  height: 830px;
   max-width: 95vw;
+  border-top-left-radius: 59px;
+  border-bottom-left-radius: 59px;
 }
 
 .column-body:has(.task-card) > .empty-pill {
