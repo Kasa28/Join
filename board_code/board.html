@@ -1,31 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Board</title>
-   
-<link rel="stylesheet" href="./board.css">
-<link rel="stylesheet" href="./user_story_template.css">
-<link rel="stylesheet" href="./addTask_template.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board</title>
+
+  <link rel="stylesheet" href="./board.css">
+  <link rel="stylesheet" href="./user_story_template.css">
+  <link rel="stylesheet" href="./addTask_template.css">
 </head>
 
 <body>
 
-         <main class="main-content-board" role="main">
+  <main class="main-content-board" role="main">
     <div class="main-header-wrapper" role="region" aria-label="Task Controls">
       <div class="search-add">
         <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault(); searchTasks()">
 
           <div class="searchbox">
-            <input 
-              type="search" 
-              name="q" 
-              placeholder="Find Task" 
-              aria-label="Find Task" 
-              class="board-search-input"
-              oninput="searchTasks()" 
-              onsearch="searchTasks()">
+            <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
+              oninput="searchTasks()" onsearch="searchTasks()">
 
             <button class="btn-icon" type="submit" aria-label="Search">
               <img src="./icons_addTask_template/search.svg" alt="" aria-hidden="true">
@@ -34,7 +29,7 @@
         </form>
         <div id="search-msg" style="color:red;font-size:14px;margin-top:6px;"></div>
 
-
+        <!-- Add Task Button -->
         <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
           Add task
           <img src="../assets/img/Group 11.svg" alt="" aria-hidden="true" height="10px">
@@ -44,16 +39,14 @@
 
 
     <div class="board">
- 
+
       <section id="todo" aria-labelledby="todo-title">
         <div class="name_from_card">
           <h2 id="todo-title">To do</h2>
           <button class="plus" type="button" aria-label="Add to To do">+</button>
         </div>
-        <div class="column-body drag-area" id="drag-area-todo"
-             ondrop="moveTo('todo')"
-             ondragover="allowDrop(event); highlight('drag-area-todo')"
-             ondragleave="removeHighlight('drag-area-todo')">
+        <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
+          ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
           <div class="empty-pill">No tasks To do</div>
         </div>
       </section>
@@ -63,10 +56,9 @@
           <h2 id="in-progress-title">In progress</h2>
           <button class="plus" type="button" aria-label="Add to In progress">+</button>
         </div>
-        <div class="column-body drag-area" id="drag-area-in-progress"
-             ondrop="moveTo('in-progress')"
-             ondragover="allowDrop(event); highlight('drag-area-in-progress')"
-             ondragleave="removeHighlight('drag-area-in-progress')">
+        <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
+          ondragover="allowDrop(event); highlight('drag-area-in-progress')"
+          ondragleave="removeHighlight('drag-area-in-progress')">
           <div class="empty-pill">No tasks In progress</div>
         </div>
       </section>
@@ -76,10 +68,9 @@
           <h2 id="await-feedback-title">Await feedback</h2>
           <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
         </div>
-        <div class="column-body drag-area" id="drag-area-await-feedback"
-             ondrop="moveTo('await-feedback')"
-             ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
-             ondragleave="removeHighlight('drag-area-await-feedback')">
+        <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
+          ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
+          ondragleave="removeHighlight('drag-area-await-feedback')">
           <div class="empty-pill">No tasks Await feedback</div>
         </div>
       </section>
@@ -89,41 +80,43 @@
         <div class="name_from_card">
           <h2 id="done-title">Done</h2>
         </div>
-        <div class="column-body drag-area" id="drag-area-done"
-             ondrop="moveTo('done')"
-             ondragover="allowDrop(event); highlight('drag-area-done')"
-             ondragleave="removeHighlight('drag-area-done')">
+        <div class="column-body drag-area" id="drag-area-done" ondrop="moveTo('done')"
+          ondragover="allowDrop(event); highlight('drag-area-done')" ondragleave="removeHighlight('drag-area-done')">
           <div class="empty-pill">No tasks Done</div>
         </div>
       </section>
     </div>
   </main>
 
-<template id="tmpl-card">
-  <div class="task-card" draggable="true">
-    <div class="badge"></div>
-    <h3 class="h3_small_text_board"></h3>
-    <p></p>
-    <div class="progress-track"><div class="progress-fill"></div></div>
-    <small class="subtasks"></small>
-  </div>
-</template>
+ <template id="tmpl-card">
+    <div class="task-card" draggable="true">
+      <div class="badge"></div>
+      <h3 class="h3_small_text_board"></h3>
+      <p></p>
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+      </div>
+      <small class="subtasks"></small>
+    </div>
+  </template> 
 
 
   <div id="task-modal" class="modal-overlay" onclick="if(event.target===this) closeTaskModal()">
     <div id="task-modal-content"></div>
+  </div> 
+
+
+  <!-- Add Task Overlay -->
+  <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
+    <aside id="addtask-content" class="side-panel">
+    </aside>
   </div>
 
-  <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
-  <aside class="side-panel">
-    <div id="addtask-content"></div>
-  </aside>
-</div>
 
 
-
-<script  src="../scripts/templeates.js"></script>
-<script src="../scripts/board.js"></script>
+  <script src="../scripts/templeates.js"></script>
+  <script src="../scripts/board.js"></script>
 
 </body>
+
 </html>
