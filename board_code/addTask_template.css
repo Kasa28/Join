@@ -1,35 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Regular.ttf")
-    format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Bold.ttf")
-    format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Italic.ttf")
-    format("truetype");
-  font-weight: 400;
-  font-style: italic;
-}
-.div-test{
-display: flex;
-flex-direction: column;
+.div-test {
+  display: flex;
+  flex-direction: column;
 
 }
 
@@ -38,14 +9,15 @@ flex-direction: column;
 }
 
 .header-wrapper-addTask_template {
+  background-color: royalblue;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  max-width: 518px;
-  height: 100px;
-  padding: 40px 40px;
-  margin-left: 20px;
-  margin-bottom: 24px;
+  padding: 1.5rem;
+  /* max-width: 518px; */
+  /* height: 100px; */
+  /* margin-left: 20px; */
+  /* margin-bottom: 24px; */
 }
 
 .h1-addTask_template {
@@ -62,14 +34,15 @@ flex-direction: column;
 }
 
 .main-addTask_template {
-  position: relative;
-  width: 440px;
-  padding-left: 24px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  left: 36px;
+  flex: 1;
+  /* position: relative; */
+  /* width: 440px; */
+  padding: 1.5rem;
+  overflow: scroll;
+  /* overflow-x: hidden; */
+  /* scrollbar-width: none; */
+  /* -ms-overflow-style: none; */
+  /* left: 36px; */
 }
 
 .main-addTask_template::-webkit-scrollbar {
@@ -228,15 +201,16 @@ flex-direction: column;
 }
 
 .btn-done-wrapper-addTask_template {
-  bottom: 36px;
-  right: 36px;
-  width: calc(100% - 72px);
-  max-width: 440px;
+  background-color: royalblue;
+  /* bottom: 36px; */
+  /* right: 36px; */
+  /* width: calc(100% - 72px); */
+  /* max-width: 440px; */
   display: flex;
   justify-content: flex-end;
-  z-index: 10;
+  padding: 1rem;
+  /* z-index: 10; */
 }
-
 
 .btn-done-addTask_template {
   border-radius: 8px;
