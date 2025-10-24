@@ -237,7 +237,7 @@ flex-direction: column;
   z-index: 10;
 }
 
-/*
+
 .btn-done-addTask_template {
   border-radius: 8px;
   border: none;
@@ -259,7 +259,7 @@ flex-direction: column;
   background: white;
   pointer-events: none;
 }
-*/
+
 .check-icon-addTask_template {
   width: 1em;
   height: 1em;

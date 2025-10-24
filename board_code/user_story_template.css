@@ -27,26 +27,28 @@
   font-weight: 400;
   font-style: italic;
 }
-
+/*
 .body {
   width: 525px;
   height: 932px;
 }
+  */
 
 .header-wrapper_user-story {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 528px;
-  height: 156px;
+  width: 500px;
+  height: 140px;
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 48px;
   align-items: center;
 }
 
+
 .label_user_story {
-  width: 160px;
+  width: 145x;
   height: 36px;
   border-radius: 8px;
   background-color: #ff7a00;
@@ -54,46 +56,45 @@
   font-family: "open sans";
   font-weight: 400;
   line-height: 120%;
-  font-size: 23px;
+  font-size: 20px;
   padding: 4px 16px;
 }
 
 .title_user-story {
   font-family: "open sans";
-  font-size: 61px;
+  font-size: 40px;
   font-weight: 700;
   width: 528px;
   line-height: 120%;
   padding-left: 40px;
-  padding-right: 40px;
+  padding-right: 60px;
+  margin-bottom: 20px;
 }
 
 .h3_user-story {
   font-family: "open sans";
   font-weight: 400;
-  font-size: 19px;
+  font-size: 18px;
   line-height: 120%;
   width: 528px;
   height: 23px;
-  padding: 40px;
-  margin-bottom: 24px;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-bottom: 20px;
 }
 
 .close-btn_user-story {
   color: #4589ff;
   border: none;
   background-color: transparent;
-  font-size: 32px;
+  font-size: 30px;
 }
 
 .main_content_user_story {
-  position: absolute;
   max-width: 528px;
-  height: 770px;
   padding-left: 40px;
   overflow-y: auto;
   overflow-x: hidden;
-  position: relative;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -117,8 +118,7 @@
 }
 
 .section-heading_user-story {
-  font-size: 21px;
-  margin-bottom: 8px;
+  font-size: 19px;
   color: #42526e;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
@@ -129,7 +129,7 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .task-input_user-story, .label_user-story {
@@ -150,8 +150,8 @@
 .checkbox_user-story  {
   appearance: none;
   -webkit-appearance: none;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border: 2px solid #4589ff;
   border-radius: 4px;
   background-color: white;
@@ -226,7 +226,7 @@
   align-items: center;
   width: 100%;
   gap: 15px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .date-field_user-story {
@@ -265,10 +265,6 @@
   display: flex;
   align-items: center; 
   gap: 30px; 
-}
-
-.priority-row_user-story .section-heading_user-story {
-  margin-bottom: 0; 
 }
 
 .priority-btn-medium_user-story {
@@ -316,11 +312,12 @@
   color: white;
   margin-bottom: 40px;
 }
+
 .assigned-users_user-story {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 20px;
   padding-left: 16px
 }
 
@@ -333,8 +330,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   font-family: "open sans";
   font-size: 12px;
