@@ -27,11 +27,11 @@
   font-weight: 400;
   font-style: italic;
 }
-/*
-body {
-  width: 528px;
-  height: 1024px;
-}*/
+.div-test{
+display: flex;
+flex-direction: column;
+
+}
 
 .label-addTask_template {
   display: none;
@@ -41,15 +41,16 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 518px;
-  height: 156px;
-  padding: 72px 62px;
-  gap: 49px;
+  max-width: 518px;
+  height: 100px;
+  padding: 40px 40px;
+  margin-left: 20px;
+  margin-bottom: 24px;
 }
 
 .h1-addTask_template {
   font-family: "open sans";
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 700px;
 }
 
@@ -63,28 +64,24 @@ body {
 .main-addTask_template {
   position: relative;
   width: 440px;
-  height: 769px;
   padding-left: 24px;
   overflow-y: auto;
   overflow-x: hidden;
-  position: relative;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  top: 36px;
   left: 36px;
 }
 
 .main-addTask_template::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 
 .task-title-addTask_template {
-  font-size: 32px;
+  font-size: 28px;
   border: none;
   border-bottom: 1px solid #d1d1d1;
   padding: 12px;
   width: 100%;
-  height: 64;
   font-family: "open sans";
   line-height: 120%;
   margin-bottom: 24px;
@@ -127,7 +124,7 @@ body {
 }
 
 .task-title-addTask_template::placeholder {
-  font-size: 32px;
+  font-size: 28px;
 }
 
 .task-date-addTask_template,
@@ -190,23 +187,22 @@ body {
   display: flex;
   gap: 12px;
   margin-top: 8px;
- 
 }
 
 .priority-btn-medium-addTask_template,
 .priority-btn-urgent-addTask_template,
 .priority-btn-low-addTask_template {
   flex: 1;
- padding: 16px;
+  padding: 16px;
   border-radius: 10px;
   border: 1px solid #d1d1d1;
   background-color: white;
   cursor: pointer;
-  font-size: 19px;
+  font-size: 17px;
   transition: 0.2s;
   margin-bottom: 24px;
-  width:136px;
-  height: 51px;
+  width: 120px;
+  height: 50px;
 }
 
 .priority-btn-medium-addTask_template {
@@ -232,16 +228,16 @@ body {
 }
 
 .btn-done-wrapper-addTask_template {
-  position: fixed;           
-  bottom: 36px;             
-  left: 36px;               
-  width: 440px;
+  bottom: 36px;
+  right: 36px;
+  width: calc(100% - 72px);
+  max-width: 440px;
   display: flex;
   justify-content: flex-end;
-  background-color: white;      
-  z-index: 10;                  
+  z-index: 10;
 }
 
+/*
 .btn-done-addTask_template {
   border-radius: 8px;
   border: none;
@@ -253,19 +249,17 @@ body {
   height: 60px;
 }
 
-
 .btn-done-wrapper-addTask_template::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -36px;   
-  height: 36px;    
+  bottom: -36px;
+  height: 36px;
   background: white;
-  pointer-events: none; 
+  pointer-events: none;
 }
-
-
+*/
 .check-icon-addTask_template {
   width: 1em;
   height: 1em;

@@ -1,75 +1,84 @@
 function bigCardHtml(t){
   return `
-    <header class="header-wrapper_user-story">
-        <span class="label_user_story">User Story</span>
-        <button class="close-btn_user-story">x</button>
+    <header class="header-wrapper-addTask_template">
+  <h1 class="h1-addTask_template">Add Task</h1>
+  <button class="close-btn-addTask_template">x</button>
+</header>
 
-    </header>
-    <h1 class="title_user-story">Kochwelt Page & Recipe Recommender</h1>
-    <h3 class="h3_user-story">Build start page with recipe recommendation.</h3>
+  <main class="main-addTask_template">
 
-    <main class="main_content_user_story">
-        <div class="date-input-wrapper_user-story">
-            <p class="section-heading_user-story"><strong>Due date:</strong></p>
-            <p class="task-date-display_user-story">10/05/2023</p>
-        </div>
+    <section>
+      <label for="title" class="label-addTask_template">Title</label>
+      <input type="text" class="task-title-addTask_template" name="title" placeholder="Enter a title">
+    </section>
 
-        <section class="task-input_user-story">
-            <div class="priority-row_user-story">
-                <p class="section-heading_user-story"><strong>Priority:</strong></p>
-                <button type="button" class="priority-btn-medium_user-story" onclick="setPriority('medium')">Medium
-                    <img class="addTask-icons_user-story" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg"
-                        alt="sum icon">
-                </button>
-            </div>
-        </section>
+    <section>
+      <label for="description" class="label-addTask_template">Description</label>
+      <p class="section-heading-addTask_template"><strong>Description</strong> (optional)</p>
+      <textarea id="description" class="task-description-addTask_template" name="description"
+        placeholder="Enter a description"></textarea>
+    </section>
 
-        <section class="task-input_user-story">
-            <p class="section-heading_user-story"><strong>Asigned To:</strong></p>
-        </section>
+    <div class="date-input-wrapper-addTask_template">
+      <p class="section-heading-addTask_template"><strong>Due date</strong></p>
+      <div class="date-field-addTask_template">
+        <input type="text" id="due-date" class="task-date-addTask_template" name="due-date" placeholder="dd/mm/yyyy"
+          pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric">
+        <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon-addTask_template">
+      </div>
+    </div>
 
-        <div class="assigned-users_user-story">
-            <div class="user-badge_user-story">
-                <span class="span-user-badge_user-story" style="background-color: #FF7A00;">EM</span>
-                <p class="p-user-badge_user-story">Emmanuel Mauer</p>
-            </div>
-            <div class="user-badge_user-story">
-                <span class="span-user-badge_user-story" style="background-color: #4589FF;">MB</span>
-                <p class="p-user-badge_user-story">Marcel Bauer</p>
-            </div>
-            <div class="user-badge_user-story">
-                <span class="span-user-badge_user-story" style="background-color: #02B875;">AM</span>
-                <p class="p-user-badge_user-story">Anton Mayer</p>
-            </div>
-        </div>
+    <section>
+      <label class="label-addTask_template">Priority</label>
+      <p class="section-heading-addTask_template"><strong>Priority</strong></p>
+      <div class="priority-group-addTask_template">
+        <button type="button" class="priority-btn-urgent-addTask_template" onclick="setPriority('urgent')">Urgent
+          <img class="addTask-icons-addTask_template" src="/addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg" alt="urgent icon">
+        </button>
+        <button type="button" class="priority-btn-medium-addTask_template" onclick="setPriority('medium')">Medium
+          <img class="addTask-icons-addTask_template" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg" alt="sum icon">
+        </button>
+        <button type="button" class="priority-btn-low-addTask_template" onclick="setPriority('low')">Low
+          <img class="addTask-icons-addTask_template" src="/addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
+            alt="2 arrows in green showing up">
+        </button>
+      </div>
+    </section>
 
+    <section>
+      <label for="assign" class="label-addTask_template">Assign to</label>
+      <p class="section-heading-addTask_template"><strong>Asigned to</strong> (optional)</p>
+      <select id="assign" class="task-select-addTask_template" name="assign">
+        <option value="">Select contact to assign</option>
+      </select>
+    </section>
 
-        <section class="task-input_user-story">
-            <p class="section-heading_user-story"><strong>Subtasks</strong></p>
-            <div>
-                <label class="label_user-story"><input type="checkbox" class="checkbox_user-story"> Implement Recipe Recommendation</label><br>
-                <label class="label_user-story"><input type="checkbox" class="checkbox_user-story"> Start Page Layout</label>
-            </div>
-        </section>
+    <section>
+      <label for="category" class="label-addTask_template">Category</label>
+      <p class="section-heading-addTask_template"><strong>Category</strong></p>
+      <select id="category" class="task-select-addTask_template" name="category">
+        <option value="">Select task category</option>
+      </select>
+    </section>
 
-        <div class="action-buttons_user-story">
-            <div class="action-btn_user-story">
-                <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user-story">
-                <span>Delete</span>
-            </div>
-            <div class="divider_user-story"></div>
-            <div class="action-btn_user-story">
-                <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user-story">
-                <span>Edit</span>
-            </div>
-        </div>
-    </main>
+    <section>
+      <label for="subtask" class="label-addTask_template">Subtasks</label>
+      <p class="section-heading-addTask_template"><strong>Subtasks</strong> (optional)</p>
+      <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
+    </section>
+
+  </main>
+  <div class="btn-done-wrapper-addTask_template">
+  <button class="btn-done-addTask_template btn-with-svg-addTask_template" onclick="createTask()">Create Task
+    <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_template">
+  </button>
+</div>
   `;
 }
 
 function getAddTaskTemplate() {
   return `
-
+  <div class="div-test">
    <header class="header-wrapper-addTask_template">
   <h1 class="h1-addTask_template">Add Task</h1>
   <button class="close-btn-addTask_template">x</button>
@@ -142,5 +151,7 @@ function getAddTaskTemplate() {
   <button class="btn-done-addTask_template btn-with-svg-addTask_template" onclick="createTask()">Create Task
     <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_template">
   </button>
-</div>`;
+   </div>
+     </div>
+   `;
 }
