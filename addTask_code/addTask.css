@@ -188,6 +188,13 @@
 .priority-btn-addTask_page:hover {
   background-color: #e6e6e6;
 }
+.priority-btn-urgent-addTask_page:hover {
+  border-bottom: 3px solid #ff3d00; 
+}
+
+.priority-btn-low-addTask_page:hover {
+  border-bottom: 3px solid #00c853;
+}
 
 .addTask-icons-addTask_page {
   align-items: center;
