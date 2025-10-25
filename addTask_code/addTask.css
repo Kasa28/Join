@@ -285,9 +285,13 @@
   border: none;
   border-bottom: 1px solid #d1d1d1;
   padding: 12px;
+  padding-right: 80px; /* Platz für X und Haken */
   font-size: 19px;
   background-color: white;
   font-family: "Open Sans", sans-serif;
+  white-space: nowrap; /* kein Zeilenumbruch */
+  overflow: hidden; /* versteckt überfließenden Text */
+  text-overflow: ellipsis; /* zeigt "…" bei zu langem Text */
 }
 
 .subtask-icons-addTask_page {
