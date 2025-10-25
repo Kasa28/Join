@@ -2,8 +2,7 @@ function bigCardHtml(t) {
   return `
  <header class="header-wrapper_user-story">
         <span class="label_user_story">User Story</span>
-        <button class="close-btn_user-story">x</button>
-
+               <button class="close-btn_user-story" onclick="closeTaskModal()">x</button>
     </header>
     <h1 class="title_user-story">Kochwelt Page & Recipe Recommender</h1>
     <h3 class="h3_user-story">Build start page with recipe recommendation.</h3>
@@ -71,7 +70,7 @@ function getAddTaskTemplate() {
   return `
    <header class="header-wrapper-addTask_template">
   <h1 class="h1-addTask_template">Add Task</h1>
-  <button class="close-btn-addTask_template">x</button>
+   <button class="close-btn-addTask_template" onclick="closeAddTask()">x</button>
 </header>
 
   <main class="main-addTask_template">
