@@ -412,12 +412,29 @@ p {
 .main-content-board p {
   color: #a8a8a8;
 }
-
-.close-btn_user-story {
+.close-btn_user-story,
+.close-btn-addTask_template {
   position: absolute;
   top: 16px;
   right: 16px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  transition: transform 0.1s ease;
 }
+
+.close-btn_user-story:active,
+.close-btn-addTask_template:active {
+  transform: scale(0.9);
+}
+
+.close-btn_user-story:hover,
+.close-btn-addTask_template:hover {
+  transform: scale(1.2);
+}
+
+
 .header-wrapper_user-story {
   position: relative;
 }
