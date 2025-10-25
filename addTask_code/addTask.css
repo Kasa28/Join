@@ -259,3 +259,51 @@
   vertical-align: middle;
   filter: brightness(0) invert(1);
 }
+
+.subtask-wrapper-addTask_page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.task-subtask-addTask_page {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  padding: 12px;
+  font-size: 19px;
+  background-color: white;
+  font-family: "Open Sans", sans-serif;
+}
+
+.subtask-icons-addTask_page {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 12px;
+  gap: 10px;
+  color: #4589ff;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.subtask-divider-addTask_page {
+  width: 1px;
+  height: 20px;
+  background-color: #4589ff;
+}
+
+.subtask-delete-addTask_page:hover,
+.subtask-check-addTask_page:hover {
+  opacity: 0.8;
+}
+
+.subtask-icons-addTask_page {
+  display: none;
+}
+
+.task-subtask-addTask_page:not(:placeholder-shown) + .subtask-icons-addTask_page {
+  display: flex;
+}
