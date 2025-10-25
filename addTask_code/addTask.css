@@ -218,6 +218,19 @@
   border-bottom: 3px solid #00c853;
 }
 
+.subtask-delete-addTask_page {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.subtask-check-addTask_page {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(3127%) hue-rotate(202deg) brightness(97%) contrast(101%);
+}
+
 .addTask-icons-addTask_page {
   align-items: center;
   padding-left: 10px;
@@ -281,8 +294,8 @@
   display: flex;
   align-items: center;
   position: absolute;
-  right: 12px;
-  gap: 10px;
+  right: 16px;
+  gap: 6px;
   color: #4589ff;
   font-size: 20px;
   font-weight: bold;
