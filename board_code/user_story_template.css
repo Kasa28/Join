@@ -33,9 +33,10 @@
   flex-direction: row;
   justify-content: space-between;
   width: 500px;
-  height: 110px;
   padding-left: 40px;
   align-items: center;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .label_user_story {
@@ -129,7 +130,7 @@
   font-size: 16px;
   font-weight: 400;
   font-family: "open sans";
-  gap: 16px;
+  gap: 10px;
 }
 
 .task-input_user-story,
@@ -137,6 +138,10 @@
 .section-heading {
   margin-left: 0;
   margin-top: 0;
+}
+
+.label_user-story {
+  margin-bottom: 10px;
 }
 
 .checkbox_user-story {
@@ -309,8 +314,8 @@
 .assigned-users_user-story {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 16px;
   padding-left: 16px;
 }
 

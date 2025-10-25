@@ -47,7 +47,7 @@ function bigCardHtml(t) {
         <section class="task-input_user-story">
             <p class="section-heading_user-story"><strong>Subtasks</strong></p>
             <div>
-                <label class="label_user-story"><input type="checkbox" class="checkbox_user-story"> Implement Recipe Recommendation</label><br>
+                <label class="label_user-story"><input type="checkbox" class="checkbox_user-story"> Implement Recipe Recommendation</label>
                 <label class="label_user-story"><input type="checkbox" class="checkbox_user-story"> Start Page Layout</label>
             </div>
         </section>

@@ -357,38 +357,31 @@ p {
   display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-#task-modal { 
-  position: fixed; inset: 0;
-  display: none; align-items: center; justify-content: center;
-  background: rgba(0,0,0,.35); backdrop-filter: blur(6px);
+#task-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
   z-index: 9999;
 }
-#task-modal.open { display: flex; }
-
-#task-modal-content{
-  background:#fff;
-  border-radius:24px;
-  width:528px;           /* passt zum Template */
-  max-height:90vh;
-  overflow:auto;
-  padding:0;             /* Innenabstände regelt das Template */
+#task-modal.open {
+  display: flex;
 }
 
+#task-modal-content {
+  background: #fff;
+  border-radius: 24px;
+  width: 528px; /* passt zum Template */
+  max-height: 90vh;
+  overflow: auto;
+  padding: 0; /* Innenabstände regelt das Template */
+}
 
 /* 1) Modal-Container sauber begrenzen */
-#task-modal-content{
+#task-modal-content {
   width: min(528px, 92vw);
   max-height: 90vh;
   overflow: auto;
@@ -400,50 +393,57 @@ p {
 /* 2) Feste Breiten auf flexible umstellen */
 .header-wrapper_user-story,
 .title_user-story,
-.h3_user-story{
-  width: 100%;           /* statt 528px */
+.h3_user-story {
+  width: 100%; /* statt 528px */
   max-width: 100%;
   box-sizing: border-box;
 }
 
 /* 3) Content-Bereich: keine fixe Höhe/Position */
-.main_content_user_story{
-  position: static;      /* relative/absolute raus */
-  height: auto;          /* keine 770px */
+.main_content_user_story {
+  position: static; /* relative/absolute raus */
+  height: auto; /* keine 770px */
   max-width: 100%;
-  padding: 0 40px 24px;  /* symmetrische Innenabstände */
-  overflow-x: hidden;    /* sicherheitshalber */
+  padding: 0 40px 24px; /* symmetrische Innenabstände */
+  overflow-x: hidden; /* sicherheitshalber */
 }
 
 /* 4) Globales p-Styling einschränken (sonst alles grau) */
-.main-content-board p { color:#A8A8A8; }
+.main-content-board p {
+  color: #a8a8a8;
+}
 
-
-.close-btn_user-story{ position:absolute; top:16px; right:16px; }
-.header-wrapper_user-story{ position:relative; padding:48px 40px 0; }
+.close-btn_user-story {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.header-wrapper_user-story {
+  position: relative;
+}
 
 /* Compact-Modus nur fürs Overlay */
-#task-modal-content.us-compact{
-  width: min(480px, 92vw);   /* schmaler als 528px */
+#task-modal-content.us-compact {
+  width: min(480px, 92vw); /* schmaler als 528px */
   border-radius: 20px;
 }
 
 /* alles innerhalb fluid machen */
 #task-modal-content.us-compact .header-wrapper_user-story,
 #task-modal-content.us-compact .title_user-story,
-#task-modal-content.us-compact .h3_user-story{
+#task-modal-content.us-compact .h3_user-story {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
 
 /* Polster kleiner */
-#task-modal-content.us-compact .header-wrapper_user-story{
-  height: auto;              /* fixe 156px raus */
+#task-modal-content.us-compact .header-wrapper_user-story {
+  height: auto; /* fixe 156px raus */
   padding: 28px 24px 0;
 }
-#task-modal-content.us-compact .main_content_user_story{
-  position: static;          /* keine absolute/relative Höhen mehr */
+#task-modal-content.us-compact .main_content_user_story {
+  position: static; /* keine absolute/relative Höhen mehr */
   height: auto;
   max-width: 100%;
   padding: 0 24px 20px;
@@ -451,27 +451,41 @@ p {
 }
 
 /* Typografie deutlich kleiner */
-#task-modal-content.us-compact .title_user-story{
+#task-modal-content.us-compact .title_user-story {
   font-size: clamp(28px, 5vw, 40px); /* statt 61px */
   line-height: 1.15;
 }
-#task-modal-content.us-compact .h3_user-story{
-  font-size: 16px;           /* statt 19px */
+#task-modal-content.us-compact .h3_user-story {
+  font-size: 16px; /* statt 19px */
   margin-bottom: 16px;
   padding: 16px 24px 0 24px; /* symmetrisch und kleiner */
 }
-#task-modal-content.us-compact .label_user_story{
-  font-size: 14px;           /* statt 23px */
+#task-modal-content.us-compact .label_user_story {
+  font-size: 14px; /* statt 23px */
   height: auto;
   padding: 4px 12px;
 }
 
 /* Reihen kompakter */
-#task-modal-content.us-compact .section-heading_user-story{ font-size: 18px; }
-#task-modal-content.us-compact .task-date-display_user-story{ font-size: 16px; }
-#task-modal-content.us-compact .priority-row_user-story{ gap: 14px; }
-#task-modal-content.us-compact .assigned-users_user-story{ gap: 16px; padding-left: 0; }
-#task-modal-content.us-compact .span-user-badge_user-story{ width:36px; height:36px; }
+#task-modal-content.us-compact .section-heading_user-story {
+  font-size: 18px;
+}
+#task-modal-content.us-compact .task-date-display_user-story {
+  font-size: 16px;
+}
+#task-modal-content.us-compact .priority-row_user-story {
+  gap: 14px;
+}
+#task-modal-content.us-compact .assigned-users_user-story {
+  gap: 16px;
+  padding-left: 0;
+}
+#task-modal-content.us-compact .span-user-badge_user-story {
+  width: 36px;
+  height: 36px;
+}
 
 /* keine horizontale Scrollbar */
-#task-modal-content.us-compact{ overflow-x: hidden; }
+#task-modal-content.us-compact {
+  overflow-x: hidden;
+}
