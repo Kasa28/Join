@@ -151,6 +151,13 @@
 }
 
 .task-select-addTask_page {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  border-radius: 0;
+  padding: 12px;
+  font-size: 19px;
+  background-color: white;
   appearance: none;
   background-image: url("./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg");
   background-repeat: no-repeat;
@@ -159,8 +166,22 @@
   cursor: pointer;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  font-size: 19px;
   line-height: 120%;
+}
+
+.task-select-addTask_page option {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background-color: white;
+}
+
+.task-select-addTask_page:focus,
+.task-select-addTask_page:active,
+.task-select-addTask_page:focus-visible {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #d1d1d1; 
 }
 
 .priority-group-addTask_page {
