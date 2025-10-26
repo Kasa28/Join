@@ -218,6 +218,91 @@
   border-bottom: 3px solid #00c853;
 }
 
+/* === ASSIGN SECTION === */
+
+.assign-select-addTask_page {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #d1d1d1;
+  padding: 12px;
+  font-size: 19px;
+  background-color: white;
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+}
+
+.assign-placeholder-addTask_page {
+  color: #bfbfbf;
+}
+
+.assign-arrow-addTask_page {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+/* DROPDOWN */
+.assign-dropdown-addTask_page {
+  display: none;
+  position: absolute;
+  width: 100%;
+  margin-top: 4px;
+  background-color: #ffffff;
+  color: #42526e;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  z-index: 10;
+}
+
+.assign-item-addTask_page {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.assign-item-addTask_page:hover {
+  background-color: #f5f7ff;
+}
+
+/* Avatar-Kreis */
+.assign-avatar-addTask_page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Name */
+.assign-name-addTask_page {
+  flex: 1;
+  font-size: 16px;
+  color: #42526e;
+}
+
+/* Checkmark */
+.assign-check-addTask_page {
+  width: 20px;
+  height: 20px;
+  visibility: hidden;
+}
+
+.assign-item-addTask_page.selected .assign-check-addTask_page {
+  visibility: visible;
+}
+
 .subtask-delete-addTask_page {
   width: 24px;
   height: 24px;
@@ -285,13 +370,13 @@
   border: none;
   border-bottom: 1px solid #d1d1d1;
   padding: 12px;
-  padding-right: 80px; /* Platz für X und Haken */
+  padding-right: 80px; 
   font-size: 19px;
   background-color: white;
   font-family: "Open Sans", sans-serif;
-  white-space: nowrap; /* kein Zeilenumbruch */
-  overflow: hidden; /* versteckt überfließenden Text */
-  text-overflow: ellipsis; /* zeigt "…" bei zu langem Text */
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
 .subtask-icons-addTask_page {
@@ -324,3 +409,4 @@
 .task-subtask-addTask_page:not(:placeholder-shown) + .subtask-icons-addTask_page {
   display: flex;
 }
+
