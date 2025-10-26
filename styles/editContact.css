@@ -44,26 +44,34 @@
     font-weight: 700;
     color: white;
     font-style: bold;
+    margin: 0;
+}
+
+.a-font-edit-contact{
+    font-size: 27px;
+    color: white;
 }
 
 .main-container-edit-contact{
     display: flex;
     flex-direction: column;
-
-
     width: 584px;
     height: 1024px;
+    font-family: "open sans";
+    border: solid 2px grey;
+    gap: 72px;
+}
 
+.right-side-rounded{
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
     border-top-right-radius: 30px;
+}
 
-    font-family: "open sans";
-
-    border: solid 2px grey;
-
-    gap: 72px;
-
+.left-side-rounded{
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-left-radius: 30px;
 }
 
 .edit-contact-headcard{
@@ -73,9 +81,10 @@
     justify-content: center;
     align-items: center;
 
-    height: 137px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 
-    border-top-right-radius: 30px;
+    height: 137px;
     padding: 108px 46px 108px 46px;
     gap: 12px;
 
@@ -94,9 +103,9 @@
 
 }
 
-.edit-contact-logo{
-    width: 85px;
-    height: 85px;
+.user-letter-ball-edit-contact{
+    width: 80px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,7 +115,26 @@
     border-radius: 50%;
     border: 3px solid white;
     box-shadow: 0 0 0 2px #ffff;
+}
 
+.empty-user-ball-edit-contact{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #D1D1D1;
+    font-size: 33px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #ffff;
+}
+
+.empty-user-ball-icon-edit-contact{
+    width: 36px;
+    height: 36px;
+    filter: brightness(1.8);
 }
 
 .edit-contact-inputfield{
@@ -127,11 +155,14 @@
     width: 100%;
     padding-right: 36px; /* Platz für das Icon */
     box-sizing: border-box;
+    outline: none;
+
+    padding: 12px 21px 12px 21px;
 }
 
-.input-icon {
+.input-icon-edit-contact{
     position: absolute;
-    right: 10px;
+    right: 21px;
     top: 50%;
     transform: translateY(-50%);
     width: 20px;
@@ -174,11 +205,11 @@
 }
 
 .button-edit-contact-blue:hover {
-    background: grey;
+    filter: brightness(1.2);
 }
 
 .button-edit-contact-grey:hover {
-    background: #4589FF;
+    filter: brightness(0.8);
 }
 
 
