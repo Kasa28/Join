@@ -146,13 +146,13 @@ function getAddTaskTemplate() {
 
 function getTechnicalTaskTemplate() {
   return `
-    <div class="main-container-technical-task">
+    <main class="main-container-technical-task">
 
         <div class="head-bar-technical-task">
             <div class="head-sign-technical-task">
-                <a>Technical Task</a>
+                <a class="a-font-style-technical-task">Technical Task</a>
             </div>
-            <img src="../assets/img/close-blue.svg" alt="close">
+            <button class="close-button-technical-task" onclick="closeAddTask()">x</button>
         </div>
 
         <div class="headline-container-technical-task">
@@ -186,7 +186,7 @@ function getTechnicalTaskTemplate() {
                         </div>
                         Sofia Müller (You)
                     </div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                    <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
                 
                 <div class="user-container-technical-task">
@@ -196,7 +196,7 @@ function getTechnicalTaskTemplate() {
                         </div>
                         Sofia Müller (You)
                     </div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                    <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
 
 
@@ -206,33 +206,27 @@ function getTechnicalTaskTemplate() {
         <div class="subtasks-container-technical-task">
             <a class="status-font-technical-task">Subtasks:</a>
             <div class="subtasks-task-container-technical-task">
-                <div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
-                    Establish CSS Mythology
-                </div>
+                    <div>
+                        <label class="label-font-technical-task"><input type="checkbox" class="checkbox-technical-task border-blue-technical-task"> Establish CSS Mythology</label><br>
+                        <label class="label-font-technical-task"><input type="checkbox" class="checkbox-technical-task border-blue-technical-task"> Setup Base Styles</label>
+                    </div>
             </div>
-            <div class="subtasks-task-container-technical-task">
-                <div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
-                    Setup Base Styles
-                </div>
+            <div class="delete-edit-section-technical-task">
+            <div class="delete-edit-container-technical-task">
+                <img src="../assets/img/delete.svg" alt="Delete" class="delete-edit-icon-technical-task">
+                <span>Delete</span>
             </div>
+            <div class="separator-technical-task"></div>
+            <div class="delete-edit-container-technical-task">
+                <img src="../assets/img/edit.svg" alt="Edit" class="delete-edit-icon-technical-task">
+                <span>Edit</span>
+            </div>
+        </div>
         </div>
 
         
-        <div class="delete-edit-section-technical-task">
-            <div class="delete-edit-container-technical-task">
-                <div class="delete-button-technical-task">
-                    <img src="../assets/img/delete.svg" alt="delete">
-                    <a>delete</a>
-                </div>
-                <div class="edit-button-technical-task">
-                    <img src="../assets/img/edit.svg" alt="edit">
-                    <a>edit</a>
-                </div>
-            </div>
-        </div>
+        
 
-    </div>
+    </main>
   `;
   }
