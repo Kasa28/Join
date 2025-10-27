@@ -220,6 +220,55 @@
   border-bottom: 3px solid #00c853;
 }
 
+.subtask-icons-addTask_template {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 16px;
+  gap: 6px;
+  color: #4589ff;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.subtask-divider-addTask_template {
+  width: 1px;
+  height: 20px;
+  background-color: #4589ff;
+}
+
+.subtask-delete-addTask_template,
+.subtask-check-addTask_template {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.subtask-delete-addTask_template:hover,
+.subtask-check-addTask_template:hover {
+  opacity: 0.8;
+}
+
+.subtask-icons-addTask_template {
+  display: none;
+}
+
+.subtask-check-addTask_template {
+  filter: brightness(0) saturate(100%) invert(32%) sepia(97%) saturate(1412%) hue-rotate(204deg) brightness(99%) contrast(94%);
+}
+.task-subtask-addTask_template {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 60px; 
+}
+
+.task-subtask-addTask_template:not(:placeholder-shown)
+  + .subtask-icons-addTask_template {
+  display: flex;
+}
+
 .addTask-icons-addTask_template {
   align-items: center;
   padding-left: 10px;

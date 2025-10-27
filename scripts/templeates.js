@@ -132,8 +132,20 @@ function getAddTaskTemplate() {
     <section>
       <label for="subtask" class="label-addTask_template">Subtasks</label>
       <p class="section-heading-addTask_template"><strong>Subtasks</strong> (optional)</p>
+      
+      
+          <div class="subtask-wrapper-addTask_template">
       <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
-    </section>
+    <div class="subtask-icons-addTask_template">
+          <img src="../assets/img/close-blue.svg" alt="Close subtask" class="subtask-delete-addTask_template">
+          <div class="subtask-divider-addTask_template"></div>
+          <img src="../assets/img/check.svg" alt="Confirm subtask" class="subtask-check-addTask_template">
+        </div>
+      </div>
+   
+   
+   
+      </section>
 
   </main>
   <div class="btn-done-wrapper-addTask_template">
