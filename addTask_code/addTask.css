@@ -265,6 +265,7 @@
   gap: 12px;
   padding: 8px 12px;
   cursor: pointer;
+  padding-right: 30px;
 }
 
 .assign-item-addTask_page:hover {
@@ -294,9 +295,11 @@
 
 /* Checkmark */
 .assign-check-addTask_page {
-  width: 20px;
-  height: 20px;
-  visibility: hidden;
+  width: 15px;
+  height: 15px;
+  visibility: visible;
+  cursor: pointer;
+
 }
 
 .assign-item-addTask_page.selected .assign-check-addTask_page {
