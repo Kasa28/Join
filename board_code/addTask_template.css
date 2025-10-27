@@ -220,6 +220,10 @@
   border-bottom: 3px solid #00c853;
 }
 
+.subtask-wrapper-addTask_template {
+  position: relative;
+}
+
 .subtask-icons-addTask_template {
   display: flex;
   align-items: center;
@@ -230,6 +234,8 @@
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .subtask-divider-addTask_template {
