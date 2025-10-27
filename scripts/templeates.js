@@ -113,27 +113,76 @@ function getAddTaskTemplate() {
       </div>
     </section>
 
+
+
+
+
+    
+
+
     <section>
       <label for="assign" class="label-addTask_template">Assign to</label>
       <p class="section-heading-addTask_template"><strong>Asigned to</strong> (optional)</p>
       <select id="assign" class="task-select-addTask_template" name="assign">
         <option value="">Select contact to assign</option>
       </select>
-    </section>
+ 
+ <div class="assign-select-addTask_template" id="assign-select" onclick="toggleAssignDropdown(event)">
+        <span class="assign-placeholder-addTask_template">Select contact to assign</span>
+        <img src="./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu"
+          class="assign-arrow-addTask_template">
+      </div>
+
+     <div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox">
+        <div class="assign-item-addTask_template" onclick="selectAssignUser('Nils Becker')">
+          <span class="assign-avatar-addTask_template" style="background-color: #4589ff;">NB</span>
+          <span class="assign-name-addTask_template">Nils Becker</span>
+          <input type="checkbox" class="assign-check-addTask_template">
+        </div>
+
+        <div class="assign-item-addTask_template" onclick="selectAssignUser('Lara König')">
+          <span class="assign-avatar-addTask_template" style="background-color: #ff7eb6;">LK</span>
+          <span class="assign-name-addTask_template">Lara König</span>
+          <input type="checkbox" class="assign-check-addTask_template">
+        </div>
+
+        <div class="assign-item-addTask_template" onclick="selectAssignUser('Omar Said')">
+          <span class="assign-avatar-addTask_template" style="background-color: #00bfa5;">OS</span>
+          <span class="assign-name-addTask_template">Omar Said</span>
+          <input type="checkbox" class="assign-check-addTask_template">
+        </div>
+      </div>
+      </section>
+
+
+
+
+
+
+
 
     <section>
       <label for="category" class="label-addTask_template">Category</label>
       <p class="section-heading-addTask_template"><strong>Category</strong></p>
       <select id="category" class="task-select-addTask_template" name="category">
         <option value="">Select task category</option>
-      </select>
+        <option value="technical">Technical Task</option>
+        <option value="user-story">User Story</option>     
+        </select>
     </section>
 
     <section>
       <label for="subtask" class="label-addTask_template">Subtasks</label>
       <p class="section-heading-addTask_template"><strong>Subtasks</strong> (optional)</p>
-      <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
-    </section>
+      <div class="subtask-wrapper-addTask_template">
+        <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
+        <div class="subtask-icons-addTask_template">
+          <img src="../assets/img/close-blue.svg" alt="Close subtask" class="subtask-delete-addTask_template">
+          <div class="subtask-divider-addTask_template"></div>
+          <img src="../assets/img/check.svg" alt="Confirm subtask" class="subtask-check-addTask_template">
+        </div>
+      </div>
+      </section>
 
   </main>
   <div class="btn-done-wrapper-addTask_template">
@@ -229,4 +278,4 @@ function getTechnicalTaskTemplate() {
 
     </main>
   `;
-  }
+}
