@@ -1,260 +1,232 @@
-
-const tasks = [{
-  id: 1,
-  title: "Kochwelt Page & Recipe Recommender",
-  description: "Build start page with recipe recommendation...",
-  type: "User Story",
-  status: "in-progress",  
-  dueDate: "10/05/2023",
-  priority: "urgent",
-  subtasksDone: 1,
-  subtasksTotal: 2
-}
-,{
-  id: 2,
-  title: "CSS Architecture Planning",
-  description: "Define CSS naming conventions and structure.",
-  type: "Technical Task",  
-  status: "await-feedback",   
-  dueDate: "02/09/2023",
-  priority: "urgent",
-  subtasksDone: 1,
-  subtasksTotal: 2
-}
+window.saved = JSON.parse(localStorage.getItem('checks') || '{}');
+const saved = window.saved; 
+const tasks = [
+  {
+    id: 1,
+    title: "Kochwelt Page & Recipe Recommender",
+    description: "Build start page with recipe recommendation...",
+    type: "User Story",
+    status: "in-progress",
+    dueDate: "10/05/2023",
+    priority: "medium",
+    subtasksDone: 1,
+    subtasksTotal: 2,
+    assignedTo: [
+      { name: "Emmanuel Mauer", img: "../assets/img/EM.svg" },
+      { name: "Marcel Bauer",   img: "../assets/img/mb.svg" },
+      { name: "Anton Mayer",    img: "../assets/img/AM.svg" }
+    ]
+  },
+  {
+    id: 2,
+    title: "CSS Architecture Planning",
+    description: "Define CSS naming conventions and structure.",
+    type: "Technical Task",
+    status: "await-feedback",
+    dueDate: "02/09/2023",
+    priority: "urgent",
+    subtasksDone: 2,
+    subtasksTotal: 2,
+    assignedTo: [
+      { name: "Sofia Müller", img: "../assets/img/AM2.svg" },
+      { name: "Sofia Müller", img: "../assets/img/AM2.svg" }
+    ]
+  }
 ];
 
-
-let currentDraggedId = null;// ID der aktuell gezogenen Karte
-
-const nameOfTheCard = {// Definition der Spalten auf dem Board
+const nameOfTheCard = {
   'todo':           { id: 'drag-area-todo',           empty: 'No tasks To do' },
   'in-progress':    { id: 'drag-area-in-progress',    empty: 'No tasks in Progress' },
   'await-feedback': { id: 'drag-area-await-feedback', empty: 'No tasks in Feedback' },
   'done':           { id: 'drag-area-done',           empty: 'No task in Done' },
 };
 
-window.allowDrop = (e) => { e.preventDefault();//erlaubt das Ablegen von Elementen
-   try { e.dataTransfer.dropEffect='move'; }// Setzt den Drop-Effekt
- catch {} };// Ermöglicht das Ablegen von Elementen
-window.highlight = (id) => document.getElementById(id)?.classList.add('drag-highlight');// Hebt Drag-Ziele hervor
-window.removeHighlight = (id) => document.getElementById(id)?.classList.remove('drag-highlight');// Entfernt die Hervorhebung von Drag-Zielen
+const PRIO_ICON = {
+  urgent: '../assets/img/Prio baja-urgent-red.svg',
+  medium: '/addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg',
+  low:    '../assets/img/Prio baja-low.svg'
+};
+
+let currentDraggedId = null;
+
+window.allowDrop = e => e.preventDefault();
+window.highlight = id => document.getElementById(id)?.classList.add('drag-highlight');
+window.removeHighlight = id => document.getElementById(id)?.classList.remove('drag-highlight');
 
 window.onCardDragStart = (e, id) => {
   currentDraggedId = id;
   try { e.dataTransfer.setData('text/plain', String(id)); e.dataTransfer.effectAllowed = 'move'; } catch {}
   document.body.classList.add('dragging');
 };
+window.onCardDragEnd = () => document.body.classList.remove('dragging');
 
-window.onCardDragEnd = () => {
-  document.body.classList.remove('dragging');
+window.moveTo = statusOfCard => {
+  if (currentDraggedId == null) return;
+  const i = tasks.findIndex(t => t.id === currentDraggedId);
+  if (i > -1) {
+    tasks[i].status = statusOfCard;
+    render(); 
+  }
 };
 
-window.moveTo = (statusOfCard) => {// Verschiebt die aktuell gezogene Karte in den Zielstatus
-  if (currentDraggedId == null) return;// Wenn keine Karte gezogen wird, abbrechen, nur zur sicherheitt
-  const i = tasks.findIndex(t => t.id === currentDraggedId);// Index der gezogenen Karte finden
-  if (i > -1) { tasks[i].status = statusOfCard; 
-    render();// Status aktualisieren und neu rendern
-   }
-};
+function renderCard(t) {
+  const tpl = document.getElementById('tmpl-card').content.cloneNode(true);
+  const card = tpl.querySelector('.task-card');
+  card.id = `card-${t.id}`;
+  card.ondragstart = e => onCardDragStart(e, t.id);
+  card.ondragend = onCardDragEnd;
+  card.onclick = () => openModalById(t.id);
 
-//große Karte öffnen
-window.openModalById = (id) => {// Öffnet das Task-Modal basierend auf der ID
-  const task = tasks.find(x => x.id === id);// Aufgabe anhand der ID finden
-  if (!task) return;// Wenn keine Aufgabe gefunden, abbrechen
-  const modal = document.getElementById('task-modal');// Hol das Modal-Element
-  const cart = document.getElementById('task-modal-content');// Hol das Modal-Content-Element
-  cart.innerHTML = bigCardHtml(task); //greift auf template.js zu und holt das HTML Template
-  modal.style.display = 'flex';// Modal anzeigen,sichtbar machen,ohne öffnet sich nicht
-};
-window.closeModal = () => { const modal = document.getElementById('task-modal'); if (modal) modal.style.display='none'; };// Schließt das Task-Modal
-
-
-
-
-
-function renderCard(t){// Rendert eine einzelne Aufgabenkarte
-  const tpl = document.getElementById('tmpl-card').content.cloneNode(true);// Klont die Vorlage
-  const card = tpl.querySelector('.task-card');// Holt das Karten-Element
-  card.id = `card-${t.id}`;// Setzt die ID der Karte
-  card.setAttribute('ondragstart', `onCardDragStart(event, ${t.id})`);// Drag-Start-Handler
-  card.setAttribute('ondragend',   `onCardDragEnd()`);// Drag-End-Handler
-  card.setAttribute('onclick',     `openModalById(${t.id})`);// Klick-Handler zum Öffnen des Modals
   const badge = tpl.querySelector('.badge');
-  badge.textContent = t.type;
-  badge.classList.add(getBadgeClass(t.type));
+  if (badge) {
+    badge.textContent = t.type;
+    badge.classList.add(getBadgeClass(t.type));
+  }
 
-  tpl.querySelector('h3').textContent     = t.title;// Setzt den Titel
-  tpl.querySelector('p').textContent      = t.description;// Setzt die Beschreibung
-  const fill = tpl.querySelector('.progress-fill');// Holt das Fortschrittsfüll-Element
-  const pct  = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;// Berechnet den Fortschrittsprozentsatz
-  fill.style.width = pct + '%';// Setzt die Breite des Füll-Elements
-  tpl.querySelector('.subtasks').textContent = `${t.subtasksDone}/${t.subtasksTotal} Subtasks`;// Setzt den Subtask-Text
+  const h3 = tpl.querySelector('h3');
+  if (h3) h3.textContent = t.title;
 
-  return tpl;// Gibt das gerenderte Template zurück
+  const p = tpl.querySelector('p');
+  if (p) p.textContent = t.description;
+
+  const fill = tpl.querySelector('.progress-fill');
+  if (fill) {
+    const pct = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;
+    fill.style.width = pct + '%';
+  }
+
+  const st = tpl.querySelector('.subtasks');
+  if (st) st.textContent = `${t.subtasksDone}/${t.subtasksTotal} Subtasks`;
+
+  return tpl;
 }
 
+function render() {
+  Object.values(nameOfTheCard).forEach(({ id }) => document.getElementById(id)?.replaceChildren());
 
+  for (const t of tasks) {
+    const host = document.getElementById(nameOfTheCard[t.status]?.id);
+    if (host) host.appendChild(renderCard(t));
+  }
 
-
-function appendCardToColumn(task){// Fügt eine Karte zu der entsprechenden Spalte hinzu
-  const byStatus = {// Mapping von Status zu Spalten-ID
-    'todo':'drag-area-todo',
-    'in-progress':'drag-area-in-progress',
-    'await-feedback':'drag-area-await-feedback',
-    'done':'drag-area-done'
-  };
-  const host = document.getElementById(byStatus[task.status]);// Hol die Spalte anhand des Status
-  if (!host) return;// Wenn die Spalte nicht existiert, überspringen
-  host.querySelector('.empty-pill')?.remove();// Entferne den leere Hinweis, falls vorhanden
-  host.appendChild(renderCard(task));// Karte rendern und hinzufügen
+  for (const { id, empty } of Object.values(nameOfTheCard)) {
+    const col = document.getElementById(id);
+    if (col && !col.children.length) col.innerHTML = `<div class="empty-pill">${empty}</div>`;
+  }
+  requestAnimationFrame(afterRender);
 }
 
-function render(){// Rendert alle Aufgaben auf dem Board
-  Object.values(nameOfTheCard).forEach(({ id }) => {// Alle Spalten leeren
-    const el = document.getElementById(id);// Hol die Spalte
-    el.querySelectorAll('.task-card').forEach(n => n.remove());
+function afterRender() {
+  document.querySelectorAll('.task-card').forEach(card => {
+    const task = tasks.find(t => t.id == card.id.replace('card-', ''));
+    if (!task) return;
 
-  });
+    const assBox = card.querySelector('.assignees');
+    if (assBox) {
+      assBox.innerHTML = (task.assignedTo || []).map(p => {
+        if (p.img) return `<img src="${p.img}" class="assigned-to-picture" alt="${p.name}">`;
+        const initials = p.name.split(/\s+/).filter(Boolean).slice(0,2).map(n=>n[0]?.toUpperCase()||'').join('');
+        return `<span class="assigned-to-initials" title="${p.name}">${initials}</span>`;
+      }).join('');
+    }
 
-
-  tasks.forEach(t => {// Jede Aufgabe in die richtige Spalte einfügen
-    const col = nameOfTheCard[t.status];// Spalte anhand des Status finden
-    if (!col) return;// Wenn kein Status gefunden, überspringen
-    const host = document.getElementById(col.id);// Hol die Spalte
-    if (!host) return;// Wenn die Spalte nicht existiert, überspringen
-    host.appendChild(renderCard(t)); // Karte rendern und hinzufügen
-  });
-
-
-  Object.values(nameOfTheCard).forEach(({ id, empty }) => {// Leere Spalten mit Hinweis füllen
-    const el = document.getElementById(id);// Hol die Spalte
-    if (el && el.children.length === 0) {// Wenn die Spalte leer ist
-      el.innerHTML = `<div class="empty-pill">${empty}</div>`;// Füge den Hinweis hinzu
+    const pill = card.querySelector('.priority-pill');
+    if (pill) {
+      const pr = (task.priority || 'low').toLowerCase();
+      pill.innerHTML = `<img src="${PRIO_ICON[pr] || PRIO_ICON.low}" alt="${pr}" class="prio-icon">`;
     }
   });
 }
 
-
-window.onload = render;// Initiales Rendern der Aufgaben
-
-
-function openAddTask(){// Öffnet das Add Task Side Panel
-  const overlay = document.getElementById('addtask-overlay');// Hol das Overlay Element
-  const content = document.getElementById('addtask-content');// Hol das Content Element
-  // load scoped CSS for Add Task to avoid global overrides
-  loadAddTaskCss();
-  content.innerHTML = getAddTaskTemplate();  // holt das HTML Template
-  overlay.classList.add('open');// Overlay öffnen
-  //document.body.style.overflow = 'hidden'; // Body scrollen verhindern
-}
-
-function closeAddTask(){// Schließt das Add Task Side Panel
-  const overlay = document.getElementById('addtask-overlay');// Hol das Overlay Element
-  overlay.classList.remove('open');// Overlay schließen
-  //document.body.style.overflow = '';// Body scrollen erlauben
-  setTimeout(() => {// Warte bis die Animation fertig ist
-    document.getElementById('addtask-content').innerHTML = '';// Inhalt leeren
-    // remove add task css after closing so board styles are not affected
-    unloadAddTaskCss();
-  }, 300);// 300ms entspricht der CSS-Übergangszeit
-}
-
-// Dynamically load/unload the Add Task CSS (scoped)
-function loadAddTaskCss(){
-  if (document.getElementById('addtask-css')) return;
-  const link = document.createElement('link');
-  link.id = 'addtask-css';
-  link.rel = 'stylesheet';
-  // path relative to board.html (board_code)
-  link.href = './addTask_template.css';
-  document.head.appendChild(link);
-}
-
-function unloadAddTaskCss(){
-  const el = document.getElementById('addtask-css');
-  if (el) el.remove();
-}
-
-
-function closeTaskModal() {// Schließt das Task-Modal
-  const overlay = document.getElementById('task-modal');// Hol das Modal Element
-  if (overlay) overlay.style.display = 'none';// Modal ausblenden
-  document.body.style.overflow = '';// Body scrollen erlauben
-}
-
-
-
-
-function searchTasks() {
-  const textofSearch = getSearchText();       // holt den Text aus dem Suchfeld
-  if (textofSearch === '') 
-    return resetSearch(); 
-
-  const found = findTasks(textofSearch);      // sucht passende Aufgaben
-  showSearchResult(found);  
-}
-
-function getSearchText() {
-  const input = document.querySelector('.board-search-input');
-  return input.value.trim().
-  toLowerCase(); // leerzeichen weg + kleinbuchstaben
-}
-
-function resetSearch() {
-  document.getElementById('search-msg').textContent = '';
-  render(); // alles wieder anzeigen
-}
-
-function findTasks(text) {
-  return tasks.filter(t =>
-    t.title.toLowerCase().includes(text) ||
-    (t.description && t.description.toLowerCase().includes(text))
-  );
-}
-
-function showSearchResult(list) {
-  const msg = document.getElementById('search-msg');
-  if (list.length === 0) {
-    msg.textContent = 'No tasks found';
-    return;
+function getBadgeClass(type) {
+  switch (String(type)) {
+    case "User Story":     return "badge-user";
+    case "Technical Task": return "badge-technical";
+    default:               return "badge-user";
   }
-  msg.textContent = ''; // Meldung löschen
-  renderFiltered(list); //  zeigen ergebnis
 }
-
-function renderFiltered(list) {
-  Object.values(nameOfTheCard).forEach(({ id }) => {
-    const nameOfTheCard = document.getElementById(id);
-    nameOfTheCard?.querySelectorAll('.task-card').forEach(n => n.remove());
-  });
-
-  list.forEach(t => {
-    const host = document.getElementById(nameOfTheCard[t.status].id);
-    host?.appendChild(renderCard(t));
-  });
-}
-
 
 window.openModalById = (id) => {
-  const task = tasks.find(x => x.id === id);
-  if (!task) return;
+  const task = tasks.find(x => x.id === id); if (!task) return;
   const modal = document.getElementById('task-modal');
-  const cart  = document.getElementById('task-modal-content');
+  const content = document.getElementById('task-modal-content');
+  if (!modal || !content) return;
 
   const isTech = String(task.type).trim().toLowerCase() === 'technical task';
-  cart.innerHTML = isTech && typeof getTechnicalTaskTemplate === 'function'
-    ? getTechnicalTaskTemplate(task) 
-    : bigCardHtml(task);              
+  const html =
+    (isTech && typeof getTechnicalTaskTemplate === 'function') ? getTechnicalTaskTemplate(task) :
+    (typeof bigCardHtml === 'function')                         ? bigCardHtml(task) :
+    fallbackModal(task);
+
+  content.innerHTML = html;
+  const s = (typeof saved !== 'undefined') ? saved[id] : null;
+  if (s) {
+    const boxes = content.querySelectorAll('.subtask-list input[type="checkbox"]');
+    boxes.forEach((b, i) => b.checked = !!s[i]);
+     if (boxes.length) updateSubtasks(id, boxes[0]);
+  }
 
   modal.style.display = 'flex';
 };
 
-
-function getBadgeClass(type) {
-  switch (type) {
-    case "User Story":
-      return "badge-user";      
-    case "Technical Task":
-      return "badge-technical";   
-  }
+function closeModal() {
+  const modal = document.getElementById('task-modal');
+  if (modal) modal.style.display = 'none';
 }
+function closeTaskModal(){ closeModal(); }
+
+function openAddTask(){
+  const overlay = document.getElementById('addtask-overlay');
+  const content = document.getElementById('addtask-content');
+  if (!overlay || !content) return;
+
+  if (!document.getElementById('addtask-css')) {
+    const link = document.createElement('link');
+    link.id = 'addtask-css';
+    link.rel = 'stylesheet';
+    link.href = './addTask_template.css'; 
+    document.head.appendChild(link);
+  }
+
+  content.innerHTML = (typeof getAddTaskTemplate === 'function')
+    ? getAddTaskTemplate()
+    : '<div style="padding:16px">AddTask-Template fehlt.</div>';
+
+  overlay.classList.add('open');
+}
+
+function closeAddTask(){
+  const overlay = document.getElementById('addtask-overlay');
+  const content = document.getElementById('addtask-content');
+  if (!overlay || !content) return;
+
+  overlay.classList.remove('open');
+  setTimeout(() => {
+    content.innerHTML = '';
+    const css = document.getElementById('addtask-css');
+    if (css) css.remove();
+  }, 300);
+}
+
+window.updateSubtasks = (id, el) => {
+  const subtaskListe = [...el.closest('.subtask-list').querySelectorAll('input[type="checkbox"]')];
+  const done = subtaskListe.filter(x=>x.checked).length, total = subtaskListe.length, percent = total ? Math.round(done/total*100) : 0;
+  const cardElement = document.getElementById('card-'+id);
+  if(cardElement){
+    cardElement.querySelector('.progress-fill').style.width = percent+'%';
+    cardElement.querySelector('.subtasks').textContent = `${done}/${total} Subtasks`;
+  }
+  saved[id] = subtaskListe.map(x=>x.checked);
+  localStorage.setItem('checks', JSON.stringify(saved));
+};
+window.onload = () => {
+  for (const [taskId, states] of Object.entries(window.saved)) {
+    const task = tasks.find(t => t.id == taskId);
+    if (task) {
+      task.subtasksTotal = states.length;
+      task.subtasksDone  = states.filter(Boolean).length;
+    }
+  }
+  render();
+};
+

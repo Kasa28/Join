@@ -89,17 +89,23 @@
     </div>
   </main>
 
- <template id="tmpl-card">
-    <div class="task-card" draggable="true">
-      <div class="badge"></div>
-      <h3 class="h3_small_text_board"></h3>
-      <p></p>
-      <div class="progress-track">
-        <div class="progress-fill"></div>
-      </div>
-      <small class="subtasks"></small>
+<template id="tmpl-card">
+  <div class="task-card" draggable="true">
+    <div class="badge"></div>
+    <h3 class="h3_small_text_board"></h3>
+    <p class="p_small_text_board"></p>
+  
+     <div class="progress-track">
+      <div class="progress-fill"></div>
     </div>
-  </template> 
+    <small class="subtasks"></small>
+
+    <div class="card-footer">
+      <div class="assignees"></div>
+      <div class="priority-pill"></div>
+    </div>
+  </div>
+</template>
 
 
   <div id="task-modal" class="modal-overlay" onclick="if(event.target===this) closeTaskModal()">
@@ -107,7 +113,6 @@
   </div> 
 
 
-  <!-- Add Task Overlay -->
   <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
     <aside id="addtask-content" class="side-panel">
     </aside>

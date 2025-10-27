@@ -42,14 +42,20 @@ function bigCardHtml(t) {
             </div>
         </div>
 
-
         <section class="task-input_user-story">
-            <p class="section-heading_user-story"><strong>Subtasks</strong></p>
-            <div>
-                <label class="label_user-story"><input type="checkbox" class="checkbox_user-story"> Implement Recipe Recommendation</label>
-                <label class="label_user-story"><input type="checkbox" class="checkbox_user-story"> Start Page Layout</label>
-            </div>
-        </section>
+         <p class="section-heading_user-story"><strong>Subtasks</strong></p>
+        <div class="subtask-list">
+       <label class="label_user-story">
+      <input type="checkbox" class="checkbox_user-story" onchange="updateSubtasks(${t.id}, this)">
+      Implement Recipe Recommendation
+      </label>
+      <label class="label_user-story">
+      <input type="checkbox" class="checkbox_user-story" onchange="updateSubtasks(${t.id}, this)">
+      Start Page Layout
+    </label>
+      </div>
+      </section>
+
 
         <div class="action-buttons_user-story">
             <div class="action-btn_user-story">
