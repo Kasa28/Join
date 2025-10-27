@@ -143,3 +143,96 @@ function getAddTaskTemplate() {
 </div>
    `;
 }
+
+function getTechnicalTaskTemplate() {
+  return `
+    <div class="main-container-technical-task">
+
+        <div class="head-bar-technical-task">
+            <div class="head-sign-technical-task">
+                <a>Technical Task</a>
+            </div>
+            <img src="../assets/img/close-blue.svg" alt="close">
+        </div>
+
+        <div class="headline-container-technical-task">
+            <h1 class="h1-technical-task">CSS Architecture Planning</h1>
+        </div>
+
+        <div class="describtion-conatainer-technical-task">
+            <p class="description-font-technical-task">define CSS naming conversations and structure.</p>
+        </div>
+
+        <div class="date-container-technical-task">
+            <a class="status-font-technical-task">Due Date:</a>
+                <a lass="date-container-technical-task">02/09/2023</a>
+        </div>
+
+        <div class="priority-container-technical-task">
+            <a class="status-font-technical-task">Priority:</a>
+            <div class="actual-priority-container-technical-task">
+                <a>Urgent</a>
+                <img src="../assets/img/Prio baja-urgent-red.svg" alt="baja">
+            </div>
+        </div>
+
+        <div class="assigned-to-container-technical-task">
+            <a class="status-font-technical-task">Assigned To:</a>
+            <div class="">
+                <div class="user-container-technical-task">
+                    <div class="user-badge-and-name">
+                        <div class="name-letter-ball-technical-task">
+                            <a class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">SM</a>
+                        </div>
+                        Sofia Müller (You)
+                    </div>
+                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                </div>
+                
+                <div class="user-container-technical-task">
+                    <div class="user-badge-and-name">
+                        <div class="name-letter-ball-technical-task">
+                            <a class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">SM</a>
+                        </div>
+                        Sofia Müller (You)
+                    </div>
+                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="subtasks-container-technical-task">
+            <a class="status-font-technical-task">Subtasks:</a>
+            <div class="subtasks-task-container-technical-task">
+                <div>
+                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                    Establish CSS Mythology
+                </div>
+            </div>
+            <div class="subtasks-task-container-technical-task">
+                <div>
+                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                    Setup Base Styles
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="delete-edit-section-technical-task">
+            <div class="delete-edit-container-technical-task">
+                <div class="delete-button-technical-task">
+                    <img src="../assets/img/delete.svg" alt="delete">
+                    <a>delete</a>
+                </div>
+                <div class="edit-button-technical-task">
+                    <img src="../assets/img/edit.svg" alt="edit">
+                    <a>edit</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  `;
+  }

@@ -9,7 +9,19 @@ const tasks = [{
   priority: "urgent",
   subtasksDone: 1,
   subtasksTotal: 2
-}];
+}
+,{
+  id: 2,
+  title: "CSS Architecture Planning",
+  description: "Define CSS naming conventions and structure.",
+  type: "Technical Task",  
+  status: "await-feedback",   
+  dueDate: "02/09/2023",
+  priority: "urgent",
+  subtasksDone: 1,
+  subtasksTotal: 2
+}
+];
 
 
 let currentDraggedId = null;// ID der aktuell gezogenen Karte
@@ -64,12 +76,13 @@ function renderCard(t){// Rendert eine einzelne Aufgabenkarte
   const tpl = document.getElementById('tmpl-card').content.cloneNode(true);// Klont die Vorlage
   const card = tpl.querySelector('.task-card');// Holt das Karten-Element
   card.id = `card-${t.id}`;// Setzt die ID der Karte
- 
   card.setAttribute('ondragstart', `onCardDragStart(event, ${t.id})`);// Drag-Start-Handler
   card.setAttribute('ondragend',   `onCardDragEnd()`);// Drag-End-Handler
   card.setAttribute('onclick',     `openModalById(${t.id})`);// Klick-Handler zum Öffnen des Modals
+  const badge = tpl.querySelector('.badge');
+  badge.textContent = t.type;
+  badge.classList.add(getBadgeClass(t.type));
 
-  tpl.querySelector('.badge').textContent = t.type;// Setzt den Typ-Badge
   tpl.querySelector('h3').textContent     = t.title;// Setzt den Titel
   tpl.querySelector('p').textContent      = t.description;// Setzt die Beschreibung
   const fill = tpl.querySelector('.progress-fill');// Holt das Fortschrittsfüll-Element
@@ -219,4 +232,29 @@ function renderFiltered(list) {
     const host = document.getElementById(nameOfTheCard[t.status].id);
     host?.appendChild(renderCard(t));
   });
+}
+
+
+window.openModalById = (id) => {
+  const task = tasks.find(x => x.id === id);
+  if (!task) return;
+  const modal = document.getElementById('task-modal');
+  const cart  = document.getElementById('task-modal-content');
+
+  const isTech = String(task.type).trim().toLowerCase() === 'technical task';
+  cart.innerHTML = isTech && typeof getTechnicalTaskTemplate === 'function'
+    ? getTechnicalTaskTemplate(task) 
+    : bigCardHtml(task);              
+
+  modal.style.display = 'flex';
+};
+
+
+function getBadgeClass(type) {
+  switch (type) {
+    case "User Story":
+      return "badge-user";      
+    case "Technical Task":
+      return "badge-technical";   
+  }
 }
