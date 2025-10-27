@@ -71,7 +71,7 @@ document.addEventListener('input', (e) => {
 
     items.forEach(item => {
       const name = item.querySelector('.assign-name-addTask_page').textContent.toLowerCase();
-      item.style.display = name.startsWith(searchValue) || searchValue === '' ? 'flex' : 'none';
+      item.style.display = name.includes(searchValue) || searchValue === '' ? 'flex' : 'none';
     });
   }
 });
