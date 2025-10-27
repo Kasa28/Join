@@ -182,7 +182,7 @@
 .task-select-addTask_page:focus-visible {
   outline: none;
   border: none;
-  border-bottom: 1px solid #d1d1d1; 
+  border-bottom: 1px solid #d1d1d1;
 }
 
 .priority-group-addTask_page {
@@ -296,7 +296,6 @@
 
 /* Checkmark */
 .assign-check-addTask_page {
-
   appearance: none;
   -webkit-appearance: none;
   width: 20px;
@@ -326,9 +325,15 @@
   transform: rotate(45deg);
 }
 
-
 .assign-item-addTask_page.selected .assign-check-addTask_page {
   visibility: visible;
+}
+
+.assign-placeholder-addTask_page {
+  color: #bfbfbf;
+  outline: none;
+  cursor: text;
+  min-width: 10px;
 }
 
 .subtask-delete-addTask_page {
@@ -341,7 +346,8 @@
   width: 24px;
   height: 24px;
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(3127%) hue-rotate(202deg) brightness(97%) contrast(101%);
+  filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(3127%)
+    hue-rotate(202deg) brightness(97%) contrast(101%);
 }
 
 .addTask-icons-addTask_page {
@@ -398,13 +404,13 @@
   border: none;
   border-bottom: 1px solid #d1d1d1;
   padding: 12px;
-  padding-right: 80px; 
+  padding-right: 80px;
   font-size: 19px;
   background-color: white;
   font-family: "Open Sans", sans-serif;
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .subtask-icons-addTask_page {
@@ -434,7 +440,7 @@
   display: none;
 }
 
-.task-subtask-addTask_page:not(:placeholder-shown) + .subtask-icons-addTask_page {
+.task-subtask-addTask_page:not(:placeholder-shown)
+  + .subtask-icons-addTask_page {
   display: flex;
 }
-
