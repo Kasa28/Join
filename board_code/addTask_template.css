@@ -229,7 +229,7 @@
   align-items: center;
   position: absolute;
   right: 16px;
-  gap: 6px;
+  gap: 2px;
   color: #4589ff;
   font-size: 20px;
   font-weight: bold;
@@ -267,7 +267,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 60px; 
+  padding-right: 75px; 
 }
 
 .task-subtask-addTask_template:not(:placeholder-shown)
