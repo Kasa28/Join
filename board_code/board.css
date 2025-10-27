@@ -120,7 +120,7 @@
   color: #fff;
   border: 0;
   border-radius: 12px;
-  padding: 16px 27px;
+  padding: 18px 32px;
   font-weight: 700;
   cursor: pointer;
   font-family: "open sans";
@@ -252,7 +252,6 @@
 
 .main-content-board .task-card .badge {
   display: inline-block;
-  background: #ff7a00;
   color: #fff;
   padding: 4px 12px;
   border-radius: 8px;
@@ -295,8 +294,6 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 120%;
-  height: 23px;
-  padding-bottom: 47px;
   color: #3f78ff;
 }
 
@@ -507,3 +504,14 @@ p {
 #task-modal-content.us-compact {
   overflow-x: hidden;
 }
+
+.badge-user {
+  background-color: #ff7a00; 
+  color: white;
+}
+
+.badge-technical {
+  background-color: #005eff;
+  color: white;
+}
+
