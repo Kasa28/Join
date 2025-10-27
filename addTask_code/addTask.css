@@ -235,10 +235,6 @@
   font-family: "Open Sans", sans-serif;
 }
 
-.assign-placeholder-addTask_page {
-  color: #bfbfbf;
-}
-
 .assign-arrow-addTask_page {
   width: 20px;
   height: 20px;
@@ -330,7 +326,7 @@
 }
 
 .assign-placeholder-addTask_page {
-  color: #bfbfbf;
+  color: black;
   outline: none;
   cursor: text;
   min-width: 10px;
