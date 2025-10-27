@@ -119,27 +119,76 @@ function getAddTaskTemplate() {
       </div>
     </section>
 
+
+
+
+
+    
+
+
     <section>
       <label for="assign" class="label-addTask_template">Assign to</label>
       <p class="section-heading-addTask_template"><strong>Asigned to</strong> (optional)</p>
       <select id="assign" class="task-select-addTask_template" name="assign">
         <option value="">Select contact to assign</option>
       </select>
-    </section>
+ 
+ <div class="assign-select-addTask_template" id="assign-select" onclick="toggleAssignDropdown(event)">
+        <span class="assign-placeholder-addTask_template">Select contact to assign</span>
+        <img src="./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu"
+          class="assign-arrow-addTask_template">
+      </div>
+
+     <div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox">
+        <div class="assign-item-addTask_template" onclick="selectAssignUser('Nils Becker')">
+          <span class="assign-avatar-addTask_template" style="background-color: #4589ff;">NB</span>
+          <span class="assign-name-addTask_template">Nils Becker</span>
+          <input type="checkbox" class="assign-check-addTask_template">
+        </div>
+
+        <div class="assign-item-addTask_template" onclick="selectAssignUser('Lara König')">
+          <span class="assign-avatar-addTask_template" style="background-color: #ff7eb6;">LK</span>
+          <span class="assign-name-addTask_template">Lara König</span>
+          <input type="checkbox" class="assign-check-addTask_template">
+        </div>
+
+        <div class="assign-item-addTask_template" onclick="selectAssignUser('Omar Said')">
+          <span class="assign-avatar-addTask_template" style="background-color: #00bfa5;">OS</span>
+          <span class="assign-name-addTask_template">Omar Said</span>
+          <input type="checkbox" class="assign-check-addTask_template">
+        </div>
+      </div>
+      </section>
+
+
+
+
+
+
+
 
     <section>
       <label for="category" class="label-addTask_template">Category</label>
       <p class="section-heading-addTask_template"><strong>Category</strong></p>
       <select id="category" class="task-select-addTask_template" name="category">
         <option value="">Select task category</option>
-      </select>
+        <option value="technical">Technical Task</option>
+        <option value="user-story">User Story</option>     
+        </select>
     </section>
 
     <section>
       <label for="subtask" class="label-addTask_template">Subtasks</label>
       <p class="section-heading-addTask_template"><strong>Subtasks</strong> (optional)</p>
-      <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
-    </section>
+      <div class="subtask-wrapper-addTask_template">
+        <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
+        <div class="subtask-icons-addTask_template">
+          <img src="../assets/img/close-blue.svg" alt="Close subtask" class="subtask-delete-addTask_template">
+          <div class="subtask-divider-addTask_template"></div>
+          <img src="../assets/img/check.svg" alt="Confirm subtask" class="subtask-check-addTask_template">
+        </div>
+      </div>
+      </section>
 
   </main>
   <div class="btn-done-wrapper-addTask_template">
@@ -152,13 +201,13 @@ function getAddTaskTemplate() {
 
 function getTechnicalTaskTemplate() {
   return `
-    <div class="main-container-technical-task">
+    <main class="main-container-technical-task">
 
         <div class="head-bar-technical-task">
             <div class="head-sign-technical-task">
-                <a>Technical Task</a>
+                <a class="a-font-style-technical-task">Technical Task</a>
             </div>
-            <img src="../assets/img/close-blue.svg" alt="close">
+            <button class="close-button-technical-task" onclick="closeAddTask()">x</button>
         </div>
 
         <div class="headline-container-technical-task">
@@ -192,7 +241,7 @@ function getTechnicalTaskTemplate() {
                         </div>
                         Sofia Müller (You)
                     </div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                    <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
                 
                 <div class="user-container-technical-task">
@@ -202,7 +251,7 @@ function getTechnicalTaskTemplate() {
                         </div>
                         Sofia Müller (You)
                     </div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
+                    <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
 
 
@@ -212,33 +261,27 @@ function getTechnicalTaskTemplate() {
         <div class="subtasks-container-technical-task">
             <a class="status-font-technical-task">Subtasks:</a>
             <div class="subtasks-task-container-technical-task">
-                <div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
-                    Establish CSS Mythology
-                </div>
+                    <div>
+                        <label class="label-font-technical-task"><input type="checkbox" class="checkbox-technical-task border-blue-technical-task"> Establish CSS Mythology</label><br>
+                        <label class="label-font-technical-task"><input type="checkbox" class="checkbox-technical-task border-blue-technical-task"> Setup Base Styles</label>
+                    </div>
             </div>
-            <div class="subtasks-task-container-technical-task">
-                <div>
-                    <img class="check-box-technical-task" src="../assets/img/Check button.svg" alt="check">
-                    Setup Base Styles
-                </div>
+            <div class="delete-edit-section-technical-task">
+            <div class="delete-edit-container-technical-task">
+                <img src="../assets/img/delete.svg" alt="Delete" class="delete-edit-icon-technical-task">
+                <span>Delete</span>
             </div>
+            <div class="separator-technical-task"></div>
+            <div class="delete-edit-container-technical-task">
+                <img src="../assets/img/edit.svg" alt="Edit" class="delete-edit-icon-technical-task">
+                <span>Edit</span>
+            </div>
+        </div>
         </div>
 
         
-        <div class="delete-edit-section-technical-task">
-            <div class="delete-edit-container-technical-task">
-                <div class="delete-button-technical-task">
-                    <img src="../assets/img/delete.svg" alt="delete">
-                    <a>delete</a>
-                </div>
-                <div class="edit-button-technical-task">
-                    <img src="../assets/img/edit.svg" alt="edit">
-                    <a>edit</a>
-                </div>
-            </div>
-        </div>
+        
 
-    </div>
+    </main>
   `;
-  }
+}

@@ -9,7 +9,7 @@
 .side-menu{
     color: #42526E;
     width: 232px;
-    height: 932px;
+    height: calc(100vh - 96px);
     border-right: solid #afafafad 2px;
 
     padding-top: 66px;
