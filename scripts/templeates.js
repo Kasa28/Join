@@ -126,25 +126,22 @@ function getAddTaskTemplate() {
       <p class="section-heading-addTask_template"><strong>Category</strong></p>
       <select id="category" class="task-select-addTask_template" name="category">
         <option value="">Select task category</option>
-      </select>
+        <option value="technical">Technical Task</option>
+        <option value="user-story">User Story</option>     
+        </select>
     </section>
 
     <section>
       <label for="subtask" class="label-addTask_template">Subtasks</label>
       <p class="section-heading-addTask_template"><strong>Subtasks</strong> (optional)</p>
-      
-      
-          <div class="subtask-wrapper-addTask_template">
-      <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
-    <div class="subtask-icons-addTask_template">
+      <div class="subtask-wrapper-addTask_template">
+        <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
+        <div class="subtask-icons-addTask_template">
           <img src="../assets/img/close-blue.svg" alt="Close subtask" class="subtask-delete-addTask_template">
           <div class="subtask-divider-addTask_template"></div>
           <img src="../assets/img/check.svg" alt="Confirm subtask" class="subtask-check-addTask_template">
         </div>
       </div>
-   
-   
-   
       </section>
 
   </main>
@@ -247,4 +244,4 @@ function getTechnicalTaskTemplate() {
 
     </div>
   `;
-  }
+}
