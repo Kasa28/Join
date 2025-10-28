@@ -123,42 +123,39 @@ function getAddTaskTemplate() {
 
 
 
-    
+    <section class="task-input-addTask_template">
+  <label for="assign" class="label-addTask_template">Assign to</label>
+  <p class="section-heading-addTask_template"><strong>Assign to</strong> (optional)</p>
+
+  <div class="assign-select-addTask_template" id="assign-select" onclick="toggleAssignDropdown(event)">
+    <span class="assign-placeholder-addTask_template">Select contact to assign</span>
+    <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" 
+         alt="Open assign menu"
+         class="assign-arrow-addTask_template">
+  </div>
+
+  <div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox">
+    <div class="assign-item-addTask_template" onclick="selectAssignUser('Nils Becker')">
+      <span class="assign-avatar-addTask_template" style="background-color: #4589ff;">NB</span>
+      <span class="assign-name-addTask_template">Nils Becker</span>
+      <input type="checkbox" class="assign-check-addTask_template">
+    </div>
+
+    <div class="assign-item-addTask_template" onclick="selectAssignUser('Lara König')">
+      <span class="assign-avatar-addTask_template" style="background-color: #ff7eb6;">LK</span>
+      <span class="assign-name-addTask_template">Lara König</span>
+      <input type="checkbox" class="assign-check-addTask_template">
+    </div>
+
+    <div class="assign-item-addTask_template" onclick="selectAssignUser('Omar Said')">
+      <span class="assign-avatar-addTask_template" style="background-color: #00bfa5;">OS</span>
+      <span class="assign-name-addTask_template">Omar Said</span>
+      <input type="checkbox" class="assign-check-addTask_template">
+    </div>
+  </div>
+</section>
 
 
-    <section>
-      <label for="assign" class="label-addTask_template">Assign to</label>
-      <p class="section-heading-addTask_template"><strong>Asigned to</strong> (optional)</p>
-      <select id="assign" class="task-select-addTask_template" name="assign">
-        <option value="">Select contact to assign</option>
-      </select>
- 
- <div class="assign-select-addTask_template" id="assign-select" onclick="toggleAssignDropdown(event)">
-        <span class="assign-placeholder-addTask_template">Select contact to assign</span>
-        <img src="./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu"
-          class="assign-arrow-addTask_template">
-      </div>
-
-     <div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox">
-        <div class="assign-item-addTask_template" onclick="selectAssignUser('Nils Becker')">
-          <span class="assign-avatar-addTask_template" style="background-color: #4589ff;">NB</span>
-          <span class="assign-name-addTask_template">Nils Becker</span>
-          <input type="checkbox" class="assign-check-addTask_template">
-        </div>
-
-        <div class="assign-item-addTask_template" onclick="selectAssignUser('Lara König')">
-          <span class="assign-avatar-addTask_template" style="background-color: #ff7eb6;">LK</span>
-          <span class="assign-name-addTask_template">Lara König</span>
-          <input type="checkbox" class="assign-check-addTask_template">
-        </div>
-
-        <div class="assign-item-addTask_template" onclick="selectAssignUser('Omar Said')">
-          <span class="assign-avatar-addTask_template" style="background-color: #00bfa5;">OS</span>
-          <span class="assign-name-addTask_template">Omar Said</span>
-          <input type="checkbox" class="assign-check-addTask_template">
-        </div>
-      </div>
-      </section>
 
 
 
