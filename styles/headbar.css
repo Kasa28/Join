@@ -41,6 +41,12 @@ header{
     box-shadow: 0 0 0 2px #ffff;
 }
 
+.guest-logo-header:hover{
+    background-color: rgba(255, 255, 255, 0.88);
+    cursor: pointer;
+}
+
+
 .img-headbar{
     width: 32px;
     height: 32px;
@@ -60,5 +66,34 @@ header{
 .g-unit{
     font-weight: 500;
     color: #005DFF;
+}
 
+
+.user-menu-container-header{
+    position: absolute;
+    top: 96px;
+    right: 0px;
+    
+}
+
+.user-menu-content-header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    height: 135px;
+    width: 181px;
+
+    padding: 11px 8px 11px 8px;
+    
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    
+}
+
+.d_none{
+    display: none;
 }

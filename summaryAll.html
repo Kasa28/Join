@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="styles/sidemenue.css">
     <link rel="stylesheet" href="styles/contacsUser.css">
 
+    <script src="./scripts/header.js"></script>
+
 </head>
-<body>
+<body onload="renderUserMenuePopupMenu()">
 
 
 
@@ -21,13 +23,15 @@
         <div class="header-right-part">
             <a class="header-font"> Kanban Project Management Tool</a>
             <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
-            <div class="guest-logo-header">
+            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
                 <a class="g-unit">G</a>
             </div>
         </div>
     </header>
 
+    <div class="d_none" id="user-menue-header">
 
+    </div>
 
 
 
