@@ -204,7 +204,7 @@ function getTechnicalTaskTemplate(t) {
             <div class="head-sign-technical-task">
                 <a class="a-font-style-technical-task">Technical Task</a>
             </div>
-            <button class="close-button-technical-task" onclick="closeAddTask()">x</button>
+            <button class="close-btn-addTask_template close-button-technical-task" onclick="closeAddTask()">x</button>
         </div>
 
         <div class="headline-container-technical-task">
