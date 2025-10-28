@@ -47,7 +47,7 @@ const prioritätIcon = {
   low:    '../assets/img/Prio baja-low.svg'
 };
 
-let currentDraggedId = null;
+let whichCardActuellDrop = null;
 
 window.allowDrop = function(event) {
   event.preventDefault();
@@ -65,7 +65,7 @@ window.removeHighlight = function(ResetCssEffect) {
   }
 };
 window.onCardDragStart = function(event, whichTaskId) {
-  currentDraggedId = whichTaskId;
+  whichCardActuellDrop = whichTaskId;
   try {
     event.dataTransfer.setData('text/plain', String(whichTaskId));
     event.dataTransfer.effectAllowed = 'move';
@@ -76,14 +76,14 @@ window.onCardDragStart = function(event, whichTaskId) {
 window.onCardDragEnd = function() {
   document.body.classList.remove('dragging'); 
 };
-window.moveTo = function(newStatus) {
-  if (currentDraggedId == null) return;
+window.moveTo = function(refreshSatus) {
+  if (whichCardActuellDrop == null) return;
 
   const taskIndex = tasks.findIndex(
-    task => task.id === currentDraggedId);
+    task => task.id === whichCardActuellDrop);
 
   if (taskIndex > -1) {
-    tasks[taskIndex].status = newStatus;
+    tasks[taskIndex].status = refreshSatus;
     render(); 
   }
 };
