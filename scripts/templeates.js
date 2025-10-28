@@ -199,7 +199,7 @@ function getAddTaskTemplate() {
    `;
 }
 
-function getTechnicalTaskTemplate() {
+function getTechnicalTaskTemplate(t) {
   return `
     <main class="main-container-technical-task">
 
@@ -253,17 +253,18 @@ function getTechnicalTaskTemplate() {
                     </div>
                     <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
-
-
             </div>
         </div>
+
+
 
         <div class="subtasks-container-technical-task">
             <a class="status-font-technical-task">Subtasks:</a>
             <div class="subtasks-task-container-technical-task">
+              <div class="subtasks-task-container-technical-task subtask-list">
                     <div>
-                        <label class="label-font-technical-task"><input type="checkbox" class="checkbox-technical-task border-blue-technical-task"> Establish CSS Mythology</label><br>
-                        <label class="label-font-technical-task"><input type="checkbox" class="checkbox-technical-task border-blue-technical-task"> Setup Base Styles</label>
+                        <label class="label-font-technical-task"><input type="checkbox" onchange="updateSubtasks(${t.id}, this)"class="checkbox-technical-task border-blue-technical-task"> Establish CSS Mythology</label><br>
+                        <label class="label-font-technical-task"><input type="checkbox"onchange="updateSubtasks(${t.id}, this)" class="checkbox-technical-task border-blue-technical-task"> Setup Base Styles</label>
                     </div>
             </div>
             <div class="delete-edit-section-technical-task">
