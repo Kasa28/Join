@@ -264,3 +264,13 @@ footer {
   cursor: not-allowed;
   box-shadow: none;
 }
+
+.span_login{
+  padding-right: 10px;
+
+}
+
+.main_login{
+  padding-top: 60px;
+
+}
