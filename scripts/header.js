@@ -2,13 +2,19 @@ function userMenuTemplate(){
 return `<div class="user-menu-container-header">
             <div class="user-menu-content-header">
                 <div>
-                        <button class="button-sidebar padding-up-down-small sidebar-font" href="">Legal Notice</button>
+                    <a href="./legal.html">
+                        <button class="button-sidebar padding-up-down-small sidebar-font">Legal Notice</button>
+                    </a>
                 </div>
                 <div>
-                        <button class="button-sidebar padding-up-down-small sidebar-font" href="">Privacy Policy</button>
+                    <a href="./privacy.html">
+                        <button class="button-sidebar padding-up-down-small sidebar-font">Privacy Policy</button>
+                    </a>
                 </div>
                 <div>
-                        <button class="button-sidebar padding-up-down-small sidebar-font" href="">Logout</button>
+                    <a href="./signUp.html">
+                        <button class="button-sidebar padding-up-down-small sidebar-font">Logout</button>
+                    </a>
                 </div>
             </div>
         </div>`

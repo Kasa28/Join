@@ -53,6 +53,12 @@ header{
     object-fit: cover;
 }
 
+.img-headbar:hover{
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+}
+
 .header-font{
     font-size: 19px;
     font-weight: 400;
