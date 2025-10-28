@@ -29,7 +29,7 @@ const tasks = [
     subtasksTotal: 2,
     assignedTo: [
       { name: "Sofia Müller", img: "../assets/img/AM2.svg" },
-      { name: "Sofia Müller", img: "../assets/img/AM2.svg" }
+      { name: "Benedikt Ziegler", img: "../assets/img/BZ.svg" }
     ]
   }
 ];
@@ -104,10 +104,8 @@ function renderCard(t) {
   }
   const h3 = tpl.querySelector('h3');
   if (h3) h3.textContent = t.title;
-
   const p = tpl.querySelector('p');
   if (p) p.textContent = t.description;
-
   const fill = tpl.querySelector('.progress-fill');
   if (fill) {
     const pct = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;
@@ -121,7 +119,6 @@ function renderCard(t) {
 
 function render() {
   Object.values(nameOfTheCard).forEach(({ id }) => document.getElementById(id)?.replaceChildren());
-
   for (const t of tasks) {
     const host = document.getElementById(nameOfTheCard[t.status]?.id);
     if (host) host.appendChild(renderCard(t));
