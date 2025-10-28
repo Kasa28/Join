@@ -41,7 +41,7 @@ const nameOfTheCard = {
   'done':           { id: 'drag-area-done',           empty: 'No task in Done' },
 };
 
-const PRIO_ICON = {
+const prioritätIcon = {
   urgent: '../assets/img/Prio baja-urgent-red.svg',
   medium: '/addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg',
   low:    '../assets/img/Prio baja-low.svg'
@@ -49,25 +49,45 @@ const PRIO_ICON = {
 
 let currentDraggedId = null;
 
-window.allowDrop = e => e.preventDefault();
-window.highlight = id => document.getElementById(id)?.classList.add('drag-highlight');
-window.removeHighlight = id => document.getElementById(id)?.classList.remove('drag-highlight');
-
-window.onCardDragStart = (e, id) => {
-  currentDraggedId = id;
-  try { e.dataTransfer.setData('text/plain', String(id)); e.dataTransfer.effectAllowed = 'move'; } catch {}
+window.allowDrop = function(event) {
+  event.preventDefault();
+};
+window.highlight = function(whoDivDragAreaTodo) {
+  const dropPlace = document.getElementById(whoDivDragAreaTodo);
+  if (dropPlace) {
+    dropPlace.classList.add('drag-highlight');
+  }
+};
+window.removeHighlight = function(ResetCssEffect) {
+  const dropPlace = document.getElementById(ResetCssEffect);
+  if (dropPlace) {
+    dropPlace.classList.remove('drag-highlight');
+  }
+};
+window.onCardDragStart = function(event, whichTaskId) {
+  currentDraggedId = whichTaskId;
+  try {
+    event.dataTransfer.setData('text/plain', String(whichTaskId));
+    event.dataTransfer.effectAllowed = 'move';
+  } catch (error) {
+  }
   document.body.classList.add('dragging');
 };
-window.onCardDragEnd = () => document.body.classList.remove('dragging');
-
-window.moveTo = statusOfCard => {
+window.onCardDragEnd = function() {
+  document.body.classList.remove('dragging'); 
+};
+window.moveTo = function(newStatus) {
   if (currentDraggedId == null) return;
-  const i = tasks.findIndex(t => t.id === currentDraggedId);
-  if (i > -1) {
-    tasks[i].status = statusOfCard;
+
+  const taskIndex = tasks.findIndex(
+    task => task.id === currentDraggedId);
+
+  if (taskIndex > -1) {
+    tasks[taskIndex].status = newStatus;
     render(); 
   }
 };
+
 
 function renderCard(t) {
   const tpl = document.getElementById('tmpl-card').content.cloneNode(true);
@@ -82,7 +102,6 @@ function renderCard(t) {
     badge.textContent = t.type;
     badge.classList.add(getBadgeClass(t.type));
   }
-
   const h3 = tpl.querySelector('h3');
   if (h3) h3.textContent = t.title;
 
@@ -94,7 +113,6 @@ function renderCard(t) {
     const pct = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;
     fill.style.width = pct + '%';
   }
-
   const st = tpl.querySelector('.subtasks');
   if (st) st.textContent = `${t.subtasksDone}/${t.subtasksTotal} Subtasks`;
 
@@ -108,7 +126,6 @@ function render() {
     const host = document.getElementById(nameOfTheCard[t.status]?.id);
     if (host) host.appendChild(renderCard(t));
   }
-
   for (const { id, empty } of Object.values(nameOfTheCard)) {
     const col = document.getElementById(id);
     if (col && !col.children.length) col.innerHTML = `<div class="empty-pill">${empty}</div>`;
@@ -133,7 +150,7 @@ function afterRender() {
     const pill = card.querySelector('.priority-pill');
     if (pill) {
       const pr = (task.priority || 'low').toLowerCase();
-      pill.innerHTML = `<img src="${PRIO_ICON[pr] || PRIO_ICON.low}" alt="${pr}" class="prio-icon">`;
+      pill.innerHTML = `<img src="${prioritätIcon[pr] || prioritätIcon.low}" alt="${pr}" class="prio-icon">`;
     }
   });
 }
@@ -187,12 +204,12 @@ function openAddTask(){
     link.href = './addTask_template.css'; 
     document.head.appendChild(link);
   }
-
   content.innerHTML = (typeof getAddTaskTemplate === 'function')
     ? getAddTaskTemplate()
     : '<div style="padding:16px">AddTask-Template fehlt.</div>';
 
   overlay.classList.add('open');
+
 }
 
 function closeAddTask(){
@@ -229,4 +246,3 @@ window.onload = () => {
   }
   render();
 };
-
