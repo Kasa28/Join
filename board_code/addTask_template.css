@@ -228,6 +228,7 @@
   background-color: white;
   cursor: pointer;
   font-family: "Open Sans", sans-serif;
+  margin-bottom: 20px;
 }
 
 .assign-arrow-addTask_template {
@@ -237,8 +238,10 @@
 }
 
 /* DROPDOWN */
+/* Grundzustand: unsichtbar */
 .assign-dropdown-addTask_template {
   display: none;
+  visibility: hidden;
   width: 100%;
   margin-top: 4px;
   background-color: #ffffff;
@@ -248,6 +251,11 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   max-height: 200px;
   overflow-y: auto;
+}
+
+/* Wenn geöffnet (per JS auf display:block gesetzt) */
+.assign-dropdown-addTask_template[style*="block"] {
+  visibility: visible;
 }
 
 .assign-item-addTask_template {
@@ -276,6 +284,7 @@
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.5px;
+  font-family: "open sans";
 }
 
 /* Name */
@@ -283,6 +292,7 @@
   flex: 1;
   font-size: 16px;
   color: #42526e;
+  font-family: "open sans";
 }
 
 /* Checkmark */
@@ -389,7 +399,6 @@
   flex-direction: column;
   gap: 8px;
   width: 416px;
-  height: 107px;
 }
 
 .task-subtask-addTask_template:not(:placeholder-shown)
