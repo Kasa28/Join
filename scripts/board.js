@@ -29,7 +29,7 @@ const tasks = [
     subtasksTotal: 2,
     assignedTo: [
       { name: "Sofia Müller", img: "../assets/img/AM2.svg" },
-      { name: "Sofia Müller", img: "../assets/img/AM2.svg" }
+      { name: "Benedikt Ziegler", img: "../assets/img/BZ.svg" }
     ]
   }
 ];
@@ -47,7 +47,7 @@ const prioritätIcon = {
   low:    '../assets/img/Prio baja-low.svg'
 };
 
-let currentDraggedId = null;
+let whichCardActuellDrop = null;
 
 window.allowDrop = function(event) {
   event.preventDefault();
@@ -65,7 +65,7 @@ window.removeHighlight = function(ResetCssEffect) {
   }
 };
 window.onCardDragStart = function(event, whichTaskId) {
-  currentDraggedId = whichTaskId;
+  whichCardActuellDrop = whichTaskId;
   try {
     event.dataTransfer.setData('text/plain', String(whichTaskId));
     event.dataTransfer.effectAllowed = 'move';
@@ -76,14 +76,14 @@ window.onCardDragStart = function(event, whichTaskId) {
 window.onCardDragEnd = function() {
   document.body.classList.remove('dragging'); 
 };
-window.moveTo = function(newStatus) {
-  if (currentDraggedId == null) return;
+window.moveTo = function(refreshSatus) {
+  if (whichCardActuellDrop == null) return;
 
   const taskIndex = tasks.findIndex(
-    task => task.id === currentDraggedId);
+    task => task.id === whichCardActuellDrop);
 
   if (taskIndex > -1) {
-    tasks[taskIndex].status = newStatus;
+    tasks[taskIndex].status = refreshSatus;
     render(); 
   }
 };
@@ -104,10 +104,8 @@ function renderCard(t) {
   }
   const h3 = tpl.querySelector('h3');
   if (h3) h3.textContent = t.title;
-
   const p = tpl.querySelector('p');
   if (p) p.textContent = t.description;
-
   const fill = tpl.querySelector('.progress-fill');
   if (fill) {
     const pct = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;
@@ -121,7 +119,6 @@ function renderCard(t) {
 
 function render() {
   Object.values(nameOfTheCard).forEach(({ id }) => document.getElementById(id)?.replaceChildren());
-
   for (const t of tasks) {
     const host = document.getElementById(nameOfTheCard[t.status]?.id);
     if (host) host.appendChild(renderCard(t));

@@ -246,7 +246,7 @@ function getTechnicalTaskTemplate(t) {
                         <div class="name-letter-ball-technical-task">
                             <a class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">SM</a>
                         </div>
-                        Sofia Müller (You)
+                        Benedikt Ziegler
                     </div>
                     <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
@@ -257,8 +257,7 @@ function getTechnicalTaskTemplate(t) {
 
         <div class="subtasks-container-technical-task">
             <a class="status-font-technical-task">Subtasks:</a>
-            <div class="subtasks-task-container-technical-task">
-              <div class="subtasks-task-container-technical-task subtask-list">
+            <div class="subtasks-task-container-technical-task subtask-list" >
                     <div>
                         <label class="label-font-technical-task"><input type="checkbox" onchange="updateSubtasks(${t.id}, this)"class="checkbox-technical-task border-blue-technical-task"> Establish CSS Mythology</label><br>
                         <label class="label-font-technical-task"><input type="checkbox"onchange="updateSubtasks(${t.id}, this)" class="checkbox-technical-task border-blue-technical-task"> Setup Base Styles</label>
