@@ -204,6 +204,7 @@ footer {
   justify-content: center;
   align-items: center;
   gap: 18px;
+  padding-bottom: 18px;
 }
 
 .footer_info a {
