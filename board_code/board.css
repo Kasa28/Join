@@ -543,3 +543,19 @@
   transition: width .3s ease;
   border-radius: inherit;
 }
+
+.msg-red {
+  color: #d00000;
+  font-weight: 500;
+}
+
+.msg-green {
+  color: #0a820a;
+  font-weight: 500;
+}
+
+#search-msg{
+  font-size:14px;
+  margin-top:6px;
+  padding-left: 25px;
+}

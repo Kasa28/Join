@@ -1,5 +1,7 @@
+
 window.saved = JSON.parse(localStorage.getItem('checks') || '{}');
-const saved = window.saved; 
+const saved = window.saved;
+
 const tasks = [
   {
     id: 1,
@@ -34,6 +36,9 @@ const tasks = [
   }
 ];
 
+let whichCardActuellDrop = null;
+let searchQuery = '';
+
 const nameOfTheCard = {
   'todo':           { id: 'drag-area-todo',           empty: 'No tasks To do' },
   'in-progress':    { id: 'drag-area-in-progress',    empty: 'No tasks in Progress' },
@@ -41,53 +46,81 @@ const nameOfTheCard = {
   'done':           { id: 'drag-area-done',           empty: 'No task in Done' },
 };
 
+
 const prioritätIcon = {
   urgent: '../assets/img/Prio baja-urgent-red.svg',
   medium: '/addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg',
   low:    '../assets/img/Prio baja-low.svg'
 };
 
-let whichCardActuellDrop = null;
+window.searchTasks = function () {
+  const input = document.getElementById('board-search');
+  const msg   = document.getElementById('search-msg');
+  searchQuery = (input?.value || '').trim().toLowerCase();
+  render(); 
+  if (!msg) return;
+  if (!searchQuery) { 
+    msg.textContent = ''; 
+    msg.className = ''; 
+    return; 
+  }
+  const count = document.querySelectorAll('.task-card').length;
+  msg.textContent = (count === 0)
+    ? 'Keine Treffer.'
+    : (count === 1)
+      ? '1 Treffer.'
+      : count + ' Treffer.';
+  msg.className = (count === 0) ? 'msg-red' : 'msg-green';
+};
 
-window.allowDrop = function(event) {
-  event.preventDefault();
+function matchesSearch(t) {
+  if (!searchQuery) return true;
+  const title = String(t.title||'').toLowerCase();
+  const desc  = String(t.description||'').toLowerCase();
+  const type  = String(t.type||'').toLowerCase();
+  const prio  = String(t.priority||'').toLowerCase();
+  const ass   = (t.assignedTo||[])
+                  .map(p => String(p.name||'').toLowerCase())
+                  .join(' ');
+  const idStr = String(t.id);
+  return (
+    title.includes(searchQuery) ||
+    desc.includes(searchQuery)  ||
+    type.includes(searchQuery)  ||
+    prio.includes(searchQuery)  ||
+    ass.includes(searchQuery)   ||
+    idStr.includes(searchQuery)
+  );
+}
+
+window.allowDrop = function(event) { event.preventDefault(); };
+window.highlight = function(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('drag-highlight');
 };
-window.highlight = function(whoDivDragAreaTodo) {
-  const dropPlace = document.getElementById(whoDivDragAreaTodo);
-  if (dropPlace) {
-    dropPlace.classList.add('drag-highlight');
-  }
-};
-window.removeHighlight = function(ResetCssEffect) {
-  const dropPlace = document.getElementById(ResetCssEffect);
-  if (dropPlace) {
-    dropPlace.classList.remove('drag-highlight');
-  }
+window.removeHighlight = function(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('drag-highlight');
 };
 window.onCardDragStart = function(event, whichTaskId) {
   whichCardActuellDrop = whichTaskId;
   try {
     event.dataTransfer.setData('text/plain', String(whichTaskId));
     event.dataTransfer.effectAllowed = 'move';
-  } catch (error) {
-  }
+  } catch (e) {}
   document.body.classList.add('dragging');
 };
 window.onCardDragEnd = function() {
-  document.body.classList.remove('dragging'); 
+  document.body.classList.remove('dragging');
 };
-window.moveTo = function(refreshSatus) {
+window.moveTo = function(newStatus) {
   if (whichCardActuellDrop == null) return;
-
-  const taskIndex = tasks.findIndex(
-    task => task.id === whichCardActuellDrop);
-
-  if (taskIndex > -1) {
-    tasks[taskIndex].status = refreshSatus;
-    render(); 
+  const idx = tasks.findIndex(t => t.id === whichCardActuellDrop);
+  if (idx > -1) {
+    tasks[idx].status = newStatus;
+    render();
   }
 };
-
 
 function renderCard(t) {
   const tpl = document.getElementById('tmpl-card').content.cloneNode(true);
@@ -106,6 +139,7 @@ function renderCard(t) {
   if (h3) h3.textContent = t.title;
   const p = tpl.querySelector('p');
   if (p) p.textContent = t.description;
+
   const fill = tpl.querySelector('.progress-fill');
   if (fill) {
     const pct = t.subtasksTotal ? Math.round(t.subtasksDone / t.subtasksTotal * 100) : 0;
@@ -118,15 +152,24 @@ function renderCard(t) {
 }
 
 function render() {
-  Object.values(nameOfTheCard).forEach(({ id }) => document.getElementById(id)?.replaceChildren());
+  Object.values(nameOfTheCard).forEach(({ id }) =>
+    document.getElementById(id)?.replaceChildren()
+  );
+
   for (const t of tasks) {
+    if (!matchesSearch(t)) continue; 
+
     const host = document.getElementById(nameOfTheCard[t.status]?.id);
     if (host) host.appendChild(renderCard(t));
   }
+
   for (const { id, empty } of Object.values(nameOfTheCard)) {
     const col = document.getElementById(id);
-    if (col && !col.children.length) col.innerHTML = `<div class="empty-pill">${empty}</div>`;
+    if (col && !col.children.length) {
+      col.innerHTML = `<div class="empty-pill">${empty}</div>`;
+    }
   }
+
   requestAnimationFrame(afterRender);
 }
 
@@ -139,7 +182,8 @@ function afterRender() {
     if (assBox) {
       assBox.innerHTML = (task.assignedTo || []).map(p => {
         if (p.img) return `<img src="${p.img}" class="assigned-to-picture" alt="${p.name}">`;
-        const initials = p.name.split(/\s+/).filter(Boolean).slice(0,2).map(n=>n[0]?.toUpperCase()||'').join('');
+        const initials = p.name.split(/\s+/).filter(Boolean).slice(0,2)
+                          .map(n=>n[0]?.toUpperCase()||'').join('');
         return `<span class="assigned-to-initials" title="${p.name}">${initials}</span>`;
       }).join('');
     }
@@ -173,11 +217,12 @@ window.openModalById = (id) => {
     fallbackModal(task);
 
   content.innerHTML = html;
+
   const s = (typeof saved !== 'undefined') ? saved[id] : null;
   if (s) {
     const boxes = content.querySelectorAll('.subtask-list input[type="checkbox"]');
     boxes.forEach((b, i) => b.checked = !!s[i]);
-     if (boxes.length) updateSubtasks(id, boxes[0]);
+    if (boxes.length) updateSubtasks(id, boxes[0]);
   }
 
   modal.style.display = 'flex';
@@ -198,7 +243,7 @@ function openAddTask(){
     const link = document.createElement('link');
     link.id = 'addtask-css';
     link.rel = 'stylesheet';
-    link.href = './addTask_template.css'; 
+    link.href = './addTask_template.css';
     document.head.appendChild(link);
   }
   content.innerHTML = (typeof getAddTaskTemplate === 'function')
@@ -206,7 +251,6 @@ function openAddTask(){
     : '<div style="padding:16px">AddTask-Template fehlt.</div>';
 
   overlay.classList.add('open');
-
 }
 
 function closeAddTask(){
@@ -224,15 +268,22 @@ function closeAddTask(){
 
 window.updateSubtasks = (id, el) => {
   const subtaskListe = [...el.closest('.subtask-list').querySelectorAll('input[type="checkbox"]')];
-  const done = subtaskListe.filter(x=>x.checked).length, total = subtaskListe.length, percent = total ? Math.round(done/total*100) : 0;
+  const done = subtaskListe.filter(x=>x.checked).length;
+  const total = subtaskListe.length;
+  const percent = total ? Math.round(done/total*100) : 0;
+
   const cardElement = document.getElementById('card-'+id);
   if(cardElement){
-    cardElement.querySelector('.progress-fill').style.width = percent+'%';
-    cardElement.querySelector('.subtasks').textContent = `${done}/${total} Subtasks`;
+    const fill = cardElement.querySelector('.progress-fill');
+    const st   = cardElement.querySelector('.subtasks');
+    if (fill) fill.style.width = percent+'%';
+    if (st)   st.textContent = `${done}/${total} Subtasks`;
   }
+
   saved[id] = subtaskListe.map(x=>x.checked);
   localStorage.setItem('checks', JSON.stringify(saved));
 };
+
 window.onload = () => {
   for (const [taskId, states] of Object.entries(window.saved)) {
     const task = tasks.find(t => t.id == taskId);
