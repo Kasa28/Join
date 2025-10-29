@@ -10,7 +10,7 @@
     color: #42526E;
     width: 232px;
     height: calc(100vh - 96px);
-    border-right: solid #afafafad 2px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 
     padding-top: 66px;
     padding-bottom: 66px;
@@ -58,8 +58,12 @@
     text-align: left;
     width: 100%;
 
+    display: flex;         
+    align-items: center;
+    justify-content: flex-start;
 
     cursor: pointer;
+    text-decoration: none;
     background: white;
     transition: 0.2s;
 }

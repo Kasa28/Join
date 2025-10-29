@@ -12,9 +12,13 @@
     }
 
     .privacy-policy {
-      max-width: 960px;
+      width: 85%;
       margin: 0 auto;
       padding: 64px 20px 80px;
+
+      overflow: hidden;
+      overflow-y: auto;
+      height: calc(100vh - 96px);
     }
 
     .privacy-policy h1 {

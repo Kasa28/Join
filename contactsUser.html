@@ -11,68 +11,81 @@
     <link rel="stylesheet" href="styles/contacsUser.css">
     <link rel="stylesheet" href="styles/showContact.css">
 
+    <script src="./scripts/header.js"></script>
+
 </head>
-<body>
+<body onload="renderUserMenuePopupMenu()">
 
 
 
 
     <header>
-        <img class="join-logo-summary-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
+        <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
         <div class="header-right-part">
-            <a style="padding-right: 20px;"> Kanban Project Management Tool</a>
-            <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
-            <div class="guest-logo">
-                <a>G</a>
+            <a class="header-font"> Kanban Project Management Tool</a>
+            <a href="./help.html">
+                <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
+            </a>
+            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+                <a class="g-unit">G</a>
             </div>
         </div>
     </header>
 
+    <div class="d_none" id="user-menue-header">
 
+    </div>
 
 
 
 
 
     
-    
-    <maincontainer class="main-container">
-
-        <sidebar class="side-header">
-
-            <div>
-                <button class="button-sidebar display-flex-center-y">
-                    <img class="img-size-sidebar" src="./assets/img/Vector.svg" alt="Board icon">
-                    Summary
-                </button>
-                <button class="button-sidebar display-flex-center-y">
-                    <img class="img-size-sidebar" src="./assets/img/edit_square.svg" alt="Brett icon">
-                    Ad Task
-                </button>
-                <button class="button-sidebar display-flex-center-y">
-                    <img class="img-size-sidebar" src="./assets/img/Board.svg" alt="Board-2 icon">
-                    Board
-                </button>
-                <button class="button-sidebar display-flex-center-y">
-                    <img class="img-size-sidebar" src="./assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
-                    Contacts
-                </button>
-            </div>
-
-            <div class="side-header-low-section">
-                <div class="padding-up-down-small">
-                    <button class="button-sidebar padding-up-down-small" href="">Privacy Policy</button>
-                </div>
-                <div class="padding-up-down-small">
-                    <button class="button-sidebar padding-up-down-small" href="">Legal Notice</button>
-                </div>
-            </div>
-
-        </sidebar>
-
-        
+        <nav-main-container style="display: flex;">
 
 
+                <nav class="side-menu">
+
+                    <div class="sidebar-high-section-container">
+                        
+                            <a href="./summaryAll.html" class="button-sidebar">
+                                <img class="img-size-sidebar" src="./assets/img/Vector.svg" alt="Board icon">
+                                <span class="sidebar-font">Summary</span>
+                            </a>
+                        
+                            <a href="./addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
+                                <img class="img-size-sidebar" src="./assets/img/edit_square.svg" alt="Brett icon">
+                                <span class="sidebar-font">Add Task</span>
+                            </a>
+                        
+                            <a href="./board_code/board.html" class="button-sidebar display-flex-center-y">
+                                <img class="img-size-sidebar" src="./assets/img/Board.svg" alt="Board-2 icon">
+                                <span class="sidebar-font">Board</span>
+                            </a>
+
+                            <a href="./contactsUser.html" class="button-sidebar display-flex-center-y">
+                                <img class="img-size-sidebar" src="./assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
+                                <span class="sidebar-font">Contacts</span>
+                            </a>
+
+                    </div>
+
+                     <div class="sidebar-low-section-container">
+                        <div class="padding-up-down-small">
+                            <a class="button-sidebar padding-up-down-small" href="./privacy.html">
+                                <span  class="sidebar-font">Privacy Policy</span>
+                            </a>
+                        </div>
+                        <div class="padding-up-down-small">
+                            <a class="button-sidebar padding-up-down-small" href="./legal.html">
+                                <span  class="sidebar-font">Legal Notice</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </nav>
+
+                
 
 
 
@@ -235,12 +248,11 @@
         <!--bis hier ersetzen-->
 
 
-    </maincontainer>
+        </nav-main-container>
     
 
 
 
-    
+    <script type="module" src="./scripts/firebase.js"></script>
 </body>
 </html>
-<!--bis hier kopieren-->
