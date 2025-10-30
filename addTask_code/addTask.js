@@ -136,6 +136,40 @@ document.addEventListener("click", (e) => {
   }
 });
 
+function validateDueDate() {
+  const dueDateInput = document.getElementById('due-date');
+  const parent = dueDateInput.parentElement; // das div drumherum
+  let errorMsg = document.getElementById('due-date-error');
+
+  // Wenn Fehlermeldung noch nicht existiert → erstellen
+  if (!errorMsg) {
+    errorMsg = document.createElement('p');
+    errorMsg.id = 'due-date-error';
+    errorMsg.style.color = 'red';
+    errorMsg.style.fontSize = '14px';
+    errorMsg.style.marginTop = '4px';
+    parent.appendChild(errorMsg);
+  }
+
+  // Wenn Feld leer ist → Fehlermeldung anzeigen und Linie rot färben
+  if (dueDateInput.value.trim() === '') {
+    errorMsg.textContent = 'This field is required.';
+    dueDateInput.style.borderBottom = '1px solid red';
+  } else {
+    // Wenn Feld ausgefüllt → zurücksetzen
+    errorMsg.textContent = '';
+    dueDateInput.style.borderBottom = '1px solid #d1d1d1';
+  }
+}
+
+// Event hinzufügen, damit die Nachricht sofort beim Klick erscheint
+const dueDateInput = document.getElementById('due-date');
+dueDateInput.addEventListener('focus', validateDueDate);
+dueDateInput.addEventListener('blur', validateDueDate);
+
+// Event hinzufügen, wenn man das Feld verlässt (blur)
+document.getElementById('due-date').addEventListener('blur', validateDueDate);
+
 function setPriority(priority) {
   // Alle Buttons holen
   const urgentBtn = document.querySelector('.priority-btn-urgent-addTask_page');
