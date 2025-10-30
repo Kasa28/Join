@@ -1,6 +1,29 @@
 let selectedUsers = [];
 let isDropdownOpen = false;
 
+// === Title Validation ===
+document.addEventListener('DOMContentLoaded', () => {
+  const titleInput = document.getElementById('title');
+  if (!titleInput) return;
+
+  const errorMsg = document.getElementById('title-error');
+
+  function validateTitle() {
+    const value = titleInput.value.trim();
+
+    if (value === '') {
+      errorMsg.textContent = 'This field is required.';
+      titleInput.style.borderBottom = '1px solid red';
+    } else {
+      errorMsg.textContent = '';
+      titleInput.style.borderBottom = '1px solid #d1d1d1';
+    }
+  }
+
+  titleInput.addEventListener('blur', validateTitle);
+  titleInput.addEventListener('input', validateTitle);
+});
+
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const dropdown = document.querySelector(".assign-dropdown-addTask_page");
