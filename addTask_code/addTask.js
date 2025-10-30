@@ -150,15 +150,23 @@ function setPriority(priority) {
   mediumBtn.style.color = 'black';
   lowBtn.style.color = 'black';
 
+    // Reset icons
+    urgentBtn.querySelector('img').style.filter = '';
+    mediumBtn.querySelector('img').style.filter = 'brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)'; // orange
+    lowBtn.querySelector('img').style.filter = '';
+
   // Dann den passenden Button färben
   if (priority === 'urgent') {
-    urgentBtn.style.backgroundColor = '#ff3d00'; // dieselbe Farbe wie dein Unterstrich
+    urgentBtn.style.backgroundColor = '#ff3d00';
     urgentBtn.style.color = 'white';
+    urgentBtn.querySelector('img').style.filter = 'brightness(0) invert(1)';
   } else if (priority === 'medium') {
     mediumBtn.style.backgroundColor = '#ffa800';
     mediumBtn.style.color = 'white';
+    mediumBtn.querySelector('img').style.filter = 'brightness(0) invert(1)';
   } else if (priority === 'low') {
     lowBtn.style.backgroundColor = '#00c853';
     lowBtn.style.color = 'white';
+    lowBtn.querySelector('img').style.filter = 'brightness(0) invert(1)';
   }
 }
