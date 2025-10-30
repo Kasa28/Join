@@ -487,8 +487,11 @@
   border: 1px solid #d1d1d1;
   background-color: white;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   transition: 0.2s;
+  align-items: center;
+  display: flex
+;
 }
 
 .priority-btn-medium-addTask_page {
@@ -744,8 +747,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  padding: 6px 10px;
   padding-right: 60px;
+  line-height: 140%;
 }
 
 .subtask-list-addTask_page li::before {
