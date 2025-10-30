@@ -135,3 +135,30 @@ document.addEventListener("click", (e) => {
     arrow.style.transform = "rotate(0deg)";
   }
 });
+
+function setPriority(priority) {
+  // Alle Buttons holen
+  const urgentBtn = document.querySelector('.priority-btn-urgent-addTask_page');
+  const mediumBtn = document.querySelector('.priority-btn-medium-addTask_page');
+  const lowBtn = document.querySelector('.priority-btn-low-addTask_page');
+
+  // Erst alle zurücksetzen
+  urgentBtn.style.backgroundColor = 'white';
+  mediumBtn.style.backgroundColor = 'white';
+  lowBtn.style.backgroundColor = 'white';
+  urgentBtn.style.color = 'black';
+  mediumBtn.style.color = 'black';
+  lowBtn.style.color = 'black';
+
+  // Dann den passenden Button färben
+  if (priority === 'urgent') {
+    urgentBtn.style.backgroundColor = '#ff3d00'; // dieselbe Farbe wie dein Unterstrich
+    urgentBtn.style.color = 'white';
+  } else if (priority === 'medium') {
+    mediumBtn.style.backgroundColor = '#ffa800';
+    mediumBtn.style.color = 'white';
+  } else if (priority === 'low') {
+    lowBtn.style.backgroundColor = '#00c853';
+    lowBtn.style.color = 'white';
+  }
+}
