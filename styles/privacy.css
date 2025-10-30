@@ -19,6 +19,8 @@
       overflow: hidden;
       overflow-y: auto;
       height: calc(100vh - 96px);
+       scrollbar-width: none;     
+      -ms-overflow-style: none;  
     }
 
     .privacy-policy h1 {
