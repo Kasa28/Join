@@ -291,7 +291,9 @@ window.updateSubtasks = (id, el) => {
   localStorage.setItem('checks', JSON.stringify(saved));
 };
 
+const prevOnload = window.onload;
 window.onload = () => {
+  if (typeof prevOnload === 'function') prevOnload();
   for (const [taskId, states] of Object.entries(window.saved)) {
     const task = tasks.find(t => t.id == taskId);
     if (task) {
