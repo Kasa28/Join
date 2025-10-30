@@ -12,7 +12,7 @@ return `<div class="user-menu-container-header">
                     </a>
                 </div>
                 <div>
-                    <a class="button-sidebar padding-up-down-small" href="./signUp.html">
+                    <a class="button-sidebar padding-up-down-small" href="./login.html">
                         <span class="sidebar-font">Logout</span>
                     </a>
                 </div>

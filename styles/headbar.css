@@ -67,11 +67,14 @@ header{
     letter-spacing: 0%;
     
     color: white;
+
+    font-family: 'Open Sans';
 }
 
 .g-unit{
     font-weight: 500;
     color: #005DFF;
+    font-family: 'Open Sans';
 }
 
 

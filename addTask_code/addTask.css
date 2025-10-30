@@ -29,13 +29,18 @@
   font-style: italic;
 }
 
+.wrapper-main-task-btn-addTask_page{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .main-addTask_page {
   position: absolute;
   right: 0;
   top: 0;
-  margin-top: 96px;
   width: 448px;
-  height: 928px;
+  height: calc(100vh - 96px);
   padding: 64px 24px;
   overflow-y: auto;
   overflow-x: hidden;
