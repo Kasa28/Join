@@ -298,7 +298,7 @@ document.addEventListener('click', (e) => {
       const actions = document.createElement('div');
       actions.classList.add('subtask-actions-addTask_page');
       actions.innerHTML = `
-        <img src="../assets/img/edit-blue.svg" alt="Edit subtask" class="subtask-edit-addTask_page">
+        <img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page">
         <div class="subtask-divider-addTask_page"></div>
         <img src="../assets/img/close-blue.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
       `;
