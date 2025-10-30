@@ -272,3 +272,14 @@ function setPriority(priority) {
     lowBtn.querySelector('img').style.filter = 'brightness(0) invert(1)';
   }
 }
+
+
+// === Subtask Delete ===
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('subtask-delete-addTask_page')) {
+    const subtaskInput = document.getElementById('subtask');
+    if (subtaskInput) {
+      subtaskInput.value = '';
+    }
+  }
+});
