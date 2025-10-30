@@ -136,28 +136,84 @@ document.addEventListener("click", (e) => {
   }
 });
 
-function validateDueDate() {
-  const dueDateInput = document.getElementById('due-date');
-  const parent = dueDateInput.parentElement; // .date-field-addTask_page
-  const wrapper = dueDateInput.closest('.date-input-wrapper-addTask_page');
-  let errorMsg = wrapper.querySelector('#due-date-error');
+// === Due Date Validation & Input Formatting ===
 
-  if (dueDateInput.value.trim() === '') {
-    errorMsg.textContent = 'This field is required.';
-    parent.style.borderBottom = '1px solid red';
-  } else {
-    errorMsg.textContent = '';
-    parent.style.borderBottom = '1px solid #d1d1d1';
-  }
+// Prüft, ob das Datum dem Format dd/mm/yyyy entspricht
+function isValidDateFormat(dateString) {
+  const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+  return regex.test(dateString);
 }
 
-// Event hinzufügen, damit die Nachricht sofort beim Klick erscheint
-const dueDateInput = document.getElementById('due-date');
-dueDateInput.addEventListener('focus', validateDueDate);
-dueDateInput.addEventListener('blur', validateDueDate);
+// Bereinigt Eingaben und fügt automatisch Schrägstriche hinzu
+function sanitizeDueDateInput(e) {
+  let v = e.target.value.replace(/[^\d]/g, ''); // nur Ziffern
+  if (v.length > 8) v = v.slice(0, 8);
+  if (v.length > 4) {
+    v = v.slice(0, 2) + '/' + v.slice(2, 4) + '/' + v.slice(4);
+  } else if (v.length > 2) {
+    v = v.slice(0, 2) + '/' + v.slice(2);
+  }
+  e.target.value = v;
+}
 
-// Event hinzufügen, wenn man das Feld verlässt (blur)
-document.getElementById('due-date').addEventListener('blur', validateDueDate);
+// Hauptfunktion zur Prüfung und Anzeige von Fehlern
+function validateDueDate() {
+  const dueDateInput = document.getElementById('due-date');
+  if (!dueDateInput) return false;
+
+  const parent = dueDateInput.parentElement; // .date-field-addTask_page
+  const wrapper = dueDateInput.closest('.date-input-wrapper-addTask_page');
+  const errorMsg = wrapper.querySelector('#due-date-error');
+  const value = dueDateInput.value.trim();
+
+  if (value === '') {
+    errorMsg.textContent = 'This field is required.';
+    parent.style.borderBottom = '1px solid red';
+    return false;
+  }
+
+  if (!isValidDateFormat(value)) {
+    errorMsg.textContent = 'Please use format dd/mm/yyyy';
+    parent.style.borderBottom = '1px solid red';
+    return false;
+  }
+  
+  if (!isRealDate(value)) {
+    errorMsg.textContent = 'Please enter a valid calendar date';
+    parent.style.borderBottom = '1px solid red';
+    return false;
+  }
+
+  // Alles ok → Fehler zurücksetzen
+  errorMsg.textContent = '';
+  parent.style.borderBottom = '1px solid #d1d1d1';
+  return true;
+}
+
+// === Event-Handling ===
+const dueDateInput = document.getElementById('due-date');
+if (dueDateInput) {
+  // Wenn der User tippt → Eingabe bereinigen und prüfen
+  dueDateInput.addEventListener('input', (e) => {
+    sanitizeDueDateInput(e);
+    validateDueDate();
+  });
+
+  // Beim Verlassen des Feldes → prüfen
+  dueDateInput.addEventListener('blur', validateDueDate);
+}
+
+// Prüft, ob das Datum tatsächlich existiert (z. B. 31/02/2025 = false)
+function isRealDate(dateString) {
+  const [day, month, year] = dateString.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+}
+
 
 function setPriority(priority) {
   // Alle Buttons holen
