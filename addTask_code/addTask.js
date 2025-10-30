@@ -135,3 +135,72 @@ document.addEventListener("click", (e) => {
     arrow.style.transform = "rotate(0deg)";
   }
 });
+
+function validateDueDate() {
+  const dueDateInput = document.getElementById('due-date');
+  const parent = dueDateInput.parentElement; // das div drumherum
+  let errorMsg = document.getElementById('due-date-error');
+
+  // Wenn Fehlermeldung noch nicht existiert → erstellen
+  if (!errorMsg) {
+    errorMsg = document.createElement('p');
+    errorMsg.id = 'due-date-error';
+    errorMsg.style.color = 'red';
+    errorMsg.style.fontSize = '14px';
+    errorMsg.style.marginTop = '4px';
+    parent.appendChild(errorMsg);
+  }
+
+  // Wenn Feld leer ist → Fehlermeldung anzeigen und Linie rot färben
+  if (dueDateInput.value.trim() === '') {
+    errorMsg.textContent = 'This field is required.';
+    dueDateInput.style.borderBottom = '1px solid red';
+  } else {
+    // Wenn Feld ausgefüllt → zurücksetzen
+    errorMsg.textContent = '';
+    dueDateInput.style.borderBottom = '1px solid #d1d1d1';
+  }
+}
+
+// Event hinzufügen, damit die Nachricht sofort beim Klick erscheint
+const dueDateInput = document.getElementById('due-date');
+dueDateInput.addEventListener('focus', validateDueDate);
+dueDateInput.addEventListener('blur', validateDueDate);
+
+// Event hinzufügen, wenn man das Feld verlässt (blur)
+document.getElementById('due-date').addEventListener('blur', validateDueDate);
+
+function setPriority(priority) {
+  // Alle Buttons holen
+  const urgentBtn = document.querySelector('.priority-btn-urgent-addTask_page');
+  const mediumBtn = document.querySelector('.priority-btn-medium-addTask_page');
+  const lowBtn = document.querySelector('.priority-btn-low-addTask_page');
+
+  // Erst alle zurücksetzen
+  urgentBtn.style.backgroundColor = 'white';
+  mediumBtn.style.backgroundColor = 'white';
+  lowBtn.style.backgroundColor = 'white';
+  urgentBtn.style.color = 'black';
+  mediumBtn.style.color = 'black';
+  lowBtn.style.color = 'black';
+
+    // Reset icons
+    urgentBtn.querySelector('img').style.filter = '';
+    mediumBtn.querySelector('img').style.filter = 'brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)'; // orange
+    lowBtn.querySelector('img').style.filter = '';
+
+  // Dann den passenden Button färben
+  if (priority === 'urgent') {
+    urgentBtn.style.backgroundColor = '#ff3d00';
+    urgentBtn.style.color = 'white';
+    urgentBtn.querySelector('img').style.filter = 'brightness(0) invert(1)';
+  } else if (priority === 'medium') {
+    mediumBtn.style.backgroundColor = '#ffa800';
+    mediumBtn.style.color = 'white';
+    mediumBtn.querySelector('img').style.filter = 'brightness(0) invert(1)';
+  } else if (priority === 'low') {
+    lowBtn.style.backgroundColor = '#00c853';
+    lowBtn.style.color = 'white';
+    lowBtn.querySelector('img').style.filter = 'brightness(0) invert(1)';
+  }
+}

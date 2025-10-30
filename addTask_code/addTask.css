@@ -208,9 +208,14 @@
   color: white;
 }
 
+.priority-btn-medium-addTask_page:hover {
+  border-bottom: 3px solid #ffa800;
+}
+
 .priority-btn-addTask_page:hover {
   background-color: #e6e6e6;
 }
+
 .priority-btn-urgent-addTask_page:hover {
   border-bottom: 3px solid #ff3d00;
 }
