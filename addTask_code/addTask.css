@@ -126,6 +126,8 @@
   position: relative;
   display: inline-block;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .date-field-addTask_page {
@@ -142,6 +144,12 @@
   padding: 12px;
   font-size: 19px;
   font-family: "Open Sans", sans-serif;
+}
+
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 .event-icon-addTask_page {

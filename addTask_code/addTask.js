@@ -138,27 +138,16 @@ document.addEventListener("click", (e) => {
 
 function validateDueDate() {
   const dueDateInput = document.getElementById('due-date');
-  const parent = dueDateInput.parentElement; // das div drumherum
-  let errorMsg = document.getElementById('due-date-error');
+  const parent = dueDateInput.parentElement; // .date-field-addTask_page
+  const wrapper = dueDateInput.closest('.date-input-wrapper-addTask_page');
+  let errorMsg = wrapper.querySelector('#due-date-error');
 
-  // Wenn Fehlermeldung noch nicht existiert → erstellen
-  if (!errorMsg) {
-    errorMsg = document.createElement('p');
-    errorMsg.id = 'due-date-error';
-    errorMsg.style.color = 'red';
-    errorMsg.style.fontSize = '14px';
-    errorMsg.style.marginTop = '4px';
-    parent.appendChild(errorMsg);
-  }
-
-  // Wenn Feld leer ist → Fehlermeldung anzeigen und Linie rot färben
   if (dueDateInput.value.trim() === '') {
     errorMsg.textContent = 'This field is required.';
-    dueDateInput.style.borderBottom = '1px solid red';
+    parent.style.borderBottom = '1px solid red';
   } else {
-    // Wenn Feld ausgefüllt → zurücksetzen
     errorMsg.textContent = '';
-    dueDateInput.style.borderBottom = '1px solid #d1d1d1';
+    parent.style.borderBottom = '1px solid #d1d1d1';
   }
 }
 
