@@ -294,8 +294,27 @@ document.addEventListener('click', (e) => {
     if (value !== '') {
       const li = document.createElement('li');
       li.textContent = value;
+
+      const actions = document.createElement('div');
+      actions.classList.add('subtask-actions-addTask_page');
+      actions.innerHTML = `
+        <img src="../assets/img/edit-blue.svg" alt="Edit subtask" class="subtask-edit-addTask_page">
+        <div class="subtask-divider-addTask_page"></div>
+        <img src="../assets/img/close-blue.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
+      `;
+      li.appendChild(actions);
+
       subtaskList.appendChild(li);
       subtaskInput.value = '';
     }
+  }
+});
+
+
+// === Subtask Remove ===
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('subtask-remove-addTask_page')) {
+    const li = e.target.closest('li');
+    if (li) li.remove();
   }
 });
