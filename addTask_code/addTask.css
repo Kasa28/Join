@@ -37,7 +37,7 @@
 }
 
 .main-addTask_page {
-  margin-top: 40px;
+  margin-top: 20px;
   right: 0;
   top: 0;
   width: 448px;
@@ -793,7 +793,7 @@
 .task-buttons-addTask_page {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end; /* Buttons nach unten drücken */
+  justify-content: flex-end; 
   align-items: flex-end;
   padding: 24px;
   height: calc(100vh - 96px);
@@ -801,7 +801,7 @@
 
 .btn-clear-addTask_page,
 .btn-done-addTask_page {
-  padding: 12px 24px;
+  padding: 12px 18px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -814,12 +814,17 @@
   border: 1px solid #d1d1d1;
   margin-bottom: 40px;
   margin-right: 10px;
+  height: 60px;
+  width: 120px;
 }
 
 .btn-done-addTask_page {
   background-color: #4589ff;
   color: white;
+  width: 160px;
+  height: 60px;
   margin-bottom: 40px;
+  margin-right: 40px;
 }
 
 .check-icon-addTask_page {
