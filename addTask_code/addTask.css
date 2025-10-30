@@ -39,7 +39,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  overflow: visible;
 }
 
 .task-title-addTask_page {
