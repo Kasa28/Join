@@ -226,11 +226,13 @@ window.openModalById = (id) => {
   }
 
   modal.style.display = 'flex';
+  document.body.classList.add('no-scroll');
 };
 
 function closeModal() {
   const modal = document.getElementById('task-modal');
   if (modal) modal.style.display = 'none';
+   document.body.classList.remove('no-scroll');
 }
 function closeTaskModal(){ closeModal(); }
 
@@ -246,11 +248,13 @@ function openAddTask(){
     link.href = './addTask_template.css';
     document.head.appendChild(link);
   }
+
   content.innerHTML = (typeof getAddTaskTemplate === 'function')
     ? getAddTaskTemplate()
     : '<div style="padding:16px">AddTask-Template fehlt.</div>';
 
   overlay.classList.add('open');
+  document.body.classList.add('no-scroll'); // Body still
 }
 
 function closeAddTask(){
@@ -259,12 +263,15 @@ function closeAddTask(){
   if (!overlay || !content) return;
 
   overlay.classList.remove('open');
+  document.body.classList.remove('no-scroll'); // Body wieder frei
+
   setTimeout(() => {
     content.innerHTML = '';
     const css = document.getElementById('addtask-css');
     if (css) css.remove();
   }, 300);
 }
+
 
 window.updateSubtasks = (id, el) => {
   const subtaskListe = [...el.closest('.subtask-list').querySelectorAll('input[type="checkbox"]')];
