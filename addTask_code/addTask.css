@@ -32,16 +32,18 @@
 .wrapper-main-task-btn-addTask_page{
   display: flex;
   justify-content: space-between;
+  height: calc(100vh - 96px);
   width: 100%;
 }
 
 .main-addTask_page {
-  position: absolute;
+  margin-top: 40px;
   right: 0;
   top: 0;
   width: 448px;
   height: calc(100vh - 96px);
-  padding: 64px 24px;
+  padding-left: 24px;
+  padding-right: 24px;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
@@ -658,12 +660,6 @@
   padding-left: 10px;
 }
 
-.task-buttons-addTask_page {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 50px;
-}
-
 .btn-clear-addTask_page,
 .btn-done-addTask_page {
   padding: 12px 24px;
@@ -796,8 +792,11 @@
 
 .task-buttons-addTask_page {
   display: flex;
-  justify-content: flex-end;
-  margin-right: 50px;
+  flex-direction: row;
+  justify-content: flex-end; /* Buttons nach unten drücken */
+  align-items: flex-end;
+  padding: 24px;
+  height: calc(100vh - 96px);
 }
 
 .btn-clear-addTask_page,
