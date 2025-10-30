@@ -283,3 +283,19 @@ document.addEventListener('click', (e) => {
     }
   }
 });
+
+// === Subtask Add ===
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('subtask-check-addTask_page')) {
+    const subtaskInput = document.getElementById('subtask');
+    const subtaskList = document.getElementById('subtask-list');
+    const value = subtaskInput.value.trim();
+
+    if (value !== '') {
+      const li = document.createElement('li');
+      li.textContent = value;
+      subtaskList.appendChild(li);
+      subtaskInput.value = '';
+    }
+  }
+});
