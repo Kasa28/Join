@@ -9,121 +9,204 @@
   <link rel="stylesheet" href="../styles/headbar.css">
   <link rel="stylesheet" href="../styles/sidemenue.css">
   <link rel="stylesheet" href="./addTask.css">
+
+  <script src="./scripts/header.js"></script>
+
 </head>
+<body onload="renderUserMenuePopupMenu()">
 
-<body>
 
-  <main class="main-addTask_page">
 
-    <section class="task-input-addTask_page">
-      <label for="title" class="label-addTask_page">Title</label>
-      <input type="text" id="title" class="task-title-addTask_page" name="title" placeholder="Enter a title">
-      <p id="title-error" class="error-text"></p>
-    </section>
 
-    <section class="task-input-addTask_page">
-      <label for="description" class="label-addTask_page">Description</label>
-      <p class="section-heading-addTask_page"><strong>Description</strong> (optional)</p>
-      <textarea id="description" class="task-description-addTask_page" name="description"
-        placeholder="Enter a description"></textarea>
-    </section>
+    <header>
+        <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
+        <div class="header-right-part">
+            <a class="header-font"> Kanban Project Management Tool</a>
+            <a href="../help.html">
+                <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
+            </a>
+            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+                <a class="g-unit">G</a>
+            </div>
+        </div>
+    </header>
 
-    <div class="date-input-wrapper-addTask_page">
-      <label for="due-date" class="label-addTask_page">Due date</label>
-      <p class="section-heading-addTask_page"><strong>Due date</strong></p>
-      <div class="date-field-addTask_page">
-        <input type="text" id="due-date" class="task-date-addTask_page" name="due-date" placeholder="dd/mm/yyyy">
-        <img src="./icons_addTask/separatedAddTaskIcons/event.svg">
-      </div>
-      <p id="due-date-error" class="error-text"></p>
+    <div class="d_none" id="user-menue-header">
+
     </div>
 
-    <section class="task-input-addTask_page">
-      <label class="label-addTask_page">Priority</label>
-      <p class="section-heading-addTask_page"><strong>Priority</strong></p>
-      <div class="priority-group-addTask_page">
-        <button type="button" class="priority-btn-urgent-addTask_page" onclick="setPriority('urgent')">Urgent
-          <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/urgent_icon.svg"
-            alt="urgent icon">
-        </button>
-        <button type="button" class="priority-btn-medium-addTask_page" onclick="setPriority('medium')">Medium
-          <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/sum_icon.svg"
-            alt="sum icon">
-        </button>
-        <button type="button" class="priority-btn-low-addTask_page" onclick="setPriority('low')">Low
-          <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/low_icon.svg"
-            alt="2 arrows in green showing up">
-        </button>
-      </div>
-    </section>
 
-    <section class="task-input-addTask_page">
-      <label for="assign" class="label-addTask_page">Assign to</label>
-      <p class="section-heading-addTask_page"><strong>Assign to</strong> (optional)</p>
 
-      <!-- Klickbares Feld -->
-      <div class="assign-select-addTask_page" id="assign-select" onclick="toggleAssignDropdown(event)">
-        <span class="assign-placeholder-addTask_page">Select contact to assign</span>
-        <img src="./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu"
-          class="assign-arrow-addTask_page">
-      </div>
 
-      <!-- Dropdown-Liste -->
-      <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox">
-        <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker')">
-          <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
-          <span class="assign-name-addTask_page">Nils Becker</span>
-          <input type="checkbox" class="assign-check-addTask_page">
-        </div>
 
-        <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König')">
-          <span class="assign-avatar-addTask_page" style="background-color: #ff7eb6;">LK</span>
-          <span class="assign-name-addTask_page">Lara König</span>
-          <input type="checkbox" class="assign-check-addTask_page">
-        </div>
+    
+        <nav-main-container style="display: flex;">
 
-        <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said')">
-          <span class="assign-avatar-addTask_page" style="background-color: #00bfa5;">OS</span>
-          <span class="assign-name-addTask_page">Omar Said</span>
-          <input type="checkbox" class="assign-check-addTask_page">
-        </div>
-      </div>
-    </section>
 
-    <section class="task-input-addTask_page">
-      <label for="category" class="label-addTask_page">Category</label>
-      <p class="section-heading-addTask_page"><strong>Category</strong></p>
-      <select id="category" class="task-select-addTask_page" name="category">
-        <option value="">Select task category</option>
-        <option value="technical">Technical Task</option>
-        <option value="user-story">User Story</option>
-      </select>
-    </section>
+                <nav class="side-menu">
 
-    <section class="task-input-addTask_page">
-      <label for="subtask" class="label-addTask_page">Subtasks</label>
-      <p class="section-heading-addTask_page"><strong>Subtasks</strong> (optional)</p>
+                    <div class="sidebar-high-section-container">
+                        
+                            <a href="../summaryAll.html" class="button-sidebar">
+                                <img class="img-size-sidebar" src="../assets/img/Vector.svg" alt="Board icon">
+                                <span class="sidebar-font">Summary</span>
+                            </a>
+                        
+                            <a href="../addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
+                                <img class="img-size-sidebar" src="../assets/img/edit_square.svg" alt="Brett icon">
+                                <span class="sidebar-font">Add Task</span>
+                            </a>
+                        
+                            <a href="../board_code/board.html" class="button-sidebar display-flex-center-y">
+                                <img class="img-size-sidebar" src="../assets/img/Board.svg" alt="Board-2 icon">
+                                <span class="sidebar-font">Board</span>
+                            </a>
 
-      <div class="subtask-wrapper-addTask_page">
-        <input type="text" id="subtask" class="task-subtask-addTask_page" name="subtask" placeholder="Add new subtask">
-        <div class="subtask-icons-addTask_page">
-          <img src="../assets/img/close-blue.svg" alt="Close subtask" class="subtask-delete-addTask_page">
-          <div class="subtask-divider-addTask_page"></div>
-          <img src="../assets/img/check.svg" alt="Confirm subtask" class="subtask-check-addTask_page">
-        </div>
-      </div>
-      <ul id="subtask-list" class="subtask-list-addTask_page"></ul>
-    </section>
+                            <a href="../contactsUser.html" class="button-sidebar display-flex-center-y">
+                                <img class="img-size-sidebar" src="../assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
+                                <span class="sidebar-font">Contacts</span>
+                            </a>
 
-  </main>
+                    </div>
 
-  <div class="task-buttons-addTask_page">
-    <button class="btn-clear-addTask_page" onclick="clearForm()">Clear x</button>
-    <button class="btn-done-addTask_page btn-with-svg-addTask_page" onclick="createTask()">Create Task
-      <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_page">
-    </button>
-  </div>
-  <script src="addTask.js"></script>
+                    <div class="sidebar-low-section-container">
+                        <div class="padding-up-down-small">
+                            <a class="button-sidebar padding-up-down-small" href="../privacy.html">
+                                <span  class="sidebar-font">Privacy Policy</span>
+                            </a>
+                        </div>
+                        <div class="padding-up-down-small">
+                            <a class="button-sidebar padding-up-down-small" href="../legal.html">
+                                <span  class="sidebar-font">Legal Notice</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </nav>
+
+                
+
+
+
+
+                      <main class="main-addTask_page">
+
+                        <section class="task-input-addTask_page">
+                          <label for="title" class="label-addTask_page">Title</label>
+                          <input type="text" id="title" class="task-title-addTask_page" name="title" placeholder="Enter a title">
+                          <p id="title-error" class="error-text"></p>
+                        </section>
+
+                        <section class="task-input-addTask_page">
+                          <label for="description" class="label-addTask_page">Description</label>
+                          <p class="section-heading-addTask_page"><strong>Description</strong> (optional)</p>
+                          <textarea id="description" class="task-description-addTask_page" name="description"
+                            placeholder="Enter a description"></textarea>
+                        </section>
+
+                        <div class="date-input-wrapper-addTask_page">
+                          <label for="due-date" class="label-addTask_page">Due date</label>
+                          <p class="section-heading-addTask_page"><strong>Due date</strong></p>
+                          <div class="date-field-addTask_page">
+                            <input type="text" id="due-date" class="task-date-addTask_page" name="due-date" placeholder="dd/mm/yyyy">
+                            <img src="./icons_addTask/separatedAddTaskIcons/event.svg">
+                          </div>
+                          <p id="due-date-error" class="error-text"></p>
+                        </div>
+
+                        <section class="task-input-addTask_page">
+                          <label class="label-addTask_page">Priority</label>
+                          <p class="section-heading-addTask_page"><strong>Priority</strong></p>
+                          <div class="priority-group-addTask_page">
+                            <button type="button" class="priority-btn-urgent-addTask_page" onclick="setPriority('urgent')">Urgent
+                              <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/urgent_icon.svg"
+                                alt="urgent icon">
+                            </button>
+                            <button type="button" class="priority-btn-medium-addTask_page" onclick="setPriority('medium')">Medium
+                              <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/sum_icon.svg"
+                                alt="sum icon">
+                            </button>
+                            <button type="button" class="priority-btn-low-addTask_page" onclick="setPriority('low')">Low
+                              <img class="addTask-icons-addTask_page" src="./icons_addTask/separatedAddTaskIcons/low_icon.svg"
+                                alt="2 arrows in green showing up">
+                            </button>
+                          </div>
+                        </section>
+
+                        <section class="task-input-addTask_page">
+                          <label for="assign" class="label-addTask_page">Assign to</label>
+                          <p class="section-heading-addTask_page"><strong>Assign to</strong> (optional)</p>
+
+                          <!-- Klickbares Feld -->
+                          <div class="assign-select-addTask_page" id="assign-select" onclick="toggleAssignDropdown(event)">
+                            <span class="assign-placeholder-addTask_page">Select contact to assign</span>
+                            <img src="./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu"
+                              class="assign-arrow-addTask_page">
+                          </div>
+
+                          <!-- Dropdown-Liste -->
+                          <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox">
+                            <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker')">
+                              <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
+                              <span class="assign-name-addTask_page">Nils Becker</span>
+                              <input type="checkbox" class="assign-check-addTask_page">
+                            </div>
+
+                            <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König')">
+                              <span class="assign-avatar-addTask_page" style="background-color: #ff7eb6;">LK</span>
+                              <span class="assign-name-addTask_page">Lara König</span>
+                              <input type="checkbox" class="assign-check-addTask_page">
+                            </div>
+
+                            <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said')">
+                              <span class="assign-avatar-addTask_page" style="background-color: #00bfa5;">OS</span>
+                              <span class="assign-name-addTask_page">Omar Said</span>
+                              <input type="checkbox" class="assign-check-addTask_page">
+                            </div>
+                          </div>
+                        </section>
+
+                        <section class="task-input-addTask_page">
+                          <label for="category" class="label-addTask_page">Category</label>
+                          <p class="section-heading-addTask_page"><strong>Category</strong></p>
+                          <select id="category" class="task-select-addTask_page" name="category">
+                            <option value="">Select task category</option>
+                            <option value="technical">Technical Task</option>
+                            <option value="user-story">User Story</option>
+                          </select>
+                        </section>
+
+                        <section class="task-input-addTask_page">
+                          <label for="subtask" class="label-addTask_page">Subtasks</label>
+                          <p class="section-heading-addTask_page"><strong>Subtasks</strong> (optional)</p>
+
+                          <div class="subtask-wrapper-addTask_page">
+                            <input type="text" id="subtask" class="task-subtask-addTask_page" name="subtask" placeholder="Add new subtask">
+                            <div class="subtask-icons-addTask_page">
+                              <img src="../assets/img/close-blue.svg" alt="Close subtask" class="subtask-delete-addTask_page">
+                              <div class="subtask-divider-addTask_page"></div>
+                              <img src="../assets/img/check.svg" alt="Confirm subtask" class="subtask-check-addTask_page">
+                            </div>
+                          </div>
+                          <ul id="subtask-list" class="subtask-list-addTask_page"></ul>
+                        </section>
+
+                      </main>
+
+                      <div class="task-buttons-addTask_page">
+                        <button class="btn-clear-addTask_page" onclick="clearForm()">Clear x</button>
+                        <button class="btn-done-addTask_page btn-with-svg-addTask_page" onclick="createTask()">Create Task
+                          <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_page">
+                        </button>
+                      </div>
+                      <script src="addTask.js"></script>
+                    </body>
+
+        </nav-main-container>
+    
+
+
+
+    <script type="module" src="./scripts/firebase.js"></script>
 </body>
-
 </html>
