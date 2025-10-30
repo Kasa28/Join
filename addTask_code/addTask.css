@@ -365,6 +365,7 @@
 }
 
 .subtask-list-addTask_page {
+  position: relative;
   margin-top: 8px;
   padding-left: 20px;
   list-style-type: disc;
@@ -373,71 +374,9 @@
   font-family: "Open Sans", sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Regular.ttf")
-    format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Bold.ttf")
-    format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Italic.ttf")
-    format("truetype");
-  font-weight: 400;
-  font-style: italic;
-}
-
-.main-addTask_page {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-top: 96px;
-  width: 448px;
-  height: 928px;
-  padding: 64px 24px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-  overflow: visible;
-}
-
-.task-title-addTask_page {
-  font-size: 22px;
-  border: none;
-  border-bottom: 1px solid #d1d1d1;
-  padding: 12px;
-  width: 100%;
-  height: 64;
-}
-
 .task-title-addTask_page::placeholder {
   color: #bfbfbf;
   opacity: 1;
-}
-
-.section-heading-addTask_page {
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: #42526e;
-  font-family: "Open Sans", sans-serif;
-  font-weight: 400;
-  font-size: 19px;
 }
 
 .task-input-addTask_page {
@@ -445,28 +384,6 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-}
-
-.task-input-addTask_page,
-.label-addTask_page {
-  font-size: 16px;
-  font-weight: 500;
-  color: white;
-}
-
-.task-description-addTask_page {
-  border: 1px solid #d1d1d1;
-  border-radius: 8px;
-  padding-top: 18px;
-  padding-left: 16px;
-  font-size: 19px;
-  background-color: white;
-  width: 100%;
-  height: 103px;
-  resize: vertical;
-  font-family: "Open Sans", sans-serif;
-  font-weight: 400;
-  line-height: 120%;
 }
 
 .task-title-addTask_page::placeholder,
@@ -483,18 +400,6 @@
 
 .task-title-addTask_page::placeholder {
   font-size: 32px;
-}
-
-.task-date-addTask_page,
-.task-select-addTask_page,
-.task-subtask-addTask_page {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid #d1d1d1;
-  border-radius: 0;
-  padding: 12px;
-  font-size: 19px;
-  background-color: white;
 }
 
 .date-input-wrapper-addTask_page {
@@ -739,14 +644,6 @@
     hue-rotate(202deg) brightness(97%) contrast(101%);
 }
 
-.subtask-list-addTask_page {
-  margin-top: 8px;
-  padding-left: 20px;
-  list-style-type: disc;
-  color: #42526e;
-  font-size: 18px;
-  font-family: "Open Sans", sans-serif;
-}
 
 .addTask-icons-addTask_page {
   align-items: center;
@@ -847,6 +744,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  padding: 6px 10px;
   padding-right: 60px;
 }
 
@@ -863,6 +761,14 @@
   right: 0;
   gap: 8px;
 }
+
+
+.subtask-list-addTask_page li:hover {
+  background-color: rgba(69, 137, 255, 0.1); 
+  border-radius: 20px;
+  cursor: pointer;
+}
+
 
 .subtask-list-addTask_page li:hover .subtask-actions-addTask_page {
   display: flex;
