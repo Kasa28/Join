@@ -5,13 +5,13 @@
     }
 
     body {
-      font-family: "Open Sans", Arial, sans-serif;
       color: #000;
       line-height: 1.6;
       background-color: #fff;
     }
 
     .privacy-policy {
+      font-family: "Open Sans", Arial, sans-serif;
       width: 85%;
       margin: 0 auto;
       padding: 64px 20px 80px;
