@@ -1,3 +1,4 @@
+templeates.js
 function bigCardHtml(t) {
   return `
  <header class="header-wrapper_user-story">
@@ -233,21 +234,21 @@ function getTechnicalTaskTemplate(t) {
             <div class="">
                 <div class="user-container-technical-task">
                     <div class="user-badge-and-name">
-                        <div class="name-letter-ball-technical-task ball-color-turquoise-technical-task">
+                        <div class="name-letter-ball-technical-task">
                             <a class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">SM</a>
                         </div>
-                          <a class="a-user-bagde-font-technical-task">Sofia Müller (You)</a>
-                        </div>
+                        Sofia Müller (You)
+                    </div>
                     <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
                 
                 <div class="user-container-technical-task">
                     <div class="user-badge-and-name">
-                        <div class="name-letter-ball-technical-task ball-color-violet-technical-task">
-                            <a class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">BZ</a>
-                      </div>
-                        <a class="a-user-bagde-font-technical-task">Benedikt Ziegler</a>
-                      </div>
+                        <div class="name-letter-ball-technical-task">
+                            <a class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">SM</a>
+                        </div>
+                        Benedikt Ziegler
+                    </div>
                     <input type="checkbox" class="checkbox-technical-task border-white-technical-task">
                 </div>
             </div>
