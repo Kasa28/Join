@@ -41,7 +41,7 @@
   right: 0;
   top: 0;
   width: 520px;
-  height: calc(100vh - 96px);
+  height: calc(100vh - 125px);
   padding-left: 24px;
   padding-right: 24px;
   overflow-y: auto;
