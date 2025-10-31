@@ -88,51 +88,51 @@
             </div>
           </form>
 
-          <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
-            Add task
-            <img src="../assets/img/Group 11.svg" alt="" aria-hidden="true" height="10px">
-          </button>
-        </div>
-      </div>
+                                  <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
+                                    Add task
+                                    <img src="../assets/img/Group 11.svg" alt="" aria-hidden="true" height="10px">
+                                  </button>
+                                </div>
+                              </div>
 
       <div id="search-msg"></div>
 
       <div class="board">
 
-        <section id="todo" aria-labelledby="todo-title">
-          <div class="name_from_card">
-            <h2 id="todo-title">To do</h2>
-            <button class="plus" type="button" aria-label="Add to To do">+</button>
-          </div>
-          <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
-            ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
-            <div class="empty-pill">No tasks To do</div>
-          </div>
-        </section>
+                                <section id="todo" aria-labelledby="todo-title">
+                                  <div class="name_from_card">
+                                    <h2 id="todo-title">To do</h2>
+                                    <button class="plus" type="button" aria-label="Add to To do">+</button>
+                                  </div>
+                                  <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
+                                    ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
+                                    <div class="empty-pill">No tasks To do</div>
+                                  </div>
+                                </section>
 
-        <section id="in-progress" aria-labelledby="in-progress-title">
-          <div class="name_from_card">
-            <h2 id="in-progress-title">In progress</h2>
-            <button class="plus" type="button" aria-label="Add to In progress">+</button>
-          </div>
-          <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
-            ondragover="allowDrop(event); highlight('drag-area-in-progress')"
-            ondragleave="removeHighlight('drag-area-in-progress')">
-            <div class="empty-pill">No tasks In progress</div>
-          </div>
-        </section>
+                                <section id="in-progress" aria-labelledby="in-progress-title">
+                                  <div class="name_from_card">
+                                    <h2 id="in-progress-title">In progress</h2>
+                                    <button class="plus" type="button" aria-label="Add to In progress">+</button>
+                                  </div>
+                                  <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
+                                    ondragover="allowDrop(event); highlight('drag-area-in-progress')"
+                                    ondragleave="removeHighlight('drag-area-in-progress')">
+                                    <div class="empty-pill">No tasks In progress</div>
+                                  </div>
+                                </section>
 
-        <section id="await-feedback" aria-labelledby="await-feedback-title">
-          <div class="name_from_card">
-            <h2 id="await-feedback-title">Await feedback</h2>
-            <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
-          </div>
-          <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
-            ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
-            ondragleave="removeHighlight('drag-area-await-feedback')">
-            <div class="empty-pill">No tasks Await feedback</div>
-          </div>
-        </section>
+                                <section id="await-feedback" aria-labelledby="await-feedback-title">
+                                  <div class="name_from_card">
+                                    <h2 id="await-feedback-title">Await feedback</h2>
+                                    <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
+                                  </div>
+                                  <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
+                                    ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
+                                    ondragleave="removeHighlight('drag-area-await-feedback')">
+                                    <div class="empty-pill">No tasks Await feedback</div>
+                                  </div>
+                                </section>
 
         <!-- DONE -->
         <section id="done" aria-labelledby="done-title">
@@ -169,16 +169,16 @@
       <div id="task-modal-content"></div>
     </div>
 
-    <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
-      <aside id="addtask-content" class="side-panel">
-      </aside>
-    </div>
-  </nav-main-container>
-  <script defer src="../scripts/header.js"></script>
-  <script src="../scripts/templeates.js"></script>
-  <script src="addTask_template.js"></script>
-  <script src="../scripts/board.js"></script>
-  <script type="module" src="../scripts/firebase.js"></script>
+                            <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
+                              <aside id="addtask-content" class="side-panel">
+                              </aside>
+                            </div>
+        </nav-main-container>
+    <script defer src="../scripts/header.js"></script>
+    <script src="../scripts/templeates.js"></script>
+    <script src="addTask_template.js"></script>
+    <script src="../scripts/board.js"></script>
+    <script type="module" src="../scripts/firebase.js"></script>
 </body>
 
 </html>
