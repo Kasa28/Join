@@ -36,6 +36,8 @@ const tasks = [
   }
 ];
 
+window.tasks = tasks;
+
 let whichCardActuellDrop = null;
 let searchQuery = '';
 
@@ -128,7 +130,11 @@ function renderCard(t) {
   card.id = `card-${t.id}`;
   card.ondragstart = e => onCardDragStart(e, t.id);
   card.ondragend = onCardDragEnd;
-  card.onclick = () => openModalById(t.id);
+  card.onclick = (event) => {
+  event.stopPropagation();
+  openModalById(Number(t.id)); 
+};
+
 
   const badge = tpl.querySelector('.badge');
   if (badge) {
@@ -303,3 +309,17 @@ window.onload = () => {
   }
   render();
 };
+
+function importNewTasksFromLocalStorage(){
+  const saved = JSON.parse(localStorage.getItem('newTasks') || '[]');
+  if (!saved.length) return;
+  window.tasks = Array.isArray(window.tasks) ? window.tasks : [];
+  for (const t of saved) {
+    t.id = Date.now() + Math.floor(Math.random()*1000);
+    window.tasks.push(t);
+  }
+  render();
+  localStorage.removeItem('newTasks');
+}
+
+window.addEventListener('load', importNewTasksFromLocalStorage);
