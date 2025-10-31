@@ -2,198 +2,183 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Board</title>
-<link rel="stylesheet" href="../styles/headbar.css">
-<link rel="stylesheet" href="./board.css">
-<link rel="stylesheet" href="./addTask_template.css">
-<link rel="stylesheet" href="./user_story_template.css">
-<link rel="stylesheet" href="../styles/board-technical.css">
-<link rel="stylesheet" href="../styles/sidemenue.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board</title>
+  <link rel="stylesheet" href="../styles/headbar.css">
+  <link rel="stylesheet" href="./board.css">
+  <link rel="stylesheet" href="./addTask_template.css">
+  <link rel="stylesheet" href="./user_story_template.css">
+  <link rel="stylesheet" href="../styles/board-technical.css">
+  <link rel="stylesheet" href="../styles/sidemenue.css">
 
 </head>
+
 <body onload="renderUserMenuePopupMenu()">
 
-    <header>
-        <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
-        <div class="header-right-part">
-            <a class="header-font"> Kanban Project Management Tool</a>
-            <a href="../help.html">
-                <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
-            </a>
-            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-                <a class="g-unit">G</a>
-            </div>
+  <header>
+    <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
+    <div class="header-right-part">
+      <a class="header-font"> Kanban Project Management Tool</a>
+      <a href="../help.html">
+        <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
+      </a>
+      <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+        <a class="g-unit">G</a>
+      </div>
+    </div>
+  </header>
+  <div class="d_none" id="user-menue-header">
+  </div>
+
+
+  <nav-main-container style="display: flex;">
+    <nav class="side-menu">
+
+      <div class="sidebar-high-section-container">
+
+        <a href="../summaryAll.html" class="button-sidebar">
+          <img class="img-size-sidebar" src="../assets/img/Vector.svg" alt="Board icon">
+          <span class="sidebar-font">Summary</span>
+        </a>
+
+        <a href="../addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
+          <img class="img-size-sidebar" src="../assets/img/edit_square.svg" alt="Brett icon">
+          <span class="sidebar-font">Add Task</span>
+        </a>
+
+        <a href="../board_code/board.html" class="button-sidebar display-flex-center-y">
+          <img class="img-size-sidebar" src="../assets/img/Board.svg" alt="Board-2 icon">
+          <span class="sidebar-font">Board</span>
+        </a>
+
+        <a href="../contactsUser.html" class="button-sidebar display-flex-center-y">
+          <img class="img-size-sidebar" src="../assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
+          <span class="sidebar-font">Contacts</span>
+        </a>
+
+      </div>
+
+      <div class="sidebar-low-section-container">
+        <div class="padding-up-down-small">
+          <a class="button-sidebar padding-up-down-small" href="../privacy.html">
+            <span class="sidebar-font">Privacy Policy</span>
+          </a>
         </div>
-    </header>
+        <div class="padding-up-down-small">
+          <a class="button-sidebar padding-up-down-small" href="../legal.html">
+            <span class="sidebar-font">Legal Notice</span>
+          </a>
+        </div>
+      </div>
+    </nav>
 
-    <div class="d_none" id="user-menue-header">
+    <main class="main-content-board" role="main">
+      <div class="main-header-wrapper" role="region" aria-label="Task Controls">
+        <div class="search-add">
+          <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault(); searchTasks()">
 
+            <div class="searchbox">
+              <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
+                oninput="searchTasks()" onsearch="searchTasks()" spellcheck="false" id="board-search">
+
+              <button class="btn-icon" type="submit" aria-label="Search">
+                <img src="./icons_addTask_template/search.svg" alt="" aria-hidden="true">
+              </button>
+            </div>
+          </form>
+
+          <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
+            Add task
+            <img src="../assets/img/Group 11.svg" alt="" aria-hidden="true" height="10px">
+          </button>
+        </div>
+      </div>
+
+      <div id="search-msg"></div>
+
+      <div class="board">
+
+        <section id="todo" aria-labelledby="todo-title">
+          <div class="name_from_card">
+            <h2 id="todo-title">To do</h2>
+            <button class="plus" type="button" aria-label="Add to To do">+</button>
+          </div>
+          <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
+            ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
+            <div class="empty-pill">No tasks To do</div>
+          </div>
+        </section>
+
+        <section id="in-progress" aria-labelledby="in-progress-title">
+          <div class="name_from_card">
+            <h2 id="in-progress-title">In progress</h2>
+            <button class="plus" type="button" aria-label="Add to In progress">+</button>
+          </div>
+          <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
+            ondragover="allowDrop(event); highlight('drag-area-in-progress')"
+            ondragleave="removeHighlight('drag-area-in-progress')">
+            <div class="empty-pill">No tasks In progress</div>
+          </div>
+        </section>
+
+        <section id="await-feedback" aria-labelledby="await-feedback-title">
+          <div class="name_from_card">
+            <h2 id="await-feedback-title">Await feedback</h2>
+            <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
+          </div>
+          <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
+            ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
+            ondragleave="removeHighlight('drag-area-await-feedback')">
+            <div class="empty-pill">No tasks Await feedback</div>
+          </div>
+        </section>
+
+        <!-- DONE -->
+        <section id="done" aria-labelledby="done-title">
+          <div class="name_from_card">
+            <h2 id="done-title">Done</h2>
+          </div>
+          <div class="column-body drag-area" id="drag-area-done" ondrop="moveTo('done')"
+            ondragover="allowDrop(event); highlight('drag-area-done')" ondragleave="removeHighlight('drag-area-done')">
+            <div class="empty-pill">No tasks Done</div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <template id="tmpl-card">
+      <div class="task-card" draggable="true">
+        <div class="badge"></div>
+        <h3 class="h3_small_text_board"></h3>
+        <p class="p_small_text_board"></p>
+
+        <div class="progress-track">
+          <div class="progress-fill"></div>
+        </div>
+        <small class="subtasks"></small>
+
+        <div class="card-footer">
+          <div class="assignees"></div>
+          <div class="priority-pill"></div>
+        </div>
+      </div>
+    </template>
+
+    <div id="task-modal" class="modal-overlay" onclick="if(event.target===this) closeTaskModal()">
+      <div id="task-modal-content"></div>
     </div>
 
-
-
-
-
-    
-        <nav-main-container style="display: flex;">
-
-
-                <nav class="side-menu">
-
-                    <div class="sidebar-high-section-container">
-                        
-                            <a href="../summaryAll.html" class="button-sidebar">
-                                <img class="img-size-sidebar" src="../assets/img/Vector.svg" alt="Board icon">
-                                <span class="sidebar-font">Summary</span>
-                            </a>
-                        
-                            <a href="../addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="../assets/img/edit_square.svg" alt="Brett icon">
-                                <span class="sidebar-font">Add Task</span>
-                            </a>
-                        
-                            <a href="../board_code/board.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="../assets/img/Board.svg" alt="Board-2 icon">
-                                <span class="sidebar-font">Board</span>
-                            </a>
-
-                            <a href="../contactsUser.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="../assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
-                                <span class="sidebar-font">Contacts</span>
-                            </a>
-
-                    </div>
-
-                     <div class="sidebar-low-section-container">
-                        <div class="padding-up-down-small">
-                            <a class="button-sidebar padding-up-down-small" href="../privacy.html">
-                                <span  class="sidebar-font">Privacy Policy</span>
-                            </a>
-                        </div>
-                        <div class="padding-up-down-small">
-                            <a class="button-sidebar padding-up-down-small" href="../legal.html">
-                                <span  class="sidebar-font">Legal Notice</span>
-                            </a>
-                        </div>
-                    </div>
-
-                </nav>
-
-                
-
-
-
-
-                            <main class="main-content-board" role="main">
-                              <div class="main-header-wrapper" role="region" aria-label="Task Controls">
-                                <div class="search-add">
-                                  <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault(); searchTasks()">
-
-                                    <div class="searchbox">
-                                      <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
-                                        oninput="searchTasks()" onsearch="searchTasks()" spellcheck="false" id="board-search">
-
-                                      <button class="btn-icon" type="submit" aria-label="Search">
-                                        <img src="./icons_addTask_template/search.svg" alt="" aria-hidden="true">
-                                      </button>
-                                    </div>
-                                  </form>
-
-                                  <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
-                                    Add task
-                                    <img src="../assets/img/Group 11.svg" alt="" aria-hidden="true" height="10px">
-                                  </button>
-                                </div>
-                              </div>
-
-                              <div id="search-msg"></div>
-
-
-                              <div class="board">
-
-                                <section id="todo" aria-labelledby="todo-title">
-                                  <div class="name_from_card">
-                                    <h2 id="todo-title">To do</h2>
-                                    <button class="plus" type="button" aria-label="Add to To do">+</button>
-                                  </div>
-                                  <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
-                                    ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
-                                    <div class="empty-pill">No tasks To do</div>
-                                  </div>
-                                </section>
-
-                                <section id="in-progress" aria-labelledby="in-progress-title">
-                                  <div class="name_from_card">
-                                    <h2 id="in-progress-title">In progress</h2>
-                                    <button class="plus" type="button" aria-label="Add to In progress">+</button>
-                                  </div>
-                                  <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
-                                    ondragover="allowDrop(event); highlight('drag-area-in-progress')"
-                                    ondragleave="removeHighlight('drag-area-in-progress')">
-                                    <div class="empty-pill">No tasks In progress</div>
-                                  </div>
-                                </section>
-
-                                <section id="await-feedback" aria-labelledby="await-feedback-title">
-                                  <div class="name_from_card">
-                                    <h2 id="await-feedback-title">Await feedback</h2>
-                                    <button class="plus" type="button" aria-label="Add to Await feedback">+</button>
-                                  </div>
-                                  <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
-                                    ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
-                                    ondragleave="removeHighlight('drag-area-await-feedback')">
-                                    <div class="empty-pill">No tasks Await feedback</div>
-                                  </div>
-                                </section>
-
-                                <!-- DONE -->
-                                <section id="done" aria-labelledby="done-title">
-                                  <div class="name_from_card">
-                                    <h2 id="done-title">Done</h2>
-                                  </div>
-                                  <div class="column-body drag-area" id="drag-area-done" ondrop="moveTo('done')"
-                                    ondragover="allowDrop(event); highlight('drag-area-done')" ondragleave="removeHighlight('drag-area-done')">
-                                    <div class="empty-pill">No tasks Done</div>
-                                  </div>
-                                </section>
-                              </div>
-                            </main>
-
-                          <template id="tmpl-card">
-                            <div class="task-card" draggable="true">
-                              <div class="badge"></div>
-                              <h3 class="h3_small_text_board"></h3>
-                              <p class="p_small_text_board"></p>
-                            
-                              <div class="progress-track">
-                                <div class="progress-fill"></div>
-                              </div>
-                              <small class="subtasks"></small>
-
-                              <div class="card-footer">
-                                <div class="assignees"></div>
-                                <div class="priority-pill"></div>
-                              </div>
-                            </div>
-                          </template>
-
-
-                            <div id="task-modal" class="modal-overlay" onclick="if(event.target===this) closeTaskModal()">
-                              <div id="task-modal-content"></div>
-                            </div> 
-
-
-                            <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
-                              <aside id="addtask-content" class="side-panel">
-                              </aside>
-                            </div>
-        </nav-main-container>
-    <script defer src="../scripts/header.js"></script>
-    <script src="../scripts/templeates.js"></script>
-    <script src="addTask_template.js"></script>
-    <script src="../scripts/board.js"></script>
-    <script type="module" src="../scripts/firebase.js"></script>
+    <div id="addtask-overlay" class="side-overlay" onclick="if(event.target===this) closeAddTask()">
+      <aside id="addtask-content" class="side-panel">
+      </aside>
+    </div>
+  </nav-main-container>
+  <script defer src="../scripts/header.js"></script>
+  <script src="../scripts/templeates.js"></script>
+  <script src="addTask_template.js"></script>
+  <script src="../scripts/board.js"></script>
+  <script type="module" src="../scripts/firebase.js"></script>
 </body>
+
 </html>

@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -29,7 +28,7 @@
   font-style: italic;
 }
 
-.wrapper-main-task-btn-addTask_page{
+.wrapper-main-task-btn-addTask_page {
   display: flex;
   justify-content: space-between;
   height: calc(100vh - 96px);
@@ -356,7 +355,6 @@
   pointer-events: none;
 }
 
-
 .subtask-delete-addTask_page {
   width: 24px;
   height: 24px;
@@ -640,7 +638,6 @@
   pointer-events: none;
 }
 
-
 .subtask-delete-addTask_page {
   width: 24px;
   height: 24px;
@@ -654,7 +651,6 @@
   filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(3127%)
     hue-rotate(202deg) brightness(97%) contrast(101%);
 }
-
 
 .addTask-icons-addTask_page {
   align-items: center;
@@ -767,13 +763,11 @@
   gap: 8px;
 }
 
-
 .subtask-list-addTask_page li:hover {
-  background-color: rgba(69, 137, 255, 0.1); 
+  background-color: rgba(69, 137, 255, 0.1);
   border-radius: 20px;
   cursor: pointer;
 }
-
 
 .subtask-list-addTask_page li:hover .subtask-actions-addTask_page {
   display: flex;
@@ -785,7 +779,6 @@
   cursor: pointer;
 }
 
-
 .addTask-icons-addTask_page {
   align-items: center;
   padding-left: 10px;
@@ -794,7 +787,7 @@
 .task-buttons-addTask_page {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   align-items: flex-end;
   padding: 24px;
   height: calc(100vh - 96px);
