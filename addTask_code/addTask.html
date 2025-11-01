@@ -15,19 +15,19 @@
 
   <header>
     <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
-      <div class="header-right-part">
+    <div class="header-right-part">
       <a class="header-font"> Kanban Project Management Tool</a>
       <a href="../help.html">
         <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo"></a>
       <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-      <a class="g-unit">G</a>
+        <a class="g-unit">G</a>
       </div>
-      </div>
+    </div>
   </header>
 
   <div class="d_none" id="user-menue-header"></div>
 
-  <nav style="display: flex;">
+  <div style="display: flex;">
     <nav class="side-menu">
       <div class="sidebar-high-section-container">
         <a href="../summaryAll.html" class="button-sidebar">
@@ -174,13 +174,11 @@
           <img src="./icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_page">
         </button>
       </div>
-
     </div>
-    <script src="addTask.js"></script>
-  </nav>
-
-  <script src="../scripts/header.js"></script>
-  <script type="module" src="./scripts/firebase.js"></script>
+  </div>
+  <script src="addTask.js" defer></script>
+  <script src="../scripts/header.js" defer></script>
+  <script type="module" src="../scripts/firebase.js"></script>
 </body>
 
 </html>
