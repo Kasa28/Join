@@ -317,3 +317,62 @@ document.addEventListener('click', (e) => {
     if (li) li.remove();
   }
 });
+
+
+// === Subtask Edit (Beginner-friendly, in-place editing) ===
+function enableSubtaskEditing(e) {
+  if (!e.target.classList.contains('subtask-edit-addTask_page')) return;
+
+  const li = e.target.closest('li');
+  if (!li) return;
+
+  const oldText = li.firstChild.textContent;
+  li.innerHTML = '';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = oldText.trim();
+  input.classList.add('task-subtask-addTask_page');
+
+  const actions = document.createElement('div');
+  actions.classList.add('subtask-actions-addTask_page');
+  actions.innerHTML = `
+    <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
+    <div class="subtask-divider-addTask_page"></div>
+    <img src="../assets/img/check.svg" alt="Save subtask" class="subtask-save-addTask_page">
+  `;
+
+  li.appendChild(input);
+  li.appendChild(actions);
+}
+
+document.addEventListener('click', enableSubtaskEditing);
+
+
+// === Subtask Save ===
+function saveEditedSubtask(e) {
+  if (!e.target.classList.contains('subtask-save-addTask_page')) return;
+
+  const li = e.target.closest('li');
+  if (!li) return;
+
+  const input = li.querySelector('input');
+  if (!input) return;
+
+  const newText = input.value.trim();
+  if (newText === '') return;
+
+  li.innerHTML = '';
+  li.textContent = newText;
+
+  const actions = document.createElement('div');
+  actions.classList.add('subtask-actions-addTask_page');
+  actions.innerHTML = `
+    <img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page">
+    <div class="subtask-divider-addTask_page"></div>
+    <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
+  `;
+  li.appendChild(actions);
+}
+
+document.addEventListener('click', saveEditedSubtask);
