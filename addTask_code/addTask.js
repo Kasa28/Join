@@ -55,27 +55,26 @@ function toggleAssignDropdown(event) {
     placeholder.textContent = "Select contact to assign";
     placeholder.style.color = "black";
   }
+  if (!isDropdownOpen) {
+    renderAssignedAvatars();
+  }
 }
 
 function selectAssignUser(name, event) {
-   // Support both cases: with inline event or without it (only name passed)
-   if (event && event.stopPropagation) event.stopPropagation();
-  checkbox.checked = !checkbox.checked;
-  item.classList.toggle("selected", checkbox.checked);
-    // Find the clicked item reliably even if no event is provided
+  if (event && event.stopPropagation) event.stopPropagation();
+
   let item = event && event.currentTarget ? event.currentTarget : null;
   if (!item) {
     const candidates = document.querySelectorAll(".assign-item-addTask_page");
     candidates.forEach((el) => {
-      const label = el
-        .querySelector(".assign-name-addTask_page")
-        .textContent.trim();
+      const label = el.querySelector(".assign-name-addTask_page").textContent.trim();
       if (!item && label === name) item = el;
     });
   }
   if (!item) return;
 
   const checkbox = item.querySelector(".assign-check-addTask_page");
+  item.classList.toggle("selected", checkbox.checked);
 
   if (checkbox.checked) {
     if (!selectedUsers.includes(name)) selectedUsers.push(name);
@@ -87,16 +86,13 @@ function selectAssignUser(name, event) {
 }
 
 function updateAssignPlaceholder() {
-  const placeholder = document.querySelector(
-    ".assign-placeholder-addTask_page"
-  );
-  if (selectedUsers.length > 0) {
-    placeholder.textContent = selectedUsers.join(", ");
-    placeholder.style.color = "#42526e";
+  const placeholder = document.querySelector(".assign-placeholder-addTask_page");
+  if (selectedUsers.length === 0) {
+    placeholder.textContent = "Select contact to assign";
+    placeholder.style.color = "black";
   } else {
      // leer lassen, CSS-Placeholder zeigt den Text
      placeholder.textContent = "";
-     placeholder.style.color = "black";
   }
 }
 
@@ -158,6 +154,29 @@ document.addEventListener("click", (e) => {
     arrow.style.transform = "rotate(0deg)";
   }
 });
+
+function renderAssignedAvatars() {
+  const container = document.getElementById('assigned-avatars');
+  if (!container) return;
+
+  container.innerHTML = ''; // vorherige löschen
+
+  selectedUsers.forEach(name => {
+    const sourceAvatar = [...document.querySelectorAll('.assign-item-addTask_page')]
+      .find(item => item.querySelector('.assign-name-addTask_page').textContent.trim() === name)
+      ?.querySelector('.assign-avatar-addTask_page');
+
+    const color = sourceAvatar ? sourceAvatar.style.backgroundColor : '#4589ff';
+    const initials = name.split(' ').map(n => n[0].toUpperCase()).join('');
+
+    const avatar = document.createElement('div');
+    avatar.textContent = initials;
+    avatar.classList.add('assign-avatar-addTask_page');
+    avatar.style.backgroundColor = color;
+
+    container.appendChild(avatar);
+  });
+}
 
 // === Due Date Validation & Input Formatting ===
 
@@ -376,3 +395,13 @@ function saveEditedSubtask(e) {
 }
 
 document.addEventListener('click', saveEditedSubtask);
+
+// Checkbox-Klick direkt behandeln
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("assign-check-addTask_page")) {
+    e.stopPropagation(); // verhindert Doppeltrigger
+    const item = e.target.closest(".assign-item-addTask_page");
+    const name = item.querySelector(".assign-name-addTask_page").textContent.trim();
+    selectAssignUser(name, e);
+  }
+});
