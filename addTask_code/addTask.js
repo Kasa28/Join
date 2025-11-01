@@ -439,3 +439,40 @@ function clearForm() {
   // Fehlermeldungen entfernen
   document.querySelectorAll('.error-text').forEach(e => e.textContent = '');
 }
+
+function createTask() {
+  // 1) Read values (very simple)
+  const title = (document.getElementById('title')?.value || '').trim();
+  if (!title) { alert('Please enter a title'); return; }
+  const description = (document.getElementById('description')?.value || '').trim();
+  const dueDate = (document.getElementById('due-date')?.value || '').trim();
+  const category = (document.getElementById('category')?.value || '').trim();
+
+  // Priority (fallback to 'medium' if nothing set)
+  const priority = (window.currentPriority || 'medium');
+
+  // Assigned users (array of names -> objects with only name; Board builds initials itself)
+  const assignedTo = (window.selectedUsers || []).map(name => ({ name }));
+  // Subtasks (count only; Board shows progress bar)
+  const subtaskItems = document.querySelectorAll('#subtask-list li');
+  const subtasksTotal = subtaskItems.length;
+  // 2) Build task object (Board will add id and place it into 'todo')
+  const task = {
+    title,
+    description,
+    dueDate,
+    priority,
+    status: 'todo',
+    type: category === 'technical' ? 'Technical Task' : 'User Story',
+    subtasksDone: 0,
+    subtasksTotal,
+    assignedTo
+  };
+  // 3) Save to localStorage for Board import
+  const saved = JSON.parse(localStorage.getItem('newTasks') || '[]');
+  saved.push(task);
+  localStorage.setItem('newTasks', JSON.stringify(saved));
+
+  // 4) Go to the Board so the thumbnail appears
+  window.location.href = '../board_code/board.html';
+}
