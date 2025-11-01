@@ -1,5 +1,5 @@
-let selectedUsers = [];
-let isDropdownOpen = false;
+window.selectedUsers = window.selectedUsers || [];
+window.isDropdownOpen = window.isDropdownOpen || false;
 
 // === Title Validation ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -450,14 +450,22 @@ function createTask() {
   const category = (document.getElementById('category')?.value || '').trim();
 
   // Priority (fallback to 'medium' if nothing set)
-  const priority = (window.currentPriority || 'medium');
+  const priority = (window.currentPriority || 'medium').toLowerCase();
 
-  // Assigned users (array of names -> objects with only name; Board builds initials itself)
-  const assignedTo = (window.selectedUsers || []).map(name => ({ name }));
+  // Assigned users (with colors)
+  const assignedTo = (window.selectedUsers || []).map(name => {
+    const sourceAvatar = [...document.querySelectorAll('.assign-item-addTask_page')]
+      .find(item => item.querySelector('.assign-name-addTask_page').textContent.trim() === name)
+      ?.querySelector('.assign-avatar-addTask_page');
+    const color = sourceAvatar ? sourceAvatar.style.backgroundColor : '#4589ff';
+    return { name, color };
+  });
+
   // Subtasks (count only; Board shows progress bar)
   const subtaskItems = document.querySelectorAll('#subtask-list li');
   const subtasksTotal = subtaskItems.length;
-  // 2) Build task object (Board will add id and place it into 'todo')
+
+  // Build task object
   const task = {
     title,
     description,
@@ -469,11 +477,12 @@ function createTask() {
     subtasksTotal,
     assignedTo
   };
-  // 3) Save to localStorage for Board import
+
+  // Save to localStorage
   const saved = JSON.parse(localStorage.getItem('newTasks') || '[]');
   saved.push(task);
   localStorage.setItem('newTasks', JSON.stringify(saved));
 
-  // 4) Go to the Board so the thumbnail appears
+  // Go to Board
   window.location.href = '../board_code/board.html';
 }

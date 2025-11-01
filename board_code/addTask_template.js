@@ -1,5 +1,5 @@
-let selectedUsers = [];
-let isDropdownOpen = false;
+window.selectedUsers = window.selectedUsers || [];
+window.isDropdownOpen = window.isDropdownOpen || false;
 
 function toggleAssignDropdown(event) {
   event.stopPropagation();
