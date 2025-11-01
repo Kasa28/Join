@@ -364,6 +364,12 @@
     hue-rotate(202deg) brightness(97%) contrast(101%);
 }
 
+.subtask-save-addTask_page {
+  filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(1500%)
+    hue-rotate(200deg) brightness(90%) contrast(95%);
+}
+
+
 .subtask-list-addTask_page {
   position: relative;
   margin-top: 8px;
@@ -492,7 +498,8 @@
   gap: 8px;
 }
 
-.subtask-list-addTask_page li:hover {
+.subtask-list-addTask_page 
+li:hover:not(:has(input)) {
   background-color: rgba(69, 137, 255, 0.1);
   border-radius: 20px;
   cursor: pointer;
@@ -506,6 +513,11 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+.subtask-edit-addTask_page {
+  filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(1500%)
+  hue-rotate(200deg) brightness(90%) contrast(95%);
 }
 
 .task-buttons-addTask_page {
