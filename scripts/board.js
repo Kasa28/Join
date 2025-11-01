@@ -210,9 +210,8 @@ function afterRender() {
     const pill = card.querySelector(".priority-pill");
     if (pill) {
       const pr = (task.priority || "low").toLowerCase();
-      pill.innerHTML = `<img src="${
-        prioritätIcon[pr] || prioritätIcon.low
-      }" alt="${pr}" class="prio-icon">`;
+      const iconSrc = task.priorityIcon || prioritätIcon[pr] || prioritätIcon.low;
+pill.innerHTML = `<img src="${iconSrc}" alt="${pr}" class="prio-icon">`;
     }
   });
 }
