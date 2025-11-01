@@ -573,3 +573,21 @@ body.no-scroll {
   overflow: hidden;    
   position: relative;    
 }
+
+/* Avatar-Initialen für zugewiesene Nutzer auf dem Board */
+.assigned-to-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: -9px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 400;
+  font-size: 12px;
+  font-family: "open sans";
+  line-height: 120%;
+}
+
+
