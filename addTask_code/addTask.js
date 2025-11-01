@@ -300,7 +300,7 @@ document.addEventListener('click', (e) => {
       actions.innerHTML = `
         <img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page">
         <div class="subtask-divider-addTask_page"></div>
-        <img src="../assets/img/close-blue.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
+        <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
       `;
       li.appendChild(actions);
 
