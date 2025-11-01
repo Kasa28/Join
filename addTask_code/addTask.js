@@ -152,6 +152,7 @@ document.addEventListener("click", (e) => {
     placeholder.contentEditable = false;
     placeholder.classList.remove("typing");
     arrow.style.transform = "rotate(0deg)";
+    renderAssignedAvatars(); // zeigt die Kreise nach dem Schließen an
   }
 });
 
