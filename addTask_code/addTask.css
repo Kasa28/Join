@@ -220,6 +220,11 @@
   border-bottom: 3px solid #ffa800;
 }
 
+.priority-btn-medium-addTask_page img {
+  filter: brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) 
+    hue-rotate(360deg) brightness(101%) contrast(102%);
+}
+
 .priority-btn-addTask_page:hover {
   background-color: #e6e6e6;
 }

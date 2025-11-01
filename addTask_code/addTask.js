@@ -405,3 +405,37 @@ document.addEventListener("click", (e) => {
     selectAssignUser(name, e);
   }
 });
+
+function clearForm() {
+  // Textfelder leeren
+  document.getElementById('title').value = '';
+  document.getElementById('description').value = '';
+  document.getElementById('due-date').value = '';
+  document.getElementById('subtask').value = '';
+
+  // Listen und Avatare leeren
+  document.getElementById('subtask-list').innerHTML = '';
+  document.getElementById('assigned-avatars').innerHTML = '';
+
+  // Dropdowns und Auswahl zurücksetzen
+  const category = document.getElementById('category');
+  if (category) category.selectedIndex = 0;
+
+  // Priority zurücksetzen
+  document.querySelectorAll('.priority-group-addTask_page button').forEach(btn => {
+    btn.style.backgroundColor = 'white';
+    btn.style.color = 'black';
+    const img = btn.querySelector('img');
+    if (img) img.style.filter = '';
+  });
+
+  // Assign-Auswahl zurücksetzen
+  selectedUsers = [];
+  const placeholder = document.querySelector('.assign-placeholder-addTask_page');
+  placeholder.textContent = 'Select contact to assign';
+  placeholder.style.color = 'black';
+  document.querySelectorAll('.assign-check-addTask_page').forEach(cb => cb.checked = false);
+
+  // Fehlermeldungen entfernen
+  document.querySelectorAll('.error-text').forEach(e => e.textContent = '');
+}
