@@ -60,6 +60,7 @@
 .task-title-addTask_page::placeholder {
   color: #bfbfbf;
   opacity: 1;
+  font-size: 32px;
 }
 
 .section-heading-addTask_page {
@@ -110,10 +111,6 @@
   font-family: "Open Sans", sans-serif;
   line-height: 120%;
   font-family: "Open Sans", sans-serif;
-}
-
-.task-title-addTask_page::placeholder {
-  font-size: 32px;
 }
 
 .task-date-addTask_page,
@@ -260,6 +257,7 @@
 
 /* DROPDOWN */
 .assign-dropdown-addTask_page {
+  font-family: "open sans";
   display: none;
   width: 100%;
   margin-top: 4px;
@@ -379,32 +377,11 @@
   font-family: "Open Sans", sans-serif;
 }
 
-.task-title-addTask_page::placeholder {
-  color: #bfbfbf;
-  opacity: 1;
-}
-
 .task-input-addTask_page {
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 100%;
-}
-
-.task-title-addTask_page::placeholder,
-.task-description-addTask_page::placeholder,
-.task-subtask-addTask_page::placeholder,
-.task-date-addTask_page::placeholder {
-  color: #bfbfbf;
-  opacity: 1;
-  font-weight: 400;
-  font-family: "Open Sans", sans-serif;
-  line-height: 120%;
-  font-family: "Open Sans", sans-serif;
-}
-
-.task-title-addTask_page::placeholder {
-  font-size: 32px;
 }
 
 .date-input-wrapper-addTask_page {
@@ -540,20 +517,6 @@
   pointer-events: none;
 }
 
-/* DROPDOWN */
-.assign-dropdown-addTask_page {
-  font-family: "open sans";
-  display: none;
-  width: 100%;
-  margin-top: 4px;
-  background-color: #ffffff;
-  color: #42526e;
-  border: 1px solid #d1d1d1;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  max-height: 200px;
-  overflow-y: auto;
-}
 
 .assign-item-addTask_page {
   display: flex;
