@@ -310,7 +310,6 @@ document.addEventListener('click', (e) => {
   }
 });
 
-
 // === Subtask Remove ===
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('subtask-remove-addTask_page')) {
