@@ -167,7 +167,7 @@ function render() {
     document.getElementById(id)?.replaceChildren()
   );
 
-  for (const t of tasks) {
+  for (const t of window.tasks) {
     if (!matchesSearch(t)) continue;
 
     const host = document.getElementById(nameOfTheCard[t.status]?.id);
@@ -186,7 +186,7 @@ function render() {
 
 function afterRender() {
   document.querySelectorAll(".task-card").forEach((card) => {
-    const task = tasks.find((t) => t.id == card.id.replace("card-", ""));
+    const task = window.tasks.find((t) => t.id == card.id.replace("card-", ""));
     if (!task) return;
 
     const assBox = card.querySelector(".assignees");
