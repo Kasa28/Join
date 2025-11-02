@@ -510,24 +510,26 @@ priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFi
     const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
     return { name, color };
   });
+  
+// Sammle alle Subtask-Texte
+const subtaskItems = document.querySelectorAll("#subtask-list li");
+const subTasks = Array.from(subtaskItems).map(li => li.textContent.trim());
+const subtasksTotal = subTasks.length;
 
-  // Subtasks (count only; Board shows progress bar)
-  const subtaskItems = document.querySelectorAll("#subtask-list li");
-  const subtasksTotal = subtaskItems.length;
-
-  // Build task object
-  const task = {
-    title,
-    description,
-    dueDate,
-    priority,
-    priorityIcon,
-    status: "todo",
-    type: category === "technical" ? "Technical Task" : "User Story",
-    subtasksDone: 0,
-    subtasksTotal,
-    assignedTo,
-  };
+// Build task object
+const task = {
+  title,
+  description,
+  dueDate,
+  priority,
+  priorityIcon,
+  status: "todo",
+  type: category === "technical" ? "Technical Task" : "User Story",
+  subTasks, // 🔥 wichtig: tatsächliche Subtasks speichern
+  subtasksDone: 0,
+  subtasksTotal,
+  assignedTo,
+};
 
   // Save to localStorage
   const saved = JSON.parse(localStorage.getItem("newTasks") || "[]");

@@ -234,6 +234,33 @@ window.openModalById = (id) => {
   const content = document.getElementById("task-modal-content");
   if (!modal || !content) return;
 
+  // 🧩 NEUER BLOCK: Dynamische Tasks separat behandeln
+  if (task && task.id > 1000 && typeof bigCardDynamicHtml === "function") {
+    // 🔹 CSS für User Story laden
+    if (task.type === "User Story" && !document.getElementById("user-story-css")) {
+      const link = document.createElement("link");
+      link.id = "user-story-css";
+      link.rel = "stylesheet";
+      link.href = "../board_code/user_story_template.css";
+      document.head.appendChild(link);
+    }
+  
+    // 🔹 CSS für Technical Task laden
+    if (task.type === "Technical Task" && !document.getElementById("technical-css")) {
+      const link = document.createElement("link");
+      link.id = "technical-css";
+      link.rel = "stylesheet";
+      link.href = "../styles/board-technical.css";
+      document.head.appendChild(link);
+    }
+  
+    content.innerHTML = bigCardDynamicHtml(task);
+    modal.style.display = "flex";
+    document.body.classList.add("no-scroll");
+    return;
+  }
+
+  // 🧩 Bestehende Demo-Logik bleibt unverändert
   const isTech = String(task.type).trim().toLowerCase() === "technical task";
   const html =
     isTech && typeof getTechnicalTaskTemplate === "function"
@@ -246,9 +273,7 @@ window.openModalById = (id) => {
 
   const s = typeof saved !== "undefined" ? saved[id] : null;
   if (s) {
-    const boxes = content.querySelectorAll(
-      '.subtask-list input[type="checkbox"]'
-    );
+    const boxes = content.querySelectorAll('.subtask-list input[type="checkbox"]');
     boxes.forEach((b, i) => (b.checked = !!s[i]));
     if (boxes.length) updateSubtasks(id, boxes[0]);
   }
@@ -339,13 +364,68 @@ window.onload = () => {
 function importNewTasksFromLocalStorage() {
   const saved = JSON.parse(localStorage.getItem("newTasks") || "[]");
   if (!saved.length) return;
+
+  // Falls window.tasks noch nicht existiert → initialisieren
   window.tasks = Array.isArray(window.tasks) ? window.tasks : [];
+
+  // Neue Tasks aus dem LocalStorage übernehmen
   for (const t of saved) {
     t.id = Date.now() + Math.floor(Math.random() * 1000);
+    // Subtasks-Werte sicherstellen
+    t.subtasksDone = t.subtasksDone || 0;
+    t.subtasksTotal = t.subtasksTotal || (t.subTasks ? t.subTasks.length : 0);
     window.tasks.push(t);
   }
+
+  // Board neu aufbauen
   render();
+
+  // 🔄 Fortschritt erst nach dem Rendern aktualisieren
+  requestAnimationFrame(() => {
+    window.tasks.forEach(t => {
+      const cardElement = document.getElementById("card-" + t.id);
+      if (!cardElement) return;
+
+      const fill = cardElement.querySelector(".progress-fill");
+      const st = cardElement.querySelector(".subtasks");
+
+      // Fortschrittsbalken und Text berechnen
+      const done = Number(t.subtasksDone) || 0;
+      const total = Number(t.subtasksTotal) || 0;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+
+      if (fill) fill.style.width = `${percent}%`;
+      if (st) st.textContent = `${done}/${total} Subtasks`;
+    });
+  });
+
+  // Aufräumen – gespeicherte neuen Tasks löschen
   localStorage.removeItem("newTasks");
 }
 
 window.addEventListener("load", importNewTasksFromLocalStorage);
+
+
+//Achtung! Code um dynamisches Overlay aus addTask.html und thumbnail zu erstellen!//
+/**
+ * Öffnet das Overlay mit dynamischen (neuen) Tasks,
+ * ohne bestehende Demo-Logik zu überschreiben.
+ */
+function openModalDynamic(id) {
+  const task = window.tasks?.find(t => t.id === id);
+  if (!task) return;
+
+  const modal = document.getElementById("task-modal");
+  const content = document.getElementById("task-modal-content");
+  if (!modal || !content) return;
+
+  // Dynamisches Template für neue Tasks
+  if (typeof bigCardDynamicHtml === "function") {
+    content.innerHTML = bigCardDynamicHtml(task);
+  } else {
+    content.innerHTML = `<p style="padding:16px">Dynamic Template fehlt</p>`;
+  }
+
+  modal.style.display = "flex";
+  document.body.classList.add("no-scroll");
+}
