@@ -441,3 +441,45 @@ function openModalDynamic(id) {
   modal.style.display = "flex";
   document.body.classList.add("no-scroll");
 }
+
+function deleteDynamicTask(id) {
+  // 🧩 Immer auf die aktuelle globale Liste zugreifen
+  const allTasks = Array.isArray(window.tasks) ? window.tasks : [];
+  const task = allTasks.find(t => t.id === id);
+
+  // 🔹 Wenn nichts gefunden → abbrechen
+  if (!task) {
+    alert("Task not found.");
+    return;
+  }
+
+  // 🔹 Demo-Tasks (die IDs 1 und 2) schützen
+  if (task.id === 1 || task.id === 2) {
+    alert("Demo tasks cannot be deleted.");
+    return;
+  }
+
+  // 🔹 Alles andere darf gelöscht werden
+  window.tasks = allTasks.filter(t => t.id !== id);
+
+  // 🔹 Karte auch aus dem DOM entfernen, falls sie noch angezeigt wird
+  const cardEl = document.getElementById("card-" + id);
+  if (cardEl && cardEl.parentNode) {
+    cardEl.parentNode.removeChild(cardEl);
+  }
+
+      // 🔹 Overlay schließen
+  closeTaskModal();
+
+  // 🔹 Board neu aufbauen – garantiert DOM-Update
+  requestAnimationFrame(() => {
+    if (typeof render === "function") render();
+  });
+
+  // 🔹 Optional: localStorage aktualisieren (wenn du da Tasks speicherst)
+  try {
+    localStorage.setItem("tasks", JSON.stringify(window.tasks));
+  } catch (e) {
+    console.warn("Could not update localStorage:", e);
+  }
+}

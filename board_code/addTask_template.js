@@ -166,30 +166,60 @@ function renderAssignedAvatars() {
 
   container.innerHTML = ""; // vorhandene Avatare löschen
 
-  selectedUsers.forEach((name) => {
-    // Avatar im Dropdown finden
-    const sourceAvatar = [
-      ...document.querySelectorAll(".assign-item-addTask_template"),
-    ]
-      .find(
-        (item) =>
-          item.querySelector(".assign-name-addTask_template").textContent.trim() ===
-          name
-      )
-      ?.querySelector(".assign-avatar-addTask_template");
+  const getColorFromItem = (item) => {
+    if (!item) return "";
 
-    // 🔹 Hintergrundfarbe übernehmen, wie im Original
-    const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
+       // 1) Primär: das Avatar-Element selbst
+       const avatarEl = item.querySelector(".assign-avatar-addTask_template");
+       if (avatarEl) {
+         // inline
+         let c = avatarEl.style.backgroundColor;
+         // computed
+         if (!c) c = getComputedStyle(avatarEl).backgroundColor;
+         // CSS-Variable
+         if (!c || c === "transparent" || c === "rgba(0, 0, 0, 0)") {
+           const varCol = getComputedStyle(avatarEl).getPropertyValue("--avatar-color").trim();
+           if (varCol) c = varCol;
+         }
+         if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
+       }
+
+           // 2) Sekundär: ein mögliches Farbfeld im Item
+    const colorEl =
+    item.querySelector('[class*="color"]') ||
+    item.querySelector('[class*="avatar"]') ||
+    item;
+  if (colorEl) {
+    let c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
+    if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
+  }
+
+  // 3) Tertiär: data-Attribut am Item
+  const dataColor = item.getAttribute("data-color");
+  if (dataColor) return dataColor;
+
+  // Fallback
+  return "#4589ff";
+};
+
+(window.selectedUsers || []).forEach((name) => {
+  // das zugehörige Listenelement finden
+  const item = [...document.querySelectorAll(".assign-item-addTask_template")].find(
+    (el) =>
+      el.querySelector(".assign-name-addTask_template")?.textContent.trim() === name
+  );
+
+  const color = getColorFromItem(item);
 
     const initials = name
       .split(" ")
-      .map((n) => n[0].toUpperCase())
+      .map((n) => n[0]?.toUpperCase())
       .join("");
 
     const avatar = document.createElement("div");
     avatar.textContent = initials;
     avatar.classList.add("assign-avatar-addTask_template");
-    avatar.style.backgroundColor = color; // Farbe übernehmen!
+    avatar.style.backgroundColor = color;
 
     container.appendChild(avatar);
   });

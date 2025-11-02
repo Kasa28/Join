@@ -59,10 +59,10 @@ function bigCardHtml(t) {
 
 
         <div class="action-buttons_user-story">
-            <div class="action-btn_user-story">
-                <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user-story">
-                <span>Delete</span>
-            </div>
+            <div class="action-btn_user-story" onclick="deleteDynamicTask(${t.id})">
+          <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user-story">
+          <span>Delete</span>
+        </div>
             <div class="divider_user-story"></div>
             <div class="action-btn_user-story">
                 <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user-story">
@@ -356,10 +356,10 @@ function bigCardDynamicHtml(t) {
       </section>
 
       <div class="action-buttons_user-story">
-        <div class="action-btn_user-story">
-          <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user-story">
-          <span>Delete</span>
-        </div>
+       <div class="action-btn_user-story" onclick="deleteDynamicTask(${t.id})">
+        <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user-story">
+        <span>Delete</span>
+       </div>
         <div class="divider_user-story"></div>
         <div class="action-btn_user-story">
           <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user-story">
@@ -442,10 +442,10 @@ function bigCardDynamicHtml(t) {
           </section>
     
           <div class="action-buttons_technical">
-            <div class="action-btn_technical">
-              <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_technical">
-              <span>Delete</span>
-            </div>
+           <div class="action-btn_technical" onclick="deleteDynamicTask(${t.id})">
+            <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_technical">
+            <span>Delete</span>
+          </div>
             <div class="divider_technical"></div>
             <div class="action-btn_technical">
               <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_technical">

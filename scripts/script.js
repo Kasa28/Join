@@ -24,22 +24,32 @@ if (!window.openAddTaskFromPlus) {
 function mapCategoryToType(value){
   return value === 'technical' ? 'Technical Task' : 'User Story';
 }
+
 function assignedToDataExtractSafe(){
   if (typeof assignedToDataExtract === 'function') return assignedToDataExtract();
-  const items = document.querySelectorAll('.assign-item-addTask_template');
-  const out = [];
-  items.forEach(el => {
-    const chk = el.querySelector('.assign-check-addTask_template');
-    const nameEl = el.querySelector('.assign-name-addTask_template');
-    if (chk && chk.checked && nameEl) out.push({ name: nameEl.textContent.trim(), img: '' });
+
+  const assigned = [];
+  const avatars = document.querySelectorAll("#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page");
+
+  avatars.forEach(el => {
+    const name = el.textContent.trim(); // Initialen stehen drin
+    const color = el.style.backgroundColor || "#4589ff";
+
+    // Den Namen über window.selectedUsers rekonstruieren
+    const fullName = (window.selectedUsers || []).find(n => n.startsWith(name[0])) || name;
+
+    assigned.push({ name: fullName, color });
   });
-  return out;
+
+  return assigned;
 }
+
 function getSubtasksSafe(){
   if (typeof getSubtasks === 'function') return getSubtasks();
   const v = (document.getElementById('subtask')?.value || '').trim();
   return v ? [v] : [];
 }
+
 function collectTaskFromForm(){
   const title       = (document.getElementById('title')?.value || '').trim();
   const description = (document.getElementById('description')?.value || '').trim();
