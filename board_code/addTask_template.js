@@ -45,21 +45,27 @@ function toggleAssignDropdown(event) {
   dropdown.style.display = isDropdownOpen ? "block" : "none";
 
   if (isDropdownOpen) {
+    // Platzhalter als Eingabefeld aktivieren
     placeholder.contentEditable = true;
     placeholder.textContent = "";
     placeholder.classList.add("typing");
     placeholder.focus();
-    arrow.style.transform = "rotate(180deg)";
+    arrow.style.transform = "rotate(180deg)"; // Pfeil nach oben
     const items = document.querySelectorAll(".assign-item-addTask_template");
     items.forEach((item) => (item.style.display = "flex"));
   } else {
+    // Dropdown wird geschlossen
     placeholder.contentEditable = false;
     placeholder.classList.remove("typing");
     placeholder.blur();
-    arrow.style.transform = "rotate(0deg)";
+    arrow.style.transform = "rotate(0deg)"; // Pfeil nach unten
+
+    // ✅ Placeholder immer wiederherstellen (egal ob Auswahl oder nicht)
     placeholder.textContent = "Select contact to assign";
     placeholder.style.color = "black";
   }
+
+  // Nach dem Schließen → Avatare aktualisieren
   if (!isDropdownOpen) {
     renderAssignedAvatars();
   }
@@ -72,14 +78,15 @@ function selectAssignUser(name, event) {
   if (!item) {
     const candidates = document.querySelectorAll(".assign-item-addTask_template");
     candidates.forEach((el) => {
-      const label = el.querySelector(".assign-name-addTask_template").textContent.trim();
+      const label = el
+        .querySelector(".assign-name-addTask_template")
+        .textContent.trim();
       if (!item && label === name) item = el;
     });
   }
   if (!item) return;
 
   const checkbox = item.querySelector(".assign-check-addTask_template");
-  checkbox.checked = !checkbox.checked;
   item.classList.toggle("selected", checkbox.checked);
 
   if (checkbox.checked) {
@@ -97,8 +104,8 @@ function updateAssignPlaceholder() {
     placeholder.textContent = "Select contact to assign";
     placeholder.style.color = "black";
   } else {
-    placeholder.textContent = selectedUsers.join(", ");
-    placeholder.style.color = "#42526e";
+    // leer lassen, CSS-Placeholder zeigt den Text
+    placeholder.textContent = "";
   }
 }
 
@@ -157,17 +164,23 @@ function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
 
-  container.innerHTML = "";
+  container.innerHTML = ""; // vorhandene Avatare löschen
 
   selectedUsers.forEach((name) => {
-    const sourceAvatar = [...document.querySelectorAll(".assign-item-addTask_template")]
+    // Avatar im Dropdown finden
+    const sourceAvatar = [
+      ...document.querySelectorAll(".assign-item-addTask_template"),
+    ]
       .find(
         (item) =>
-          item.querySelector(".assign-name-addTask_template").textContent.trim() === name
+          item.querySelector(".assign-name-addTask_template").textContent.trim() ===
+          name
       )
       ?.querySelector(".assign-avatar-addTask_template");
 
+    // 🔹 Hintergrundfarbe übernehmen, wie im Original
     const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
+
     const initials = name
       .split(" ")
       .map((n) => n[0].toUpperCase())
@@ -176,7 +189,7 @@ function renderAssignedAvatars() {
     const avatar = document.createElement("div");
     avatar.textContent = initials;
     avatar.classList.add("assign-avatar-addTask_template");
-    avatar.style.backgroundColor = color;
+    avatar.style.backgroundColor = color; // Farbe übernehmen!
 
     container.appendChild(avatar);
   });
