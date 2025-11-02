@@ -315,6 +315,14 @@ function openAddTask() {
 
   overlay.classList.add("open");
   document.body.classList.add("no-scroll"); // Body still
+
+  //Achtung! Neu von Maya eingefügt:  Initialisierung der Event-Handler für das Template
+if (typeof initAddTaskTemplateHandlers === "function") {
+  initAddTaskTemplateHandlers();
+}
+
+const titleInput = content.querySelector("#title");
+if (titleInput) titleInput.focus();
 }
 
 function closeAddTask() {

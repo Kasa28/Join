@@ -85,7 +85,8 @@ function getAddTaskTemplate() {
     <section>
       <label for="title" class="label-addTask_template">Title</label>
       <input id="title" input type="text" class="task-title-addTask_template" name="title" placeholder="Enter a title">
-    </section>
+      <small id="title-error" class="error-text"></small>
+      </section>
 
     <section>
       <label for="description" class="label-addTask_template">Description</label>
@@ -101,28 +102,27 @@ function getAddTaskTemplate() {
           pattern="\d{2}/\d{2}/\d{4}" inputmode="numeric">
         <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon-addTask_template">
       </div>
+      <small id="due-date-error" class="error-text"></small>
     </div>
 
     <section>
       <label class="label-addTask_template">Priority</label>
       <p class="section-heading-addTask_template"><strong>Priority</strong></p>
       <div class="priority-group-addTask_template">
-        <button type="button" class="priority-btn-urgent-addTask_template" onclick="setPriority('urgent')">Urgent
+
+        <button type="button" class="priority-btn-urgent-addTask_template" onclick="setPriorityAddTask('urgent')">Urgent
           <img class="addTask-icons-addTask_template" src="/addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg" alt="urgent icon">
         </button>
-        <button type="button" class="priority-btn-medium-addTask_template" onclick="setPriority('medium')">Medium
+
+        <button type="button" class="priority-btn-medium-addTask_template" onclick="setPriorityAddTask('medium')">Medium
           <img class="addTask-icons-addTask_template" src="/addTask_code/icons_addTask/separatedAddTaskIcons/sum_icon.svg" alt="sum icon">
         </button>
-        <button type="button" class="priority-btn-low-addTask_template" onclick="setPriority('low')">Low
+        <button type="button" class="priority-btn-low-addTask_template" onclick="setPriorityAddTask('low')">Low
           <img class="addTask-icons-addTask_template" src="/addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
             alt="2 arrows in green showing up">
         </button>
       </div>
     </section>
-
-
-
-
 
     <section class="task-input-addTask_template">
   <label for="assign" class="label-addTask_template">Assign to</label>
@@ -154,16 +154,8 @@ function getAddTaskTemplate() {
       <input type="checkbox" class="assign-check-addTask_template">
     </div>
   </div>
+  <div id="assigned-avatars" class="assigned-avatars-addTask_template"></div>
 </section>
-
-
-
-
-
-
-
-
-
 
     <section>
       <label for="category" class="label-addTask_template">Category</label>
@@ -186,6 +178,7 @@ function getAddTaskTemplate() {
           <img src="../assets/img/check.svg" alt="Confirm subtask" class="subtask-check-addTask_template">
         </div>
       </div>
+      <ul id="subtask-list" class="subtask-list-addTask_template"></ul>
       </section>
 
   </main>
@@ -253,8 +246,6 @@ function getTechnicalTaskTemplate(t) {
                 </div>
             </div>
         </div>
-
-
 
         <div class="subtasks-container-technical-task">
             <a class="status-font-technical-task">Subtasks:</a>
