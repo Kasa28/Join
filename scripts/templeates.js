@@ -284,7 +284,9 @@ function getTechnicalTaskTemplate(t) {
   `;
 }
 
-
+// =====================
+// Dynamic Task Templates
+// =====================
 //Achtung neues Overlay von thumbnail -> kein clean coding -> wollte sehen ob es funktioniert//
 
 function bigCardDynamicHtml(t) {
@@ -374,4 +376,90 @@ function bigCardDynamicHtml(t) {
         </div>
       </div>
     </main>`;
-}
+  }
+
+
+
+    //Achtung! Neue function für dynamische Karte, damit die andere die Demokarte bleiben kann//
+    function bigCardDynamicTechnicalHtml(t) {
+      const title = t.title || "No title";
+      const description = t.description || "No description provided.";
+      const dueDate = t.dueDate || "No due date";
+      const priority = (t.priority || "low").toLowerCase();
+      const priorityIcon = t.priorityIcon || "../assets/img/Prio baja-low.svg";
+    
+      const assignedHTML = (t.assignedTo || [])
+        .map(p => {
+          const initials = p.name
+            .split(" ")
+            .map(n => n[0]?.toUpperCase())
+            .join("");
+          const bg = p.color ? `background-color:${p.color};` : "";
+          return `
+            <div class="user-badge_technical">
+              <span class="span-user-badge_technical" style="${bg}">${initials}</span>
+              <p class="p-user-badge_technical">${p.name}</p>
+            </div>`;
+        })
+        .join("") || "<p>No one assigned.</p>";
+    
+      const subtasksHTML = (t.subTasks || [])
+        .map((sub, i) => {
+          const checked = i < (t.subtasksDone || 0) ? "checked" : "";
+          return `
+            <label class="label_technical">
+              <input type="checkbox" class="checkbox_technical"
+                     onchange="updateSubtasks(${t.id}, this)" ${checked}>
+              ${sub}
+            </label>`;
+        })
+        .join("") || "<p>No subtasks added.</p>";
+    
+      return `
+        <headline class="header-wrapper_technical">
+          <span class="label_technical">Technical Task</span>
+          <button class="close-btn_technical" onclick="closeTaskModal()">x</button>
+        </headline>
+    
+        <h1 class="title_technical">${title}</h1>
+        <h3 class="h3_technical">${description}</h3>
+    
+        <main class="main_content_technical">
+          <div class="date-input-wrapper_technical">
+            <p class="section-heading_technical"><strong>Due date:</strong></p>
+            <p class="task-date-display_technical">${dueDate}</p>
+          </div>
+    
+          <section class="task-input_technical">
+            <div class="priority-row_technical">
+              <p class="section-heading_technical"><strong>Priority:</strong></p>
+              <button type="button" class="priority-btn-${priority}_technical">
+                ${priority.charAt(0).toUpperCase() + priority.slice(1)}
+                <img class="addTask-icons_technical" src="${priorityIcon}" alt="${priority} icon">
+              </button>
+            </div>
+          </section>
+    
+          <section class="task-input_technical">
+            <p class="section-heading_technical"><strong>Assigned To:</strong></p>
+            <div class="assigned-users_technical">${assignedHTML}</div>
+          </section>
+    
+          <section class="task-input_technical">
+            <p class="section-heading_technical"><strong>Subtasks</strong></p>
+            <div class="subtask-list">${subtasksHTML}</div>
+          </section>
+    
+          <div class="action-buttons_technical">
+            <div class="action-btn_technical">
+              <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_technical">
+              <span>Delete</span>
+            </div>
+            <div class="divider_technical"></div>
+            <div class="action-btn_technical">
+              <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_technical">
+              <span>Edit</span>
+            </div>
+          </div>
+        </main>`;
+    }

@@ -254,7 +254,11 @@ window.openModalById = (id) => {
       document.head.appendChild(link);
     }
   
-    content.innerHTML = bigCardDynamicHtml(task);
+    if (task.type === "Technical Task" && typeof bigCardDynamicTechnicalHtml === "function") {
+      content.innerHTML = bigCardDynamicTechnicalHtml(task);
+    } else {
+      content.innerHTML = bigCardDynamicHtml(task);
+    }
     modal.style.display = "flex";
     document.body.classList.add("no-scroll");
     return;
