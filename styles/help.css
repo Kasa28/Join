@@ -1,45 +1,8 @@
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Regular.ttf")
-    format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Open Sans";
-  src: url("../assets/img/open_sans/static/OpenSans-Bold.ttf")
-    format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Open Sans", sans-serif;
-}
-.what_is_join {
-  max-width: 740px;
-  padding: 32px 20px 64px;
-  margin: 0 auto;
-}
-
-h1 {
-  font-size: 61px;
-  line-height: 1.1;
-}
 
 .welcome {
   margin-bottom: 28px;
 }
 
-h2 {
-  font-size: 28px;
-  color: #3f78ff;
-  margin-top: 28px;
-  margin-bottom: 15px;
-}
 
 @font-face {
   font-family: "Open Sans";
@@ -59,42 +22,42 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Open Sans", sans-serif;
 }
 .what_is_join {
   max-width: 740px;
-  padding: 32px 20px 64px;
-  margin: 0 auto;
-
+  padding-left: 96px;
+ font-family: "Open Sans", sans-serif;
   overflow: hidden;
   overflow-y: auto;
   height: calc(100vh - 96px);
+  scrollbar-width: none;
+      -ms-overflow-style: none;  
 }
 
-h1 {
+.h1_Help {
   font-size: 61px;
   line-height: 1.1;
 }
-h2 {
+.h2_what_is_Join {
   font-size: 28px;
   color: #3f78ff;
   margin-top: 28px;
   margin-bottom: 15px;
 }
-p {
+.p_welcome {
   margin: 0 0 16px;
 }
 
-strong {
+.strong_help {
   color: #3f78ff;
   font-weight: normal;
 }
 
-a {
+.email_help {
   color: #3f78ff;
   text-decoration: none;
 }
-a:hover {
+.email_help:hover {
   text-decoration: underline;
 }
 
@@ -125,7 +88,7 @@ ol.steps li{
 
 ol.steps li > *{ grid-column: 2; }
 
-ol.steps h3{
+ol.steps .h3_help_page{
   margin: 0;             
   line-height: 1.1;     
   font-size: 20px;
@@ -133,11 +96,11 @@ ol.steps h3{
   color: #3778ff;
 }
 
-ol.steps h3 + p{
+ol.steps .h3_help_page + .p_welcome{
   margin-top: 0;         
 }
 
-ol.steps p{
+ol.steps .p_welcome{
   margin: 0;             
   font-size: 16px;
   line-height: 1.45;
