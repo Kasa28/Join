@@ -7,6 +7,7 @@ window.STATUS = window.STATUS || {
 };
 window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
 window.currentPrio = window.currentPrio || 'low';
+window.selectedUserColors = window.selectedUserColors || {};
 
 if (!window.openAddTaskWithStatus) {
   window.openAddTaskWithStatus = function (status) {
@@ -32,12 +33,11 @@ function assignedToDataExtractSafe(){
   const avatars = document.querySelectorAll("#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page");
 
   avatars.forEach(el => {
-    const name = el.textContent.trim(); // Initialen stehen drin
-    const color = el.style.backgroundColor || "#4589ff";
-
-    // Den Namen über window.selectedUsers rekonstruieren
-    const fullName = (window.selectedUsers || []).find(n => n.startsWith(name[0])) || name;
-
+        const initials = el.textContent.trim();
+    const dataName = el.dataset?.fullName;
+    const nameFromList = (window.selectedUsers || []).find((n) => n === dataName || (!dataName && n && n.startsWith(initials)));
+    const fullName = dataName || nameFromList || initials;
+    const color = el.dataset?.color || (window.selectedUserColors && fullName ? window.selectedUserColors[fullName] : null) || el.style.backgroundColor || "#4589ff";
     assigned.push({ name: fullName, color });
   });
 
