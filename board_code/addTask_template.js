@@ -1,5 +1,6 @@
 window.selectedUsers = window.selectedUsers || [];
 window.isDropdownOpen = window.isDropdownOpen || false;
+window.selectedUserColors = window.selectedUserColors || {};
 // Alias, damit onclick="setPriority('urgent')" weiter funktioniert
 window.setPriority = function(p) {
   return setPriorityAddTask(p);
@@ -91,8 +92,13 @@ function selectAssignUser(name, event) {
 
   if (checkbox.checked) {
     if (!selectedUsers.includes(name)) selectedUsers.push(name);
+        if (window.selectedUserColors) {
+      const color = getColorFromItem(item) || "#4589ff";
+      window.selectedUserColors[name] = color;
+    }
   } else {
     selectedUsers = selectedUsers.filter((user) => user !== name);
+        if (window.selectedUserColors) delete window.selectedUserColors[name];
   }
 
   updateAssignPlaceholder();
@@ -209,7 +215,11 @@ function renderAssignedAvatars() {
       el.querySelector(".assign-name-addTask_template")?.textContent.trim() === name
   );
 
-  const color = getColorFromItem(item);
+    let color = window.selectedUserColors?.[name];
+  if (!color) {
+    color = getColorFromItem(item) || "#4589ff";
+    if (window.selectedUserColors) window.selectedUserColors[name] = color;
+  }
 
     const initials = name
       .split(" ")
@@ -220,6 +230,9 @@ function renderAssignedAvatars() {
     avatar.textContent = initials;
     avatar.classList.add("assign-avatar-addTask_template");
     avatar.style.backgroundColor = color;
+    avatar.dataset.fullName = name;
+    avatar.dataset.color = color;
+    avatar.title = name;
 
     container.appendChild(avatar);
   });
