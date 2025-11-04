@@ -374,7 +374,7 @@ function bigCardDynamicTechnicalHtml(t) {
   const priority = (t.priority || "low").toLowerCase();
   const priorityIcons = {
     urgent: "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
-    medium: "/addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
+    medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
     low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
   };
   const priorityIcon = t.priorityIcon || priorityIcons[priority] || priorityIcons.low;
