@@ -515,6 +515,10 @@ priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFi
   const subTasks = Array.from(subtaskItems).map((li) => li.textContent.trim());
   const subtasksTotal = subTasks.length;
 
+    const statusTarget =
+    (typeof window !== "undefined" && typeof window.nextTaskTargetStatus === "string" && window.nextTaskTargetStatus) ||
+    (typeof window !== "undefined" && window.STATUS && window.STATUS.TODO) ||
+    "todo";
   // Build task object
   const task = {
     id: Date.now() + Math.floor(Math.random() * 1000),
@@ -523,7 +527,7 @@ priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFi
     dueDate,
     priority,
     priorityIcon,
-    status: "todo",
+    status: statusTarget,
     type: category === "technical" ? "Technical Task" : "User Story",
     subTasks, // 🔥 wichtig: tatsächliche Subtasks speichern
     subtasksDone: 0,
@@ -541,4 +545,10 @@ priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFi
 
   // Go to Board
   window.location.href = "../board_code/board.html";
+
+  
+  if (typeof window !== "undefined") {
+    const fallbackStatus = (window.STATUS && window.STATUS.TODO) || "todo";
+    window.nextTaskTargetStatus = fallbackStatus;
+}
 }
