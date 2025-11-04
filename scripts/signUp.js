@@ -20,7 +20,8 @@ async function postDataWithID(path = "", id = "", data = {}){
 }
 
 
-function onclickFunction(){
+function onclickFunction(event){
+  if (event) event.preventDefault(); 
 
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -28,6 +29,18 @@ function onclickFunction(){
 
   createUser(name , password, email);
 
+  getWhiteScreen();
+  setTimeout(function() { jumpToLogin(); }, 3000);
+  
+}
+
+function jumpToLogin(){
+  window.location.href = "./login.html"; 
+}
+
+function getWhiteScreen(){
+  const contentRef = document.getElementById("white-screen");
+  contentRef.classList.remove("d_none");
 }
 
 async function createUser(inputName, inputPassword, inputMail){
@@ -49,7 +62,7 @@ function checkPolicyandAnswers() {
   const confirmPassword = document.getElementById('confirm_password').value.trim();
   const checkbox = document.getElementById('accept_terms'); 
   const button = document.querySelector('.primary_button'); 
-  
+
   
   const allFilled = name && email && password && confirmPassword && checkbox.checked;
   button.disabled = !allFilled;

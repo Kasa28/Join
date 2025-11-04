@@ -24,14 +24,23 @@
 
 
 .close-icon-edit-contact{
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     object-fit: cover;
     position: absolute;
     top: 20px;
     right: 20px;
     cursor: pointer;
+    padding: 5px;
+
+    border-radius: 20px;
 }
+
+.close-icon-edit-contact:hover{
+    background-color: rgba(255, 255, 255, 0.425);
+}
+
+
 
 .capa-logo-1-edit-contact{
     width: 55px;
@@ -52,14 +61,38 @@
     color: white;
 }
 
+.add-contact{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+    transition: all 3200ms ease-in-out;
+}
+
+.hide-add-contact{
+    transform: translateX(100%);
+}
+
+.edit-contact{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: all 3200ms ease-in-out;
+}
+
+.hide-edit-contact{
+    transform: translateX(-100%);
+}
+
 .main-container-edit-contact{
     display: flex;
     flex-direction: column;
     width: 584px;
-    height: 1024px;
+    height: 100%;
     font-family: "open sans";
-    border: solid 2px grey;
     gap: 72px;
+    background: white;
 }
 
 .right-side-rounded{
@@ -84,7 +117,7 @@
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 
-    height: 137px;
+    height: 370px;
     padding: 108px 46px 108px 46px;
     gap: 12px;
 
@@ -196,6 +229,12 @@
     color: grey;
 }
 
+.button-edit-contact-grey:hover{
+    border: solid 2px #4589FF;
+    color: #4589FF;
+    transition: 0.2s;
+}
+
 
 .button-edit-contact-blue{
     background: #4589FF;
@@ -204,14 +243,11 @@
     color: white;
 }
 
-.button-edit-contact-blue:hover {
-    filter: brightness(1.2);
+.button-edit-contact-blue:hover{
+    background: #005DFF;
+    border: solid 2px #005DFF;
+    transition: 0.2s;
 }
-
-.button-edit-contact-grey:hover {
-    filter: brightness(0.8);
-}
-
 
 .button-edit-contact-order{
     display: flex;
