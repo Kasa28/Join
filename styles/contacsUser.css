@@ -3,6 +3,10 @@
 }
 
 
+.position-relative-overflow-x{
+    position: relative;
+    overflow-x: hidden;
+}
 
 
 .separator{
@@ -94,7 +98,7 @@
 
 
 .button-contacts:hover {
-    background: #D2E3FF
+    background: #005DFF;
 }
 
 .single-contact{
