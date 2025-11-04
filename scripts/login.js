@@ -29,13 +29,23 @@ async function fillArray(){
 
 }
 
-function login(){
+function login(event){
+   // Verhindert das Neuladen der Seite
+   if (event) event.preventDefault(); 
+
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
 
+    const loginSuccessful = checkUsernamePassword(email, password);
+
    checkUsernamePassword(email, password);
 
-
+   if(loginSuccessful){
+      console.log("Login erfolgreich! Weiterleitung...");
+      window.location.href = "./summaryAll.html";  
+   } else {
+       console.log("Login fehlgeschlagen.");
+   }
 
 }
 
@@ -43,21 +53,18 @@ function login(){
 
 
 function checkUsernamePassword(inputMail, inputPassword){
-   
-   
+
    for (let index = 0; index < users.length; index++) {
 
-      console.log(index);
-      
+      let actualMail = users[index].user.email;
+      let actualPassword = users[index].user.password;
+   
+   if(actualMail === inputMail && actualPassword === inputPassword){
 
-      if(users[index].user.email === inputMail && users[index].user.password === inputPassword){
-            console.log("Login erfolgreich!");
             return true;
       }
    }
 
-   console.log("Login fehlgeschlagen: Benutzer nicht gefunden oder falsches Passwort.");
-   
    return false;
 }
 
