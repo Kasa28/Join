@@ -37,7 +37,6 @@
     align-items: center;
     font-family: "open sans";
     width: 528px;
-    height: 784px;
     border-radius: 30px;
     gap: 24px;
 
@@ -95,7 +94,6 @@
 
 .headline-container-technical-task {
     width: 448px;
-    height: 120px;
 }
 
 .describtion-conatainer-technical-task{
@@ -159,7 +157,6 @@
   flex-direction: column;
 
   width: 448px;
-  height: 149px;
   gap: 8px;
 }
 
@@ -222,12 +219,10 @@
     flex-direction: column;
 
     width: 448px;
-    height: 68px;
     gap: 4px;
 }
 
 .subtasks-task-container-technical-task {
-    display: flex;
     align-items: center;
     
     padding: 6px 16px 6px 16px;
@@ -274,7 +269,6 @@
 }
 
 .label-font-technical-task{
-    display: flex;
     font-size: 16px;
     font-weight: 400;
     font-family: "open sans";

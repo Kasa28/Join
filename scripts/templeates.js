@@ -332,7 +332,7 @@ function bigCardDynamicHtml(t) {
     <h1 class="title_user-story">${title}</h1>
     <h3 class="h3_user-story">${description}</h3>
 
-    <main class="main_content_user-story">
+    <main class="main_content_user_story">
       <div class="date-input-wrapper_user-story">
         <p class="section-heading_user-story"><strong>Due date:</strong></p>
         <p class="task-date-display_user-story">${dueDate}</p>

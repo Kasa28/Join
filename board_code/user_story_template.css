@@ -264,7 +264,9 @@
   gap: 30px;
 }
 
-.priority-btn-medium_user-story {
+.priority-btn-urgent_user-story,
+.priority-btn-medium_user-story,
+.priority-btn-low_user-story {
   background: none;
   color: black;
   border: none;
@@ -285,6 +287,10 @@
   height: 7px;
   filter: brightness(0) saturate(100%) invert(54%) sepia(93%) saturate(2158%)
     hue-rotate(3deg) brightness(103%) contrast(103%);
+}
+.priority-btn-urgent_user-story .addTask-icons_user-story,
+.priority-btn-low_user-story .addTask-icons_user-story {
+  filter: none;
 }
 
 .task-buttons_user-story {
