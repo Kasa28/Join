@@ -50,14 +50,22 @@ function getSubtasksSafe(){
   return v ? [v] : [];
 }
 
+function generateTaskId() {
+  if (typeof crypto?.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
 function collectTaskFromForm(){
   const title       = (document.getElementById('title')?.value || '').trim();
   const description = (document.getElementById('description')?.value || '').trim();
   const dueDate     = (document.getElementById('due-date')?.value || '').trim();
   const categoryVal = document.getElementById('category')?.value || '';
+  const subtasks    = getSubtasksSafe();
 
   return {
-    id: Date.now(),
+    id: generateTaskId(),
     title,
     description,
     type:   mapCategoryToType(categoryVal),
@@ -66,8 +74,8 @@ function collectTaskFromForm(){
     priority: window.currentPrio,
     assignedTo: assignedToDataExtractSafe(),
     subtasksDone: 0,
-    subtasksTotal: getSubtasksSafe().length,
-    subTasks: getSubtasksSafe()
+    subtasksTotal: subtasks.length,
+    subTasks: subtasks
   };
 }
 

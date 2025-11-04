@@ -556,3 +556,22 @@ body.no-scroll {
   line-height: 120%;
   border: 2px solid #ffffff;
 }
+
+.subtask-list-addTask_page li:has(input) {
+  background-color: transparent;
+}
+
+.subtask-list-addTask_page li:has(input)::before {
+  display: none;
+}
+
+.subtask-list-addTask_page li:has(input) .task-subtask-addTask_page {
+  width: 100%;
+}
+
+.subtask-list-addTask_page li:has(input) .subtask-actions-addTask_page {
+  display: flex;
+}
+
+.subtask-list-addTask_page li:hover:not(:has(input)) {
+}
