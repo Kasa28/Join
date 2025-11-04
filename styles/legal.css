@@ -6,6 +6,7 @@
 
 
 .page {
+  font-family: "Open Sans", Arial, sans-serif;
   max-width: 960px;
   margin: 0 auto;
   padding: 64px 20px 80px;
@@ -25,11 +26,11 @@ ul {
     font-size: 20px;
 }
 
-h2{
+.h2_legal{
     margin: 0;
     font-size: 33px;
 }
-h3{
+.h3_legal{
     margin: 0;
     font-size: 20px;
     color: #3f78ff;
