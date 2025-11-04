@@ -17,7 +17,7 @@ function bigCardHtml(t) {
             <div class="priority-row_user-story">
                 <p class="section-heading_user-story"><strong>Priority:</strong></p>
                 <button type="button" class="priority-btn-medium_user-story" onclick="setPriority('medium')">Medium
-                    <img class="addTask-icons_user-story" src="./addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg"
+                    <img class="addTask-icons_user-story" src="../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg"
                         alt="sum icon">
                 </button>
             </div>
