@@ -100,7 +100,7 @@
         <section id="todo" aria-labelledby="todo-title">
           <div class="name_from_card">
             <h2 id="todo-title">To do</h2>
-            <button class="plus" type="button" aria-label="Add to To do" onclick="openAddTaskFromPlus(event)">+</button>
+            <button class="plus" type="button" aria-label="Add to To do" data-target="todo" onclick="openAddTaskFromPlus(event)">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
             ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
@@ -111,7 +111,7 @@
         <section id="in-progress" aria-labelledby="in-progress-title">
           <div class="name_from_card">
             <h2 id="in-progress-title">In progress</h2>
-            <button class="plus" type="button" aria-label="Add to In progress" onclick="openAddTaskFromPlus(event)">+</button>
+            <button class="plus" type="button" aria-label="Add to In progress" data-target="in-progress" onclick="openAddTaskFromPlus(event)">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
             ondragover="allowDrop(event); highlight('drag-area-in-progress')"
@@ -123,7 +123,7 @@
         <section id="await-feedback" aria-labelledby="await-feedback-title">
           <div class="name_from_card">
             <h2 id="await-feedback-title">Await feedback</h2>
-            <button class="plus" type="button" aria-label="Add to Await feedback" onclick="openAddTaskFromPlus(event)">+</button>
+            <button class="plus" type="button" aria-label="Add to Await feedback" data-target="await-feedback" onclick="openAddTaskFromPlus(event)">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
             ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
