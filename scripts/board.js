@@ -50,6 +50,13 @@ const initialTasks = hasPersistedTasks
 
 window.tasks = initialTasks;
 
+function isDemoTask(taskOrId) {
+  const idValue = typeof taskOrId === "object" && taskOrId !== null ? taskOrId.id : taskOrId;
+  const numericId = Number.parseInt(idValue, 10);
+  return Number.isFinite(numericId) && numericId > 0 && numericId <= 1000;
+}
+
+
 if (!hasPersistedTasks) {
   try {
     localStorage.setItem("tasks", JSON.stringify(window.tasks));
@@ -509,12 +516,7 @@ function deleteDynamicTask(id) {
   const allTasks = Array.isArray(window.tasks) ? window.tasks : [];
   const task     = allTasks.find(t => t.id === id);
   if (!task) { alert("Task not found."); return; }
-
-  // Demos schützen
-  if (task.id === 1 || task.id === 2) {
-    alert("Demo tasks cannot be deleted.");
-    return;
-  }
+ if (isDemoTask(task)) { alert("Demo tasks can only be moved."); return; }
 
   window.tasks = allTasks.filter(t => t.id !== id);
 
@@ -680,6 +682,9 @@ function saveTaskEdits(id) {
   const task = Array.isArray(window.tasks) ? window.tasks.find((t) => t.id === id) : null;
   if (!task) { alert("Task not found."); return; }
 
+    if (isDemoTask(task)) { alert("Demo tasks can only be moved."); return; }
+
+
   const titleInput = document.getElementById("title");
   const title = titleInput ? titleInput.value.trim() : "";
   if (!title) { alert("Please enter a title."); titleInput?.focus(); return; }
@@ -725,6 +730,9 @@ function saveTaskEdits(id) {
 function startEditTask(id) {
   const task = Array.isArray(window.tasks) ? window.tasks.find((t) => t.id === id) : null;
   if (!task) { alert("Task not found."); return; }
+
+   if (isDemoTask(task)) { alert("Demo tasks can only be moved."); return; }
+
 
   closeTaskModal();
   window.taskBeingEdited      = id;

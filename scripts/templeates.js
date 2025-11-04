@@ -62,7 +62,7 @@ function bigCardHtml(t) {
           <span>Delete</span>
         </div>
             <div class="divider_user-story"></div>
-            <div class="action-btn_user-story">
+            <div class="action-btn_user-story"  onclick="startEditTask(${t.id})">
                 <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user-story">
                 <span>Edit</span>
             </div>
@@ -254,13 +254,13 @@ function getTechnicalTaskTemplate(t) {
                     </div>
             </div>
             <div class="delete-edit-section-technical-task">
-            <div class="delete-edit-container-technical-task">
+            <div class="delete-edit-container-technical-task"  onclick="startEditTask(${t.id})">
                 <img src="../assets/img/delete.svg" alt="Delete" class="delete-edit-icon-technical-task">
                 <span>Delete</span>
             </div>
             <div class="separator-technical-task"></div>
-            <div class="delete-edit-container-technical-task">
-                <img src="../assets/img/edit.svg" alt="Edit" onclick="startEditTask(${t.id})">
+            <div class="delete-edit-container-technical-task"  onclick="startEditTask(${t.id})">
+                <img src="../assets/img/edit.svg" alt="Edit" ">
                 <span>Edit</span>
             </div>
         </div>

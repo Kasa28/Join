@@ -572,6 +572,3 @@ body.no-scroll {
 .subtask-list-addTask_page li:has(input) .subtask-actions-addTask_page {
   display: flex;
 }
-
-.subtask-list-addTask_page li:hover:not(:has(input)) {
-}
