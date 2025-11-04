@@ -511,30 +511,33 @@ priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFi
     return { name, color };
   });
   
-// Sammle alle Subtask-Texte
-const subtaskItems = document.querySelectorAll("#subtask-list li");
-const subTasks = Array.from(subtaskItems).map(li => li.textContent.trim());
-const subtasksTotal = subTasks.length;
+  const subtaskItems = document.querySelectorAll("#subtask-list li");
+  const subTasks = Array.from(subtaskItems).map((li) => li.textContent.trim());
+  const subtasksTotal = subTasks.length;
 
-// Build task object
-const task = {
-  title,
-  description,
-  dueDate,
-  priority,
-  priorityIcon,
-  status: "todo",
-  type: category === "technical" ? "Technical Task" : "User Story",
-  subTasks, // 🔥 wichtig: tatsächliche Subtasks speichern
-  subtasksDone: 0,
-  subtasksTotal,
-  assignedTo,
-};
-
+  // Build task object
+  const task = {
+    id: Date.now() + Math.floor(Math.random() * 1000),
+    title,
+    description,
+    dueDate,
+    priority,
+    priorityIcon,
+    status: "todo",
+    type: category === "technical" ? "Technical Task" : "User Story",
+    subTasks, // 🔥 wichtig: tatsächliche Subtasks speichern
+    subtasksDone: 0,
+    subtasksTotal,
+    assignedTo,
+  };
   // Save to localStorage
-  const saved = JSON.parse(localStorage.getItem("newTasks") || "[]");
-  saved.push(task);
-  localStorage.setItem("newTasks", JSON.stringify(saved));
+  const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
+  if (Array.isArray(saved)) {
+    saved.push(task);
+    localStorage.setItem("tasks", JSON.stringify(saved));
+  } else {
+    localStorage.setItem("tasks", JSON.stringify([task]));
+  }
 
   // Go to Board
   window.location.href = "../board_code/board.html";

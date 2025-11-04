@@ -8,7 +8,7 @@ const saved = window.saved;
  * 1) Demo-Tasks (id <= 1000). Neue Tasks kommen
  *    später zusätzlich aus LocalStorage rein.
  *************************************************/
-const tasks = [
+const demoTasks = [
   {
     id: 1,
     title: "Kochwelt Page & Recipe Recommender",
@@ -42,7 +42,21 @@ const tasks = [
     ],
   },
 ];
-window.tasks = tasks;
+const persistedTasksRaw = JSON.parse(localStorage.getItem("tasks") || "[]");
+const hasPersistedTasks = Array.isArray(persistedTasksRaw) && persistedTasksRaw.length > 0;
+const initialTasks = hasPersistedTasks
+  ? persistedTasksRaw
+  : demoTasks.map((task) => ({ ...task }));
+
+window.tasks = initialTasks;
+
+if (!hasPersistedTasks) {
+  try {
+    localStorage.setItem("tasks", JSON.stringify(window.tasks));
+  } catch (e) {
+    console.warn("Could not initialise tasks in localStorage:", e);
+  }
+}
 
 /*************************************************
  * 2) Globale Zustände & Mappings
@@ -72,6 +86,15 @@ window.STATUS = window.STATUS || {
 window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
 window.currentPrio          = window.currentPrio || 'low';
 window.selectedUserColors   = window.selectedUserColors || {};
+
+
+function persistTasks() {
+  try {
+    localStorage.setItem("tasks", JSON.stringify(window.tasks));
+  } catch (e) {
+    console.warn("Could not update tasks in localStorage:", e);
+  }
+}
 
 /*************************************************
  * 3) Suche: Eingabe -> render() -> Trefferanzeige
@@ -140,9 +163,12 @@ window.onCardDragEnd = function () {
 };
 window.moveTo = function (newStatus) {
   if (whichCardActuellDrop == null) return;
-  const idx = tasks.findIndex(t => t.id === whichCardActuellDrop);
+    const idx = Array.isArray(window.tasks)
+    ? window.tasks.findIndex((t) => t.id === whichCardActuellDrop)
+    : -1;
   if (idx > -1) {
-    tasks[idx].status = newStatus;
+        window.tasks[idx].status = newStatus;
+    persistTasks();
     render();
   }
 };
@@ -267,7 +293,9 @@ function getBadgeClass(type) {
  * 7) Modal öffnen (fixe Klammern & Scopes!)
  *************************************************/
 window.openModalById = (id) => {
-  const task = tasks.find((x) => x.id === id);
+    const task = Array.isArray(window.tasks)
+    ? window.tasks.find((x) => x.id === id)
+    : null;
   if (!task) return;
 
   const modal   = document.getElementById("task-modal");
@@ -444,53 +472,17 @@ window.onload = () => {
   if (typeof prevOnload === "function") prevOnload();
 
   for (const [taskId, states] of Object.entries(window.saved)) {
-    const task = tasks.find((t) => t.id == taskId);
+        const task = Array.isArray(window.tasks)
+      ? window.tasks.find((t) => t.id == taskId)
+      : null;
     if (task) {
       task.subtasksTotal = states.length;
       task.subtasksDone  = states.filter(Boolean).length;
     }
   }
+  persistTasks();
   render();
-};
-
-/*************************************************
- * 11) Neue Tasks aus LocalStorage importieren
- *************************************************/
-function importNewTasksFromLocalStorage() {
-  const savedNew = JSON.parse(localStorage.getItem("newTasks") || "[]");
-  if (!savedNew.length) return;
-
-  window.tasks = Array.isArray(window.tasks) ? window.tasks : [];
-
-  for (const t of savedNew) {
-    t.id = Date.now() + Math.floor(Math.random() * 1000); // eindeutige ID
-    t.subtasksDone  = t.subtasksDone  || 0;
-    t.subtasksTotal = t.subtasksTotal || (t.subTasks ? t.subTasks.length : 0);
-    window.tasks.push(t);
-  }
-
-  render();
-
-  // Balken/Labels im DOM angleichen
-  requestAnimationFrame(() => {
-    window.tasks.forEach(t => {
-      const cardElement = document.getElementById("card-" + t.id);
-      if (!cardElement) return;
-      const fill = cardElement.querySelector(".progress-fill");
-      const st   = cardElement.querySelector(".subtasks");
-
-      const done    = Number(t.subtasksDone)  || 0;
-      const total   = Number(t.subtasksTotal) || 0;
-      const percent = total ? Math.round((done / total) * 100) : 0;
-
-      if (fill) fill.style.width = `${percent}%`;
-      if (st)   st.textContent   = `${done}/${total} Subtasks`;
-    });
-  });
-
-  localStorage.removeItem("newTasks");
-}
-window.addEventListener("load", importNewTasksFromLocalStorage);
+  };
 
 /*************************************************
  * 12) Dynamisches Modal (Fallback), löschen, editieren
@@ -532,8 +524,7 @@ function deleteDynamicTask(id) {
   closeTaskModal();
   requestAnimationFrame(() => { if (typeof render === "function") render(); });
 
-  try { localStorage.setItem("tasks", JSON.stringify(window.tasks)); }
-  catch (e) { console.warn("Could not update localStorage:", e); }
+  persistTasks();
 }
 
 /* ---- Edit-Overlay Helfer ---- */
@@ -726,6 +717,8 @@ function saveTaskEdits(id) {
 
   normaliseSubtaskProgress(task);
 
+   persistTasks();
+
   if (typeof render === "function") render();
   closeAddTask();
 }
@@ -827,7 +820,7 @@ function createTask(event){
 
   window.tasks = Array.isArray(window.tasks) ? window.tasks : [];
   window.tasks.push(task);
-
+ persistTasks();
   if (typeof render === 'function') render();
 
   if (typeof closeAddTask === 'function') closeAddTask();
