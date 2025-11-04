@@ -12,7 +12,7 @@ return `<div class="user-menu-container-header">
                     </a>
                 </div>
                 <div>
-                    <a class="button-sidebar padding-up-down-small" href="../login.html">
+                    <a onclick="deleteIdFromLocalStorage()" class="button-sidebar padding-up-down-small" href="../login.html">
                         <span class="sidebar-font">Logout</span>
                     </a>
                 </div>
@@ -30,3 +30,25 @@ function toggleUserMenuePopupMenu(){
     contentRef.classList.toggle("d_none");
 }
 
+function deleteIdFromLocalStorage(){
+    localStorage.removeItem('userID');
+}
+
+function checkIfLogedIn(){
+    if (!localStorage.getItem("userID")) {
+        console.log("LocalStorage leer");
+        return false;
+    }
+    console.log("LocalStorage voll");
+    return true;
+}
+
+function setLetterInUserBall(){
+    
+    let contentRef = document.getElementById("user-ball-ID");
+
+    if(!checkIfLogedIn()){
+        contentRef.innerHTML = "g";
+    }
+        contentRef.innerHTML = "a";
+}
