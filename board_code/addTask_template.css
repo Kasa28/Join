@@ -461,3 +461,79 @@ addtask_template.css
   vertical-align: middle;
   filter: brightness(0) invert(1);
 }
+
+.task-subtask-addTask_template:not(:placeholder-shown) + .subtask-icons-addTask_template {
+  display: flex;
+}
+
+.subtask-list-addTask_template {
+  position: relative;
+  margin-top: 8px;
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #42526e;
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.subtask-list-addTask_template li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-right: 60px;
+  line-height: 140%;
+}
+
+.subtask-list-addTask_template li::before {
+  content: "•";
+  color: #42526e;
+  font-size: 22px;
+  margin-right: 10px;
+}
+
+.subtask-actions-addTask_template {
+  display: none;
+  position: absolute;
+  right: 0;
+  gap: 8px;
+}
+
+.subtask-actions-addTask_template img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.subtask-list-addTask_template li:hover:not(:has(input)) {
+  background-color: rgba(69, 137, 255, 0.1);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.subtask-list-addTask_template li:hover .subtask-actions-addTask_template {
+  display: flex;
+}
+
+.subtask-list-addTask_template li:has(input) {
+  padding-right: 0;
+}
+
+.subtask-list-addTask_template li:has(input)::before {
+  content: none;
+}
+
+.subtask-list-addTask_template li:has(input) .task-subtask-addTask_template {
+  flex: 1;
+  padding-right: 80px;
+}
+
+.subtask-list-addTask_template li:has(input) .subtask-actions-addTask_template {
+  position: static;
+  display: flex;
+}
+
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+}
