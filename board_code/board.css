@@ -572,3 +572,55 @@ body.no-scroll {
 .subtask-list-addTask_page li:has(input) .subtask-actions-addTask_page {
   display: flex;
 }
+
+.clear-search-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.clear-search-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.clear-search-btn.is-visible {
+  display: flex;
+}
+
+.searchbox input[type="search"]::-webkit-search-cancel-button,
+.searchbox input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+.searchbox input[type="search"]::-ms-clear,
+.searchbox input[type="search"]::-ms-reveal {
+  display: none;
+}
+
+.clear-search-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.clear-search-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.clear-search-btn.is-visible {
+  display: flex;
+}

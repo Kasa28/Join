@@ -77,9 +77,13 @@
           <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault(); searchTasks()">
 
             <div class="searchbox">
-              <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
-                oninput="searchTasks()" onsearch="searchTasks()" spellcheck="false" id="board-search">
-
+               <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
+                              oninput="searchTasks()" onsearch="searchTasks()" onblur="updateSearchClearButtonState(this)"
+                spellcheck="false" id="board-search">
+              <button type="button" class="clear-search-btn" id="board-search-clear" aria-label="Clear search"
+                onclick="clearBoardSearch()" aria-hidden="true">
+                <img src="./icons_addTask_template/close.svg" alt="" aria-hidden="true">
+              </button>
               <button class="btn-icon" type="submit" aria-label="Search">
                 <img src="./icons_addTask_template/search.svg" alt="" aria-hidden="true">
               </button>

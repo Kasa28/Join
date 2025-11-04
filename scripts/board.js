@@ -17,7 +17,7 @@ const demoTasks = [
     status: "in-progress",
     dueDate: "10/05/2023",
     priority: "medium",
-    priorityIcon: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
+    
     subtasksDone: 1,
     subtasksTotal: 2,
     assignedTo: [
@@ -71,6 +71,19 @@ if (!hasPersistedTasks) {
 let whichCardActuellDrop = null;     // gerade gezogene Karte
 let searchQuery = "";                // Suchstring (klein geschrieben)
 
+
+function updateSearchClearButtonState(inputEl) {
+  const clearBtn = document.getElementById("board-search-clear");
+  if (!clearBtn) return;
+
+  const value = (inputEl?.value || "").trim();
+  const shouldShow = value.length > 0;
+  clearBtn.classList.toggle("is-visible", shouldShow);
+  clearBtn.setAttribute("aria-hidden", shouldShow ? "false" : "true");
+}
+
+
+
 const nameOfTheCard = {
   todo:             { id: "drag-area-todo",           empty: "No tasks To do" },
   "in-progress":    { id: "drag-area-in-progress",    empty: "No tasks in Progress" },
@@ -111,6 +124,7 @@ window.searchTasks = function () {
   const msg   = document.getElementById("search-msg");
 
   searchQuery = (input?.value || "").trim().toLowerCase();
+    updateSearchClearButtonState(input);
   render();
 
   if (!msg) return;
@@ -122,6 +136,21 @@ window.searchTasks = function () {
                   : count + " Treffer.";
   msg.className = count === 0 ? "msg-red" : "msg-green";
 };
+
+
+window.clearBoardSearch = function () {
+  const input = document.getElementById("board-search");
+  if (!input) return;
+
+  input.value = "";
+  input.focus();
+  searchTasks();
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("board-search");
+  if (input) updateSearchClearButtonState(input);
+});
 
 /** prüft, ob Task zum Suchbegriff passt */
 function matchesSearch(t) {
@@ -489,6 +518,7 @@ window.onload = () => {
   }
   persistTasks();
   render();
+  updateSearchClearButtonState(document.getElementById("board-search"));
   };
 
 /*************************************************
