@@ -1,0 +1,192 @@
+/*************************************************
+ * Summary Dashboard Synchronisation
+ * Liest Aufgaben aus localStorage und aktualisiert
+ * die Zahlen in summaryAll.html automatisch.
+ *************************************************/
+
+// Nur ein einziger DOMContentLoaded-Listener, ruft beide Funktionen auf
+window.addEventListener("DOMContentLoaded", () => {
+    updateSummary();
+    /*greetUser();*/
+  });
+  
+  /**
+   * Lädt Tasks aus localStorage (oder Demo-Fallback)
+   * @returns {Array} Array von Task-Objekten
+   */
+  function loadTasks() {
+    try {
+      const data = JSON.parse(localStorage.getItem("tasks") || "[]");
+      if (Array.isArray(data)) return data;
+    } catch (e) {
+      console.warn("Could not load tasks:", e);
+    }
+    return [];
+  }
+  
+  /**
+   * Zählt Tasks nach Status
+   */
+  function getTaskCounts(tasks) {
+    const counts = {
+      total: tasks.length,
+      urgent: 0,
+      todo: 0,
+      inProgress: 0,
+      feedback: 0,
+      done: 0,
+    };
+  
+    const today = new Date();
+  
+    for (const t of tasks) {
+      const prio = String(t.priority || "").toLowerCase();
+      if (prio === "urgent") counts.urgent++;
+  
+      switch (t.status) {
+        case "todo":
+          counts.todo++;
+          break;
+        case "in-progress":
+          counts.inProgress++;
+          break;
+        case "await-feedback":
+          counts.feedback++;
+          break;
+        case "done":
+          counts.done++;
+          break;
+      }
+    }
+  
+    return counts;
+  }
+  
+  /**
+   * Setzt den Inhalt eines Elements anhand seiner Position oder ID
+   */
+  function setSummaryText(selector, value) {
+    const el = document.querySelector(selector);
+    if (el) el.textContent = value;
+  }
+  
+  /**
+   * Findet das nächste Fälligkeitsdatum einer "urgent" Aufgabe
+   */
+  function getNextDeadline(tasks) {
+    const urgentTasks = tasks
+      .filter((t) => String(t.priority || "").toLowerCase() === "urgent" && t.dueDate)
+      .map((t) => new Date(t.dueDate))
+      .filter((d) => !isNaN(d.getTime()));
+  
+    if (!urgentTasks.length) return null;
+  
+    urgentTasks.sort((a, b) => a - b);
+    return urgentTasks[0];
+  }
+  
+  /**
+   * Aktualisiert alle Zahlen und das Datum in der Summary
+   */
+  function updateSummary() {
+    const tasks = loadTasks();
+    const counts = getTaskCounts(tasks);
+    const nextDeadline = getNextDeadline(tasks);
+  
+    // Update Zahlen in den Cards
+    // 1. Urgent
+    setSummaryText(
+      ".summary-card-up-left .h2-font-summray",
+      counts.urgent
+    );
+  
+    // 2. Task in Board
+    setSummaryText(
+      ".summary-card-conainer-up-right .h2-font-summray",
+      counts.total
+    );
+  
+    // 3. Todo
+    setSummaryText(
+      ".summary-section-2-order .summary-card:nth-child(1) .h2-font-summray",
+      counts.todo
+    );
+  
+    // 4. In Progress
+    setSummaryText(
+      ".summary-section-2-order .summary-card:nth-child(2) .h2-font-summray",
+      counts.inProgress
+    );
+  
+    // 5. Feedback
+    setSummaryText(
+      ".summary-section-2-order .summary-card:nth-child(3) .h2-font-summray",
+      counts.feedback
+    );
+  
+    // 6. Done
+    setSummaryText(
+      ".summary-section-2-order .summary-card:nth-child(4) .h2-font-summray",
+      counts.done
+    );
+  
+    // Deadline anzeigen
+    const deadlineEl = document.querySelector(".date-font-summary");
+    if (deadlineEl) {
+      if (nextDeadline) {
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        deadlineEl.textContent = nextDeadline.toLocaleDateString("en-US", options);
+      } else {
+        deadlineEl.textContent = "No urgent deadlines";
+      }
+    }
+  
+    console.log("Summary updated:", counts);
+  }
+  
+  /**
+   * Optional: Aktualisierung triggern, wenn im localStorage Änderungen auftreten.
+   */
+  window.addEventListener("storage", (event) => {
+    if (event.key === "tasks") {
+      updateSummary();
+    }
+  });
+
+
+
+
+/*aktuellen Nutzer begrüßen auf Basis von firebase
+async function greetUser() {
+    const h1El = document.querySelector(".summary-h1");
+    if (!h1El) return;
+  
+    const baseGreeting = h1El.textContent.trim(); // "Good Morning" bleibt erhalten
+    const userId = localStorage.getItem("userID");
+    let userName = "";
+  
+    if (userId !== null) {
+      try {
+        // Nutzer aus Firebase anhand der ID laden
+        const response = await fetch(
+          `https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}/.json`
+        );
+        const data = await response.json();
+        if (data && data.name) {
+          userName = data.name;
+        } else if (data && data.user && data.user.name) {
+          // Falls das Objekt verschachtelt ist
+          userName = data.user.name;
+      }
+} catch (err) {
+    console.warn("Could not load user from Firebase:", err);
+  }
+    }
+  if (userName) {
+    const firstName = userName.split(" ")[0];
+    h1El.textContent = `${baseGreeting}, ${firstName}!`;
+  } else {
+    h1El.textContent = baseGreeting;
+  }
+}
+*/
