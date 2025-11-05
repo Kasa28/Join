@@ -1,10 +1,3 @@
-/*************************************************
- * Summary Dashboard Synchronisation
- * Liest Aufgaben aus localStorage und aktualisiert
- * die Zahlen in summaryAll.html automatisch.
- *************************************************/
-
-// Nur ein einziger DOMContentLoaded-Listener, ruft beide Funktionen auf
 window.addEventListener("DOMContentLoaded", () => {
     updateSummary();
     /*greetUser();*/
@@ -23,10 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     return [];
   }
-  
-  /**
-   * Zählt Tasks nach Status
-   */
+
   function getTaskCounts(tasks) {
     const counts = {
       total: tasks.length,
@@ -61,10 +51,7 @@ window.addEventListener("DOMContentLoaded", () => {
   
     return counts;
   }
-  
-  /**
-   * Setzt den Inhalt eines Elements anhand seiner Position oder ID
-   */
+
   function setSummaryText(selector, value) {
     const el = document.querySelector(selector);
     if (el) el.textContent = value;
@@ -76,7 +63,11 @@ window.addEventListener("DOMContentLoaded", () => {
   function getNextDeadline(tasks) {
     const urgentTasks = tasks
       .filter((t) => String(t.priority || "").toLowerCase() === "urgent" && t.dueDate)
-      .map((t) => new Date(t.dueDate))
+      .map((t) => {
+        // Format 13/12/2024 → 2024-12-13
+        const [day, month, year] = t.dueDate.split("/");
+        return new Date(`${year}-${month}-${day}`);
+      })
       .filter((d) => !isNaN(d.getTime()));
   
     if (!urgentTasks.length) return null;
@@ -85,9 +76,6 @@ window.addEventListener("DOMContentLoaded", () => {
     return urgentTasks[0];
   }
   
-  /**
-   * Aktualisiert alle Zahlen und das Datum in der Summary
-   */
   function updateSummary() {
     const tasks = loadTasks();
     const counts = getTaskCounts(tasks);
