@@ -464,6 +464,30 @@ function clearForm() {
   document.querySelectorAll(".error-text").forEach((e) => (e.textContent = ""));
 }
 
+// === Toast (GLOBAL) ===
+function showToast(text, { variant = "ok", duration = 1000 } = {}) {
+  let root = document.getElementById("toast-root");
+  if (!root) {
+    root = document.createElement("div");
+    root.id = "toast-root";
+    document.body.appendChild(root);
+  }
+  const el = document.createElement("div");
+  el.className = "toast toast--show" + (variant === "error" ? " toast--error" : "");
+  el.innerHTML = `<span>${text}</span><span class="toast-icon" aria-hidden="true"></span>`;
+  root.appendChild(el);
+
+  setTimeout(() => {
+    el.classList.remove("toast--show");
+    el.classList.add("toast--hide");
+    el.addEventListener("animationend", () => el.remove(), { once: true });
+  }, duration);
+}
+
+window.showToast = showToast;
+
+
+
 function createTask() {
   // 1) Read values (very simple)
   const title = (document.getElementById("title")?.value || "").trim();
@@ -471,54 +495,40 @@ function createTask() {
     alert("Please enter a title");
     return;
   }
-  const description = (
-    document.getElementById("description")?.value || ""
-  ).trim();
+  const description = (document.getElementById("description")?.value || "").trim();
   const dueDate = (document.getElementById("due-date")?.value || "").trim();
   const category = (document.getElementById("category")?.value || "").trim();
 
   // Priority (fallback to 'medium' if nothing set)
   const priority = (window.currentPriority || "medium").toLowerCase();
-  // Find currently active priority button and its icon
-  const activeBtn = document.querySelector(
-    `.priority-btn-${priority}-addTask_page`
-  );
+  const activeBtn = document.querySelector(`.priority-btn-${priority}-addTask_page`);
   const iconImg = activeBtn ? activeBtn.querySelector("img") : null;
-  
   let priorityIcon = iconImg ? iconImg.getAttribute("src") : "";
 
-  // 🧩 Mapping für Medium → sum_icon.svg
-// 🧩 Always use consistent icon filenames for all priorities
-let priorityFileName = priority;
+  // Mapping Medium → sum_icon.svg
+  let priorityFileName = priority;
+  if (priority === "medium") priorityFileName = "sum";
+  priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFileName}_icon.svg`;
 
-// Medium nutzt sum_icon.svg im selben Ordner
-if (priority === "medium") priorityFileName = "sum";
-
-// ✅ Einheitlicher Pfad für alle Icons
-priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFileName}_icon.svg`;
   // Assigned users (with colors)
   const assignedTo = (window.selectedUsers || []).map((name) => {
-    const sourceAvatar = [
-      ...document.querySelectorAll(".assign-item-addTask_page"),
-    ]
-      .find(
-        (item) =>
-          item.querySelector(".assign-name-addTask_page").textContent.trim() ===
-          name
-      )
+    const sourceAvatar = [...document.querySelectorAll(".assign-item-addTask_page")]
+      .find(item => item.querySelector(".assign-name-addTask_page").textContent.trim() === name)
       ?.querySelector(".assign-avatar-addTask_page");
     const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
     return { name, color };
   });
-  
+
+  // Subtasks
   const subtaskItems = document.querySelectorAll("#subtask-list li");
   const subTasks = Array.from(subtaskItems).map((li) => li.textContent.trim());
   const subtasksTotal = subTasks.length;
 
-    const statusTarget =
+  const statusTarget =
     (typeof window !== "undefined" && typeof window.nextTaskTargetStatus === "string" && window.nextTaskTargetStatus) ||
     (typeof window !== "undefined" && window.STATUS && window.STATUS.TODO) ||
     "todo";
+
   // Build task object
   const task = {
     id: Date.now() + Math.floor(Math.random() * 1000),
@@ -529,11 +539,12 @@ priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFi
     priorityIcon,
     status: statusTarget,
     type: category === "technical" ? "Technical Task" : "User Story",
-    subTasks, // 🔥 wichtig: tatsächliche Subtasks speichern
+    subTasks,
     subtasksDone: 0,
     subtasksTotal,
     assignedTo,
   };
+
   // Save to localStorage
   const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
   if (Array.isArray(saved)) {
@@ -543,12 +554,16 @@ priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFi
     localStorage.setItem("tasks", JSON.stringify([task]));
   }
 
-  // Go to Board
-  window.location.href = "../board_code/board.html";
-
-  
   if (typeof window !== "undefined") {
     const fallbackStatus = (window.STATUS && window.STATUS.TODO) || "todo";
     window.nextTaskTargetStatus = fallbackStatus;
+  }
+
+  showToast("Task added to board", { duration: 1000 });
+  setTimeout(() => {
+    window.location.href = "../board_code/board.html";
+  }, 1100);
 }
-}
+
+
+window.createTask = createTask;
