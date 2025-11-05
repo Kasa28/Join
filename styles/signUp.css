@@ -92,3 +92,56 @@ body.signUp_body .login_form {
   transform: translate(-50%, -50%)
 }
 */
+
+
+#toast-dim{
+  position: fixed; inset: 0;
+  background: rgba(255,255,255,.6);
+  backdrop-filter: blur(1px);
+  opacity: 0; pointer-events: none;
+  z-index: 9998;
+  transition: opacity .18s ease;
+}
+#toast-dim.dim--show{ opacity: 1; }
+
+
+#toast-root{
+  position: fixed;
+  left: 50%;
+  top: 0;                       
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #4589ff;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 18px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.18);
+  font: 500 16px/1.2 "Open Sans", system-ui, sans-serif;
+  opacity: 0;
+  transform: translateY(100vh) scale(.98); 
+  pointer-events: none;
+}
+
+.toast img{
+  width: 20px; height: 20px; display: block;
+  filter: brightness(0) invert(1);         
+}
+
+.toast--show{ animation: toast-up .35s cubic-bezier(.2,.9,.2,1) forwards; }
+.toast--hide{ animation: toast-down .25s ease-in forwards; }
+
+@keyframes toast-up{
+  from { opacity: 0; transform: translateY(100vh) scale(.98); }
+  to   { opacity: 1; transform: translateY(50vh)  scale(1); } /* Mitte */
+}
+@keyframes toast-down{
+  from { opacity: 1; transform: translateY(50vh) scale(1); }
+  to   { opacity: 0; transform: translateY(100vh) scale(.98); }
+}

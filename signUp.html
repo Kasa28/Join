@@ -27,7 +27,7 @@
     </div>
     
     <main>
-  <form onsubmit="registerNewUser(event, 'users')" class="login_form" autocomplete="on" novalidate>
+  <form onsubmit="onclickFunction(event)" class="login_form" autocomplete="on" novalidate>
     <div class="login_box">
   <a href="./login.html" class="arrow_left"></a>
       <div class="login_header">
@@ -100,6 +100,9 @@
         <a href="./legal.html" target="_blank" rel="noopener">Legal notice</a>
       </div>
     </footer>
+
+    <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+    <div id="toast-dim"></div>
     <script src="./scripts/signUp.js"></script>
 </body>
 </html>

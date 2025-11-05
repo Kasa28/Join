@@ -28,9 +28,10 @@ function onclickFunction(event){
   const password = document.getElementById('password').value.trim();
 
   createUser(name , password, email);
+  showToast("You signed up successfully", { duration: 1000, dim: true });
 
-  getWhiteScreen();
-  setTimeout(function() { jumpToLogin(); }, 3000);
+  
+   setTimeout(() => { jumpToLogin(); }, 1200);
   
 }
 
@@ -68,3 +69,24 @@ function checkPolicyandAnswers() {
   button.disabled = !allFilled;
 }
 
+
+function showToast(text, { duration = 3000, dim = true } = {}) {
+  let root = document.getElementById("toast-root");
+  if (!root) { root = document.createElement("div"); root.id = "toast-root"; document.body.appendChild(root); }
+
+  const el = document.createElement("div");
+  el.className = "toast toast--show";
+  el.innerHTML = `<span>${text}</span>`;
+  root.appendChild(el);
+
+  const dimEl = document.getElementById("toast-dim");
+  if (dim && dimEl) dimEl.classList.add("dim--show");
+
+  setTimeout(() => {
+    el.classList.remove("toast--show");
+    el.classList.add("toast--hide");
+    el.addEventListener("animationend", () => el.remove(), { once: true });
+    if (dim && dimEl) dimEl.classList.remove("dim--show");
+  }, duration);
+}
+window.showToast = showToast; 
