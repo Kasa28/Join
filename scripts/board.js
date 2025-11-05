@@ -70,6 +70,8 @@ if (!hasPersistedTasks) {
  *************************************************/
 let whichCardActuellDrop = null;     // gerade gezogene Karte
 let searchQuery = "";                // Suchstring (klein geschrieben)
+let currentDragCardEl = null;        // DOM-Element der gerade gezogenen Karte
+let lastDragPointerX = null;         // letzte X-Position während dragover
 
 
 function updateSearchClearButtonState(inputEl) {
@@ -188,14 +190,25 @@ window.removeHighlight = function (id) {
 
 window.onCardDragStart = function (event, whichTaskId) {
   whichCardActuellDrop = whichTaskId;
+  currentDragCardEl = event.currentTarget;
+  lastDragPointerX = null;
   try {
     event.dataTransfer.setData("text/plain", String(whichTaskId));
     event.dataTransfer.effectAllowed = "move";
   } catch (e) { /* Safari etc. */ }
   document.body.classList.add("dragging");
+  if (currentDragCardEl) {
+    currentDragCardEl.classList.add("is-dragging");
+  }
 };
 window.onCardDragEnd = function () {
   document.body.classList.remove("dragging");
+    if (currentDragCardEl) {
+    currentDragCardEl.classList.remove("is-dragging", "tilt-left", "tilt-right");
+  }
+  currentDragCardEl = null;
+  lastDragPointerX = null;
+  document.querySelectorAll(".drag-area").forEach((el) => el.classList.remove("drag-highlight"));
 };
 window.moveTo = function (newStatus) {
   if (whichCardActuellDrop == null) return;
@@ -207,8 +220,26 @@ window.moveTo = function (newStatus) {
     persistTasks();
     render();
   }
+   document.querySelectorAll(".drag-area").forEach((el) => el.classList.remove("drag-highlight"));
 };
 
+document.addEventListener("dragover", (event) => {
+  if (!currentDragCardEl) return;
+  const { clientX } = event;
+  if (typeof clientX !== "number") return;
+
+  if (lastDragPointerX == null) {
+    lastDragPointerX = clientX;
+    return;
+  }
+
+  const deltaX = clientX - lastDragPointerX;
+  if (Math.abs(deltaX) < 2) return;
+
+  currentDragCardEl.classList.remove("tilt-left", "tilt-right");
+  currentDragCardEl.classList.add(deltaX > 0 ? "tilt-right" : "tilt-left");
+  lastDragPointerX = clientX;
+});
 /*************************************************
  * 5) Karten-Rendering (+ Nacharbeiten)
  *************************************************/

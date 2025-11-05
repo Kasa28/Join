@@ -227,6 +227,23 @@
   min-height: 160px;
 }
 
+.drag-area {
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 2px transparent;
+  transition: box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.drag-area.drag-highlight {
+  box-shadow: inset 0 0 0 2px #b0b0b0;
+  background: rgba(203, 213, 225, 0.2);
+}
+
+.drag-area.drag-highlight .empty-pill {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
 .main-content-board .empty-pill {
   display: grid;
   place-items: center;
@@ -242,7 +259,7 @@
   padding: 20px;
   cursor: grab;
   user-select: none;
-  transition: transform 120ms ease;
+  transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
 .main-content-board .task-card:active {
@@ -250,6 +267,20 @@
   opacity: 0.95;
   transform: scale(0.998);
 }
+
+.main-content-board .task-card.is-dragging {
+  cursor: grabbing;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.18);
+}
+
+.main-content-board .task-card.tilt-left {
+  transform: rotate(-3deg) scale(1.02);
+}
+
+.main-content-board .task-card.tilt-right {
+  transform: rotate(3deg) scale(1.02);
+}
+
 
 .main-content-board .task-card .badge {
   display: inline-block;
