@@ -1,6 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
     updateSummary();
-    /*greetUser();*/
   });
   
   /**
@@ -140,41 +139,3 @@ window.addEventListener("DOMContentLoaded", () => {
       updateSummary();
     }
   });
-
-
-
-
-/*aktuellen Nutzer begrüßen auf Basis von firebase
-async function greetUser() {
-    const h1El = document.querySelector(".summary-h1");
-    if (!h1El) return;
-  
-    const baseGreeting = h1El.textContent.trim(); // "Good Morning" bleibt erhalten
-    const userId = localStorage.getItem("userID");
-    let userName = "";
-  
-    if (userId !== null) {
-      try {
-        // Nutzer aus Firebase anhand der ID laden
-        const response = await fetch(
-          `https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}/.json`
-        );
-        const data = await response.json();
-        if (data && data.name) {
-          userName = data.name;
-        } else if (data && data.user && data.user.name) {
-          // Falls das Objekt verschachtelt ist
-          userName = data.user.name;
-      }
-} catch (err) {
-    console.warn("Could not load user from Firebase:", err);
-  }
-    }
-  if (userName) {
-    const firstName = userName.split(" ")[0];
-    h1El.textContent = `${baseGreeting}, ${firstName}!`;
-  } else {
-    h1El.textContent = baseGreeting;
-  }
-}
-*/
