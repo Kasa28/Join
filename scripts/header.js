@@ -31,14 +31,20 @@ function toggleUserMenuePopupMenu(){
 }
 
 function deleteIdFromLocalStorage(){
-    localStorage.removeItem('userID');
+    localStorage.removeItem('userData');
 }
 
 function checkIfLogedIn(){
-    if (!localStorage.getItem("userID")) {
+
+    if (!localStorage.getItem("userData")) {
         return false;
     }
     return true;
+}
+
+function onloadFunctionHeader(){
+    setLetterInUserBall();
+    greetUserName()
 }
 
 function setLetterInUserBall(){
@@ -46,7 +52,34 @@ function setLetterInUserBall(){
     let contentRef = document.getElementById("user-ball-ID");
 
     if(!checkIfLogedIn()){
-        contentRef.innerHTML = "g";
-    }
-        contentRef.innerHTML = "a";
+        contentRef.innerHTML = "G";
+    }   else{
+
+        let userJson = JSON.parse(localStorage.getItem("userData"));
+        userLetter = userJson.name.charAt(0).toUpperCase();
+        contentRef.innerHTML = userLetter;
+    }        
+}
+
+function makeFirstLetterBig(inputString){
+
+    return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
+
+}
+
+
+function greetUserName(){
+
+    let contentRef = document.getElementById("greetID");
+
+    if(!checkIfLogedIn()){
+        contentRef.innerHTML = `<h1 class="summary-h1-font-guest">Good Morning</h1>`;
+    }   else{
+        let userJson = JSON.parse(localStorage.getItem("userData"));
+        let userName = makeFirstLetterBig(userJson.name);
+        contentRef.innerHTML = `<h2 class="summary-h2-font-user" >Good Morning,  </h2>
+                                <h1 class="summary-h1-font-user">${userName}</h1>`
+    } 
+
+
 }

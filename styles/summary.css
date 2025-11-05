@@ -40,17 +40,30 @@ body{
 
 
 .h1-container-summary{
-    width: 455px;
+    width: 650px;
     height: 77px;
     gap: 22px;
 }
 
 
-.summary-h1{
+.summary-h1-font-guest{
     font-size: 64px;
     font-style: bold;
     font-weight: 700px;
 }
+
+.summary-h2-font-user{
+    font-size: 64px;
+    font-weight: 5;
+}
+
+.summary-h1-font-user{
+    font-size: 64px;
+    font-style: bold;
+    font-weight: 700px;
+    color: #4589FF;
+}
+
 
 
 .h2-font-summray{

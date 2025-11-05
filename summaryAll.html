@@ -13,7 +13,7 @@
     <script src="./scripts/header.js"></script>
 
 </head>
-<body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), setLetterInUserBall()">
+<body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()">
 
 
 
@@ -92,7 +92,9 @@
                 <!--ab hier ersetzen-->
                 <main class="main-content">
                     <div class="h1-container-summary">
-                        <h1 class="summary-h1">Good Morning</h1>
+                        <div style="display: flex; justify-content: space-evenly;" id="greetID">
+                            
+                        </div>
                     </div>
                     <div class="summary-content-container margin-big">
                         <div class="summary-section-1-order">
