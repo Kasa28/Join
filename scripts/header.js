@@ -36,10 +36,8 @@ function deleteIdFromLocalStorage(){
 
 function checkIfLogedIn(){
     if (!localStorage.getItem("userID")) {
-        console.log("LocalStorage leer");
         return false;
     }
-    console.log("LocalStorage voll");
     return true;
 }
 

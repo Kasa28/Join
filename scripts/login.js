@@ -56,12 +56,16 @@ function checkUsernamePassword(inputMail, inputPassword){
 
    for (let index = 0; index < users.length; index++) {
 
+      let actualName = users[index].user.name;
       let actualMail = users[index].user.email;
       let actualPassword = users[index].user.password;
-      let actualID = index;
+      let actualID = users[index].id;
+      let actualJson = {"id" : actualID, "name" : actualName, "email" : actualMail}
    
    if(actualMail === inputMail && actualPassword === inputPassword){
-            putIdIntoLocalStorage(actualID);
+
+            
+            putUserDataIntoLocalStorage(actualJson);
             return true;
       }
    }
@@ -69,8 +73,8 @@ function checkUsernamePassword(inputMail, inputPassword){
    return false;
 }
 
-function putIdIntoLocalStorage(inputID){
-   localStorage.setItem("userID", inputID);
+function putUserDataIntoLocalStorage(inputJson){
+   localStorage.setItem("userData", JSON.stringify(inputJson));
 }
 
 
