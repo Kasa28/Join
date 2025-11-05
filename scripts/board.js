@@ -72,7 +72,11 @@ let whichCardActuellDrop = null;     // gerade gezogene Karte
 let searchQuery = "";                // Suchstring (klein geschrieben)
 let currentDragCardEl = null;        // DOM-Element der gerade gezogenen Karte
 let lastDragPointerX = null;         // letzte X-Position während dragover
-
+let autoMoveTimeoutId = null;        // Timeout für automatisches Einsortieren
+let pendingAutoMoveStatus = null;    // Status, der als nächstes automatisch gesetzt werden soll
+let needsDraggingClassAfterRender = false; // ob nach render() die Drag-Klasse erneut gesetzt werden soll
+let pendingDragTiltClass = null;     // ggf. zu übernehmende Tilt-Klasse
+let activeHighlightColumnId = null;  // aktuell markierte Spalte
 
 function updateSearchClearButtonState(inputEl) {
   const clearBtn = document.getElementById("board-search-clear");
@@ -92,6 +96,11 @@ const nameOfTheCard = {
   "await-feedback": { id: "drag-area-await-feedback", empty: "No tasks in Feedback" },
   done:             { id: "drag-area-done",           empty: "No task in Done" },
 };
+
+const statusByColumnId = Object.fromEntries(
+  Object.entries(nameOfTheCard).map(([status, { id }]) => [id, status])
+);
+
 
 const prioritätIcon = {
   urgent: "../assets/img/Prio baja-urgent-red.svg",
@@ -180,18 +189,49 @@ function matchesSearch(t) {
 window.allowDrop = (e) => e.preventDefault();
 
 window.highlight = function (id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.add("drag-highlight");
+   if (!id) return;
+
+  if (activeHighlightColumnId && activeHighlightColumnId !== id) {
+    const prev = document.getElementById(activeHighlightColumnId);
+    if (prev) prev.classList.remove("drag-highlight");
+  }
+    const el = document.getElementById(id);
+      if (!el) return;
+
+  el.classList.add("drag-highlight");
+  activeHighlightColumnId = id;
+
+  const status = statusByColumnId[id];
+  if (status) scheduleAutoMoveTo(status);
 };
 window.removeHighlight = function (id) {
+    if (!id) return;
+  if (activeHighlightColumnId && activeHighlightColumnId !== id) {
+    return;
+  }
+
   const el = document.getElementById(id);
   if (el) el.classList.remove("drag-highlight");
+
+    activeHighlightColumnId = null;
+  const status = statusByColumnId[id];
+  if (status) cancelScheduledAutoMove(status);
 };
+
+function clearAllColumnHighlights() {
+  document.querySelectorAll(".drag-area.drag-highlight").forEach((el) =>
+    el.classList.remove("drag-highlight")
+  );
+  activeHighlightColumnId = null;
+}
+
 
 window.onCardDragStart = function (event, whichTaskId) {
   whichCardActuellDrop = whichTaskId;
   currentDragCardEl = event.currentTarget;
   lastDragPointerX = null;
+    pendingDragTiltClass = null;
+  cancelScheduledAutoMove();
   try {
     event.dataTransfer.setData("text/plain", String(whichTaskId));
     event.dataTransfer.effectAllowed = "move";
@@ -203,25 +243,143 @@ window.onCardDragStart = function (event, whichTaskId) {
 };
 window.onCardDragEnd = function () {
   document.body.classList.remove("dragging");
+  cancelScheduledAutoMove();
     if (currentDragCardEl) {
     currentDragCardEl.classList.remove("is-dragging", "tilt-left", "tilt-right");
   }
   currentDragCardEl = null;
   lastDragPointerX = null;
-  document.querySelectorAll(".drag-area").forEach((el) => el.classList.remove("drag-highlight"));
+    pendingDragTiltClass = null;
+  needsDraggingClassAfterRender = false;
+  clearAllColumnHighlights();
 };
 window.moveTo = function (newStatus) {
-  if (whichCardActuellDrop == null) return;
-    const idx = Array.isArray(window.tasks)
-    ? window.tasks.findIndex((t) => t.id === whichCardActuellDrop)
-    : -1;
-  if (idx > -1) {
-        window.tasks[idx].status = newStatus;
-    persistTasks();
-    render();
-  }
-   document.querySelectorAll(".drag-area").forEach((el) => el.classList.remove("drag-highlight"));
+  cancelScheduledAutoMove();
+  applyStatusChangeForDraggedTask(newStatus, { keepDraggingState: false });
+  clearAllColumnHighlights();
 };
+
+function getDraggedTask() {
+  if (whichCardActuellDrop == null || !Array.isArray(window.tasks)) return null;
+  return window.tasks.find((t) => t.id === whichCardActuellDrop) || null;
+}
+
+function applyStatusChangeForDraggedTask(newStatus, { keepDraggingState } = {}) {
+  const draggedTask = getDraggedTask();
+  if (!draggedTask) return false;
+  if (draggedTask.status === newStatus) return false;
+
+  pendingDragTiltClass = keepDraggingState
+    ? currentDragCardEl?.classList.contains("tilt-right")
+      ? "tilt-right"
+      : currentDragCardEl?.classList.contains("tilt-left")
+      ? "tilt-left"
+      : null
+    : null;
+
+  draggedTask.status = newStatus;
+  persistTasks();
+  needsDraggingClassAfterRender = Boolean(keepDraggingState);
+  render();
+  return true;
+}
+
+function scheduleAutoMoveTo(status) {
+  if (!currentDragCardEl || whichCardActuellDrop == null) return;
+  const draggedTask = getDraggedTask();
+  if (draggedTask && draggedTask.status === status) {
+    cancelScheduledAutoMove();
+    return;
+  }
+
+  if (pendingAutoMoveStatus === status) return;
+
+  cancelScheduledAutoMove();
+  pendingAutoMoveStatus = status;
+  autoMoveTimeoutId = setTimeout(() => {
+    autoMoveTimeoutId = null;
+    pendingAutoMoveStatus = null;
+    applyStatusChangeForDraggedTask(status, { keepDraggingState: true });
+  }, 160);
+}
+
+function cancelScheduledAutoMove(expectedStatus) {
+  if (pendingAutoMoveStatus && expectedStatus && pendingAutoMoveStatus !== expectedStatus) {
+    return;
+  }
+  if (autoMoveTimeoutId != null) {
+    clearTimeout(autoMoveTimeoutId);
+  }
+  autoMoveTimeoutId = null;
+  pendingAutoMoveStatus = null;
+}
+
+const MAX_VERTICAL_SNAP_DISTANCE = 220;
+
+function findColumnByPointer(clientX, clientY) {
+  const columns = Array.from(document.querySelectorAll(".drag-area"));
+  let best = null;
+  let bestDistance = Infinity;
+
+  for (const col of columns) {
+    const rect = col.getBoundingClientRect();
+    if (clientX < rect.left || clientX > rect.right) continue;
+
+    let distanceY = 0;
+    if (clientY < rect.top) {
+      distanceY = rect.top - clientY;
+    } else if (clientY > rect.bottom) {
+      distanceY = clientY - rect.bottom;
+    }
+
+    if (distanceY < bestDistance) {
+      bestDistance = distanceY;
+      best = col;
+    }
+  }
+
+  if (best && bestDistance <= MAX_VERTICAL_SNAP_DISTANCE) {
+    return best;
+  }
+  return null;
+}
+
+document.addEventListener("dragover", (event) => {
+  if (!currentDragCardEl) return;
+
+  const { clientX, clientY } = event;
+
+  if (typeof clientX === "number") {
+    if (lastDragPointerX == null) {
+      lastDragPointerX = clientX;
+    } else {
+      const deltaX = clientX - lastDragPointerX;
+      if (Math.abs(deltaX) >= 2) {
+        currentDragCardEl.classList.remove("tilt-left", "tilt-right");
+        currentDragCardEl.classList.add(deltaX > 0 ? "tilt-right" : "tilt-left");
+        lastDragPointerX = clientX;
+      }
+    }
+  }
+
+  if (typeof clientX !== "number" || typeof clientY !== "number") return;
+
+  let hoveredColumn = event.target?.closest?.(".drag-area") || null;
+  if (!hoveredColumn) {
+    const direct = document.elementFromPoint(clientX, clientY);
+    hoveredColumn = direct?.closest?.(".drag-area") || null;
+  }
+  if (!hoveredColumn) {
+    hoveredColumn = findColumnByPointer(clientX, clientY);
+  }
+
+  if (hoveredColumn?.id) {
+    highlight(hoveredColumn.id);
+  } else if (activeHighlightColumnId) {
+    removeHighlight(activeHighlightColumnId);
+  }
+});
+
 
 document.addEventListener("dragover", (event) => {
   if (!currentDragCardEl) return;
@@ -338,6 +496,19 @@ function afterRender() {
     }
   });
 }
+
+  if (needsDraggingClassAfterRender && whichCardActuellDrop != null) {
+    const card = document.getElementById(`card-${whichCardActuellDrop}`);
+    if (card) {
+      currentDragCardEl = card;
+      card.classList.add("is-dragging");
+      if (pendingDragTiltClass) {
+        card.classList.add(pendingDragTiltClass);
+      }
+    }
+    needsDraggingClassAfterRender = false;
+    pendingDragTiltClass = null;
+  }
 
 /*************************************************
  * 6) Typ-Helfer (für Badges & CSS-Laden)
