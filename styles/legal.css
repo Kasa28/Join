@@ -7,12 +7,13 @@
 
 .page {
   font-family: "Open Sans", Arial, sans-serif;
-  max-width: 960px;
   margin: 0 auto;
-  padding: 64px 20px 80px;
   height: calc(100vh - 96px);
   overflow-y: auto; 
   overflow-x: hidden;
+  width: 85%;
+  padding-left: 118px;
+  padding-top: 60px;
 }
 
 ul {

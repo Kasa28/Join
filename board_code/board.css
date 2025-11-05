@@ -242,6 +242,7 @@
   padding: 20px;
   cursor: grab;
   user-select: none;
+  transition: transform 120ms ease;
 }
 
 .main-content-board .task-card:active {
