@@ -536,13 +536,26 @@ li:hover:not(:has(input)) {
 
 
 
+
+.toast-icon{
+  width:20px; height:20px; display:inline-block;
+  background:#fff; /* Iconfarbe */
+  -webkit-mask: url("../assets/img/Board.svg") no-repeat center / contain;
+          mask: url("../assets/img/Board.svg") no-repeat center / contain;
+}
+
+
+.toast--show{ animation: toast-in .18s ease-out forwards; }
+.toast--hide{ animation: toast-out .18s ease-in forwards; }
+
+/* Root sitzt oben mittig, Toast fährt von unten hoch */
 #toast-root{
   position: fixed;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);   /* exakt mittig */
+  top: 0;                 /* oben ansetzen */
+  transform: translateX(-50%);
   z-index: 9999;
-  pointer-events: none;               /* Klicks gehen durch */
+  pointer-events: none;
 }
 
 .toast{
@@ -556,29 +569,28 @@ li:hover:not(:has(input)) {
   box-shadow: 0 10px 20px rgba(0,0,0,.18);
   font: 500 16px/1.2 "Open Sans", system-ui, sans-serif;
   opacity: 0;
-  transform: scale(.96);              /* kleiner Start */
+  transform: translateY(100vh) scale(.98);   /* Start: unterhalb des Screens */
   pointer-events: none;
 }
 
-.toast-icon{
-  width:20px; height:20px; display:inline-block;
-  background:#fff; /* Iconfarbe */
-  -webkit-mask: url("../assets/img/Board.svg") no-repeat center / contain;
-          mask: url("../assets/img/Board.svg") no-repeat center / contain;
+.toast img{ width:20px; height:20px; display:block; filter: brightness(0) invert(1); }
+
+.toast--show{ animation: toast-up .35s cubic-bezier(.2,.9,.2,1) forwards; }
+.toast--hide{ animation: toast-down .25s ease-in forwards; }
+
+/* Von unten (100vh) in die Mitte (50vh) */
+@keyframes toast-up{
+  from { opacity: 0; transform: translateY(100vh) scale(.98); }
+  to   { opacity: 1; transform: translateY(50vh)  scale(1); } /* Mitte */
 }
 
-
-.toast--show{ animation: toast-in .18s ease-out forwards; }
-.toast--hide{ animation: toast-out .18s ease-in forwards; }
-
-@keyframes toast-in{
-  from{ opacity: 0; transform: scale(.96); }
-  to  { opacity: 1; transform: scale(1); }
-}
-@keyframes toast-out{
-  from{ opacity: 1; transform: scale(1); }
-  to  { opacity: 0; transform: scale(.96); }
+/* Zurück nach unten weg */
+@keyframes toast-down{
+  from { opacity: 1; transform: translateY(50vh) scale(1); }
+  to   { opacity: 0; transform: translateY(100vh) scale(.98); }
 }
 
-/* Fehler-Variante */
-.toast--error{ background:#e03131; }
+/* (Optional) weniger Motion für Nutzer mit reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .toast--show,.toast--hide{ animation-duration: .01ms; }
+}
