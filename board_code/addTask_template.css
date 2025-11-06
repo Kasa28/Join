@@ -80,7 +80,7 @@ addtask_template.css
   width: 100%;
   font-family: "open sans";
   line-height: 120%;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
 }
 
 .section-heading-addTask_template {
@@ -88,6 +88,7 @@ addtask_template.css
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 19px;
+  margin-top: 24px;
   margin-bottom: 8px;
 }
 
@@ -146,7 +147,7 @@ addtask_template.css
   align-items: center;
   border-bottom: 1px solid #d1d1d1;
   background-color: white;
-  margin-bottom: 24px;
+  margin-bottom:4px;
 }
 
 .task-date-addTask_template {
@@ -216,6 +217,11 @@ addtask_template.css
 .priority-btn-low-addTask_template:hover {
   border-bottom: 3px solid #00c853;
 }
+
+.priority-btn-medium-addTask_template:hover {
+  border-bottom: 3px solid #ffa800;
+}
+
 
 .assign-select-addTask_template {
   display: flex;
@@ -535,5 +541,5 @@ addtask_template.css
 .error-text {
   color: red;
   font-size: 14px;
-  margin-top: 4px;
+  font-family: 'Open Sans';
 }
