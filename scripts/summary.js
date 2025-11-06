@@ -128,6 +128,7 @@ async function updateSummary() {
     }
   }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   // 🔥 Summary automatisch aktualisieren, wenn Tasks sich in Firebase ändern
 subscribeToFirebaseUpdates(async () => {
   await updateSummary();
@@ -143,6 +144,11 @@ subscribeToFirebaseUpdates(async () => {
     }
   });
   */
+=======
+
+  console.log("Summary updated:", counts);
+}
+>>>>>>> Stashed changes
 =======
 
   console.log("Summary updated:", counts);
