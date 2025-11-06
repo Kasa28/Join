@@ -507,8 +507,8 @@ function createTask() {
 
   // Mapping Medium → sum_icon.svg
   let priorityFileName = priority;
-  if (priority === "medium") priorityFileName = "sum";
-  priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFileName}_icon.svg`;
+  if (priority === "medium") priorityFileName = "3_striche";
+  priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFileName}.svg`;
 
   // Assigned users (with colors)
   const assignedTo = (window.selectedUsers || []).map((name) => {
