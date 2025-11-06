@@ -44,27 +44,34 @@ const demoTasks = [
 ];
 
 // === Firebase: Tasks laden ===
-// === Firebase: Tasks laden ===
 async function loadTasksFromFirebase() {
   try {
     const response = await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json");
     const data = await response.json();
     const firebaseTasks = data ? Object.values(data) : [];
 
-    if (firebaseTasks.length > 0) {
-      // 👉 Demo + Firebase kombinieren
-      window.tasks = [...demoTasks.map(t => ({ ...t })), ...firebaseTasks];
-      console.log("Demo + Firebase Tasks geladen:", window.tasks);
-    } else {
-      // 👉 Nur Demo-Tasks, falls Firebase leer ist
+    if (firebaseTasks.length === 0) {
+      // ⚡️ Firebase ist leer → Demo-Tasks einmalig hochladen
+      console.log("Firebase leer – lade Demo-Tasks hoch...");
+      const demoObject = demoTasks.reduce((acc, t) => ({ ...acc, [t.id]: t }), {});
+
+      await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(demoObject),
+      });
+
+      // danach im Frontend anzeigen
       window.tasks = demoTasks.map(t => ({ ...t }));
-      console.log("Nur Demo-Tasks geladen (Firebase leer).");
+    } else {
+      // ✅ Firebase enthält Daten → nur diese laden
+      window.tasks = firebaseTasks;
     }
 
     render(); // 🔥 Board neu rendern
   } catch (error) {
     console.error("Fehler beim Laden der Tasks aus Firebase:", error);
-    // Fallback auf Demo-Daten
+    // Fallback: falls Firebase nicht erreichbar ist
     window.tasks = demoTasks.map(t => ({ ...t }));
     render();
   }
@@ -159,16 +166,14 @@ window.selectedUserColors = window.selectedUserColors || {};
 
 async function persistTasks() {
   try {
-    // Nur Firebase-Tasks (keine Demo-Tasks)
-    const firebaseOnly = window.tasks.filter(t => !isDemoTask(t));
-
-    await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        firebaseOnly.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})
-      ),
-    });
+    // 🔁 Alle Tasks (Demo + neue) speichern
+await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(
+    window.tasks.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})
+  ),
+});
 
     // Falls Summary-Seite gerade offen ist → direkt aktualisieren
     if (window.location.pathname.endsWith("summaryAll.html")) {

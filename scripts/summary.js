@@ -20,45 +20,20 @@ window.addEventListener("DOMContentLoaded", () => {
       try {
         const response = await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json");
         const data = await response.json();
-        const firebaseTasks = data ? Object.values(data) : [];
+        const firebaseTasks = Array.isArray(data)
+        ? data.filter(Boolean)
+        : data
+        ? Object.values(data)
+        : [];
+
+      // Normalize minimal fields defensively
+      firebaseTasks.forEach((t) => {
+        if (t && typeof t.priority === "string") {
+          t.priority = t.priority.toLowerCase();
+        }
+      });
     
-        // 👉 Demo-Tasks beibehalten, falls du sie in der Summary weiterhin sehen willst
-        const demoTasks = [
-          {
-            id: 1,
-            title: "Kochwelt Page & Recipe Recommender",
-            description: "Build start page with recipe recommendation...",
-            type: "User Story",
-            status: "in-progress",
-            dueDate: "10/05/2023",
-            priority: "medium",
-            subtasksDone: 1,
-            subtasksTotal: 2,
-          },
-          {
-            id: 2,
-            title: "CSS Architecture Planning",
-            description: "Define CSS naming conventions and structure.",
-            type: "Technical Task",
-            status: "await-feedback",
-            dueDate: "02/09/2023",
-            priority: "urgent",
-            subtasksDone: 2,
-            subtasksTotal: 2,
-          },
-        ];
-    
-        // 🧩 Kombiniere Demo + Firebase-Tasks
-        const allTasks = [...demoTasks, ...firebaseTasks];
-    
-        // 🧠 Repariere evtl. falsche Prioritätspfade aus Firebase
-        allTasks.forEach((t) => {
-          if (t.priority === "urgent") t.priority = "urgent";
-          if (t.priority === "medium") t.priority = "medium";
-          if (t.priority === "low") t.priority = "low";
-        });
-    
-        return allTasks;
+      return firebaseTasks;
       } catch (error) {
         console.error("Fehler beim Laden der Tasks aus Firebase:", error);
         return [];
