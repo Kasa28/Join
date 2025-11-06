@@ -1,0 +1,25 @@
+
+
+@media (max-width: 1000px){
+    .task-card{
+    min-width: 252px;
+    max-width: 252px;
+}
+
+.main-content-board .column-body {
+    flex-direction: row;
+        overflow-x: auto;
+}
+
+
+.main-content-board .board{
+    width: 100%;
+    padding-right: 30px;
+}
+
+.main-content-board .column-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;                  
+  background: transparent;
+}
+}
