@@ -178,21 +178,15 @@ window.selectedUserColors = window.selectedUserColors || {};
 
 async function persistTasks() {
   try {
-    // 🔁 Alle Tasks (Demo + neue) speichern
-await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
-  method: "PUT",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(
-    window.tasks.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})
-  ),
-});
+    await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        window.tasks.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})
+      ),
+    });
 
-    // Falls Summary-Seite gerade offen ist → direkt aktualisieren
-    if (window.location.pathname.endsWith("summaryAll.html")) {
-      await updateSummary();
-    }
-
-    // Wenn updateSummary als Funktion global existiert, zusätzlich aufrufen
+    // ⬇️ Hier darf dieser Teil NICHT fehlen:
     if (typeof updateSummary === "function") {
       await updateSummary();
     }
