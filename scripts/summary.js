@@ -127,30 +127,11 @@ async function updateSummary() {
       deadlineEl.textContent = "No urgent deadlines";
     }
   }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
   // 🔥 Summary automatisch aktualisieren, wenn Tasks sich in Firebase ändern
-subscribeToFirebaseUpdates(async () => {
-  await updateSummary();
-  console.log("🔄 Summary updated via Firebase realtime");
-});
-
-  /**
-   * Optional: Aktualisierung triggern, wenn im localStorage Änderungen auftreten.
-   */
-  /*window.addEventListener("storage", (event) => {
-    if (event.key === "tasks") {
-      updateSummary();
-    }
+  subscribeToFirebaseUpdates(async () => {
+    await updateSummary();
+    console.log("🔄 Summary updated via Firebase realtime");
   });
-  */
-=======
-
   console.log("Summary updated:", counts);
 }
->>>>>>> Stashed changes
-=======
-
-  console.log("Summary updated:", counts);
-}
->>>>>>> Stashed changes
