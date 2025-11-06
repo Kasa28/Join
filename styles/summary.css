@@ -33,6 +33,10 @@ body{
     font-family: "open sans";
 }
 
+.transition-08s{
+    transition: 0.8s;
+}
+
 .summary-content-container{
     width: 912px;
     height: 442px;
@@ -67,11 +71,13 @@ body{
 
 
 .h2-font-summray{
-    font-size: 48px;   
+    font-size: 48px;
+    
 }
 
 .date-font-summary{
     font-size: 33px;
+    
 }
 
 
@@ -90,10 +96,6 @@ body{
 
 .padding-small{
     padding: 12px;
-}
-
-.padding-right-small{
-    padding: 0 12px 0 0;
 }
 
 .padding-left-right-small{
@@ -116,14 +118,7 @@ body{
     background-color: #D2E3FF;
 }
 
-.font-color-white{
-    color: white;
-}
 
-.seperator-summary{
-    width: 2px;
-    background-color: white;
-}
 
 .row-maker{
     display: flex;
@@ -169,11 +164,28 @@ body{
     height: 100%;
 }
 
-.summary-card-up-left{
+.urgent-task-card-summary{
     width: 672px;
     padding: 28px 48px 28px 48px;
     gap: 35px;
+    color: white;
 }
+
+.card-font-a-urgent-task-summary{
+    font-size: 23px;
+    display: block;
+    text-align: center;
+}
+
+
+
+.seperator-summary{
+    width: 2px;
+    background-color: white;
+
+}
+
+
 
 .date-container-summary{
     text-align: left;
@@ -183,11 +195,10 @@ body{
     text-align: left;
 }
 
-.summary-card-conainer-up-right{
+.tasks-on-board-card-summary{
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 208px;
 }
 
@@ -200,7 +211,14 @@ body{
 .summary-cards-low-section{
     width: 204px;
     height: 219px;
-    padding: 40px;
+    padding: 20px 40px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.summary-card-the-last-three{
+    background-color: white;
 }
 
 .summary-section-1-order{

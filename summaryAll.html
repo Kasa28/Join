@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Summary</title>
     <link rel="stylesheet" href="styles/summary.css">
+    <link rel="stylesheet" href="./styles/summray-hovereffects.css">
     <link rel="stylesheet" href="styles/headbar.css">
     <link rel="stylesheet" href="styles/sidemenue.css">
     <link rel="stylesheet" href="styles/contacsUser.css">
@@ -132,49 +133,91 @@
                         </div>
                     </div>
 
-                </div>
-                <div class="summary-section-2-order">
 
-                    <div class="summary-card summary-cards-low-section backgroundcolor-blue-light">
-                        <div class="img-count-container-summary">
-                            <img class="img-summary padding-right-small" src="./assets/img/summary-board.svg"
-                                alt="Liste-icon">
-                            <h2 class="h2-font-summray">4</h2>
-                        </div>
-                        <a class="card-font-a-summary">Todo</a>
-                    </div>
+                    <section class="summary-content-container margin-big">
 
-                    <div class="summary-card summary-cards-low-section">
-                        <div class="img-count-container-summary">
-                            <img class="img-summary padding-right-small" src="./assets/img/summary-progress.svg"
-                                alt="Prozess-icon">
-                            <h2 class="h2-font-summray">3</h2>
-                        </div>
-                        <a class="card-font-a-summary">Progress</a>
-                    </div>
 
-                    <div class="summary-card summary-cards-low-section">
-                        <div class="img-count-container-summary">
-                            <img class="img-summary padding-right-small" src="./assets/img/summary-feedback.svg"
-                                alt="Chat-icon">
-                            <h2 class="h2-font-summray">2</h2>
-                        </div>
-                        <a class="card-font-a-summary">Feedback</a>
-                    </div>
+                        <section-top class="summary-section-1-order">
 
-                    <div class="summary-card summary-cards-low-section">
-                        <div class="img-count-container-summary">
-                            <img class="img-summary padding-right-small" src="./assets/img/summary-done.svg"
-                                alt="Hacken-icon">
-                            <h2 class="h2-font-summray">0</h2>
-                        </div>
-                        <a class="card-font-a-summary">Tasks done</a>
-                    </div>
 
-                </div>
-            </div>
-        </main>
-        <!--bis hier ersetzen-->
+                            <urgent-task class="summary-card row-maker backgroundcolor-blue summary-card-high-section-summary urgent-task-card-summary transition-08s">
+
+                                <div class="">
+                                    <div class="img-count-container-summary padding-up-down-small">
+                                        <img class="img-summary" src="./assets/img/icon + circle.svg" alt="Uhr icon">
+                                        <h2 class="h2-font-summray">3</h2>
+                                    </div>
+                                    <a class="card-font-a-urgent-task-summary">Urgent Tasks</a>
+                                </div>
+
+                                <div class="seperator-summary">
+                                    
+                                </div>
+
+                                <div  class="date-container-summary">
+                                    <h2 class="padding-up-down-small date-font-summary text-align-left-summray transition-08s">June 31, 2033</h2>
+                                    <a class="card-font-a-urgent-task-summary text-align-left-summray">deadline</a>
+                                </div>
+
+                            </urgent-task>
+
+
+                            <tasks-on-board class="summary-card summary-card-high-section-summary tasks-on-board-card-summary transition-08s">
+                                <div class="summary-card-content-up-right">
+                                    <div class="img-count-container-summary">
+                                        <img class="img-summary" src="./assets/img/summary-board.svg" alt="board-icon">
+                                        <h2 class="h2-font-summray">5</h2>
+                                    </div>
+                                    <a class="card-font-a-summary">Task in Board</a>
+                                </div>
+                            </tasks-on-board>
+
+
+                        </section-top>
+
+
+                        <section-bottom class="summary-section-2-order">
+
+                            <todo class="summary-card summary-cards-low-section backgroundcolor-blue-light transition-08s">
+                                <div class="img-count-container-summary">
+                                    <img class="img-summary" src="./assets/img/summary-todo.svg" alt="Liste-icon">
+                                    <h2 class="h2-font-summray">4</h2>
+                                </div>
+                                <a class="card-font-a-summary">Todo</a>
+                            </todo>
+
+                            <progress-section class="summary-card summary-cards-low-section summary-card-the-last-three transition-08s">
+                                <div class="img-count-container-summary">
+                                    <img class="img-summary" src="./assets/img/summary-progress.svg" alt="Prozess-icon">
+                                    <h2 class="h2-font-summray">3</h2>
+                                </div>
+                                <a class="card-font-a-summary">Progress</a>
+                            </progress-section>
+
+                            <feedback class="summary-card summary-cards-low-section summary-card-the-last-three transition-08s">
+                                <div class="img-count-container-summary">
+                                    <img class="img-summary" src="./assets/img/summary-feedback.svg" alt="Chat-icon">
+                                    <h2 class="h2-font-summray">2</h2>
+                                </div>
+                                <a class="card-font-a-summary">Feedback</a>
+                            </feedback>
+
+                            <done class="summary-card summary-cards-low-section summary-card-the-last-three transition-08s">
+                                <div class="img-count-container-summary">
+                                    <img class="img-summary" src="./assets/img/summary-done.svg" alt="Hacken-icon">
+                                    <h2 class="h2-font-summray">0</h2>
+                                </div>
+                                <a class="card-font-a-summary">Tasks done</a>
+                            </done>
+
+                        </section-bottom>
+
+
+                    </section>
+
+
+                </main>
+                <!--bis hier ersetzen-->
 
 
     </nav-main-container>
