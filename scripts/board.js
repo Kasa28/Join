@@ -159,15 +159,27 @@ window.selectedUserColors = window.selectedUserColors || {};
 
 async function persistTasks() {
   try {
+    // Nur Firebase-Tasks (keine Demo-Tasks)
     const firebaseOnly = window.tasks.filter(t => !isDemoTask(t));
 
     await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(firebaseOnly.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})),
+      body: JSON.stringify(
+        firebaseOnly.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})
+      ),
     });
 
-    if (typeof updateSummary === "function") updateSummary();
+    // Falls Summary-Seite gerade offen ist → direkt aktualisieren
+    if (window.location.pathname.endsWith("summaryAll.html")) {
+      await updateSummary();
+    }
+
+    // Wenn updateSummary als Funktion global existiert, zusätzlich aufrufen
+    if (typeof updateSummary === "function") {
+      await updateSummary();
+    }
+
   } catch (e) {
     console.warn("Could not update tasks in Firebase:", e);
   }
