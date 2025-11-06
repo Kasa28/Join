@@ -42,6 +42,42 @@ const demoTasks = [
     ],
   },
 ];
+
+// === Firebase: Tasks laden ===
+// === Firebase: Tasks laden ===
+async function loadTasksFromFirebase() {
+  try {
+    const response = await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json");
+    const data = await response.json();
+    const firebaseTasks = data ? Object.values(data) : [];
+
+    if (firebaseTasks.length > 0) {
+      // 👉 Demo + Firebase kombinieren
+      window.tasks = [...demoTasks.map(t => ({ ...t })), ...firebaseTasks];
+      console.log("Demo + Firebase Tasks geladen:", window.tasks);
+    } else {
+      // 👉 Nur Demo-Tasks, falls Firebase leer ist
+      window.tasks = demoTasks.map(t => ({ ...t }));
+      console.log("Nur Demo-Tasks geladen (Firebase leer).");
+    }
+
+    render(); // 🔥 Board neu rendern
+  } catch (error) {
+    console.error("Fehler beim Laden der Tasks aus Firebase:", error);
+    // Fallback auf Demo-Daten
+    window.tasks = demoTasks.map(t => ({ ...t }));
+    render();
+  }
+}
+
+function isDemoTask(taskOrId) {
+  const idValue =
+    typeof taskOrId === "object" && taskOrId !== null ? taskOrId.id : taskOrId;
+  const numericId = Number.parseInt(idValue, 10);
+  return Number.isFinite(numericId) && numericId > 0 && numericId <= 1000;
+}
+
+/*
 const persistedTasksRaw = JSON.parse(localStorage.getItem("tasks") || "[]");
 const hasPersistedTasks =
   Array.isArray(persistedTasksRaw) && persistedTasksRaw.length > 0;
@@ -65,6 +101,8 @@ if (!hasPersistedTasks) {
     console.warn("Could not initialise tasks in localStorage:", e);
   }
 }
+/*
+
 
 /*************************************************
  * 2) Globale Zustände & Mappings
@@ -119,15 +157,19 @@ window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
 window.currentPrio = window.currentPrio || "low";
 window.selectedUserColors = window.selectedUserColors || {};
 
-function persistTasks() {
+async function persistTasks() {
   try {
-    localStorage.setItem("tasks", JSON.stringify(window.tasks));
-    // Trigger summary update if available
-    if (typeof updateSummary === "function") {
-      updateSummary();
-    }
+    const firebaseOnly = window.tasks.filter(t => !isDemoTask(t));
+
+    await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(firebaseOnly.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})),
+    });
+
+    if (typeof updateSummary === "function") updateSummary();
   } catch (e) {
-    console.warn("Could not update tasks in localStorage:", e);
+    console.warn("Could not update tasks in Firebase:", e);
   }
 }
 
@@ -742,10 +784,14 @@ window.updateSubtasks = (id, el) => {
 /*************************************************
  * 10) Onload: gespeicherte Subtask-Stände anwenden
  *************************************************/
+
 const prevOnload = window.onload;
-window.onload = () => {
+window.onload = async () => {
   if (typeof prevOnload === "function") prevOnload();
 
+  await loadTasksFromFirebase(); // 🔥 Tasks von Firebase laden
+
+  // Subtask-Checkbox-Zustände anwenden
   for (const [taskId, states] of Object.entries(window.saved)) {
     const task = Array.isArray(window.tasks)
       ? window.tasks.find((t) => t.id == taskId)
@@ -755,11 +801,9 @@ window.onload = () => {
       task.subtasksDone = states.filter(Boolean).length;
     }
   }
-  persistTasks();
-  render();
+
   updateSearchClearButtonState(document.getElementById("board-search"));
 };
-
 /*************************************************
  * 12) Dynamisches Modal (Fallback), löschen, editieren
  *************************************************/

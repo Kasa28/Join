@@ -77,8 +77,8 @@
           <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault(); searchTasks()">
 
             <div class="searchbox">
-               <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
-                              oninput="searchTasks()" onsearch="searchTasks()" onblur="updateSearchClearButtonState(this)"
+              <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
+                oninput="searchTasks()" onsearch="searchTasks()" onblur="updateSearchClearButtonState(this)"
                 spellcheck="false" id="board-search">
               <button type="button" class="clear-search-btn" id="board-search-clear" aria-label="Clear search"
                 onclick="clearBoardSearch()" aria-hidden="true">
@@ -104,7 +104,8 @@
         <section id="todo" aria-labelledby="todo-title">
           <div class="name_from_card">
             <h2 id="todo-title">To do</h2>
-            <button class="plus" type="button" aria-label="Add to To do" data-target="todo" onclick="openAddTaskWithStatus('todo')">+</button>
+            <button class="plus" type="button" aria-label="Add to To do" data-target="todo"
+              onclick="openAddTaskWithStatus('todo')">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
             ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
@@ -115,7 +116,8 @@
         <section id="in-progress" aria-labelledby="in-progress-title">
           <div class="name_from_card">
             <h2 id="in-progress-title">In progress</h2>
-            <button class="plus" type="button" aria-label="Add to In progress" data-target="in-progress" onclick="openAddTaskWithStatus('in-progress')">+</button>
+            <button class="plus" type="button" aria-label="Add to In progress" data-target="in-progress"
+              onclick="openAddTaskWithStatus('in-progress')">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
             ondragover="allowDrop(event); highlight('drag-area-in-progress')"
@@ -127,7 +129,8 @@
         <section id="await-feedback" aria-labelledby="await-feedback-title">
           <div class="name_from_card">
             <h2 id="await-feedback-title">Await feedback</h2>
-            <button class="plus" type="button" aria-label="Add to Await feedback" data-target="await-feedback" onclick="openAddTaskWithStatus('await-feedback')">+</button>
+            <button class="plus" type="button" aria-label="Add to Await feedback" data-target="await-feedback"
+              onclick="openAddTaskWithStatus('await-feedback')">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
             ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
@@ -181,13 +184,14 @@
   <div id="toast-dim"></div>
 
   <script src="../scripts/script.js"></script>
+  <script src="../scripts/firebase.js"></script>
   <script src="../scripts/board.js"></script>
   <script src="../addTask_code/addTask.js"></script>
   <script defer src="../scripts/header.js"></script>
   <script src="../scripts/templeates.js"></script>
   <script src="addTask_template.js"></script>
-  <script type="module" src="./scripts/firebase.js"></script>
-  
+
+
 </body>
 
 </html>

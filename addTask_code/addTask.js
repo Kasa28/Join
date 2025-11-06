@@ -488,8 +488,7 @@ window.showToast = showToast;
 
 
 
-function createTask() {
-  // 1) Read values (very simple)
+async function createTask() {
   const title = (document.getElementById("title")?.value || "").trim();
   if (!title) {
     alert("Please enter a title");
@@ -499,18 +498,14 @@ function createTask() {
   const dueDate = (document.getElementById("due-date")?.value || "").trim();
   const category = (document.getElementById("category")?.value || "").trim();
 
-  // Priority (fallback to 'medium' if nothing set)
   const priority = (window.currentPriority || "medium").toLowerCase();
   const activeBtn = document.querySelector(`.priority-btn-${priority}-addTask_page`);
   const iconImg = activeBtn ? activeBtn.querySelector("img") : null;
   let priorityIcon = iconImg ? iconImg.getAttribute("src") : "";
-
-  // Mapping Medium → sum_icon.svg
   let priorityFileName = priority;
   if (priority === "medium") priorityFileName = "3_striche";
   priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFileName}.svg`;
 
-  // Assigned users (with colors)
   const assignedTo = (window.selectedUsers || []).map((name) => {
     const sourceAvatar = [...document.querySelectorAll(".assign-item-addTask_page")]
       .find(item => item.querySelector(".assign-name-addTask_page").textContent.trim() === name)
@@ -519,19 +514,14 @@ function createTask() {
     return { name, color };
   });
 
-  // Subtasks
   const subtaskItems = document.querySelectorAll("#subtask-list li");
   const subTasks = Array.from(subtaskItems).map((li) => li.textContent.trim());
   const subtasksTotal = subTasks.length;
 
-  const statusTarget =
-    (typeof window !== "undefined" && typeof window.nextTaskTargetStatus === "string" && window.nextTaskTargetStatus) ||
-    (typeof window !== "undefined" && window.STATUS && window.STATUS.TODO) ||
-    "todo";
+  const statusTarget = window.nextTaskTargetStatus || "todo";
 
-  // Build task object
   const task = {
-    id: Date.now() + Math.floor(Math.random() * 1000),
+    id: Date.now(),
     title,
     description,
     dueDate,
@@ -545,24 +535,16 @@ function createTask() {
     assignedTo,
   };
 
-  // Save to localStorage
-  const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
-  if (Array.isArray(saved)) {
-    saved.push(task);
-    localStorage.setItem("tasks", JSON.stringify(saved));
-  } else {
-    localStorage.setItem("tasks", JSON.stringify([task]));
+  try {
+    await saveTask(task.id, task); // <---- NEU: direkt in Firebase speichern
+    showToast("Task added to board", { duration: 1000 });
+    setTimeout(() => {
+      window.location.href = "../board_code/board.html";
+    }, 1100);
+  } catch (error) {
+    console.error("Error saving task:", error);
+    showToast("Error saving task", { variant: "error", duration: 2000 });
   }
-
-  if (typeof window !== "undefined") {
-    const fallbackStatus = (window.STATUS && window.STATUS.TODO) || "todo";
-    window.nextTaskTargetStatus = fallbackStatus;
-  }
-
-  showToast("Task added to board", { duration: 1000 });
-  setTimeout(() => {
-    window.location.href = "../board_code/board.html";
-  }, 1100);
 }
 
 
