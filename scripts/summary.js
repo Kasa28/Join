@@ -18,12 +18,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
     async function loadTasks() {
       try {
-        // Firebase-Daten laden
         const response = await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json");
         const data = await response.json();
         const firebaseTasks = data ? Object.values(data) : [];
     
-        // Demo-Tasks ergänzen, damit Summary gleich bleibt
+        // 👉 Demo-Tasks beibehalten, falls du sie in der Summary weiterhin sehen willst
         const demoTasks = [
           {
             id: 1,
@@ -49,8 +48,17 @@ window.addEventListener("DOMContentLoaded", () => {
           },
         ];
     
-        // Beide zusammenführen
-        return [...demoTasks, ...firebaseTasks];
+        // 🧩 Kombiniere Demo + Firebase-Tasks
+        const allTasks = [...demoTasks, ...firebaseTasks];
+    
+        // 🧠 Repariere evtl. falsche Prioritätspfade aus Firebase
+        allTasks.forEach((t) => {
+          if (t.priority === "urgent") t.priority = "urgent";
+          if (t.priority === "medium") t.priority = "medium";
+          if (t.priority === "low") t.priority = "low";
+        });
+    
+        return allTasks;
       } catch (error) {
         console.error("Fehler beim Laden der Tasks aus Firebase:", error);
         return [];

@@ -501,10 +501,14 @@ async function createTask() {
   const priority = (window.currentPriority || "medium").toLowerCase();
   const activeBtn = document.querySelector(`.priority-btn-${priority}-addTask_page`);
   const iconImg = activeBtn ? activeBtn.querySelector("img") : null;
-  let priorityIcon = iconImg ? iconImg.getAttribute("src") : "";
-  let priorityFileName = priority;
-  if (priority === "medium") priorityFileName = "3_striche";
-  priorityIcon = `../addTask_code/icons_addTask/separatedAddTaskIcons/${priorityFileName}.svg`;
+  // 🔧 Korrekte Pfade für alle Prioritäten
+const priorityIcons = {
+  urgent: "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
+  medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
+  low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
+};
+
+let priorityIcon = priorityIcons[priority] || priorityIcons.low;
 
   const assignedTo = (window.selectedUsers || []).map((name) => {
     const sourceAvatar = [...document.querySelectorAll(".assign-item-addTask_page")]
