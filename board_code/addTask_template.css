@@ -1,5 +1,4 @@
-addtask_template.css
-* {
+addtask_template.css * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -147,7 +146,7 @@ addtask_template.css
   align-items: center;
   border-bottom: 1px solid #d1d1d1;
   background-color: white;
-  margin-bottom:4px;
+  margin-bottom: 4px;
 }
 
 .task-date-addTask_template {
@@ -222,7 +221,6 @@ addtask_template.css
   border-bottom: 3px solid #ffa800;
 }
 
-
 .assign-select-addTask_template {
   display: flex;
   align-items: center;
@@ -235,7 +233,7 @@ addtask_template.css
   background-color: white;
   cursor: pointer;
   font-family: "Open Sans", sans-serif;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .assign-arrow-addTask_template {
@@ -350,7 +348,6 @@ addtask_template.css
   pointer-events: none;
 }
 
-
 .subtask-wrapper-addTask_template {
   position: relative;
 }
@@ -392,13 +389,15 @@ addtask_template.css
 }
 
 .subtask-check-addTask_template {
-  filter: brightness(0) saturate(100%) invert(32%) sepia(97%) saturate(1412%) hue-rotate(204deg) brightness(99%) contrast(94%);
+  filter: brightness(0) saturate(100%) invert(32%) sepia(97%) saturate(1412%)
+    hue-rotate(204deg) brightness(99%) contrast(94%);
 }
+
 .task-subtask-addTask_template {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 75px; 
+  padding-right: 75px;
 }
 
 .task-input-addTask_template {
@@ -468,7 +467,8 @@ addtask_template.css
   filter: brightness(0) invert(1);
 }
 
-.task-subtask-addTask_template:not(:placeholder-shown) + .subtask-icons-addTask_template {
+.task-subtask-addTask_template:not(:placeholder-shown)
+  + .subtask-icons-addTask_template {
   display: flex;
 }
 
@@ -508,6 +508,7 @@ addtask_template.css
   width: 20px;
   height: 20px;
   cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(32%) sepia(97%) saturate(1412%) hue-rotate(204deg) brightness(99%) contrast(94%);
 }
 
 .subtask-list-addTask_template li:hover:not(:has(input)) {
@@ -541,5 +542,5 @@ addtask_template.css
 .error-text {
   color: red;
   font-size: 14px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
 }
