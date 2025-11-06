@@ -154,7 +154,12 @@ window.addEventListener("DOMContentLoaded", () => {
   
     console.log("Summary updated:", counts);
   }
-  
+  // 🔥 Summary automatisch aktualisieren, wenn Tasks sich in Firebase ändern
+subscribeToFirebaseUpdates(async () => {
+  await updateSummary();
+  console.log("🔄 Summary updated via Firebase realtime");
+});
+
   /**
    * Optional: Aktualisierung triggern, wenn im localStorage Änderungen auftreten.
    */

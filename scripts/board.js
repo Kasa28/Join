@@ -77,6 +77,18 @@ async function loadTasksFromFirebase() {
   }
 }
 
+// 🔥 Board automatisch neu rendern, wenn sich Daten in Firebase ändern (entprellt)
+let updateTimeout;
+subscribeToFirebaseUpdates((data) => {
+  clearTimeout(updateTimeout);
+  updateTimeout = setTimeout(() => {
+    if (!data) return;
+    window.tasks = Object.values(data);
+    render();
+    console.log("🔄 Board updated via Firebase realtime");
+  }, 200); // kleine Verzögerung, falls mehrere Events kurz hintereinander kommen
+});
+
 function isDemoTask(taskOrId) {
   const idValue =
     typeof taskOrId === "object" && taskOrId !== null ? taskOrId.id : taskOrId;
