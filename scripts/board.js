@@ -1006,7 +1006,7 @@ function populateEditOverlay(task) {
   if (submitBtn) {
     submitBtn.removeAttribute("onclick");
     submitBtn.onclick = () => saveTaskEdits(task.id);
-    submitBtn.innerHTML = `Save Changes <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_template">`;
+    submitBtn.innerHTML = `OK <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/check.svg" alt="Check icon" class="check-icon-addTask_template">`;
   }
 }
 
