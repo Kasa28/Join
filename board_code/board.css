@@ -74,6 +74,10 @@
   padding-left: 128px;
   font-family: "Open Sans";
   max-width: 1440px;
+  overflow-y: auto;
+  height: calc(100vh - 96px);
+  scrollbar-width: none;
+  width: 100%;
 }
 
 .main-header-wrapper {
