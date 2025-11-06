@@ -92,6 +92,10 @@ function createTask(event){
 
   if (typeof closeAddTask === 'function') closeAddTask();
   window.nextTaskTargetStatus = window.STATUS.TODO; 
+  // ✅ Summary direkt aktualisieren, wenn neue Task erstellt wird
+if (typeof updateSummary === "function") {
+  updateSummary();
+}
 }
 window.createTask = createTask;
 
