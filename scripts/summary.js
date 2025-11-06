@@ -110,8 +110,8 @@ async function updateSummary() {
   const nextDeadline = getNextDeadline(tasks);
 
   // Zahlen in die Summary-Cards schreiben
-  setSummaryText(".summary-card-up-left .h2-font-summray", counts.urgent);
-  setSummaryText(".summary-card-conainer-up-right .h2-font-summray", counts.total);
+  setSummaryText(".urgent-task-card-summary .h2-font-summray", counts.urgent);
+  setSummaryText(".tasks-on-board-card-summary .h2-font-summray", counts.total);
   setSummaryText(".summary-section-2-order .summary-card:nth-child(1) .h2-font-summray", counts.todo);
   setSummaryText(".summary-section-2-order .summary-card:nth-child(2) .h2-font-summray", counts.inProgress);
   setSummaryText(".summary-section-2-order .summary-card:nth-child(3) .h2-font-summray", counts.feedback);
