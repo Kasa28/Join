@@ -541,10 +541,10 @@ let priorityIcon = priorityIcons[priority] || priorityIcons.low;
 
   try {
     await saveTask(task.id, task); // <---- NEU: direkt in Firebase speichern
-    showToast("Task added to board", { duration: 1000 });
+    showToast("Task added to board", { duration: 1600 });
     setTimeout(() => {
       window.location.href = "../board_code/board.html";
-    }, 1100);
+    }, 1700);
   } catch (error) {
     console.error("Error saving task:", error);
     showToast("Error saving task", { variant: "error", duration: 2000 });
