@@ -23,25 +23,19 @@ async function deleteTask(taskId) {
 
 /** 🔄 Echtzeit-Listener für Firebase Realtime Database (REST Streaming) */
 function subscribeToFirebaseUpdates(callback) {
-  const url = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json";
-
-  // Verbindung zur Firebase Realtime-Datenbank (REST-Stream)
-  const eventSource = new EventSource(`${url}?ns=join-a3ae3-default-rtdb`);
-
-  eventSource.onmessage = (event) => {
+  async function poll() {
     try {
-      const data = JSON.parse(event.data);
+      const res = await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json");
+      const data = await res.json();
       if (data) callback(data);
     } catch (err) {
-      console.error("⚠️ Fehler beim Parsen des Firebase-Events:", err);
+      console.warn("Polling error:", err);
     }
-  };
+  }
 
-  eventSource.onerror = (err) => {
-    console.warn("🔁 Realtime-Verbindung verloren – reconnecting...", err);
-    eventSource.close();
-    setTimeout(() => subscribeToFirebaseUpdates(callback), 3000);
-  };
+  // Alle 2 Sekunden nach Änderungen schauen
+  poll();
+  setInterval(poll, 2000);
 }
 
 window.subscribeToFirebaseUpdates = subscribeToFirebaseUpdates;
