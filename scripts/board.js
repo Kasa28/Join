@@ -826,7 +826,16 @@ window.onload = async () => {
   }
 
   updateSearchClearButtonState(document.getElementById("board-search"));
+    // 👇 Jetzt erst den Realtime-Listener aktivieren
+    subscribeToFirebaseUpdates((data) => {
+      if (!data) return;
+      window.tasks = Object.values(data);
+      render();
+      console.log("🔄 Board updated via Firebase realtime");
+    });  
 };
+
+
 /*************************************************
  * 12) Dynamisches Modal (Fallback), löschen, editieren
  *************************************************/
