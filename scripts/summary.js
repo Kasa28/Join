@@ -127,11 +127,26 @@ async function updateSummary() {
       deadlineEl.textContent = "No urgent deadlines";
     }
   }
-
-  // 🔥 Summary automatisch aktualisieren, wenn Tasks sich in Firebase ändern
-  subscribeToFirebaseUpdates(async () => {
-    await updateSummary();
-    console.log("🔄 Summary updated via Firebase realtime");
-  });
   console.log("Summary updated:", counts);
 }
+let lastDataString = "";
+
+async function pollSummary() {
+  try {
+    const res = await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json");
+    const data = await res.json();
+    const json = JSON.stringify(data);
+
+    // Nur neu rendern, wenn sich wirklich etwas geändert hat
+    if (json !== lastDataString) {
+      lastDataString = json;
+      await updateSummary();
+    }
+  } catch (err) {
+    console.warn("Polling error (summary):", err);
+  }
+}
+
+// 🔁 Alle 5 Sekunden prüfen
+pollSummary();
+setInterval(pollSummary, 3000);
