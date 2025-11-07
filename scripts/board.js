@@ -178,13 +178,13 @@ window.selectedUserColors = window.selectedUserColors || {};
 
 async function persistTasks() {
   try {
-    await fetch("https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        window.tasks.reduce((acc, t) => ({ ...acc, [t.id]: t }), {})
-      ),
-    });
+    for (const t of window.tasks) {
+      await fetch(`https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks/${t.id}.json`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(t),
+      });
+    }
 
     // ⬇️ Hier darf dieser Teil NICHT fehlen:
     if (typeof updateSummary === "function") {
@@ -848,7 +848,7 @@ function openModalDynamic(id) {
   document.body.classList.add("no-scroll");
 }
 
-function deleteDynamicTask(id) {
+async function deleteDynamicTask(id) {
   const allTasks = Array.isArray(window.tasks) ? window.tasks : [];
   const task = allTasks.find((t) => t.id === id);
   if (!task) {
@@ -869,7 +869,9 @@ function deleteDynamicTask(id) {
   requestAnimationFrame(() => {
     if (typeof render === "function") render();
   });
-
+  await fetch(`https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks/${id}.json`, {
+    method: "DELETE",
+  });
   persistTasks();
 }
 
