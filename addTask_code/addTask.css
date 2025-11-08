@@ -129,7 +129,6 @@
 
 .date-input-wrapper-addTask_page {
   position: relative;
-  display: inline-block;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -223,10 +222,6 @@
 .priority-btn-medium-addTask_page img {
   filter: brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) 
     hue-rotate(360deg) brightness(101%) contrast(102%);
-}
-
-.priority-btn-addTask_page:hover {
-  background-color: #e6e6e6;
 }
 
 .priority-btn-urgent-addTask_page:hover {
