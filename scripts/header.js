@@ -1,6 +1,11 @@
 function userMenuTemplate(){
 return `<div class="user-menu-container-header">
             <div class="user-menu-content-header">
+            <div>
+                    <a class="button-sidebar padding-up-down-small button_help" href="../help.html">
+                        <span class="sidebar-font">Help</span>
+                    </a>
+                </div>
                 <div>
                     <a class="button-sidebar padding-up-down-small" href="../legal.html">
                         <span class="sidebar-font">Legal Notice</span>

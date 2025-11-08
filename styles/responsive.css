@@ -1,4 +1,6 @@
-
+.button_help{
+    display: none;
+}
 
 @media (max-width: 1350px){
     .task-card{
@@ -21,5 +23,74 @@
   width: 0;
   height: 0;                  
   background: transparent;
+}
+}
+
+@media (max-width: 1000px) {
+    body {
+        padding-bottom: 112px;
+    }
+
+    nav-main-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+    }
+
+    .side-menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: auto;
+        padding: 16px 24px;
+        box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.18);
+        background: #ffffff;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        z-index: 1000;
+    }
+
+    .sidebar-high-section-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: auto;
+        gap: 12px;
+    }
+
+    .sidebar-low-section-container {
+        display: none;
+    }
+
+    .button-sidebar {
+        width: auto;
+        padding: 6px 12px;
+        text-align: center;
+        flex-direction: column;
+        justify-content: center;
+        background: transparent;
+    }
+
+    .button-sidebar:hover {
+        background: rgba(210, 227, 255, 0.6);
+    }
+
+    .sidebar-font {
+        font-size: 12px;
+    }
+    .header-font,
+    .img-headbar{
+        display:none;
+}
+
+.button_help{
+    display: block;
 }
 }
