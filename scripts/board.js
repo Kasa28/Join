@@ -799,9 +799,25 @@ window.updateSubtasks = (id, el) => {
     if (st) st.textContent = `${done}/${total} Subtasks`;
   }
 
-  // Checkbox-Stände persistieren
+  // Checkbox-Stände persistieren (lokal)
   saved[id] = subtaskListe.map((x) => x.checked);
   localStorage.setItem("checks", JSON.stringify(saved));
+
+  // 🔥 Fortschritt im Task + Firebase speichern
+  const task = window.tasks.find(t => t.id == id);
+  if (task) {
+    task.subtasksDone = done;
+    task.subtasksTotal = total;
+
+    fetch(`https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks/${id}.json`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subtasksDone: done,
+        subtasksTotal: total,
+      }),
+    });
+  }
 };
 
 /*************************************************
