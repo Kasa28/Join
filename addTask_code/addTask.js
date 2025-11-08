@@ -490,12 +490,23 @@ window.showToast = showToast;
 
 async function createTask() {
   const title = (document.getElementById("title")?.value || "").trim();
-  if (!title) {
-    alert("Please enter a title");
-    return;
-  }
-  const description = (document.getElementById("description")?.value || "").trim();
-  const dueDate = (document.getElementById("due-date")?.value || "").trim();
+if (!title) {
+  alert("Please enter a title");
+  return;
+}
+
+const dueDate = (document.getElementById("due-date")?.value || "").trim();
+if (!dueDate) {
+  alert("Please enter a due date");
+  return;
+}
+
+if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) {
+  alert("Please enter a valid date in format dd/mm/yyyy");
+  return;
+}
+
+const description = (document.getElementById("description")?.value || "").trim();
   const category = (document.getElementById("category")?.value || "").trim();
 
   const priority = (window.currentPriority || "medium").toLowerCase();
