@@ -11,12 +11,12 @@
   height: calc(100vh - 96px);
   overflow-y: auto; 
   overflow-x: hidden;
-  width: 85%;
-  padding-left: 118px;
+  width: 80%;
+  padding-left: 80px;
   padding-top: 60px;
 }
 
-ul {
+.ul_legal {
   margin-bottom: 12px;
   padding-left: 28px;
 }
