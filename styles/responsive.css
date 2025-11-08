@@ -97,4 +97,8 @@
 .button_help{
     display: block;
 }
+
+.btn-primary {
+    display: none;
+}
 }
