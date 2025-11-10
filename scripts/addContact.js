@@ -1,4 +1,4 @@
-contacts = [];
+
 
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
@@ -8,15 +8,11 @@ function hideAddContactFormular(){
     document.getElementById("add-contactID").classList.add("hide-add-contact")
 }
 
-function showEditContactFormular(){
-    document.getElementById("edit-contactID").classList.remove("hide-edit-contact")
-}
 
-function hideEditContactFormular(){
-    document.getElementById("edit-contactID").classList.add("hide-edit-contact")
-}
 
 function addNewContact(){
+    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+
     const usernameRef = document.getElementById("add-contact-usernameID").value;
     const usermailRef = document.getElementById("add-contact-mailID").value; 
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;  
@@ -75,6 +71,9 @@ function renderContactList(){
                     </contact>
         `;
     });
+    console.clear();
+    console.log(getContacts);
+    
 }
 
 
@@ -82,8 +81,8 @@ function renderContactList(){
 function renderSingleContact(inputIndex){
     const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     const contact = contacts[inputIndex];
-    const singleContactRef = document.getElementById("singleContactID");
-    singleContactRef.innerHTML = "";
+      
+    remindIndex = inputIndex;
     singleContactRef.innerHTML = `
 
     <show-contact>
@@ -98,11 +97,11 @@ function renderSingleContact(inputIndex){
                             <h2>${makeFirstLetterBig(contact.username)}</h2>
                         </div>
                         <div style="display: flex;">
-                            <div onclick="showEditContactFormular()"  class="edit-delete-container">
+                            <div onclick="showEditContactFormular(), setUserDataValue(${inputIndex})"  class="edit-delete-container">
                                 <img class="edit-delete-icons" src="./assets/img/edit.svg" alt="edit icon">
                                 Edit
                             </div>
-                            <div class="edit-delete-container">
+                            <div onclick="deleteContact()" class="edit-delete-container">
                                 <img class="edit-delete-icons" src="./assets/img/delete.svg" alt="delete icon">
                                 Delete
                             </div>
@@ -126,12 +125,59 @@ function renderSingleContact(inputIndex){
     `
 }
 
-function editContact(){
-    const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-    const contact = contacts[inputIndex];
 
-    const editedUsernameRef = document.getElementById("edit-contact-usernameID").value;
-    const editedUsermailRef = document.getElementById("edit-contact-mailID").value; 
-    const editedPhonenumberRef = document.getElementById("edit-contact-phone-numberID").value;
+function renderAddContact(){
+    let contentRef = document.getElementById("add-contactID");
+    
 
+    contentRef.innerHTML = `
+        <div class="main-container-edit-contact left-side-rounded">
+
+                                    <div class="edit-contact-headcard left-side-rounded">
+                                        <img onclick="hideAddContactFormular()" class="close-icon-edit-contact" src="./assets/img/close.svg" alt="close icon">
+                                        <img class="capa-logo-1-edit-contact" src="./assets/img/Capa 1.svg" alt="Capa 1">
+                                        <h2 class="h2-edit-contact">Add Contact</h2>
+                                        <a class="a-font-edit-contact">Tasks are better in a Team</a>
+                                    </div>
+
+                                <div style="display: flex; justify-content: center; align-items: center;">
+
+                                        <div class="edit-contact-content">
+                                            
+                                                <div class="empty-user-ball-edit-contact">
+                                                    <img src="./assets/img/person.svg" class="empty-user-ball-icon-edit-contact" alt="Icon">
+                                                </div>
+
+                                                <div class="input-icon-container">
+                                                    <input class="edit-contact-inputfield" placeholder="Name" type="text" name="" id="add-contact-usernameID">
+                                                    <img src="./assets/img/person.svg" class="input-icon-edit-contact" alt="Icon">
+                                                </div>
+
+                                                <div class="input-icon-container">
+                                                    <input class="edit-contact-inputfield" placeholder="Email" type="email" name="" id="add-contact-mailID">
+                                                    <img src="./assets/img/mail.svg" class="input-icon-edit-contact" alt="Icon">
+                                                </div>
+
+                                                <div class="input-icon-container">
+                                                    <input class="edit-contact-inputfield" placeholder="Phone" type="text" name="" id="add-contact-phone-numberID">
+                                                    <img src="./assets/img/call.svg" class="input-icon-edit-contact" alt="Icon">
+                                                </div>
+
+                                                <div class="button-edit-contact-order">
+                                                    <button onclick="hideAddContactFormular()" class="button-edit-contact button-edit-contact-grey">
+                                                        Cancel 
+                                                    </button>
+                                                    <button onclick="addNewContact()" class="button-edit-contact button-edit-contact-blue">
+                                                        Create Contact 
+                                                        <img class="check-icon-edit-contact" src="./assets/img/check.svg" alt="check icon">
+                                                    </button>
+                                                </div>
+
+                                        </div>
+                                </div>
+
+                            </div>
+    
+    `
 }
+
