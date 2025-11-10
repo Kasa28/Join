@@ -157,3 +157,15 @@ function renderAssignedAvatars() {
     container.appendChild(avatar);
   });
 }
+
+// === Assign Checkbox Handling ===
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("assign-check-addTask_page")) {
+    e.stopPropagation();
+    const item = e.target.closest(".assign-item-addTask_page");
+    const name = item
+      .querySelector(".assign-name-addTask_page")
+      .textContent.trim();
+    selectAssignUser(name, e);
+  }
+});
