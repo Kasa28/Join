@@ -1,4 +1,6 @@
-
+let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563"},
+                        {"username": "Karsten", "email": "karsten-stahl@gmail.de", "PhoneNumber": "+49151478632475"},
+                        {"username": "Thomas", "email": "thomas-gottschalck@live.de", "PhoneNumber": "+491517896455"}];
 
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
@@ -43,14 +45,35 @@ function makeFirstLetterBig(inputString){
 
 }
 
+function pushExampleContactsOneTimeInLocalStorage(){
+    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+    
+    const nameExist = contacts.some(contact =>
+        contact.username === "Peter" || contact.username === "Karsten" || contact.username === "Thomas"
+    );
+        
+    if(nameExist){
 
+        return;
+
+    } else{
+
+        contacts.push(exampleContacts[0], exampleContacts[1], exampleContacts[2]);
+        exampleContacts = [];
+        addContactToLocalStorage(contacts);
+
+    }
+}
 
 function renderContactList(){
 
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
 
+    pushExampleContactsOneTimeInLocalStorage();
+
     let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+
 
     getContacts.forEach((contact, index) => {
     contactContainerRef.innerHTML +=  `
@@ -81,6 +104,7 @@ function renderContactList(){
 function renderSingleContact(inputIndex){
     const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     const contact = contacts[inputIndex];
+    let singleContactRef = document.getElementById("singleContactID");
       
     remindIndex = inputIndex;
     singleContactRef.innerHTML = `
