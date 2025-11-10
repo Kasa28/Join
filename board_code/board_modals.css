@@ -1,5 +1,6 @@
 /* === Board Modals and Overlays === */
 
+/* === Overlay and Side Panel === */
 .side-overlay {
     position: fixed;
     inset: 0;
@@ -35,7 +36,7 @@
     border-bottom-left-radius: 59px;
   }
   
-
+/* === Task Modal (Default View) === */
   #task-modal {
     position: fixed;
     inset: 0;
@@ -68,6 +69,7 @@
     border-radius: 24px;
   }
   
+  /* === Task Modal Layout and Inner Sections === */
   #task-modal-content .header-wrapper_user-story,
   #task-modal-content .title_user-story,
   #task-modal-content .h3_user-story,
@@ -96,10 +98,7 @@
     overflow-x: hidden; 
   }
   
-  .main-content-board p {
-    color: #a8a8a8;
-  }
-  
+  /* === Close Buttons === */
   .close-btn-addTask_template {
     position: absolute;
     top: 16px;
@@ -121,6 +120,8 @@
     transform: scale(1.2);
   }
 
+
+/* === Compact Mode (User Story Compact View) === */
 #task-modal-content.us-compact {
     width: min(480px, 92vw); 
     border-radius: 20px;
@@ -139,3 +140,12 @@
   #task-modal-content.us-compact {
     overflow-x: hidden;
   }
+
+  /* === Responsive Behavior === */
+  @media (max-width: 600px) {
+    .side-panel {
+      width: 100vw;       
+      flex-basis: 100vw;
+    }
+  }
+  

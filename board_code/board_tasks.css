@@ -72,6 +72,10 @@
   .main-content-board .task-card.tilt-right {
     transform: rotate(3deg) scale(1.02);
   }
+
+  .main-content-board p {
+    color: #a8a8a8;
+  }
   
   /* === Task Card Styles === */
   .main-content-board .task-card {
