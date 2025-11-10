@@ -220,7 +220,7 @@
 }
 
 .priority-btn-medium-addTask_page img {
-  filter: brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) 
+  filter: brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%)
     hue-rotate(360deg) brightness(101%) contrast(102%);
 }
 
@@ -252,7 +252,6 @@
   pointer-events: none;
 }
 
-/* DROPDOWN */
 .assign-dropdown-addTask_page {
   font-family: "open sans";
   display: none;
@@ -281,7 +280,6 @@
   background-color: #f5f7ff;
 }
 
-/* Avatar-Kreis */
 .assign-avatar-addTask_page {
   display: inline-flex;
   align-items: center;
@@ -295,14 +293,12 @@
   letter-spacing: 0.5px;
 }
 
-/* Name */
 .assign-name-addTask_page {
   flex: 1;
   font-size: 16px;
   color: #42526e;
 }
 
-/* Checkmark */
 .assign-check-addTask_page {
   appearance: none;
   -webkit-appearance: none;
@@ -355,5 +351,3 @@
   gap: 8px;
   margin-top: 8px;
 }
-
-
