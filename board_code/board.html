@@ -32,10 +32,8 @@
   <div class="d_none" id="user-menue-header">
   </div>
 
-
   <nav-main-container style="display: flex;">
     <nav class="side-menu">
-
       <div class="sidebar-high-section-container">
 
         <a href="../summaryAll.html" class="button-sidebar">
@@ -57,7 +55,6 @@
           <img class="img-size-sidebar" src="../assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
           <span class="sidebar-font">Contacts</span>
         </a>
-
       </div>
 
       <div class="sidebar-low-section-container">
@@ -78,7 +75,6 @@
       <div class="main-header-wrapper" role="region" aria-label="Task Controls">
         <div class="search-add">
           <form role="search" aria-label="Search Tasks" onsubmit="event.preventDefault(); searchTasks()">
-
             <div class="searchbox">
               <input type="search" name="q" placeholder="Find Task" aria-label="Find Task" class="board-search-input"
                 oninput="searchTasks()" onsearch="searchTasks()" onblur="updateSearchClearButtonState(this)"
@@ -92,7 +88,6 @@
               </button>
             </div>
           </form>
-
           <button class="btn-primary add-task-btn" type="button" onclick="openAddTask()">
             Add task
             <img src="../assets/img/Group 11.svg" alt="" aria-hidden="true" height="10px">
@@ -101,7 +96,6 @@
       </div>
 
       <div id="search-msg"></div>
-
       <div class="board">
 
         <section id="todo" aria-labelledby="todo-title">
@@ -142,7 +136,6 @@
           </div>
         </section>
 
-        <!-- DONE -->
         <section id="done" aria-labelledby="done-title">
           <div class="name_from_card">
             <h2 id="done-title">Done</h2>
