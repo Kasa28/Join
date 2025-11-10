@@ -16,26 +16,23 @@
 
 <body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()">
 
-    <header>
-        <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
-        <div class="header-right-part">
-            <a class="header-font"> Kanban Project Management Tool</a>
-            <a href="../help.html">
-                <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
-            </a>
-            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-                <a class="g-unit" id="user-ball-ID">G</a>
-            </div>
-        </div>
-    </header>
-
-    <div class="d_none" id="user-menue-header">
-
+  <header>
+    <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
+    <div class="header-right-part">
+      <a class="header-font"> Kanban Project Management Tool</a>
+      <a href="../help.html">
+        <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
+      </a>
+      <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+        <a class="g-unit" id="user-ball-ID">G</a>
+      </div>
     </div>
+  </header>
 
-
-
-  <div class="d_none" id="user-menue-header"></div>
+  <div class="d_none" id="user-menue-header">
+  </div>
+  <div class="d_none" id="user-menue-header">
+  </div>
 
   <div class="layout-container-addTask_page">
     <nav class="side-menu">
@@ -120,7 +117,6 @@
           <label for="assign" class="label-addTask_page">Assign to</label>
           <p class="section-heading-addTask_page"><strong>Assign to</strong> (optional)</p>
 
-          <!-- Klickbares Feld -->
           <div class="assign-select-addTask_page" id="assign-select" onclick="toggleAssignDropdown(event)">
             <span class="assign-placeholder-addTask_page">Select contact to assign</span>
             <img src="./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu"
@@ -128,8 +124,7 @@
           </div>
 
           <div id="assigned-avatars"></div>
-
-          <!-- Dropdown-Liste -->
+          
           <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox">
             <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker')">
               <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
