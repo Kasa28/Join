@@ -1,3 +1,4 @@
+/* === Global Reset & Fonts === */
 addtask_template.css * {
   margin: 0;
   padding: 0;
@@ -28,6 +29,7 @@ addtask_template.css * {
   font-style: italic;
 }
 
+/* === Labels & Header === */
 .label-addTask_template {
   display: none;
 }
@@ -56,6 +58,7 @@ addtask_template.css * {
   font-size: 32px;
 }
 
+/* === Main Container === */
 .main-addTask_template {
   position: relative;
   width: 440px;
@@ -71,6 +74,7 @@ addtask_template.css * {
   display: none;
 }
 
+/* === Task Title & Description === */
 .task-title-addTask_template {
   font-size: 28px;
   border: none;
@@ -123,6 +127,7 @@ addtask_template.css * {
   font-size: 28px;
 }
 
+/* === Date & Select Inputs === */
 .task-date-addTask_template,
 .task-select-addTask_template,
 .task-subtask-addTask_template {
@@ -179,6 +184,7 @@ addtask_template.css * {
   margin-bottom: 24px;
 }
 
+/* === Priority Buttons === */
 .priority-group-addTask_template {
   display: flex;
   gap: 12px;
@@ -221,6 +227,7 @@ addtask_template.css * {
   border-bottom: 3px solid #ffa800;
 }
 
+/* === Task Input Layout === */
 .task-input-addTask_template {
   display: flex;
   flex-direction: column;
@@ -235,6 +242,7 @@ addtask_template.css * {
   height: 15px;
 }
 
+/* === Buttons & Footer === */
 .task-buttons-addTask_template {
   position: absolute;
   bottom: -350px;
@@ -283,6 +291,7 @@ addtask_template.css * {
   filter: brightness(0) invert(1);
 }
 
+/* === Error Messages === */
 .error-text {
   color: red;
   font-size: 14px;
