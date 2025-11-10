@@ -59,6 +59,19 @@
     color: #9aa3af;
     background-color: #e7e7e7;
   }
+
+  .main-content-board .task-card.is-dragging {
+    cursor: grabbing;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.18);
+  }
+  
+  .main-content-board .task-card.tilt-left {
+    transform: rotate(-3deg) scale(1.02);
+  }
+  
+  .main-content-board .task-card.tilt-right {
+    transform: rotate(3deg) scale(1.02);
+  }
   
   /* === Task Card Styles === */
   .main-content-board .task-card {
