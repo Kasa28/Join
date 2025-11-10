@@ -13,7 +13,7 @@
     <script src="./scripts/header.js"></script>
 
 </head>
-<body onload="renderUserMenuePopupMenu()">
+<body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()">
 
 
 
@@ -26,7 +26,7 @@
                 <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
             </a>
             <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-                <a class="g-unit">G</a>
+                <a class="g-unit" id="user-ball-ID">G</a>
             </div>
         </div>
     </header>

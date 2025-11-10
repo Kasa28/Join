@@ -17,7 +17,7 @@
     <script src="./scripts/editContact.js"></script>
 
 </head>
-<body class="position-relative-overflow-x" onload="renderUserMenuePopupMenu(), renderContactList(), renderAddContact(), renderEditContact()">
+<body class="position-relative-overflow-x" onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactList(), renderAddContact(), renderEditContact()">
 
 
 
@@ -30,7 +30,7 @@
                 <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
             </a>
             <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-                <a class="g-unit">G</a>
+                <a class="g-unit" id="user-ball-ID">G</a>
             </div>
         </div>
     </header>

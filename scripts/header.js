@@ -49,7 +49,7 @@ function checkIfLogedIn(){
 
 function onloadFunctionHeader(){
     setLetterInUserBall();
-    greetUserName()
+    
 }
 
 function setLetterInUserBall(){
