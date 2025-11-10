@@ -64,9 +64,10 @@ function checkPolicyandAnswers() {
   const checkbox = document.getElementById('accept_terms'); 
   const button = document.querySelector('.primary_button'); 
 
-  
+
+  const passwordSame = password == confirmPassword;
   const allFilled = name && email && password && confirmPassword && checkbox.checked;
-  button.disabled = !allFilled;
+  button.disabled = !allFilled || !passwordSame;
 }
 
 
