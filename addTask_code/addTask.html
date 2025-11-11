@@ -9,40 +9,28 @@
   <link rel="stylesheet" href="../styles/headbar.css">
   <link rel="stylesheet" href="../styles/sidemenue.css">
   <link rel="stylesheet" href="./addTask.css">
+  <link rel="stylesheet" href="./addTask_toast_and_subtasks.css">
   <link rel="stylesheet" href="../styles/responsive.css">
   <link rel="icon" type="image/x-icon" href="../assets/img/Capa 2.png">
 </head>
 
-    <script src="../scripts/header.js"></script>
-
-</head>
-
 <body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()">
 
-
-
-
-    <header>
-        <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
-        <div class="header-right-part">
-            <a class="header-font"> Kanban Project Management Tool</a>
-            <a href="../help.html">
-                <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
-            </a>
-            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-                <a class="g-unit" id="user-ball-ID">G</a>
-            </div>
-        </div>
-    </header>
-
-    <div class="d_none" id="user-menue-header">
-
+  <header>
+    <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
+    <div class="header-right-part">
+      <a class="header-font"> Kanban Project Management Tool</a>
+      <a href="../help.html">
+        <img class="img-headbar" src="../assets/img/help.svg" alt="?-Logo">
+      </a>
+      <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+        <a class="g-unit" id="user-ball-ID">G</a>
+      </div>
     </div>
+  </header>
 
-
-
-  <div class="d_none" id="user-menue-header"></div>
-
+  <div class="d_none" id="user-menue-header">
+  </div>
   <div class="layout-container-addTask_page">
     <nav class="side-menu">
       <div class="sidebar-high-section-container">
@@ -126,7 +114,6 @@
           <label for="assign" class="label-addTask_page">Assign to</label>
           <p class="section-heading-addTask_page"><strong>Assign to</strong> (optional)</p>
 
-          <!-- Klickbares Feld -->
           <div class="assign-select-addTask_page" id="assign-select" onclick="toggleAssignDropdown(event)">
             <span class="assign-placeholder-addTask_page">Select contact to assign</span>
             <img src="./icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu"
@@ -135,7 +122,6 @@
 
           <div id="assigned-avatars"></div>
 
-          <!-- Dropdown-Liste -->
           <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox">
             <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker')">
               <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
@@ -195,6 +181,7 @@
   </div>
   <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
   <script type="module" src="../scripts/firebase.js"></script>
+  <script src="./addTask_assign.js" defer></script>
   <script src="addTask.js" defer></script>
   <script src="../scripts/header.js" defer></script>
 </body>

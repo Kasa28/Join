@@ -1,3 +1,5 @@
+/* === templates.js | Static and dynamic HTML templates for user stories, technical tasks, and the Add Task form === */
+
 function bigCardHtml(t) {
   return `
     <headline class="header-wrapper_user-story">
@@ -270,151 +272,63 @@ function getTechnicalTaskTemplate(t) {
   `;
 }
 
-/* =======================
-   Dynamic Task Templates
-   ======================= */
-function bigCardDynamicHtml(t) {
-  const title = t.title || "No title";
-  const description = t.description || "No description provided.";
-  const dueDate = t.dueDate || "No due date";
-  const priority = (t.priority || "low").toLowerCase();
-  const priorityIcons = {
-    urgent: "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
-    medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
-    low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
-  };
-  const priorityIcon = t.priorityIcon || priorityIcons[priority] || priorityIcons.low;
-  const type = t.type || "User Story";
-
-  // Assigned-To (Initialen + Farben)
-  const assignedHTML = (t.assignedTo || [])
-    .map(p => {
-      const initials = p.name
-        .split(" ")
-        .map(n => n[0]?.toUpperCase())
-        .join("");
-      const bg = p.color ? `background-color:${p.color};` : "";
-      return `
-        <div class="user-badge_user-story">
-          <span class="span-user-badge_user-story" style="${bg}">${initials}</span>
-          <p class="p-user-badge_user-story">${p.name}</p>
-        </div>`;
-    })
-    .join("") || "<p>No one assigned.</p>";
-
-  // Subtasks
-  const subtasksHTML = (t.subTasks || [])
-    .map((sub, i) => {
-      const checked = i < (t.subtasksDone || 0) ? "checked" : "";
-      return `
-        <label class="label_user-story">
-          <input type="checkbox" class="checkbox_user-story"
-                 onchange="updateSubtasks(${t.id}, this)" ${checked}>
-          ${sub}
-        </label>`;
-    })
-    .join("") || "<p>No subtasks added.</p>";
-
-  // Ausgabe
+function getBigCardDynamicHtml(t) {
   return `
-    <headline class="header-wrapper_user-story">
-      <span class="label_user_story">${type}</span>
-      <button class="close-btn_user-story" onclick="closeTaskModal()">x</button>
-    </headline>
-
-    <h1 class="title_user-story">${title}</h1>
-    <h3 class="h3_user-story">${description}</h3>
-
-    <main class="main_content_user_story">
-      <div class="date-input-wrapper_user-story">
-        <p class="section-heading_user-story"><strong>Due date:</strong></p>
-        <p class="task-date-display_user-story">${dueDate}</p>
-      </div>
-
-      <section class="task-input_user-story">
-        <div class="priority-row_user-story">
-          <p class="section-heading_user-story"><strong>Priority:</strong></p>
-          <button type="button" class="priority-btn-${priority}_user-story">
-            ${priority.charAt(0).toUpperCase() + priority.slice(1)}
-            <img class="addTask-icons_user-story" src="${priorityIcon}" alt="${priority} icon">
-          </button>
+      <headline class="header-wrapper_user-story">
+        <span class="label_user_story">${t.type}</span>
+        <button class="close-btn_user-story" onclick="closeTaskModal()">x</button>
+      </headline>
+  
+      <h1 class="title_user-story">${t.title}</h1>
+      <h3 class="h3_user-story">${t.description}</h3>
+  
+      <main class="main_content_user_story">
+        <div class="date-input-wrapper_user-story">
+          <p class="section-heading_user-story"><strong>Due date:</strong></p>
+          <p class="task-date-display_user-story">${t.dueDate}</p>
         </div>
-      </section>
-
-      <section class="task-input_user-story">
-        <p class="section-heading_user-story"><strong>Assigned To:</strong></p>
-        <div class="assigned-users_user-story">
-          ${assignedHTML}
+  
+        <section class="task-input_user-story">
+          <div class="priority-row_user-story">
+            <p class="section-heading_user-story"><strong>Priority:</strong></p>
+            <button type="button" class="priority-btn-${t.priority}_user-story">
+              ${t.priority.charAt(0).toUpperCase() + t.priority.slice(1)}
+              <img class="addTask-icons_user-story" src="${
+                t.priorityIcon
+              }" alt="${t.priority} icon">
+            </button>
+          </div>
+        </section>
+  
+        <section class="task-input_user-story">
+          <p class="section-heading_user-story"><strong>Assigned To:</strong></p>
+          <div class="assigned-users_user-story">
+            ${t.assignedHTML}
+          </div>
+        </section>
+  
+        <section class="task-input_user-story">
+          <p class="section-heading_user-story"><strong>Subtasks</strong></p>
+          <div class="subtask-list">${t.subtasksHTML}</div>
+        </section>
+  
+        <div class="action-buttons_user-story">
+          <div class="action-btn_user-story" onclick="deleteDynamicTask(${
+            t.id
+          })">
+            <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user_story">
+            <span>Delete</span>
+          </div>
+          <div class="divider_user-story"></div>
+          <div class="action-btn_user-story" onclick="startEditTask(${t.id})">
+            <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user_story">
+            <span>Edit</span>
+          </div>
         </div>
-      </section>
-
-      <section class="task-input_user-story">
-        <p class="section-heading_user-story"><strong>Subtasks</strong></p>
-        <div class="subtask-list">${subtasksHTML}</div>
-      </section>
-
-      <div class="action-buttons_user-story">
-       <div class="action-btn_user-story" onclick="deleteDynamicTask(${t.id})">
-        <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user-story">
-        <span>Delete</span>
-       </div>
-        <div class="divider_user-story"></div>
-        <div class="action-btn_user-story" onclick="startEditTask(${t.id})">
-          <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user-story">
-          <span>Edit</span>
-        </div>
-      </div>
-    </main>`;
+      </main>`;
 }
 
-function bigCardDynamicTechnicalHtml(t) {
-  const title = t.title || "No title";
-  const description = t.description || "No description provided.";
-  const dueDate = t.dueDate || "No due date";
-  const priority = (t.priority || "low").toLowerCase();
-  const priorityIcons = {
-    urgent: "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
-    medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
-    low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
-  };
-  const priorityIcon = t.priorityIcon || priorityIcons[priority] || priorityIcons.low;
-  const priorityText = priority.charAt(0).toUpperCase() + priority.slice(1);
-
-  const assignedHTML = (t.assignedTo || [])
-    .map((p) => {
-      const initials = p.name
-        .split(" ")
-        .filter(Boolean)
-        .map((n) => n[0]?.toUpperCase())
-        .join("");
-      const bg = p.color ? `background-color:${p.color};` : "";
-      return ` 
-        <div class="user-container-technical-task">
-          <div class="user-badge-and-name">
-            <div class="name-letter-ball-technical-task" style="${bg}">
-              <span class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">${initials}</span>
-            </div>
-            <span class="a-user-bagde-font-position-technical-task">${p.name}</span>
-          </div>
-          <input type="checkbox" class="checkbox-technical-task border-white-technical-task" disabled>
-        </div>`;
-    })
-    .join("") ||
-    '<p class="description-font-technical-task">No one assigned.</p>';
-
-  const subtasksHTML = (t.subTasks || [])
-    .map((sub, i) => {
-      const checked = i < (t.subtasksDone || 0) ? "checked" : "";
-      return `
-        <label class="label-font-technical-task">
-          <input type="checkbox" class="checkbox-technical-task border-blue-technical-task"
-                 onchange="updateSubtasks(${t.id}, this)" ${checked}>
-          ${sub}
-        </label>`;
-    })
-    .join("<br>") ||
-    '<p class="description-font-technical-task">No subtasks added.</p>';
-
+function getBigCardDynamicTechnicalHtml(t) {
   return `
     <main class="main-container-technical-task">
       <div class="head-bar-technical-task">
@@ -425,37 +339,37 @@ function bigCardDynamicTechnicalHtml(t) {
       </div>
 
       <div class="headline-container-technical-task">
-        <h1 class="h1-technical-task">${title}</h1>
+        <h1 class="h1-technical-task">${t.title}</h1>
       </div>
 
       <div class="describtion-conatainer-technical-task">
-        <p class="description-font-technical-task">${description}</p>
+        <p class="description-font-technical-task">${t.description}</p>
       </div>
 
       <div class="date-container-technical-task">
         <a class="status-font-technical-task">Due Date:</a>
-        <a class="date-font-technical-task">${dueDate}</a>
+        <a class="date-font-technical-task">${t.dueDate}</a>
       </div>
 
       <div class="priority-container-technical-task">
         <a class="status-font-technical-task">Priority:</a>
         <div class="actual-priority-container-technical-task">
-          <a>${priorityText}</a>
-          <img src="${priorityIcon}" alt="${priority} priority">
+          <a>${t.priorityText}</a>
+          <img src="${t.priorityIcon}" alt="${t.priority} priority">
         </div>
       </div>
 
       <div class="assigned-to-container-technical-task">
         <a class="status-font-technical-task">Assigned To:</a>
         <div>
-          ${assignedHTML}
+          ${t.assignedHTML}
         </div>
       </div>
 
       <div class="subtasks-container-technical-task">
         <a class="status-font-technical-task">Subtasks:</a>
         <div class="subtasks-task-container-technical-task subtask-list">
-          ${subtasksHTML}
+          ${t.subtasksHTML}
         </div>
         <div class="delete-edit-section-technical-task">
           <div class="delete-edit-container-technical-task" onclick="deleteDynamicTask(${t.id})">

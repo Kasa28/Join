@@ -1,3 +1,6 @@
+/* === header.js | Handles user menu, login state, and header rendering === */
+
+/* === User Menu Template === */
 function userMenuTemplate(){
 return `<div class="user-menu-container-header">
             <div class="user-menu-content-header">
@@ -25,58 +28,54 @@ return `<div class="user-menu-container-header">
         </div>`
 }
 
+/* === Render User Menu === */
 function renderUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
     contentRef.innerHTML = userMenuTemplate();
 }
 
+/* === Toggle User Menu Visibility === */
 function toggleUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
     contentRef.classList.toggle("d_none");
 }
 
+/* === Logout Functionality === */
 function deleteIdFromLocalStorage(){
     localStorage.removeItem('userData');
 }
 
+/* === Login State Check === */
 function checkIfLogedIn(){
-
     if (!localStorage.getItem("userData")) {
         return false;
     }
     return true;
 }
 
+/* === User Initial Display === */
 function onloadFunctionHeader(){
     setLetterInUserBall();
-    
 }
 
 function setLetterInUserBall(){
-    
     let contentRef = document.getElementById("user-ball-ID");
-
     if(!checkIfLogedIn()){
         contentRef.innerHTML = "G";
     }   else{
-
         let userJson = JSON.parse(localStorage.getItem("userData"));
         userLetter = userJson.name.charAt(0).toUpperCase();
         contentRef.innerHTML = userLetter;
     }        
 }
 
+/* === Greeting Message Rendering === */
 function makeFirstLetterBig(inputString){
-
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
-
 }
 
-
 function greetUserName(){
-
     let contentRef = document.getElementById("greetID");
-
     if(!checkIfLogedIn()){
         contentRef.innerHTML = `<h1 class="summary-h1-font-guest">Good Morning</h1>`;
     }   else{
@@ -85,6 +84,4 @@ function greetUserName(){
         contentRef.innerHTML = `<h2 class="summary-h2-font-user" >Good Morning,  </h2>
                                 <h1 class="summary-h1-font-user">${userName}</h1>`
     } 
-
-
 }

@@ -22,248 +22,232 @@
   font-style: italic;
 }
 
-
-.close-icon-edit-contact{
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-    padding: 5px;
-
-    border-radius: 20px;
+.close-icon-edit-contact {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 20px;
 }
 
-.close-icon-edit-contact:hover{
-    background-color: rgba(255, 255, 255, 0.425);
+.close-icon-edit-contact:hover {
+  background-color: rgba(255, 255, 255, 0.425);
 }
 
-
-
-.capa-logo-1-edit-contact{
-    width: 55px;
-    height: 66px;
-    object-fit: cover;
+.capa-logo-1-edit-contact {
+  width: 55px;
+  height: 66px;
+  object-fit: cover;
 }
 
-.h2-edit-contact{
-    font-size: 48px;
-    font-weight: 700;
-    color: white;
-    font-style: bold;
-    margin: 0;
+.h2-edit-contact {
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  font-style: bold;
+  margin: 0;
 }
 
-.a-font-edit-contact{
-    font-size: 27px;
-    color: white;
+.a-font-edit-contact {
+  font-size: 27px;
+  color: white;
 }
 
-.add-contact{
-    position: absolute;
-    height: 100%;
-    top: 0;
-    right: 0;
-    transition: all 3200ms ease-in-out;
+.add-contact {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  transition: all 3200ms ease-in-out;
 }
 
-.hide-add-contact{
-    transform: translateX(100%);
+.hide-add-contact {
+  transform: translateX(100%);
 }
 
-.edit-contact{
-    position: absolute;
-    height: 100%;
-    top: 0;
-    left: 0;
-    transition: all 3200ms ease-in-out;
+.edit-contact {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: all 3200ms ease-in-out;
 }
 
-.hide-edit-contact{
-    transform: translateX(-100%);
+.hide-edit-contact {
+  transform: translateX(-100%);
 }
 
-.main-container-edit-contact{
-    display: flex;
-    flex-direction: column;
-    width: 584px;
-    height: 100%;
-    font-family: "open sans";
-    gap: 72px;
-    background: white;
+.main-container-edit-contact {
+  display: flex;
+  flex-direction: column;
+  width: 584px;
+  height: 100%;
+  font-family: "open sans";
+  gap: 72px;
+  background: white;
 }
 
-.right-side-rounded{
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-top-right-radius: 30px;
+.right-side-rounded {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
-.left-side-rounded{
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-top-left-radius: 30px;
+.left-side-rounded {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-top-left-radius: 30px;
 }
 
-.edit-contact-headcard{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-
-    height: 370px;
-    padding: 108px 46px 108px 46px;
-    gap: 12px;
-
-    background-color: #005DFF;
+.edit-contact-headcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  height: 370px;
+  padding: 108px 46px 108px 46px;
+  gap: 12px;
+  background-color: #005dff;
 }
 
-.edit-contact-content{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    height: 422px;
-    width: 437px;
-
-    gap: 32px;
-
+.edit-contact-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 422px;
+  width: 437px;
+  gap: 32px;
 }
 
-.user-letter-ball-edit-contact{
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    background-color: #FF7A00;
-    font-size: 33px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 0 0 2px #ffff;
+.user-letter-ball-edit-contact {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: #ff7a00;
+  font-size: 33px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #ffff;
 }
 
-.empty-user-ball-edit-contact{
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    background-color: #D1D1D1;
-    font-size: 33px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 0 0 2px #ffff;
+.empty-user-ball-edit-contact {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: #d1d1d1;
+  font-size: 33px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #ffff;
 }
 
-.empty-user-ball-icon-edit-contact{
-    width: 36px;
-    height: 36px;
-    filter: brightness(1.8);
+.empty-user-ball-icon-edit-contact {
+  width: 36px;
+  height: 36px;
+  filter: brightness(1.8);
 }
 
-.edit-contact-inputfield{
-    width: 422px;
-    height: 48px;
+.edit-contact-inputfield {
+  width: 422px;
+  height: 48px;
 
-    border-style: none;
-    border-bottom: solid 2px grey;
+  border-style: none;
+  border-bottom: solid 2px grey;
 }
 
-.input-icon-container{
-    position: relative;
-    display: inline-block;
-    width: 100%;
+.input-icon-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
 }
 
-.edit-contact-inputfield{
-    width: 100%;
-    padding-right: 36px; /* Platz für das Icon */
-    box-sizing: border-box;
-    outline: none;
-
-    padding: 12px 21px 12px 21px;
+.edit-contact-inputfield {
+  width: 100%;
+  padding-right: 36px; 
+  box-sizing: border-box;
+  outline: none;
+  padding: 12px 21px 12px 21px;
 }
 
-.input-icon-edit-contact{
-    position: absolute;
-    right: 21px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    pointer-events: none; /* Icon ist nicht klickbar */
+.input-icon-edit-contact {
+  position: absolute;
+  right: 21px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none; 
 }
 
-.button-edit-contact{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-
-    border: 0;
-    border-radius: 10px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-
-    transition: 0.2s;
-
-    height: 60px;
-    width: 106px;
-
-    font-size: 18px;
+.button-edit-contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+  height: 60px;
+  width: 106px;
+  font-size: 18px;
 }
 
-.button-edit-contact-grey{
-    background: white;
-    border: solid 2px grey;
-    color: grey;
+.button-edit-contact-grey {
+  background: white;
+  border: solid 2px grey;
+  color: grey;
 }
 
-.button-edit-contact-grey:hover{
-    border: solid 2px #4589FF;
-    color: #4589FF;
-    transition: 0.2s;
+.button-edit-contact-grey:hover {
+  border: solid 2px #4589ff;
+  color: #4589ff;
+  transition: 0.2s;
 }
 
-
-.button-edit-contact-blue{
-    background: #4589FF;
-    border: solid 2px #4589FF;
-    width: 174px;
-    color: white;
+.button-edit-contact-blue {
+  background: #4589ff;
+  border: solid 2px #4589ff;
+  width: 174px;
+  color: white;
 }
 
-.button-edit-contact-blue:hover{
-    background: #005DFF;
-    border: solid 2px #005DFF;
-    transition: 0.2s;
+.button-edit-contact-blue:hover {
+  background: #005dff;
+  border: solid 2px #005dff;
+  transition: 0.2s;
 }
 
-.button-edit-contact-order{
-    display: flex;
-    justify-content: space-between;
-    height: 60px;
-    width: 300px;
+.button-edit-contact-order {
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  width: 300px;
 }
 
-.check-icon-edit-contact{
-    width: 24px;
-    height: 24px;
-    object-fit: cover;
-    right: 3px;
+.check-icon-edit-contact {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  right: 3px;
 }
 
-.button-text-edit-contact{
-    flex: 1;
-    text-align: center;
+.button-text-edit-contact {
+  flex: 1;
+  text-align: center;
 }
