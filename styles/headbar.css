@@ -60,13 +60,13 @@ header {
   line-height: 120%;
   letter-spacing: 0%;
   color: white;
-  font-family: "Open Sans";
+  font-family: "Open Sans", Arial, sans-serif;
 }
 
 .g-unit {
   font-weight: 500;
   color: #005dff;
-  font-family: "Open Sans";
+  font-family: "Open Sans", Arial, sans-serif;
 }
 
 .user-menu-container-header {
