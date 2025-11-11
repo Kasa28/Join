@@ -43,6 +43,21 @@ function renderCard(t) {
   
     return tpl;
   }
+
+  function buildSubtaskListItem(text) {
+    const li = document.createElement("li");
+    li.classList.add("subtask-entry-edit");
+    li.textContent = text;
+    const actions = document.createElement("div");
+    actions.classList.add("subtask-actions-addTask_template");
+    actions.innerHTML = `
+          <img src="../assets/img/edit.svg"   alt="Edit subtask"   class="subtask-edit-addTask_template">
+          <div class="subtask-divider-addTask_template"></div>
+          <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template">
+        `;
+    li.appendChild(actions);
+    return li;
+  }
   
   function render() {
     // Spalten leeren
@@ -115,6 +130,60 @@ function renderCard(t) {
     }
     needsDraggingClassAfterRender = false;
     pendingDragTiltClass = null;
+  }
+  
+  function getInitialsFromName(name) {
+    return String(name || "")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part[0]?.toUpperCase() || "")
+      .slice(0, 2)
+      .join("");
+  }
+
+  function hydrateAssignSection(task) {
+    const content = document.getElementById("addtask-content");
+    if (!content) return;
+  
+    // Avatare
+    const container = content.querySelector("#assigned-avatars");
+    if (container) {
+      container.innerHTML = "";
+      (task.assignedTo || []).forEach((person) => {
+        const initials = getInitialsFromName(person.name);
+        const avatar = document.createElement("div");
+        avatar.classList.add("assign-avatar-addTask_template");
+        avatar.textContent = initials;
+        const color = person.color || "#4589ff";
+        avatar.style.backgroundColor = color;
+        avatar.dataset.fullName = person.name || initials;
+        avatar.dataset.color = color;
+        avatar.title = person.name || initials;
+        container.appendChild(avatar);
+      });
+    }
+  
+    // Checkboxen synchronisieren
+    const items = content.querySelectorAll(".assign-item-addTask_template");
+    items.forEach((item) => {
+      const name = item
+        .querySelector(".assign-name-addTask_template")
+        ?.textContent.trim();
+      const checkbox = item.querySelector(".assign-check-addTask_template");
+      const selected = (window.selectedUsers || []).includes(name);
+      if (checkbox) checkbox.checked = selected;
+      item.classList.toggle("selected", selected);
+    });
+  
+    const placeholder = content.querySelector(
+      ".assign-placeholder-addTask_template"
+    );
+    if (placeholder) {
+      placeholder.textContent = (window.selectedUsers || []).length
+        ? ""
+        : "Select contact to assign";
+      placeholder.style.color = "black";
+    }
   }
   
   /*************************************************
