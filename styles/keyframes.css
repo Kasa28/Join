@@ -1,25 +1,16 @@
-
-/* =========================
-   färbt background von blau zur weiß
-   ========================= */
 @keyframes bg_to_white { 
   to { background: #fff; }
 }
-/* =========================
-    bewegt das J logo nach links obenn
-   ========================= */
+
 @keyframes J_go_left {
-  0%   { top: 50%;/* Anfang der Animation, top : 50% in der Mitte von oben nach unten*/
-         left: 50%; /* in der Mitte von links nach rechts*/
-         transform: translate(-50%, -50%) scale(1); } /*soll sich schräg bewegen*/
-  100% { top: 10px; /* Ende der Animation J geht ganz nach oben, aber mit 10 Pixel Abstand nach oben*/
-         left: var(--logo-left); /* Ende der Animation J klebt oben links*/
-         transform: translate(0, 0) scale(1); } /*soll sich nicht mehr bewegen , scale für größe zuständig */
+  0%   { top: 50%;
+         left: 50%; 
+         transform: translate(-50%, -50%) scale(1); }
+  100% { top: 10px; 
+         left: var(--logo-left); 
+         transform: translate(0, 0) scale(1); } 
 }
 
-/* =========================
-   verkleinert das J logo und ändert die Farbe von weiß zu bunt
-   ========================= */
 @keyframes J_shrink_color {
   0%   {
     width: 250px;
@@ -33,8 +24,4 @@
   }
 }
 
-/* =========================
-   blendet das Formular ein
-   ========================= */
-
-@keyframes form_fade { to { opacity: 1; } } /*formular 1 heißt sichtbar, dann in in css anfangs 0 steht heißt es erscheint nach der animation */
+@keyframes form_fade { to { opacity: 1; } } 
