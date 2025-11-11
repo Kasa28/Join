@@ -74,6 +74,7 @@ async function loadTasksFromFirebase() {
   }
 }
 
+/* === Firebase Realtime Subscription === */
 let updateTimeout;
 subscribeToFirebaseUpdates((data) => {
   clearTimeout(updateTimeout);
@@ -85,6 +86,7 @@ subscribeToFirebaseUpdates((data) => {
   }, 200);
 });
 
+/* === Helper: Detect Demo Tasks === */
 function isDemoTask(taskOrId) {
   const idValue =
     typeof taskOrId === "object" && taskOrId !== null ? taskOrId.id : taskOrId;
@@ -143,6 +145,7 @@ window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
 window.currentPrio = window.currentPrio || "low";
 window.selectedUserColors = window.selectedUserColors || {};
 
+/* === Persist Tasks to Firebase === */
 async function persistTasks() {
   try {
     for (const t of window.tasks) {
