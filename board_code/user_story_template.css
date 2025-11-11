@@ -1,3 +1,4 @@
+/* === Global Reset & Fonts === */
 * {
   margin: 0;
   padding: 0;
@@ -28,6 +29,7 @@
   font-style: italic;
 }
 
+/* === Header Section, Title and Headings === */
 .header-wrapper_user-story {
   display: flex;
   flex-direction: row;
@@ -82,6 +84,7 @@
   font-size: 30px;
 }
 
+/* === Main Content Container === */
 .main_content_user_story {
   max-width: 528px;
   padding-left: 40px;
@@ -95,6 +98,7 @@
   display: none;
 }
 
+/* === Task Title and Description === */
 .task-title_user-story {
   font-size: 22px;
   border: none;
@@ -205,6 +209,7 @@
   font-size: 32px;
 }
 
+/* === Date and Select Fields === */
 .task-date_user-story,
 .task-select_user-story,
 .task-subtask_user-story {
@@ -258,6 +263,7 @@
   line-height: 120%;
 }
 
+/* === Priority Buttons === */
 .priority-row_user-story {
   display: flex;
   align-items: center;
@@ -294,6 +300,7 @@
   filter: none;
 }
 
+/* === Buttons and Footer === */
 .task-buttons_user-story {
   position: absolute;
   bottom: -350px;
@@ -318,6 +325,7 @@
   margin-bottom: 40px;
 }
 
+/* === Assigned Users Section === */
 .assigned-users_user-story {
   display: flex;
   flex-direction: column;
@@ -354,6 +362,7 @@
   margin: 0;
 }
 
+/* === Action Buttons Section === */
 .action-buttons_user-story {
   display: flex;
   justify-content: flex-end;
