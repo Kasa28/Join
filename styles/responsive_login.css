@@ -1,0 +1,37 @@
+
+@media (max-width: 768px) {
+  .content {
+    padding-top: 110px;
+    justify-content: flex-start;
+    gap: 32px;
+  }
+
+  .main_login {
+    order: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  header {
+    position: static !important;
+    order: 2 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 12px !important;
+  }
+
+  .notUser_sign_up {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  footer {
+    order: 3;
+    margin-top: auto;
+    width: 100%;
+  }
+}
