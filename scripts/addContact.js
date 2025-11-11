@@ -1,6 +1,12 @@
 let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563"},
                         {"username": "Karsten", "email": "karsten-stahl@gmail.de", "PhoneNumber": "+49151478632475"},
-                        {"username": "Thomas", "email": "thomas-gottschalck@live.de", "PhoneNumber": "+491517896455"}];
+                        {"username": "Thomas", "email": "thomas-gottschalck@live.de", "PhoneNumber": "+491517896455"},
+                        {"username": "Rainer", "email": "rainer-winkler@gmail.de", "PhoneNumber": "+491507489652"},
+                        {"username": "Angela", "email": "angela-merkel@gmail.de", "PhoneNumber": "+491511462385"},
+                        {"username": "Kai", "email": "kai-pflaume@live.de", "PhoneNumber": "+491504896257"},
+                        {"username": "Til", "email": "til-schweiger@gmail.de", "PhoneNumber": "+491514563248"},
+                        {"username": "Günther", "email": "günther-jauch@gmail.de", "PhoneNumber": "+4915157652244"},
+                        {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354"}];
 
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
@@ -46,23 +52,40 @@ function makeFirstLetterBig(inputString){
 }
 
 function pushExampleContactsOneTimeInLocalStorage(){
-    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-    
-    const nameExist = contacts.some(contact =>
-        contact.username === "Peter" || contact.username === "Karsten" || contact.username === "Thomas"
+    let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+
+    // Überprüfen, ob einer der Namen bereits im Array vorhanden ist
+    const nameExists = contacts.some(contact =>
+        contact && (contact.username === "Peter" || contact.username === "Karsten" || contact.username === "Thomas")
     );
-        
-    if(nameExist){
 
+    // Wenn einer der Namen existiert, Funktion abbrechen
+    if (nameExists) {
+        console.log("Einer der Namen existiert bereits. Funktion wird abgebrochen.");
         return;
-
-    } else{
-
-        contacts.push(exampleContacts[0], exampleContacts[1], exampleContacts[2]);
-        exampleContacts = [];
-        addContactToLocalStorage(contacts);
-
     }
+
+    // Namen hinzufügen, wenn sie nicht existieren
+    if (exampleContacts.length > 0) {
+        contacts.push(...exampleContacts);
+        exampleContacts = []; // Leere das Array nach dem Hinzufügen
+        addContactToLocalStorage(contacts);
+        console.log("Beispielkontakte wurden hinzugefügt:", contacts);
+    } else {
+        console.log("Keine Beispielkontakte vorhanden.");
+    }
+}
+
+function sortLocalStorageToAlphabeticalOrder(inputArray){
+
+    inputArray.sort((a, b) => {
+        if (a.username.toLowerCase() < b.username.toLowerCase()) return -1;
+        if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
+        return 0;
+    });
+
+    addContactToLocalStorage(inputArray);
+
 }
 
 function renderContactList(){
@@ -73,6 +96,10 @@ function renderContactList(){
     pushExampleContactsOneTimeInLocalStorage();
 
     let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+
+
+    sortLocalStorageToAlphabeticalOrder(getContacts);
+
 
 
     getContacts.forEach((contact, index) => {
