@@ -275,57 +275,57 @@ function getTechnicalTaskTemplate(t) {
 /* =======================
    Dynamic Task Templates
    ======================= */
-function getBigCardDynamicHtml(t) {
-  return `
-    <headline class="header-wrapper_user-story">
-      <span class="label_user_story">${type}</span>
-      <button class="close-btn_user-story" onclick="closeTaskModal()">x</button>
-    </headline>
-
-    <h1 class="title_user-story">${title}</h1>
-    <h3 class="h3_user-story">${description}</h3>
-
-    <main class="main_content_user_story">
-      <div class="date-input-wrapper_user-story">
-        <p class="section-heading_user-story"><strong>Due date:</strong></p>
-        <p class="task-date-display_user-story">${dueDate}</p>
-      </div>
-
-      <section class="task-input_user-story">
-        <div class="priority-row_user-story">
-          <p class="section-heading_user-story"><strong>Priority:</strong></p>
-          <button type="button" class="priority-btn-${priority}_user-story">
-            ${priority.charAt(0).toUpperCase() + priority.slice(1)}
-            <img class="addTask-icons_user-story" src="${priorityIcon}" alt="${priority} icon">
-          </button>
+   function getBigCardDynamicHtml(t) {
+    return `
+      <headline class="header-wrapper_user-story">
+        <span class="label_user_story">${t.type}</span>
+        <button class="close-btn_user-story" onclick="closeTaskModal()">x</button>
+      </headline>
+  
+      <h1 class="title_user-story">${t.title}</h1>
+      <h3 class="h3_user-story">${t.description}</h3>
+  
+      <main class="main_content_user_story">
+        <div class="date-input-wrapper_user-story">
+          <p class="section-heading_user-story"><strong>Due date:</strong></p>
+          <p class="task-date-display_user-story">${t.dueDate}</p>
         </div>
-      </section>
-
-      <section class="task-input_user-story">
-        <p class="section-heading_user-story"><strong>Assigned To:</strong></p>
-        <div class="assigned-users_user-story">
-          ${assignedHTML}
+  
+        <section class="task-input_user-story">
+          <div class="priority-row_user-story">
+            <p class="section-heading_user-story"><strong>Priority:</strong></p>
+            <button type="button" class="priority-btn-${t.priority}_user-story">
+              ${t.priority.charAt(0).toUpperCase() + t.priority.slice(1)}
+              <img class="addTask-icons_user-story" src="${t.priorityIcon}" alt="${t.priority} icon">
+            </button>
+          </div>
+        </section>
+  
+        <section class="task-input_user-story">
+          <p class="section-heading_user-story"><strong>Assigned To:</strong></p>
+          <div class="assigned-users_user-story">
+            ${t.assignedHTML}
+          </div>
+        </section>
+  
+        <section class="task-input_user-story">
+          <p class="section-heading_user-story"><strong>Subtasks</strong></p>
+          <div class="subtask-list">${t.subtasksHTML}</div>
+        </section>
+  
+        <div class="action-buttons_user-story">
+          <div class="action-btn_user-story" onclick="deleteDynamicTask(${t.id})">
+            <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user_story">
+            <span>Delete</span>
+          </div>
+          <div class="divider_user-story"></div>
+          <div class="action-btn_user-story" onclick="startEditTask(${t.id})">
+            <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user_story">
+            <span>Edit</span>
+          </div>
         </div>
-      </section>
-
-      <section class="task-input_user-story">
-        <p class="section-heading_user-story"><strong>Subtasks</strong></p>
-        <div class="subtask-list">${subtasksHTML}</div>
-      </section>
-
-      <div class="action-buttons_user-story">
-       <div class="action-btn_user-story" onclick="deleteDynamicTask(${t.id})">
-        <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user-story">
-        <span>Delete</span>
-       </div>
-        <div class="divider_user-story"></div>
-        <div class="action-btn_user-story" onclick="startEditTask(${t.id})">
-          <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user-story">
-          <span>Edit</span>
-        </div>
-      </div>
-    </main>`;
-}
+      </main>`;
+  }
 
 function bigCardDynamicTechnicalHtml(t) {
   const title = t.title || "No title";
