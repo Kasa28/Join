@@ -1,3 +1,5 @@
+/* === template_functions.js | Functions handling dynamic template generation === */
+
 function bigCardDynamicHtml(t) {
     const title = t.title || "No title";
     const description = t.description || "No description provided.";
@@ -56,7 +58,7 @@ function bigCardDynamicHtml(t) {
           });
         }
 
-        function bigCardDynamicTechnicalHtml(t) {
+function bigCardDynamicTechnicalHtml(t) {
             const title = t.title || "No title";
             const description = t.description || "No description provided.";
             const dueDate = t.dueDate || "No due date";

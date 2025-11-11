@@ -1,4 +1,4 @@
-/* === templates.js | Defines static and dynamic HTML templates for tasks === */
+/* === templates.js | Static and dynamic HTML templates for user stories, technical tasks, and the Add Task form === */
 
 function bigCardHtml(t) {
   return `
@@ -272,9 +272,6 @@ function getTechnicalTaskTemplate(t) {
   `;
 }
 
-/* =======================
-   Dynamic Task Templates
-   ======================= */
 function getBigCardDynamicHtml(t) {
   return `
       <headline class="header-wrapper_user-story">
