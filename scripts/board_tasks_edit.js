@@ -1,18 +1,17 @@
+/* === board_tasks_edit.js | Handles editing, creation, and form logic === */
+
 /* === Dynamic Modal Handling (open, delete) === */
 function openModalDynamic(id) {
   const task = window.tasks?.find((t) => t.id === id);
   if (!task) return;
-
   const modal = document.getElementById("task-modal");
   const content = document.getElementById("task-modal-content");
   if (!modal || !content) return;
-
   if (typeof bigCardDynamicHtml === "function") {
     content.innerHTML = bigCardDynamicHtml(task);
   } else {
     content.innerHTML = `<p style="padding:16px">Dynamic Template fehlt</p>`;
   }
-
   modal.style.display = "flex";
   document.body.classList.add("no-scroll");
 }
@@ -28,12 +27,9 @@ async function deleteDynamicTask(id) {
     alert("Demo tasks can only be moved.");
     return;
   }
-
   window.tasks = allTasks.filter((t) => t.id !== id);
-
   const cardEl = document.getElementById("card-" + id);
   if (cardEl && cardEl.parentNode) cardEl.parentNode.removeChild(cardEl);
-
   closeTaskModal();
   requestAnimationFrame(() => {
     if (typeof render === "function") render();
@@ -65,12 +61,8 @@ function readSubtasksFromForm() {
 function populateEditOverlay(task) {
   const content = document.getElementById("addtask-content");
   if (!content) return;
-
-  // Überschrift
   const heading = content.querySelector(".h1-addTask_template");
   if (heading) heading.textContent = "Edit Task";
-
-  // Basisfelder
   const titleInput = content.querySelector("#title");
   if (titleInput) {
     titleInput.value = task.title || "";
@@ -78,7 +70,6 @@ function populateEditOverlay(task) {
   }
   const descriptionInput = content.querySelector("#description");
   if (descriptionInput) descriptionInput.value = task.description || "";
-
   const dueDateInput = content.querySelector("#due-date");
   if (dueDateInput) {
     dueDateInput.value = task.dueDate || "";
@@ -86,7 +77,6 @@ function populateEditOverlay(task) {
       requestAnimationFrame(() => validateDueDate());
     }
   }
-
   const categorySelect = content.querySelector("#category");
   if (categorySelect) {
     const value =
@@ -95,20 +85,15 @@ function populateEditOverlay(task) {
         : "user-story";
     categorySelect.value = value;
   }
-
-  // Prio & Assignees
   const priority = String(task.priority || "low").toLowerCase();
   window.currentPrio = priority;
   if (typeof setPriorityAddTask === "function") setPriorityAddTask(priority);
-
   window.selectedUsers = (task.assignedTo || []).map((p) => p.name);
   window.selectedUserColors = (task.assignedTo || []).reduce((acc, person) => {
     if (person && person.name) acc[person.name] = person.color || "#4589ff";
     return acc;
   }, {});
   hydrateAssignSection(task);
-
-  // Subtasks
   const subtaskList = content.querySelector("#subtask-list");
   if (subtaskList) {
     subtaskList.innerHTML = "";
@@ -118,8 +103,6 @@ function populateEditOverlay(task) {
   }
   const subtaskInput = content.querySelector("#subtask");
   if (subtaskInput) subtaskInput.value = "";
-
-  // Button: Speichern
   const submitBtn = content.querySelector(".btn-done-addTask_template");
   if (submitBtn) {
     submitBtn.removeAttribute("onclick");
@@ -135,7 +118,6 @@ function normaliseSubtaskProgress(task) {
   task.subtasksTotal = total;
   const done = Math.min(Number(task.subtasksDone) || 0, total);
   task.subtasksDone = done;
-
   if (window.saved) {
     const prev = Array.isArray(window.saved[task.id])
       ? window.saved[task.id]
@@ -160,12 +142,10 @@ function saveTaskEdits(id) {
     alert("Task not found.");
     return;
   }
-
   if (isDemoTask(task)) {
     alert("Demo tasks can only be moved.");
     return;
   }
-
   const titleInput = document.getElementById("title");
   const title = titleInput ? titleInput.value.trim() : "";
   if (!title) {
@@ -173,33 +153,28 @@ function saveTaskEdits(id) {
     titleInput?.focus();
     return;
   }
-
   const description =
     document.getElementById("description")?.value.trim() || "";
   const dueDate = document.getElementById("due-date")?.value.trim() || "";
   const isDueDateValid =
     typeof validateDueDate === "function" ? validateDueDate() : true;
   if (!isDueDateValid) return;
-
   const categorySelect = document.getElementById("category");
   const categoryValue = categorySelect ? categorySelect.value : "";
   const priority = String(
     window.currentPrio || task.priority || "low"
   ).toLowerCase();
-
   const assigned =
     typeof assignedToDataExtractSafe === "function"
       ? assignedToDataExtractSafe()
       : task.assignedTo || [];
 
   const subtasks = readSubtasksFromForm();
-
   task.title = title;
   task.description = description;
   task.dueDate = dueDate;
   task.type = categoryValue === "technical" ? "Technical Task" : "User Story";
   task.priority = priority;
-
   const priorityIcons = {
     urgent:
       "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
@@ -207,14 +182,10 @@ function saveTaskEdits(id) {
     low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
   };
   task.priorityIcon = priorityIcons[priority] || task.priorityIcon;
-
   task.assignedTo = assigned;
   task.subTasks = subtasks;
-
   normaliseSubtaskProgress(task);
-
   persistTasks();
-
   if (typeof render === "function") render();
   closeAddTask();
 }
@@ -227,12 +198,10 @@ function startEditTask(id) {
     alert("Task not found.");
     return;
   }
-
   if (isDemoTask(task)) {
     alert("Demo tasks can only be moved.");
     return;
   }
-
   closeTaskModal();
   window.taskBeingEdited = id;
   window.nextTaskTargetStatus = task.status || window.STATUS?.TODO || "todo";
@@ -242,6 +211,7 @@ function startEditTask(id) {
     requestAnimationFrame(() => populateEditOverlay(task));
   }
 }
+
 window.startEditTask = startEditTask;
 
 /* === Add Task Shortcuts and Creation === */
@@ -266,7 +236,6 @@ function mapCategoryToType(value) {
 function assignedToDataExtractSafe() {
   if (typeof assignedToDataExtract === "function")
     return assignedToDataExtract();
-
   const assigned = [];
   const avatars = document.querySelectorAll(
     "#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page"
@@ -331,7 +300,6 @@ function collectTaskFromForm() {
 
 function createTask(event) {
   if (event && event.preventDefault) event.preventDefault();
-
   const task = collectTaskFromForm();
   if (!task.title) {
     alert("Bitte Titel eingeben!");
@@ -346,18 +314,17 @@ function createTask(event) {
   if (typeof closeAddTask === "function") closeAddTask();
   window.nextTaskTargetStatus = window.STATUS.TODO;
 }
+
 window.createTask = createTask;
 
 /* === Priority Button Handling === */
 window.currentPrio = window.currentPrio || "low";
 window.setPriority = function (prio) {
   window.currentPrio = String(prio || "low").toLowerCase();
-
   const wrap = document.querySelector(
     ".priority-group-addTask_template, .priority-group-addTask_page"
   );
   if (!wrap) return;
-
   wrap
     .querySelectorAll("button")
     .forEach((btn) => btn.classList.remove("active-prio"));
