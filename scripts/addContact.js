@@ -10,8 +10,6 @@ function hideAddContactFormular(){
     document.getElementById("add-contactID").classList.add("hide-add-contact")
 }
 
-
-
 function addNewContact(){
     let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
 
