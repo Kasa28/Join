@@ -2,12 +2,10 @@
     display: flex;
 }
 
-
 .position-relative-overflow-x{
     position: relative;
     overflow-x: hidden;
 }
-
 
 .separator{
     display: flex;
@@ -64,11 +62,8 @@
     padding: 32px 24px 32px 24px;
     border-right: solid 2px grey;
     overflow: hidden;
-
     overflow-y: auto;
-
     height: calc(100vh - 96px);
-
 }
 
 .contact-container{
@@ -87,15 +82,12 @@
     text-decoration: none;
     cursor: pointer;
     background: #4589FF;
-    transition: 0.2s;
-    
+    transition: 0.2s; 
     text-align: left;
     width: 100%;
-
     color: white;
     font-size: 18px;
 }
-
 
 .button-contacts:hover {
     background: #005DFF;
@@ -118,15 +110,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    
     color: white;
     background-color: #FF7A00;
     font-size: 14px;
     border-radius: 50%;
     border: 3px solid white;
     box-shadow: 0 0 0 2px #ffff;
-
     margin: 15px 0 15px 0;
 }
 
