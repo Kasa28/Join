@@ -163,9 +163,7 @@ async function persistTasks() {
   }
 }
 
-/*************************************************
-   * 9) Subtasks-Progress handling
-   *************************************************/
+/* === Subtasks-Progress handling === */
 window.updateSubtasks = (id, el) => {
   const subtaskListe = [
     ...el.closest(".subtask-list").querySelectorAll('input[type="checkbox"]'),
@@ -173,8 +171,6 @@ window.updateSubtasks = (id, el) => {
   const done = subtaskListe.filter((x) => x.checked).length;
   const total = subtaskListe.length;
   const percent = total ? Math.round((done / total) * 100) : 0;
-
-  // Fortschritt in Board-Karte
   const cardElement = document.getElementById("card-" + id);
   if (cardElement) {
     const fill = cardElement.querySelector(".progress-fill");
@@ -182,17 +178,12 @@ window.updateSubtasks = (id, el) => {
     if (fill) fill.style.width = percent + "%";
     if (st) st.textContent = `${done}/${total} Subtasks`;
   }
-
-  // Checkbox-Stände persistieren (lokal)
   saved[id] = subtaskListe.map((x) => x.checked);
   localStorage.setItem("checks", JSON.stringify(saved));
-
-  // 🔥 Fortschritt im Task + Firebase speichern
   const task = window.tasks.find(t => t.id == id);
   if (task) {
     task.subtasksDone = done;
     task.subtasksTotal = total;
-
     fetch(`https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks/${id}.json`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -204,17 +195,12 @@ window.updateSubtasks = (id, el) => {
   }
 };
 
-/*************************************************
- * 10) Onload: gespeicherte Subtask-Stände anwenden
- *************************************************/
+/* === Onload: gespeicherte Subtask-Stände anwenden === */
 
 const prevOnload = window.onload;
 window.onload = async () => {
   if (typeof prevOnload === "function") prevOnload();
-
-  await loadTasksFromFirebase(); // 🔥 Tasks von Firebase laden
-
-  // Subtask-Checkbox-Zustände anwenden
+  await loadTasksFromFirebase();
   for (const [taskId, states] of Object.entries(window.saved)) {
     const task = Array.isArray(window.tasks)
       ? window.tasks.find((t) => t.id == taskId)
@@ -224,9 +210,7 @@ window.onload = async () => {
       task.subtasksDone = states.filter(Boolean).length;
     }
   }
-
   updateSearchClearButtonState(document.getElementById("board-search"));
-    // 👇 Jetzt erst den Realtime-Listener aktivieren
     subscribeToFirebaseUpdates((data) => {
       if (!data) return;
       window.tasks = Object.values(data);
