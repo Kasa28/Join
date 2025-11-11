@@ -1,3 +1,5 @@
+/* === board.js | Data management and Firebase synchronization === */
+
 /* === Persistente Daten (Subtask-Checkboxen) === */
 window.saved = JSON.parse(localStorage.getItem("checks") || "{}");
 const saved = window.saved;
