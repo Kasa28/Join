@@ -275,8 +275,8 @@ function getTechnicalTaskTemplate(t) {
 /* =======================
    Dynamic Task Templates
    ======================= */
-   function getBigCardDynamicHtml(t) {
-    return `
+function getBigCardDynamicHtml(t) {
+  return `
       <headline class="header-wrapper_user-story">
         <span class="label_user_story">${t.type}</span>
         <button class="close-btn_user-story" onclick="closeTaskModal()">x</button>
@@ -296,7 +296,9 @@ function getTechnicalTaskTemplate(t) {
             <p class="section-heading_user-story"><strong>Priority:</strong></p>
             <button type="button" class="priority-btn-${t.priority}_user-story">
               ${t.priority.charAt(0).toUpperCase() + t.priority.slice(1)}
-              <img class="addTask-icons_user-story" src="${t.priorityIcon}" alt="${t.priority} icon">
+              <img class="addTask-icons_user-story" src="${
+                t.priorityIcon
+              }" alt="${t.priority} icon">
             </button>
           </div>
         </section>
@@ -314,7 +316,9 @@ function getTechnicalTaskTemplate(t) {
         </section>
   
         <div class="action-buttons_user-story">
-          <div class="action-btn_user-story" onclick="deleteDynamicTask(${t.id})">
+          <div class="action-btn_user-story" onclick="deleteDynamicTask(${
+            t.id
+          })">
             <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user_story">
             <span>Delete</span>
           </div>
@@ -325,60 +329,9 @@ function getTechnicalTaskTemplate(t) {
           </div>
         </div>
       </main>`;
-  }
+}
 
-function bigCardDynamicTechnicalHtml(t) {
-  const title = t.title || "No title";
-  const description = t.description || "No description provided.";
-  const dueDate = t.dueDate || "No due date";
-  const priority = (t.priority || "low").toLowerCase();
-  const priorityIcons = {
-    urgent:
-      "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
-    medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
-    low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
-  };
-  const priorityIcon =
-    t.priorityIcon || priorityIcons[priority] || priorityIcons.low;
-  const priorityText = priority.charAt(0).toUpperCase() + priority.slice(1);
-
-  const assignedHTML =
-    (t.assignedTo || [])
-      .map((p) => {
-        const initials = p.name
-          .split(" ")
-          .filter(Boolean)
-          .map((n) => n[0]?.toUpperCase())
-          .join("");
-        const bg = p.color ? `background-color:${p.color};` : "";
-        return ` 
-        <div class="user-container-technical-task">
-          <div class="user-badge-and-name">
-            <div class="name-letter-ball-technical-task" style="${bg}">
-              <span class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">${initials}</span>
-            </div>
-            <span class="a-user-bagde-font-position-technical-task">${p.name}</span>
-          </div>
-          <input type="checkbox" class="checkbox-technical-task border-white-technical-task" disabled>
-        </div>`;
-      })
-      .join("") ||
-    '<p class="description-font-technical-task">No one assigned.</p>';
-
-  const subtasksHTML =
-    (t.subTasks || [])
-      .map((sub, i) => {
-        const checked = i < (t.subtasksDone || 0) ? "checked" : "";
-        return `
-        <label class="label-font-technical-task">
-          <input type="checkbox" class="checkbox-technical-task border-blue-technical-task"
-                 onchange="updateSubtasks(${t.id}, this)" ${checked}>
-          ${sub}
-        </label>`;
-      })
-      .join("<br>") ||
-    '<p class="description-font-technical-task">No subtasks added.</p>';
-
+function getBigCardDynamicTechnicalHtml(t) {
   return `
     <main class="main-container-technical-task">
       <div class="head-bar-technical-task">
@@ -389,37 +342,37 @@ function bigCardDynamicTechnicalHtml(t) {
       </div>
 
       <div class="headline-container-technical-task">
-        <h1 class="h1-technical-task">${title}</h1>
+        <h1 class="h1-technical-task">${t.title}</h1>
       </div>
 
       <div class="describtion-conatainer-technical-task">
-        <p class="description-font-technical-task">${description}</p>
+        <p class="description-font-technical-task">${t.description}</p>
       </div>
 
       <div class="date-container-technical-task">
         <a class="status-font-technical-task">Due Date:</a>
-        <a class="date-font-technical-task">${dueDate}</a>
+        <a class="date-font-technical-task">${t.dueDate}</a>
       </div>
 
       <div class="priority-container-technical-task">
         <a class="status-font-technical-task">Priority:</a>
         <div class="actual-priority-container-technical-task">
-          <a>${priorityText}</a>
-          <img src="${priorityIcon}" alt="${priority} priority">
+          <a>${t.priorityText}</a>
+          <img src="${t.priorityIcon}" alt="${t.priority} priority">
         </div>
       </div>
 
       <div class="assigned-to-container-technical-task">
         <a class="status-font-technical-task">Assigned To:</a>
         <div>
-          ${assignedHTML}
+          ${t.assignedHTML}
         </div>
       </div>
 
       <div class="subtasks-container-technical-task">
         <a class="status-font-technical-task">Subtasks:</a>
         <div class="subtasks-task-container-technical-task subtask-list">
-          ${subtasksHTML}
+          ${t.subtasksHTML}
         </div>
         <div class="delete-edit-section-technical-task">
           <div class="delete-edit-container-technical-task" onclick="deleteDynamicTask(${t.id})">
