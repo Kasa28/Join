@@ -60,9 +60,7 @@ header {
 
   line-height: 120%;
   letter-spacing: 0%;
-
   color: white;
-
   font-family: "Open Sans";
 }
 
@@ -82,16 +80,12 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   height: 135px;
   width: 181px;
-
   padding: 11px 8px 11px 8px;
-
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
-
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 }
 
