@@ -35,7 +35,7 @@
 }
 
 
-@media (max-width: 1090px) {
+@media (max-width: 1099px) {
     nav-main-container {
         width: 100%;
         display: flex;
@@ -252,6 +252,9 @@ background-color: white;
         padding-left: 0 !important;
         left: 17px !important;
 }
+.date-container-summary{
+  padding-top: 24px;
+}
 }
 
 @media (max-width: 1000px){
@@ -261,6 +264,10 @@ background-color: white;
         height: auto;
         padding: 24px 16px 120px;
         gap: 32px;
+    }
+
+    .summary-h1-font-guest{
+      display: none;
     }
 
     .summary-content-container{
@@ -301,7 +308,7 @@ background-color: white;
         width: 100%;
         max-width: 440px;
         padding: 24px;
-        gap: 24px;
+        gap: 5px;
     }
 
     .summary-content-container todo{
@@ -336,7 +343,6 @@ background-color: white;
     .summary-cards-low-section{
         padding: 24px;
         align-items: center;
-        gap: 12px;
     }
 
     .tasks-on-board-card-summary{
@@ -350,17 +356,146 @@ background-color: white;
   padding-right: 115px;
   max-width: 442px;
 }
+.img-summary{
+        width: 60px;
+        height: 60px;
+    }
+
+    .h2-font-summray{
+        font-size: 32px;
+    }
+
+    .date-font-summary{
+        font-size: 18px;
+    }
+
+    .card-font-a-summary,
+    .card-font-a-urgent-task-summary{
+        font-size: 17px;
+    }
+
+    .summary-card-content-up-right{
+        gap: 6px;
+    }
+        .summary-card-content-up-right {
+      width: 122px !important;
+      height: 84px !important;
+    }
+    .img-count-container-summary{
+      gap: 31px;
+    }
 }
 
-@media (max-width: 360px){
+
+@media (max-width: 398px){
     .summary-content-container{
         max-width: 320px;
     }
-
     .summary-card:not(.urgent-task-card-summary){
         flex: 1 1 100%;
         max-width: 100%;
         min-width: 0;
     }
+}
 
+@media (max-width: 1100px) {
+    .urgent-task-card-summary:hover {
+        cursor: default;
+        background-color: #4589FF;
+        color: white;
+        padding: 20px;
+        width: 100%;
+        max-width: 440px;
+        height: auto;
+        border-top-left-radius: 20px;
+    }
+
+    .urgent-task-card-summary:hover .seperator-summary {
+        background-color: white;
+    }
+
+    .urgent-task-card-summary:hover .date-font-summary {
+        font-size: 17px;
+    }
+
+    .urgent-task-card-summary:hover .h2-font-summray {
+        font-size: 32px;
+    }
+
+    .urgent-task-card-summary:hover .card-font-a-urgent-task-summary {
+        font-size: 18px;
+    }
+
+    .urgent-task-card-summary:hover .img-summary {
+        width: 60px;
+        height: 60px;
+    }
+
+    .tasks-on-board-card-summary:hover {
+        cursor: default;
+        height: auto;
+        width: auto;
+        background-color: white;
+        color: inherit;
+        border-top-left-radius: 20px;
+    }
+
+    .tasks-on-board-card-summary:hover .h2-font-summray {
+        font-size: 32px;
+    }
+
+    .tasks-on-board-card-summary:hover .card-font-a-summary {
+        font-size: 18px;
+        color: #4589FF;
+    }
+
+    .tasks-on-board-card-summary:hover .img-summary {
+        width: 60px;
+        height: 60px;
+    }
+
+    .backgroundcolor-blue-light:hover {
+        width: auto;
+        border-top-left-radius: 20px;
+        cursor: default;
+        background-color: #D2E3FF;
+    }
+
+    .backgroundcolor-blue-light:hover .h2-font-summray {
+        font-size: 32px;
+        color: inherit;
+    }
+
+    .backgroundcolor-blue-light:hover .card-font-a-summary {
+        font-size: 18px;
+        color: #4589FF;
+    }
+
+    .backgroundcolor-blue-light:hover .img-summary {
+        width: 60px;
+        height: 60px;
+    }
+
+    .summary-card-the-last-three:hover {
+        width: auto;
+        height: auto;
+        background-color: white;
+        color: #2A3647;
+        border-top-left-radius: 20px;
+        cursor: default;
+    }
+
+    .summary-card-the-last-three:hover .h2-font-summray {
+        font-size: 32px;
+    }
+
+    .summary-card-the-last-three:hover .card-font-a-summary {
+        font-size: 18px;
+        color: #4589FF;
+    }
+
+    .summary-card-the-last-three:hover .img-summary {
+        width: 60px;
+        height: 60px;
+    }
 }
