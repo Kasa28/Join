@@ -253,3 +253,114 @@ background-color: white;
         left: 17px !important;
 }
 }
+
+@media (max-width: 1000px){
+    .main-content{
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 24px 16px 120px;
+        gap: 32px;
+    }
+
+    .summary-content-container{
+        width: 100%;
+        max-width: 440px;
+        height: auto;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .margin-big{
+        margin: 24px auto;
+    }
+
+    .summary-section-1-order,
+    .summary-section-2-order{
+        display: contents;
+    }
+
+    .summary-card,
+    .summary-cards-low-section,
+    .urgent-task-card-summary,
+    .tasks-on-board-card-summary{
+        margin: 0;
+        height: auto;
+    }
+
+    .summary-card-high-section-summary{
+        height: auto;
+    }
+
+    .urgent-task-card-summary{
+        order: 0;
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 440px;
+        padding: 24px;
+        gap: 24px;
+    }
+
+    .summary-content-container todo{
+        order: 1;
+    }
+
+    todo.summary-card{
+        width: auto;
+    }
+
+    .tasks-on-board-card-summary{
+        order: 2;
+    }
+
+    .summary-content-container progress-section{
+        order: 3;
+    }
+
+    .summary-content-container feedback{
+        order: 4;
+    }
+
+    .summary-content-container done{
+        order: 5;
+    }
+
+    .summary-card:not(.urgent-task-card-summary){
+        flex: 1 1 calc(50% - 16px);
+        max-width: 208px;
+    }
+
+    .summary-cards-low-section{
+        padding: 24px;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .tasks-on-board-card-summary{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        gap: 12px;
+    }
+    .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+  padding-right: 115px;
+  max-width: 442px;
+}
+}
+
+@media (max-width: 360px){
+    .summary-content-container{
+        max-width: 320px;
+    }
+
+    .summary-card:not(.urgent-task-card-summary){
+        flex: 1 1 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+}
