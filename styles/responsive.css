@@ -25,6 +25,7 @@
 
 .main-content-board{
      padding-left: 28px;
+     padding-top: 50px;
 }
 
 .main-content-board .column-body::-webkit-scrollbar {
@@ -243,6 +244,7 @@
 .user-menu-content-header{
 background-color: white;
 }
+
 }
 
 
@@ -255,6 +257,8 @@ background-color: white;
 .date-container-summary{
   padding-top: 24px;
 }
+
+
 }
 
 @media (max-width: 1000px){
@@ -392,6 +396,19 @@ background-color: white;
         max-width: 100%;
         min-width: 0;
     }
+      .h1_Help{
+        font-size: 25px !important;
+}
+      .h1_privacy_policy{
+        font-size: 25px !important;
+      }
+
+      .h2_privacy_policy{
+        font-size: 17px !important;
+      }
+      .h2_what_is_Join{
+        font-size: 25px;
+      }
 }
 
 @media (max-width: 1100px) {
@@ -500,6 +517,21 @@ background-color: white;
     }
 }
 @media (max-width: 999px) {
+
+  .h1_Help{
+  font-size: 47px;
+}
+
+.page{
+    padding-bottom: 90px;
+    padding-left: 0;
+}
+
+.privacy-policy{
+  padding-left: 36px;
+    padding-bottom: 116px;
+    width: 100%;
+}
     .h1-container-summary {
         position: static;
         display: block;
