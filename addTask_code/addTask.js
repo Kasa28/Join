@@ -5,12 +5,9 @@ window.isDropdownOpen = window.isDropdownOpen || false;
 document.addEventListener("DOMContentLoaded", () => {
   const titleInput = document.getElementById("title");
   if (!titleInput) return;
-
   const errorMsg = document.getElementById("title-error");
-
   function validateTitle() {
     const value = titleInput.value.trim();
-
     if (value === "") {
       errorMsg.textContent = "This field is required.";
       titleInput.style.borderBottom = "1px solid red";

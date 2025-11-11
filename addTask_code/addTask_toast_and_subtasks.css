@@ -9,12 +9,12 @@
   height: 24px;
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(3127%)
-    hue-rotate(202deg) brightness(97%) contrast(101%);
+  hue-rotate(202deg) brightness(97%) contrast(101%);
 }
 
 .subtask-save-addTask_page {
   filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(1500%)
-    hue-rotate(200deg) brightness(90%) contrast(95%);
+  hue-rotate(200deg) brightness(90%) contrast(95%);
 }
 
 .subtask-list-addTask_page {

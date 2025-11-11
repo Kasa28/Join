@@ -206,7 +206,6 @@ function renderAssignedAvatars() {
     avatar.dataset.fullName = name;
     avatar.dataset.color = color;
     avatar.title = name;
-
     container.appendChild(avatar);
   });
 }
@@ -216,19 +215,16 @@ function setPriorityAddTask(priority) {
   const urgentBtn = document.querySelector(".priority-btn-urgent-addTask_template");
   const mediumBtn = document.querySelector(".priority-btn-medium-addTask_template");
   const lowBtn = document.querySelector(".priority-btn-low-addTask_template");
-
   urgentBtn.style.backgroundColor = "white";
   mediumBtn.style.backgroundColor = "white";
   lowBtn.style.backgroundColor = "white";
   urgentBtn.style.color = "black";
   mediumBtn.style.color = "black";
   lowBtn.style.color = "black";
-
   urgentBtn.querySelector("img").style.filter = "";
   mediumBtn.querySelector("img").style.filter =
     "brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)";
   lowBtn.querySelector("img").style.filter = "";
-
   if (priority === "urgent") {
     urgentBtn.style.backgroundColor = "#ff3d00";
     urgentBtn.style.color = "white";
@@ -242,7 +238,6 @@ function setPriorityAddTask(priority) {
     lowBtn.style.color = "white";
     lowBtn.querySelector("img").style.filter = "brightness(0) invert(1)";
   }
-
   window.currentPriority = priority;
   window.currentPrio = priority;
 }
@@ -253,16 +248,13 @@ document.addEventListener("click", (e) => {
     const subtaskInput = document.getElementById("subtask");
     if (subtaskInput) subtaskInput.value = "";
   }
-
   if (e.target.classList.contains("subtask-check-addTask_template")) {
     const subtaskInput = document.getElementById("subtask");
     const subtaskList = document.getElementById("subtask-list");
     const value = subtaskInput.value.trim();
-
     if (value !== "") {
       const li = document.createElement("li");
       li.textContent = value;
-
       const actions = document.createElement("div");
       actions.classList.add("subtask-actions-addTask_template");
       actions.innerHTML = `
