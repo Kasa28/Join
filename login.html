@@ -36,7 +36,8 @@
                autocomplete="username"
                required
                aria-describedby="error_message"
-               oninput="checkLogin()">
+               oninput="checkLogin()"
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
         <img src="./assets/img/mail.svg" alt="" class="overlay-image" aria-hidden="true" />
       </div>
 
@@ -53,6 +54,7 @@
       <span id="error_message" class="visually-hidden" role="alert"></span>
 
       <div class="button">
+        
         <div class="button_group">
           <button
            onclick="login(event)"
@@ -70,6 +72,8 @@
 
         </div>
       </div>
+
+      
 
     </div>
   </form>

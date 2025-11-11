@@ -45,6 +45,12 @@ function login(event){
       window.location.href = "./summaryAll.html";  
    } else {
        console.log("Login fehlgeschlagen.");
+      let errorRef = document.getElementById("errorMessageID");
+
+      errorRef = `
+        <span class="span_login">Login Fehlgeschlagen!</span>
+      `
+
    }
 
 }

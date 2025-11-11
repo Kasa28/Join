@@ -88,6 +88,7 @@ function sortLocalStorageToAlphabeticalOrder(inputArray){
 
 }
 
+
 function renderContactList(){
 
     let contactContainerRef = document.getElementById("contactContainerID");

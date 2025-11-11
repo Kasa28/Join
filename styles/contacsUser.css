@@ -16,6 +16,10 @@
     border: none;
 }
 
+.d_none{
+    display: none;
+}
+
 .display-flex-center-xy{
     display: flex;
     align-items: center;
