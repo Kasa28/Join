@@ -1,38 +1,26 @@
+/* === board_render.js | Handles rendering of task cards and visuals === */
 
-/*************************************************
- * 5) Karten-Rendering (+ Nacharbeiten)
- *************************************************/
+/* === Task Card Rendering === */
 function renderCard(t) {
-    // nutzt dein <template id="tmpl-card"> aus dem HTML
     const tpl = document.getElementById("tmpl-card").content.cloneNode(true);
     const card = tpl.querySelector(".task-card");
-  
-    // Basis
     card.id = `card-${t.id}`;
     card.draggable = true;
     card.ondragstart = (e) => onCardDragStart(e, t.id);
     card.ondragend = onCardDragEnd;
-  
-    // Klick -> Modal
     card.onclick = (event) => {
       event.stopPropagation();
       openModalById(Number(t.id));
     };
-  
-    // Badge
     const badge = tpl.querySelector(".badge");
     if (badge) {
       badge.textContent = t.type;
       badge.classList.add(getBadgeClass(t.type));
     }
-  
-    // Titel & Beschreibung
     const h3 = tpl.querySelector("h3");
     if (h3) h3.textContent = t.title;
     const p = tpl.querySelector("p");
     if (p) p.textContent = t.description;
-  
-    // Progress-Balken + Text
     const fill = tpl.querySelector(".progress-fill");
     const st = tpl.querySelector(".subtasks");
     const pct = t.subtasksTotal
@@ -40,10 +28,10 @@ function renderCard(t) {
       : 0;
     if (fill) fill.style.width = pct + "%";
     if (st) st.textContent = `${t.subtasksDone}/${t.subtasksTotal} Subtasks`;
-  
     return tpl;
   }
 
+  /* === Subtask List Item Builder === */
   function buildSubtaskListItem(text) {
     const li = document.createElement("li");
     li.classList.add("subtask-entry-edit");
@@ -59,37 +47,30 @@ function renderCard(t) {
     return li;
   }
   
+  /* === Board Rendering === */
   function render() {
-    // Spalten leeren
     Object.values(nameOfTheCard).forEach(({ id }) =>
       document.getElementById(id)?.replaceChildren()
     );
-  
-    // Karten in Spalten einfügen
     for (const t of window.tasks) {
       if (!matchesSearch(t)) continue;
       const host = document.getElementById(nameOfTheCard[t.status]?.id);
       if (host) host.appendChild(renderCard(t));
     }
-  
-    // Leere-Pille, wenn Spalte leer
     for (const { id, empty } of Object.values(nameOfTheCard)) {
       const col = document.getElementById(id);
       if (col && !col.children.length) {
         col.innerHTML = `<div class="empty-pill">${empty}</div>`;
       }
     }
-  
     requestAnimationFrame(afterRender);
   }
   
-  /** Nach dem Rendern: Avatare + Prio-Icon einsetzen */
+/* === Post-Render Enhancements (Avatars & Priority Icons) === */
   function afterRender() {
     document.querySelectorAll(".task-card").forEach((card) => {
       const task = window.tasks.find((t) => t.id == card.id.replace("card-", ""));
       if (!task) return;
-  
-      // Assignees
       const assBox = card.querySelector(".assignees");
       if (assBox) {
         assBox.innerHTML = (task.assignedTo || [])
@@ -107,8 +88,6 @@ function renderCard(t) {
           })
           .join("");
       }
-  
-      // Prio-Pille
       const pill = card.querySelector(".priority-pill");
       if (pill) {
         const pr = (task.priority || "low").toLowerCase();
@@ -118,7 +97,7 @@ function renderCard(t) {
       }
     });
   }
-  
+
   if (needsDraggingClassAfterRender && whichCardActuellDrop != null) {
     const card = document.getElementById(`card-${whichCardActuellDrop}`);
     if (card) {
@@ -131,7 +110,8 @@ function renderCard(t) {
     needsDraggingClassAfterRender = false;
     pendingDragTiltClass = null;
   }
-  
+
+  /* === Helper: Name Initials === */
   function getInitialsFromName(name) {
     return String(name || "")
       .split(/\s+/)
@@ -140,7 +120,7 @@ function renderCard(t) {
       .slice(0, 2)
       .join("");
   }
-
+/* === Helper: Populate Assign Section === */
   function hydrateAssignSection(task) {
     const content = document.getElementById("addtask-content");
     if (!content) return;
@@ -186,9 +166,7 @@ function renderCard(t) {
     }
   }
   
-  /*************************************************
-   * 6) Typ-Helfer (für Badges & CSS-Laden)
-   *************************************************/
+/* === Task Type and Badge Helpers === */
   function normalizeTaskType(type) {
     return String(type || "")
       .trim()
