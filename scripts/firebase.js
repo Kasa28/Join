@@ -1,12 +1,15 @@
+/* === firebase.js | Handles Firebase Realtime Database communication === */
+
+/* === Base URL Configuration === */
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
-/** Holt alle Tasks */
+/* === Fetch All Tasks === */
 async function getAllTasks() {
   const response = await fetch(`${BASE_URL}tasks.json`);
   return await response.json() || {};
 }
 
-/** Speichert einen Task mit einer ID (PUT) */
+/* === Save Task by ID (PUT Request) === */
 async function saveTask(taskId, taskData) {
   const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
     method: "PUT",
@@ -16,12 +19,13 @@ async function saveTask(taskId, taskData) {
   return await response.json();
 }
 
-/** Löscht einen Task */
+/* === Delete Task by ID === */
 async function deleteTask(taskId) {
   await fetch(`${BASE_URL}tasks/${taskId}.json`, { method: "DELETE" });
 }
 
-/** 🔄 Echtzeit-Listener für Firebase Realtime Database (REST Streaming) */
+
+/* === Firebase Realtime Polling (Pseudo-Streaming) === */
 function subscribeToFirebaseUpdates(callback) {
   async function poll() {
     try {
@@ -32,8 +36,6 @@ function subscribeToFirebaseUpdates(callback) {
       console.warn("Polling error:", err);
     }
   }
-
-  // Alle 2 Sekunden nach Änderungen schauen
   poll();
   setInterval(poll, 2000);
 }
