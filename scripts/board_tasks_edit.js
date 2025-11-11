@@ -1,6 +1,4 @@
-/*************************************************
- * 12) Dynamisches Modal (Fallback), löschen, editieren
- *************************************************/
+/* === Dynamic Modal Handling (open, delete) === */
 function openModalDynamic(id) {
   const task = window.tasks?.find((t) => t.id === id);
   if (!task) return;
@@ -49,7 +47,7 @@ async function deleteDynamicTask(id) {
   persistTasks();
 }
 
-/* ---- Edit-Overlay Helfer ---- */
+/* === Edit Overlay Setup === */
 function readSubtasksFromForm() {
   const list = document.getElementById("subtask-list");
   if (!list) return [];
@@ -130,6 +128,7 @@ function populateEditOverlay(task) {
   }
 }
 
+/* === Subtask Progress Normalization === */
 function normaliseSubtaskProgress(task) {
   if (!task) return;
   const total = Array.isArray(task.subTasks) ? task.subTasks.length : 0;
@@ -152,6 +151,7 @@ function normaliseSubtaskProgress(task) {
   }
 }
 
+/* === Edit and Save Task Logic === */
 function saveTaskEdits(id) {
   const task = Array.isArray(window.tasks)
     ? window.tasks.find((t) => t.id === id)
@@ -244,9 +244,7 @@ function startEditTask(id) {
 }
 window.startEditTask = startEditTask;
 
-/*************************************************
- * 13) Add-Task Shortcuts & Erzeugung
- *************************************************/
+/* === Add Task Shortcuts and Creation === */
 if (!window.openAddTaskWithStatus) {
   window.openAddTaskWithStatus = function (status) {
     window.nextTaskTargetStatus = status || window.STATUS.TODO;
@@ -350,9 +348,7 @@ function createTask(event) {
 }
 window.createTask = createTask;
 
-/*************************************************
- * 14) Prio-Buttons im Add-Task Template
- *************************************************/
+/* === Priority Button Handling === */
 window.currentPrio = window.currentPrio || "low";
 window.setPriority = function (prio) {
   window.currentPrio = String(prio || "low").toLowerCase();
@@ -376,9 +372,7 @@ window.setPriority = function (prio) {
   if (active) active.classList.add("active-prio");
 };
 
-/*************************************************
- * 15) (Optional) Fallback für das Modal
- *************************************************/
+/* === Modal Fallback Template === */
 function fallbackModal(task) {
   return `
       <div style="padding:24px">
