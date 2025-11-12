@@ -1,6 +1,18 @@
 .button_help{
     display: none;
 }
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.user-menu-container-header {
+    position: fixed;
+    top: 96px;
+    right: 0;
+    z-index: 1500;
+}
 
 @media (max-width: 1300px){
     .task-card{
