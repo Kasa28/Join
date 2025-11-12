@@ -266,13 +266,8 @@ background-color: white;
         padding-left: 0 !important;
         left: 17px !important;
 }
-.date-container-summary{
-  padding-top: 24px;
-}
-
 
 }
-
 @media (max-width: 1000px){
     .main-content{
         width: 100%;
@@ -367,6 +362,8 @@ background-color: white;
     .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
   padding-right: 115px;
   max-width: 442px;
+      display: flex;
+    flex-direction: row;
 }
 .img-summary{
         width: 60px;
@@ -399,15 +396,16 @@ background-color: white;
 }
 
 
+
 @media (max-width: 398px){
-    .summary-content-container{
-        max-width: 320px;
+        .summary-content-container{
+        max-width: 300px;
     }
-    .summary-card:not(.urgent-task-card-summary){
-        flex: 1 1 100%;
-        max-width: 100%;
-        min-width: 0;
+           .summary-card:not(.urgent-task-card-summary){
+                min-width: 100%;
+                width: 100%;
     }
+
       .h1_Help{
         font-size: 25px !important;
 }
@@ -654,4 +652,56 @@ background-color: white;
     to {
         opacity: 1;
     }
+}
+
+/* === XL-Karten (1: Urgent, 2: ToDo) identisch aufbauen === */
+@media (max-width:1000px){
+  /* beide XL-Karten als 4-spaltiges Grid: Icon | Zahl | SEP | Text  */
+  .urgent-task-card-summary,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+    grid-template-columns: 60px min-content 1px 1fr; /* <-- Separator eigene Spalte */
+    align-items: center;
+    column-gap: 16px;                    /* Abstand kompakt – verhindert „zu weit weg“ */
+    grid-column: 1 / -1 !important;
+  }
+
+  /* Icon links */
+  .urgent-task-card-summary .img-summary,
+  .summary-cards-low-section .img-summary{
+    grid-column: 1;
+    width: 60px; height: 60px;
+    justify-self: start;
+  }
+
+  /* Zahl direkt neben dem Icon (schmal halten) */
+  .urgent-task-card-summary .h2-font-summray,
+  .summary-cards-low-section .h2-font-summray{
+    grid-column: 2;
+    margin: 0;                           /* falls alte Margins stören */
+  }
+
+  /* Separator: eigene Spalte (1px breit, volle Höhe) */
+  .urgent-task-card-summary .seperator-summary,
+  .summary-cards-low-section .seperator-summary{
+    grid-column: 3;
+    width: 1px; height: 56px;
+    background: currentColor;            /* Basisfarbe */
+    justify-self: center;
+  }
+  /* Farben je Karte (damit sichtbar ist) */
+  .urgent-task-card-summary .seperator-summary{ background:#fff; }
+  .summary-cards-low-section .seperator-summary{ background:#9DB7FF; }
+
+  /* Text/Label („Todo“) direkt nach dem Separator */
+  .urgent-task-card-summary .card-font-a-summary,
+  .urgent-task-card-summary .card-font-a-urgent-task-summary,
+  .summary-cards-low-section .card-font-a-summary{
+    grid-column: 4;                      /* steht direkt am Separator */
+    align-self: center;
+  }
+}
+
+/* alte Schubser neutralisieren */
+.summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+  max-width: none !important;
 }
