@@ -768,3 +768,147 @@ background-color: white;
     min-width: 0;
   }
 }
+
+@media (max-width: 600px) {
+  .header-wrapper_user-story {
+    width: min(500px, 100%) !important;
+    padding-left: clamp(20px, 5vw, 40px)  !important;
+    padding-right: clamp(20px, 5vw, 40px)  !important;
+    gap: 12px  !important;
+    flex-wrap: wrap  !important;
+  }
+
+  .label_user_story {
+    width: auto  !important;
+    height: auto  !important;
+    font-size: clamp(14px, 4vw, 20px)  !important;
+    padding: 4px clamp(12px, 5vw, 16px)  !important;
+  }
+
+  .title_user-story {
+    font-size: clamp(26px, 6vw, 40px)  !important;
+    width: min(528px, 100%)  !important;
+    padding-left: clamp(20px, 6vw, 40px)  !important;
+    padding-right: clamp(24px, 8vw, 60px)  !important;
+  }
+
+  .h3_user-story {
+    font-size: clamp(15px, 4.5vw, 18px ) !important;
+    width: min(528px, 100%)  !important;
+    padding-left: clamp(20px, 6vw, 40px)  !important;
+    padding-right: clamp(20px, 6vw, 40px)  !important;
+  }
+
+  .main_content_user_story {
+    width: min(528px, 100%)  !important;
+    padding-left: clamp(20px, 6vw, 40px)  !important;
+    padding-right: clamp(20px, 6vw, 40px)  !important;
+  }
+
+  .task-title_user-story {
+    font-size: clamp(18px, 5vw, 22px)  !important;
+  }
+
+  .task-description_user-story {
+    font-size: clamp(16px, 4.5vw, 19px)  !important;
+  }
+  .header-wrapper_user-story {
+    width: min(500px, 100%) !important;
+    padding-left: clamp(20px, 5vw, 40px) !important;
+    padding-right: clamp(20px, 5vw, 40px) !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .label_user_story {
+    width: auto !important;
+    height: auto !important;
+    font-size: clamp(14px, 4vw, 20px) !important;
+    padding: 4px clamp(12px, 5vw, 16px) !important;
+  }
+
+  .title_user-story {
+    font-size: clamp(26px, 6vw, 40px) !important;
+    width: min(528px, 100%) !important;
+    padding-left: clamp(20px, 6vw, 40px) !important;
+    padding-right: clamp(24px, 8vw, 60px) !important;
+  }
+
+  .h3_user-story {
+    font-size: clamp(15px, 4.5vw, 18px) !important;
+    width: min(528px, 100%) !important;
+    padding-left: clamp(20px, 6vw, 40px) !important;
+    padding-right: clamp(20px, 6vw, 40px) !important;
+  }
+
+  .main_content_user_story {
+    width: min(528px, 100%) !important;
+    padding-left: clamp(20px, 6vw, 40px) !important;
+    padding-right: clamp(20px, 6vw, 40px) !important;
+  }
+
+  .task-title_user-story {
+    font-size: clamp(18px, 5vw, 22px) !important;
+  }
+
+  .task-description_user-story {
+    font-size: clamp(16px, 4.5vw, 19px) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-container-technical-task {
+    width: min(528px, 100%) !important;
+    padding: clamp(24px, 5vw, 39px) clamp(20px, 6vw, 40px) !important;
+    gap: clamp(16px, 4vw, 24px) !important;
+  }
+
+  .head-bar-technical-task,
+  .headline-container-technical-task,
+  .describtion-conatainer-technical-task,
+  .date-container-technical-task,
+  .priority-container-technical-task,
+  .assigned-to-container-technical-task,
+  .subtasks-container-technical-task {
+    width: min(448px, 100%) !important;
+  }
+
+  .head-bar-technical-task {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  .h1-technical-task {
+    font-size: clamp(28px, 6vw, 48px) !important;
+  }
+
+  .description-font-technical-task {
+    font-size: clamp(16px, 4.5vw, 19px) !important;
+  }
+
+  .status-font-technical-task {
+    font-size: clamp(17px, 5vw, 21px) !important;
+  }
+
+  .date-font-technical-task,
+  .label-font-technical-task {
+    font-size: clamp(15px, 4.5vw, 19px) !important;
+  }
+
+  .date-container-technical-task,
+  .priority-container-technical-task {
+    gap: clamp(16px, 5vw, 25px) !important;
+  }
+
+  .user-container-technical-task {
+    padding: 7px clamp(12px, 5vw, 16px) !important;
+  }
+
+  .subtasks-task-container-technical-task {
+    padding: 6px clamp(12px, 5vw, 16px) !important;
+  }
+
+  .delete-edit-section-technical-task {
+    padding-right: clamp(12px, 5vw, 16px) !important;
+  }
+}
