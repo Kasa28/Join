@@ -26,6 +26,7 @@ function addNewContact(){
     const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef}
 
     contacts.push(contactJson);
+    sortUserToAlphabeticalOrder(contacts);
     addContactToLocalStorage(contacts);
 
     console.log(contacts);
@@ -40,6 +41,7 @@ function addNewContact(){
 }
 
 function addContactToLocalStorage(inputContacts){
+    
     localStorage.setItem("contacts", JSON.stringify(inputContacts));
 }
 
@@ -74,106 +76,23 @@ function pushExampleContactsOneTimeInLocalStorage(){
     }
 }
 
-function sortLocalStorageToAlphabeticalOrder(inputArray){
+function sortUserToAlphabeticalOrder(inputArray){
 
     inputArray.sort((a, b) => {
         if (a.username.toLowerCase() < b.username.toLowerCase()) return -1;
         if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
         return 0;
     });
-
-    addContactToLocalStorage(inputArray);
-
-}
-
-
-function renderContactList(){
-
-    let contactContainerRef = document.getElementById("contactContainerID");
-    contactContainerRef.innerHTML = "";
-
-    pushExampleContactsOneTimeInLocalStorage();
-
-    let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-
-
-    sortLocalStorageToAlphabeticalOrder(getContacts);
-
-
-
-    getContacts.forEach((contact, index) => {
-    contactContainerRef.innerHTML +=  `
-                    <contact onclick=" renderSingleContact(${index})" class="single-contact display-flex-center-x padding-medium-up-down-contacts">
-
-                        <div class="contacts-logo">
-                            <a>${contact.username.charAt(0).toUpperCase()}</a>
-                        </div>
-                        <div class="padding-left-contacts">
-                            <div class="name-property padding-bottom-contacts padding-small-left-right-contacts">
-                                <p>${makeFirstLetterBig(contact.username)}</p>
-                            </div>
-                            <div class="mail-property padding-small-left-right-contacts">
-                                <p>${contact.email}</p>
-                            </div>
-                        </div>
-
-                    </contact>
-        `;
-    });
-    console.clear();
-    console.log(getContacts);
-    
 }
 
 
 
-function renderSingleContact(inputIndex){
-    const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-    const contact = contacts[inputIndex];
-    let singleContactRef = document.getElementById("singleContactID");
-      
-    remindIndex = inputIndex;
-    singleContactRef.innerHTML = `
 
-    <show-contact>
 
-            <div class="show-contact-container">
-                <contact class="display-flex-center-x">
-                    <div class="show-contact-logo">
-                        <a>${contact.username.charAt(0).toUpperCase()}</a>
-                    </div>
-                    <div>
-                        <div class="name-property">
-                            <h2>${makeFirstLetterBig(contact.username)}</h2>
-                        </div>
-                        <div style="display: flex;">
-                            <div onclick="showEditContactFormular(), setUserDataValue(${inputIndex})"  class="edit-delete-container">
-                                <img class="edit-delete-icons" src="./assets/img/edit.svg" alt="edit icon">
-                                Edit
-                            </div>
-                            <div onclick="deleteContact()" class="edit-delete-container">
-                                <img class="edit-delete-icons" src="./assets/img/delete.svg" alt="delete icon">
-                                Delete
-                            </div>
-                        </div>
-                    </div>
-                </contact>
-                <h2>Contact Information</h2>
-                <br>
-                <h3>E-Mail</h3>
-                <br>
-                <p class="mail-property">${contact.email}</p>
-                <br>
-                <h3>Phone</h3>
-                <br>
-                <p>${contact.PhoneNumber}</p>
 
-            </div>
 
-        </show-contact>
-    
-    `
-}
+
+
 
 
 function renderAddContact(){
