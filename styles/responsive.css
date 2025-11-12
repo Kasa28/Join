@@ -349,7 +349,6 @@ background-color: white;
 
     .summary-cards-low-section{
         padding: 24px;
-        align-items: center;
     }
 
     .tasks-on-board-card-summary{
@@ -362,8 +361,6 @@ background-color: white;
     .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
   padding-right: 115px;
   max-width: 442px;
-      display: flex;
-    flex-direction: row;
 }
 .img-summary{
         width: 60px;
@@ -391,20 +388,23 @@ background-color: white;
       height: 84px !important;
     }
     .img-count-container-summary{
-      gap: 31px;
+      gap: 22px;
+      justify-content: flex-start;
     }
 }
 
 
 
 @media (max-width: 398px){
-        .summary-content-container{
+            .summary-content-container{
         max-width: 300px;
     }
            .summary-card:not(.urgent-task-card-summary){
                 min-width: 100%;
                 width: 100%;
     }
+
+
 
       .h1_Help{
         font-size: 25px !important;
@@ -654,9 +654,7 @@ background-color: white;
     }
 }
 
-/* === XL-Karten (1: Urgent, 2: ToDo) identisch aufbauen === */
 @media (max-width:1000px){
-  /* beide XL-Karten als 4-spaltiges Grid: Icon | Zahl | SEP | Text  */
   .urgent-task-card-summary,
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
     grid-template-columns: 60px min-content 1px 1fr; /* <-- Separator eigene Spalte */
@@ -696,12 +694,77 @@ background-color: white;
   .urgent-task-card-summary .card-font-a-summary,
   .urgent-task-card-summary .card-font-a-urgent-task-summary,
   .summary-cards-low-section .card-font-a-summary{
-    grid-column: 4;                      /* steht direkt am Separator */
+    grid-column: 4;                      
     align-self: center;
+            width: fit-content;
+        padding-left: 10px;
+  }
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+      display: flex;
+    flex-direction: row;
+  max-width: none !important;
+}
+}
+
+
+@media (max-width: 398px){
+  .summary-card:not(.urgent-task-card-summary){
+    flex: 1 1 calc(50% - 16px);
+    max-width: 208px;     
+    min-width: 0;        
   }
 }
 
-/* alte Schubser neutralisieren */
-.summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
-  max-width: none !important;
+@media (max-width: 1000px){
+  /* Container als Wrap-Grid/Flex */
+  .summary-content-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:16px;
+  }
+
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+
+    flex: 1 1 100%;
+    max-width: 440px;           
+    padding-right: 0;          
+    display:grid;             
+    grid-template-columns: 60px min-content 1px 1fr; /* Icon | Zahl | | Text */
+    align-items:center;
+    column-gap:16px;
+  }
+
+  .summary-card:not(.urgent-task-card-summary):not(.summary-cards-low-section){
+    flex: 1 1 calc(50% - 16px);
+    max-width: 208px;
+    min-width: 0;
+  }
+
+  .urgent-task-card-summary{
+    flex: 1 1 100%;
+    max-width: 440px;           /* oder 100% */
+    grid-template-columns: 60px min-content 1px 1fr;
+    align-items:center;
+    column-gap:16px;
+  }
+
+
+  .urgent-task-card-summary .seperator-summary{ background:#fff; }
+  .summary-cards-low-section .seperator-summary{ background:#9DB7FF; }
+
+  .summary-content-container .urgent-task-card-summary{ order:0; }
+    .summary-content-container .summary-cards-low-section{ order:1; } 
+  .summary-content-container .tasks-on-board-card-summary{ order:2; }
+  .summary-content-container .progress-section{ order:3; }
+  .summary-content-container .feedback{ order:4; }
+  .summary-content-container .done{ order:5; }
+}
+
+@media (max-width: 398px){
+  .summary-card:not(.urgent-task-card-summary):not(.summary-cards-low-section){
+    flex: 1 1 calc(50% - 16px);
+    max-width: 208px;
+    min-width: 0;
+  }
 }
