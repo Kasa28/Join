@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Join Login</title>
-    <link rel="stylesheet" href="./styles/root.css">
-    <link rel="stylesheet" href="./styles/keyframes.css">
+  <link rel="stylesheet" href="./styles/root.css">
+  <link rel="stylesheet" href="./styles/keyframes.css">
   <link rel="stylesheet" href="./styles/login.css">
   <link rel="icon" type="image/x-icon" href="../assets/img/Capa 2.png">
-   <link rel="stylesheet" href="./styles/responsive_login.css">
+  <link rel="stylesheet" href="./styles/responsive_login.css">
 </head>
+
 <body onload="fillArray()">
   <div id="content_Login" class="content">
     <div class="login_icon" aria-hidden="true">
@@ -24,61 +26,43 @@
     </header>
 
     <main class="main_login">
-  <form onsubmit="login(event)" class="login_form" autocomplete="on" novalidate>
-    <div class="login_box">
+      <form onsubmit="login(event)" class="login_form" autocomplete="on" novalidate>
+        <div class="login_box">
 
-      <div class="login_header">
-        <h1>Log in</h1>
-        <div class="separator"></div>
-      </div>
+          <div class="login_header">
+            <h1>Log in</h1>
+            <div class="separator"></div>
+          </div>
 
-      <div class="input_row">
-        <input id="email" name="email" type="email" placeholder="E-Mail"
-               class="default-border input-font"
-               autocomplete="username"
-               required
-               aria-describedby="error_message"
-               oninput="checkLogin()"
-               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-        <img src="./assets/img/mail.svg" alt="" class="overlay-image" aria-hidden="true" />
-      </div>
+          <div class="input_row">
+            <input id="email" name="email" type="email" placeholder="E-Mail" class="default-border input-font"
+              autocomplete="username" required aria-describedby="error_message" oninput="checkLogin()"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+            <img src="./assets/img/mail.svg" alt="" class="overlay-image" aria-hidden="true" />
+          </div>
 
-      <div class="input_row">
-        <input id="password" name="password" type="password" placeholder="Password"
-               class="default-border input-font"
-               autocomplete="current-password"
-               required
-               aria-describedby="error_message"
-               oninput="checkLogin()">
-        <img src="./assets/img/lock.svg" alt="" class="overlay-image" aria-hidden="true" />
-      </div>
+          <div class="input_row">
+            <input id="password" name="password" type="password" placeholder="Password"
+              class="default-border input-font" autocomplete="current-password" required
+              aria-describedby="error_message" oninput="checkLogin()">
+            <img src="./assets/img/lock.svg" alt="" class="overlay-image" aria-hidden="true" />
+          </div>
 
-      <span id="error_message" class="visually-hidden" role="alert"></span>
+          <span id="error_message" class="visually-hidden" role="alert"></span>
 
-      <div class="button">
-        
-        <div class="button_group">
-          <button
-           onclick="login(event)"
-           id="login_button"
-           class="primary_button" 
-           type="submit" 
-           disabled>
-           Log in
-          </button>
-          <a href="./summaryAll.html" 
-              class="clear-button" 
-              type="button">
-              Guest Log in
-          </a>
+          <div class="button">
+            <div class="button_group">
+              <button onclick="login(event)" id="login_button" class="primary_button" type="submit" disabled>
+                Log in
+              </button>
+              <a href="./summaryAll.html" class="clear-button" type="button">
+                Guest Log in
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-
-      
-
-    </div>
-  </form>
- </main>
+      </form>
+    </main>
 
     <footer>
       <div class="footer_info">
@@ -87,6 +71,8 @@
       </div>
     </footer>
   </div>
+
   <script src="./scripts/login.js"></script>
 </body>
+
 </html>

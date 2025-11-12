@@ -14,9 +14,7 @@ html,
 body {
   height: 100%;
 }
-/* =========================
-   1.8 sekunden bleibt blau danach wird weiß, forwards sagt hier das weiß bleiben soll, ease-in-out macht den anfang und das ende der animation langsamer
-   ========================= */
+
 body {
   font-family: sans-serif;
   color: var(--text);
@@ -268,10 +266,8 @@ footer {
 
 .span_login{
   padding-right: 10px;
-
 }
 
 .main_login{
   padding-top: 60px;
-
 }

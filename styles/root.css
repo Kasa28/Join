@@ -1,11 +1,12 @@
-:root{
-  --blue:#1e74ff;
-  --blue-dark:#165bd1;
-  --text:#222;
-  --border:#ddd;
-  --shadow:0 8px 24px rgba(0,0,0,.08);
-  --splash-blue:#2f86ff;
+:root {
+  --blue: #1e74ff;
+  --blue-dark: #165bd1;
+  --text: #222;
+  --border: #ddd;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --splash-blue: #2f86ff;
 }
+
 .arrow_left {
   color: var(--blue);
   filter: none !important;

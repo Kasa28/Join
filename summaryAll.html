@@ -13,16 +13,9 @@
     <link rel="stylesheet" href="styles/contacsUser.css">
     <link rel="icon" type="image/x-icon" href="./assets/img/Capa 2.png">
     <link rel="stylesheet" href="./styles/responsive.css">
-
-
-    <script src="./scripts/header.js"></script>
-
 </head>
 
 <body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), greetUserName()">
-
-
-
 
     <header>
         <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
@@ -37,20 +30,9 @@
         </div>
     </header>
 
-    <div class="d_none" id="user-menue-header">
-
-    </div>
-
-
-
-
-
-
+    <div class="d_none" id="user-menue-header"></div>
     <nav-main-container style="display: flex; align-items: center;">
-
-
         <nav class="side-menu">
-
             <div class="sidebar-high-section-container">
 
                 <a href="./summaryAll.html" class="button-sidebar">
@@ -72,7 +54,6 @@
                     <img class="img-size-sidebar" src="./assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
                     <span class="sidebar-font">Contacts</span>
                 </a>
-
             </div>
 
             <div class="sidebar-low-section-container">
@@ -87,29 +68,16 @@
                     </a>
                 </div>
             </div>
-
         </nav>
-
-        
-        <!--ab hier ersetzen-->
-
 
         <main class="main-content">
             <div class="h1-container-summary">
                 <div style="display: flex; justify-content: space-evenly;" id="greetID">
-
                 </div>
             </div>
-            
-
                     <section class="summary-content-container margin-big">
-
-
                         <section-top class="summary-section-1-order">
-
-
                             <urgent-task class="summary-card row-maker backgroundcolor-blue summary-card-high-section-summary urgent-task-card-summary transition-08s">
-
                                 <div class="">
                                     <div class="img-count-container-summary padding-up-down-small">
                                         <img class="img-summary" src="./assets/img/icon + circle.svg" alt="Uhr icon">
@@ -117,18 +85,13 @@
                                     </div>
                                     <a class="card-font-a-urgent-task-summary">Urgent Tasks</a>
                                 </div>
-
                                 <div class="seperator-summary">
-                                    
                                 </div>
-
                                 <div  class="date-container-summary">
                                     <h2 class="padding-up-down-small date-font-summary text-align-left-summray transition-08s">June 31, 2033</h2>
                                     <a class="card-font-a-urgent-task-summary text-align-left-summray">deadline</a>
                                 </div>
-
                             </urgent-task>
-
 
                             <tasks-on-board class="summary-card summary-card-high-section-summary tasks-on-board-card-summary transition-08s">
                                 <div class="summary-card-content-up-right">
@@ -139,13 +102,9 @@
                                     <a class="card-font-a-summary">Task in Board</a>
                                 </div>
                             </tasks-on-board>
-
-
                         </section-top>
 
-
                         <section-bottom class="summary-section-2-order">
-
                             <todo class="summary-card summary-cards-low-section backgroundcolor-blue-light transition-08s">
                                 <div class="img-count-container-summary">
                                     <img class="img-summary" src="./assets/img/summary-todo.svg" alt="Liste-icon">
@@ -177,25 +136,14 @@
                                 </div>
                                 <a class="card-font-a-summary">Tasks done</a>
                             </done>
-
                         </section-bottom>
-
-
                     </section>
-
-
                 </main>
-                <!--bis hier ersetzen-->
-
-
     </nav-main-container>
 
-
-
+    <script src="./scripts/header.js"></script>
     <script src="./scripts/summary.js"></script>
     <script type="module" src="./scripts/firebase.js"></script>
-
 </body>
 
 </html>
-<!--bis hier kopieren-->
