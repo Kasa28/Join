@@ -34,10 +34,7 @@ function editContact(){
     contacts[remindIndex].email = document.getElementById("edit-contact-mailID").value;
     contacts[remindIndex].PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
 
-
-    console.log(contacts);
-
-
+    
     localStorage.removeItem("contacts");
     localStorage.setItem("contacts", JSON.stringify(contacts));
 
@@ -59,7 +56,6 @@ function deleteContact(){
     showContact.innerHTML = "";
     hideEditContactFormular();
     renderContactList();
-    
 
 }
 
