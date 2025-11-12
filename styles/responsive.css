@@ -266,13 +266,8 @@ background-color: white;
         padding-left: 0 !important;
         left: 17px !important;
 }
-.date-container-summary{
-  padding-top: 24px;
-}
-
 
 }
-
 @media (max-width: 1000px){
     .main-content{
         width: 100%;
@@ -354,7 +349,6 @@ background-color: white;
 
     .summary-cards-low-section{
         padding: 24px;
-        align-items: center;
     }
 
     .tasks-on-board-card-summary{
@@ -394,20 +388,24 @@ background-color: white;
       height: 84px !important;
     }
     .img-count-container-summary{
-      gap: 31px;
+      gap: 22px;
+      justify-content: flex-start;
     }
 }
 
 
+
 @media (max-width: 398px){
-    .summary-content-container{
-        max-width: 320px;
+            .summary-content-container{
+        max-width: 300px;
     }
-    .summary-card:not(.urgent-task-card-summary){
-        flex: 1 1 100%;
-        max-width: 100%;
-        min-width: 0;
+           .summary-card:not(.urgent-task-card-summary){
+                min-width: 100%;
+                width: 100%;
     }
+
+
+
       .h1_Help{
         font-size: 25px !important;
 }
@@ -654,4 +652,119 @@ background-color: white;
     to {
         opacity: 1;
     }
+}
+
+@media (max-width:1000px){
+  .urgent-task-card-summary,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+    grid-template-columns: 60px min-content 1px 1fr; /* <-- Separator eigene Spalte */
+    align-items: center;
+    column-gap: 16px;                    /* Abstand kompakt – verhindert „zu weit weg“ */
+    grid-column: 1 / -1 !important;
+  }
+
+  /* Icon links */
+  .urgent-task-card-summary .img-summary,
+  .summary-cards-low-section .img-summary{
+    grid-column: 1;
+    width: 60px; height: 60px;
+    justify-self: start;
+  }
+
+  /* Zahl direkt neben dem Icon (schmal halten) */
+  .urgent-task-card-summary .h2-font-summray,
+  .summary-cards-low-section .h2-font-summray{
+    grid-column: 2;
+    margin: 0;                           /* falls alte Margins stören */
+  }
+
+  /* Separator: eigene Spalte (1px breit, volle Höhe) */
+  .urgent-task-card-summary .seperator-summary,
+  .summary-cards-low-section .seperator-summary{
+    grid-column: 3;
+    width: 1px; height: 56px;
+    background: currentColor;            /* Basisfarbe */
+    justify-self: center;
+  }
+  /* Farben je Karte (damit sichtbar ist) */
+  .urgent-task-card-summary .seperator-summary{ background:#fff; }
+  .summary-cards-low-section .seperator-summary{ background:#9DB7FF; }
+
+  /* Text/Label („Todo“) direkt nach dem Separator */
+  .urgent-task-card-summary .card-font-a-summary,
+  .urgent-task-card-summary .card-font-a-urgent-task-summary,
+  .summary-cards-low-section .card-font-a-summary{
+    grid-column: 4;                      
+    align-self: center;
+            width: fit-content;
+        padding-left: 10px;
+  }
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+      display: flex;
+    flex-direction: row;
+  max-width: none !important;
+}
+}
+
+
+@media (max-width: 398px){
+  .summary-card:not(.urgent-task-card-summary){
+    flex: 1 1 calc(50% - 16px);
+    max-width: 208px;     
+    min-width: 0;        
+  }
+}
+
+@media (max-width: 1000px){
+  /* Container als Wrap-Grid/Flex */
+  .summary-content-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:16px;
+  }
+
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s{
+
+    flex: 1 1 100%;
+    max-width: 440px;           
+    padding-right: 0;          
+    display:grid;             
+    grid-template-columns: 60px min-content 1px 1fr; /* Icon | Zahl | | Text */
+    align-items:center;
+    column-gap:16px;
+  }
+
+  .summary-card:not(.urgent-task-card-summary):not(.summary-cards-low-section){
+    flex: 1 1 calc(50% - 16px);
+    max-width: 208px;
+    min-width: 0;
+  }
+
+  .urgent-task-card-summary{
+    flex: 1 1 100%;
+    max-width: 440px;           /* oder 100% */
+    grid-template-columns: 60px min-content 1px 1fr;
+    align-items:center;
+    column-gap:16px;
+  }
+
+
+  .urgent-task-card-summary .seperator-summary{ background:#fff; }
+  .summary-cards-low-section .seperator-summary{ background:#9DB7FF; }
+
+  .summary-content-container .urgent-task-card-summary{ order:0; }
+    .summary-content-container .summary-cards-low-section{ order:1; } 
+  .summary-content-container .tasks-on-board-card-summary{ order:2; }
+  .summary-content-container .progress-section{ order:3; }
+  .summary-content-container .feedback{ order:4; }
+  .summary-content-container .done{ order:5; }
+}
+
+@media (max-width: 398px){
+  .summary-card:not(.urgent-task-card-summary):not(.summary-cards-low-section){
+    flex: 1 1 calc(50% - 16px);
+    max-width: 208px;
+    min-width: 0;
+  }
 }
