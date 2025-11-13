@@ -7,7 +7,6 @@
 header {
     position: sticky;
     top: 0;
-    z-index: 1000;
 }
 
 .user-menu-container-header {
@@ -934,4 +933,43 @@ background-color: white;
     grid-column: 2;
     margin: 0;
   }
+}
+
+/* Contacts*/
+@media (max-width: 600px) {
+  .button-contacts-position {
+    position: fixed;
+    bottom: 96px;
+    right: 24px;
+  }
+
+  .button-contacts {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-contacts .font-size-24 {
+    display: none;
+  }
+
+  .button-contacts .img-contact {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+  }
+
+}
+
+  .maincontent {
+  scrollbar-width: none;
+}
+
+.maincontent::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
