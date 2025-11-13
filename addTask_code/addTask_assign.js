@@ -81,7 +81,6 @@ document.addEventListener("input", (e) => {
     const searchValue = e.target.textContent.toLowerCase();
     const items = document.querySelectorAll(".assign-item-addTask_page");
 
-<<<<<<< Updated upstream
     if (searchValue.trim() === "") {
       items.forEach((item) => (item.style.display = "flex"));
       return;
@@ -109,7 +108,6 @@ document.addEventListener("input", (e) => {
     }
   }
 });
-=======
 function handleAssignInput(e) {
   if (!isAssignPlaceholderEvent(e)) return;
   const searchValue = getAssignSearchValue(e.target);
@@ -164,7 +162,6 @@ function finalizeAssignSearch(anyMatch, target) {
     updateAssignPlaceholder();
   }
 }
->>>>>>> Stashed changes
 
 // === Dropdown Close Handling ===
 document.addEventListener("click", (e) => {
