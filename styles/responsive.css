@@ -1,6 +1,9 @@
 .button_help{
     display: none;
 }
+    .side-overlay.open .side-panel {
+      height: auto !important;
+}
 header {
     position: sticky;
     top: 0;
