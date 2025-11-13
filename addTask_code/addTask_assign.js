@@ -7,12 +7,9 @@ function toggleAssignDropdown(event) {
     ".assign-placeholder-addTask_page"
   );
   const arrow = document.querySelector(".assign-arrow-addTask_page");
-
   if (!dropdown || !placeholder || !arrow) return;
-
   isDropdownOpen = dropdown.style.display !== "block";
   dropdown.style.display = isDropdownOpen ? "block" : "none";
-
   if (isDropdownOpen) {
     placeholder.contentEditable = true;
     placeholder.textContent = "";
@@ -37,7 +34,6 @@ function toggleAssignDropdown(event) {
 // === Assign User Selection ===
 function selectAssignUser(name, event) {
   if (event && event.stopPropagation) event.stopPropagation();
-
   let item = event && event.currentTarget ? event.currentTarget : null;
   if (!item) {
     const candidates = document.querySelectorAll(".assign-item-addTask_page");
@@ -49,16 +45,13 @@ function selectAssignUser(name, event) {
     });
   }
   if (!item) return;
-
   const checkbox = item.querySelector(".assign-check-addTask_page");
   item.classList.toggle("selected", checkbox.checked);
-
   if (checkbox.checked) {
     if (!selectedUsers.includes(name)) selectedUsers.push(name);
   } else {
     selectedUsers = selectedUsers.filter((user) => user !== name);
   }
-
   updateAssignPlaceholder();
 }
 
@@ -80,7 +73,6 @@ document.addEventListener("input", (e) => {
   if (e.target.classList.contains("assign-placeholder-addTask_page")) {
     const searchValue = e.target.textContent.toLowerCase();
     const items = document.querySelectorAll(".assign-item-addTask_page");
-
     if (searchValue.trim() === "") {
       items.forEach((item) => (item.style.display = "flex"));
       return;
@@ -117,9 +109,7 @@ document.addEventListener("click", (e) => {
     ".assign-placeholder-addTask_page"
   );
   const arrow = document.querySelector(".assign-arrow-addTask_page");
-
   if (!dropdown || !assignSelect) return;
-
   if (!assignSelect.contains(e.target) && !dropdown.contains(e.target)) {
     dropdown.style.display = "none";
     placeholder.contentEditable = false;
@@ -144,7 +134,6 @@ function renderAssignedAvatars() {
           name
       )
       ?.querySelector(".assign-avatar-addTask_page");
-
     const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
     const initials = name
       .split(" ")
