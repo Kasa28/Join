@@ -81,6 +81,7 @@ document.addEventListener("input", (e) => {
     const searchValue = e.target.textContent.toLowerCase();
     const items = document.querySelectorAll(".assign-item-addTask_page");
 
+<<<<<<< Updated upstream
     if (searchValue.trim() === "") {
       items.forEach((item) => (item.style.display = "flex"));
       return;
@@ -108,6 +109,62 @@ document.addEventListener("input", (e) => {
     }
   }
 });
+=======
+function handleAssignInput(e) {
+  if (!isAssignPlaceholderEvent(e)) return;
+  const searchValue = getAssignSearchValue(e.target);
+  processAssignSearch(searchValue, e.target);
+}
+
+function isAssignPlaceholderEvent(e) {
+  return e.target.classList.contains("assign-placeholder-addTask_page");
+}
+
+function getAssignSearchValue(target) {
+  return target.textContent.toLowerCase().trim();
+}
+
+function processAssignSearch(searchValue, target) {
+  const items = document.querySelectorAll(".assign-item-addTask_page");
+  if (shouldResetAssignSearch(searchValue)) {
+    resetAssignSearch();
+    return;
+  }
+  const anyMatch = filterAssignList(items, searchValue);
+  finalizeAssignSearch(anyMatch, target);
+}
+
+function shouldResetAssignSearch(searchValue) {
+  return searchValue === "";
+}
+
+function resetAssignSearch() {
+  showAllAssignItems();
+  updateAssignPlaceholder();
+}
+
+function filterAssignList(items, searchValue) {
+  let anyMatch = false;
+  items.forEach((item) => {
+    const name = item
+      .querySelector(".assign-name-addTask_page")
+      .textContent.toLowerCase();
+    const matches = name.includes(searchValue);
+    item.style.display = matches ? "flex" : "none";
+    if (matches) anyMatch = true;
+  });
+  return anyMatch;
+}
+
+function finalizeAssignSearch(anyMatch, target) {
+  if (!anyMatch) {
+    showAllAssignItems();
+  }
+  if (target.textContent.trim() === "") {
+    updateAssignPlaceholder();
+  }
+}
+>>>>>>> Stashed changes
 
 // === Dropdown Close Handling ===
 document.addEventListener("click", (e) => {
