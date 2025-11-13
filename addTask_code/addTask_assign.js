@@ -89,37 +89,64 @@ function updateAssignPlaceholder() {
 }
 
 // === Input Filtering ===
-document.addEventListener("input", (e) => {
-  if (e.target.classList.contains("assign-placeholder-addTask_page")) {
-    const searchValue = e.target.textContent.toLowerCase();
-    const items = document.querySelectorAll(".assign-item-addTask_page");
-    if (searchValue.trim() === "") {
-      items.forEach((item) => (item.style.display = "flex"));
-      return;
-    }
-    let anyMatch = false;
-    items.forEach((item) => {
-      const name = item
-        .querySelector(".assign-name-addTask_page")
-        .textContent.toLowerCase();
-      if (name.includes(searchValue)) {
-        item.style.display = "flex";
-        anyMatch = true;
-      } else {
-        item.style.display = "none";
-      }
-      if (
-        e.target.classList.contains("assign-placeholder-addTask_page") &&
-        e.target.textContent.trim() === ""
-      ) {
-        updateAssignPlaceholder();
-      }
-    });
-    if (!anyMatch) {
-      items.forEach((item) => (item.style.display = "flex"));
-    }
+document.addEventListener("input", (e) => handleAssignInput(e));
+
+function handleAssignInput(e) {
+  if (!isAssignPlaceholderEvent(e)) return;
+  const searchValue = getAssignSearchValue(e.target);
+  processAssignSearch(searchValue, e.target);
+}
+
+function isAssignPlaceholderEvent(e) {
+  return e.target.classList.contains("assign-placeholder-addTask_page");
+}
+
+function getAssignSearchValue(target) {
+  return target.textContent.toLowerCase().trim();
+}
+
+function processAssignSearch(searchValue, target) {
+  const items = document.querySelectorAll(".assign-item-addTask_page");
+
+  if (shouldResetAssignSearch(searchValue)) {
+    resetAssignSearch();
+    return;
   }
-});
+
+  const anyMatch = filterAssignList(items, searchValue);
+  finalizeAssignSearch(anyMatch, target);
+}
+
+function shouldResetAssignSearch(searchValue) {
+  return searchValue === "";
+}
+
+function resetAssignSearch() {
+  showAllAssignItems();
+  updateAssignPlaceholder();
+}
+
+function filterAssignList(items, searchValue) {
+  let anyMatch = false;
+  items.forEach((item) => {
+    const name = item
+      .querySelector(".assign-name-addTask_page")
+      .textContent.toLowerCase();
+    const matches = name.includes(searchValue);
+    item.style.display = matches ? "flex" : "none";
+    if (matches) anyMatch = true;
+  });
+  return anyMatch;
+}
+
+function finalizeAssignSearch(anyMatch, target) {
+  if (!anyMatch) {
+    showAllAssignItems();
+  }
+  if (target.textContent.trim() === "") {
+    updateAssignPlaceholder();
+  }
+}
 
 // === Dropdown Close Handling ===
 document.addEventListener("click", (e) => {
