@@ -1,34 +1,54 @@
-
 // === Assign Dropdown Handling ===
 function toggleAssignDropdown(event) {
   event.stopPropagation();
+  const elements = getAssignElements();
+  if (!elements) return;
+
+  const { dropdown, placeholder, arrow } = elements;
+  const isOpening = toggleDropdownDisplay(dropdown);
+
+  isOpening
+    ? openAssignDropdown(placeholder, arrow)
+    : closeAssignDropdown(placeholder, arrow);
+}
+
+function getAssignElements() {
   const dropdown = document.querySelector(".assign-dropdown-addTask_page");
   const placeholder = document.querySelector(
     ".assign-placeholder-addTask_page"
   );
   const arrow = document.querySelector(".assign-arrow-addTask_page");
-  if (!dropdown || !placeholder || !arrow) return;
-  isDropdownOpen = dropdown.style.display !== "block";
-  dropdown.style.display = isDropdownOpen ? "block" : "none";
-  if (isDropdownOpen) {
-    placeholder.contentEditable = true;
-    placeholder.textContent = "";
-    placeholder.classList.add("typing");
-    placeholder.focus();
-    arrow.style.transform = "rotate(180deg)";
-    const items = document.querySelectorAll(".assign-item-addTask_page");
-    items.forEach((item) => (item.style.display = "flex"));
-  } else {
-    placeholder.contentEditable = false;
-    placeholder.classList.remove("typing");
-    placeholder.blur();
-    arrow.style.transform = "rotate(0deg)";
-    placeholder.textContent = "Select contact to assign";
-    placeholder.style.color = "black";
-  }
-  if (!isDropdownOpen) {
-    renderAssignedAvatars();
-  }
+  if (!dropdown || !placeholder || !arrow) return null;
+  return { dropdown, placeholder, arrow };
+}
+
+function toggleDropdownDisplay(dropdown) {
+  const isOpen = dropdown.style.display === "block";
+  dropdown.style.display = isOpen ? "none" : "block";
+  return !isOpen;
+}
+
+function openAssignDropdown(placeholder, arrow) {
+  placeholder.contentEditable = true;
+  placeholder.textContent = "";
+  placeholder.classList.add("typing");
+  placeholder.focus();
+  arrow.style.transform = "rotate(180deg)";
+  showAllAssignItems();
+}
+
+function closeAssignDropdown(placeholder, arrow) {
+  placeholder.contentEditable = false;
+  placeholder.classList.remove("typing");
+  placeholder.textContent = "Select contact to assign";
+  placeholder.style.color = "black";
+  arrow.style.transform = "rotate(0deg)";
+  renderAssignedAvatars();
+}
+
+function showAllAssignItems() {
+  const items = document.querySelectorAll(".assign-item-addTask_page");
+  items.forEach((item) => (item.style.display = "flex"));
 }
 
 // === Assign User Selection ===
