@@ -4,32 +4,18 @@ let contactBlock = {
     U: [], V: [], W: [], X: [], Y: [], Z: [], other: []
 };
 
-string = "Peter Griffin";
+let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563"},
+                        {"username": "Karsten", "email": "karsten-stahl@gmail.de", "PhoneNumber": "+49151478632475"},
+                        {"username": "Thomas", "email": "thomas-gottschalck@live.de", "PhoneNumber": "+491517896455"},
+                        {"username": "Rainer", "email": "rainer-winkler@gmail.de", "PhoneNumber": "+491507489652"},
+                        {"username": "Angela", "email": "angela-merkel@gmail.de", "PhoneNumber": "+491511462385"},
+                        {"username": "Kai", "email": "kai-pflaume@live.de", "PhoneNumber": "+491504896257"},
+                        {"username": "Til", "email": "til-schweiger@gmail.de", "PhoneNumber": "+491514563248"},
+                        {"username": "Günther", "email": "günther-jauch@gmail.de", "PhoneNumber": "+4915157652244"},
+                        {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354"},
+                        {"username": "reset", "email": "reset@gmail.de", "PhoneNumber": "0000000000000"}];
 
 
-function setContactsIntoContactblock(){
-     let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-
-     contacts.forEach((contact) => {
-
-        let actualChar = contact.username.charAt(0).toUpperCase();
-
-        if(contactBlock[actualChar]){
-        contactBlock[actualChar].unshift(contact);
-        } else {
-        contactBlock.other.unshift(contact);
-        }
-        
-     });
-}
-
-function checkIfBlockIsFilled(inputBlock){
-    if(inputBlock.length < 1){
-        return false;
-    } else {
-        return true;
-    }
-}
 
 function renderContactList(){
 
@@ -37,10 +23,9 @@ function renderContactList(){
     contactContainerRef.innerHTML = "";
 
     pushExampleContactsOneTimeInLocalStorage();
-    
-    let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     setContactsIntoContactblock();
     
+    let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
 
     Object.keys(contactBlock).forEach((key) => {
         let block = contactBlock[key];
@@ -48,6 +33,8 @@ function renderContactList(){
         if(!checkIfBlockIsFilled(block)){
             return;
         }
+
+    
 
         contactContainerRef.innerHTML += `
 
@@ -86,27 +73,13 @@ function renderContactList(){
     
 }
 
-function findIndexFromUsername(inputContactArray, inputUsername, inputIndex){
-for (let index = 0; index < inputContactArray.length; index++) {
-        if (inputContactArray[index].username === inputUsername) {
-            return index;
-        }
-    }
 
-    console.log("Kontakt nicht gefunden");
-    return -1;
-}
 
 function renderSingleContact(inputString){
     const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     let singleContactRef = document.getElementById("singleContactID");
 
     const rightIndex = findIndexFromUsername(contacts, inputString);
-
-    if(rightIndex === -1){
-        console.log("nicht gefunden, irgendetwas stimmt bei Zeile 97 nicht");
-        return;
-    }
 
     const contact = contacts[rightIndex];
     
@@ -127,7 +100,7 @@ function renderSingleContact(inputString){
                                 <img class="edit-delete-icons" src="./assets/img/edit.svg" alt="edit icon">
                                 Edit
                             </div>
-                            <div onclick="deleteContact()" class="edit-delete-container">
+                            <div onclick="deleteContact('${contact.username}')" class="edit-delete-container">
                                 <img class="edit-delete-icons" src="./assets/img/delete.svg" alt="delete icon">
                                 Delete
                             </div>
@@ -151,9 +124,3 @@ function renderSingleContact(inputString){
     `
 }
 
-function getInitials(inputFullName){
-    const nameParts = inputFullName.split(/\s+/);
-    const firstNameInital = nameParts[0]?.charAt(0).toUpperCase() || "";
-    const lastNameInitial = nameParts[1]?.charAt(0).toUpperCase() || "";
-    return `${firstNameInital}${lastNameInitial}`
-}

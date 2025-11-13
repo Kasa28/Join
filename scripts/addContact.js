@@ -1,12 +1,4 @@
-let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563"},
-                        {"username": "Karsten", "email": "karsten-stahl@gmail.de", "PhoneNumber": "+49151478632475"},
-                        {"username": "Thomas", "email": "thomas-gottschalck@live.de", "PhoneNumber": "+491517896455"},
-                        {"username": "Rainer", "email": "rainer-winkler@gmail.de", "PhoneNumber": "+491507489652"},
-                        {"username": "Angela", "email": "angela-merkel@gmail.de", "PhoneNumber": "+491511462385"},
-                        {"username": "Kai", "email": "kai-pflaume@live.de", "PhoneNumber": "+491504896257"},
-                        {"username": "Til", "email": "til-schweiger@gmail.de", "PhoneNumber": "+491514563248"},
-                        {"username": "Günther", "email": "günther-jauch@gmail.de", "PhoneNumber": "+4915157652244"},
-                        {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354"}];
+
 
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
@@ -29,7 +21,6 @@ function addNewContact(){
     sortUserToAlphabeticalOrder(contacts);
     addContactToLocalStorage(contacts);
 
-    console.log(contacts);
 
     document.getElementById("add-contact-usernameID").value = "";
     document.getElementById("add-contact-mailID").value = "";
@@ -37,11 +28,11 @@ function addNewContact(){
 
 
     hideAddContactFormular();
-    renderContactList(contacts);
+    renderContactList();
 }
 
 function addContactToLocalStorage(inputContacts){
-    
+    sortUserToAlphabeticalOrder(inputContacts);
     localStorage.setItem("contacts", JSON.stringify(inputContacts));
 }
 
@@ -50,45 +41,6 @@ function makeFirstLetterBig(inputString){
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 
 }
-
-function pushExampleContactsOneTimeInLocalStorage(){
-    let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
-
-    // Überprüfen, ob einer der Namen bereits im Array vorhanden ist
-    const nameExists = contacts.some(contact =>
-        contact && (contact.username === "Peter" || contact.username === "Karsten" || contact.username === "Thomas")
-    );
-
-    // Wenn einer der Namen existiert, Funktion abbrechen
-    if (nameExists) {
-        console.log("Einer der Namen existiert bereits. Funktion wird abgebrochen.");
-        return;
-    }
-
-    // Namen hinzufügen, wenn sie nicht existieren
-    if (exampleContacts.length > 0) {
-        contacts.push(...exampleContacts);
-        exampleContacts = []; // Leere das Array nach dem Hinzufügen
-        addContactToLocalStorage(contacts);
-        console.log("Beispielkontakte wurden hinzugefügt:", contacts);
-    } else {
-        console.log("Keine Beispielkontakte vorhanden.");
-    }
-}
-
-function sortUserToAlphabeticalOrder(inputArray){
-
-    inputArray.sort((a, b) => {
-        if (a.username.toLowerCase() < b.username.toLowerCase()) return -1;
-        if (a.username.toLowerCase() > b.username.toLowerCase()) return 1;
-        return 0;
-    });
-}
-
-
-
-
-
 
 
 

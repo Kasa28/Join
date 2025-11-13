@@ -13,7 +13,8 @@ function setUserDataValue(inputIndex){
 
     const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     const contact = contacts[inputIndex];
-    const initials = contact.username.charAt(0).toUpperCase();
+    const initials = getInitials(contact.username);
+
     let initialsRef = document.getElementById("edit-contact-initialsID");
 
     initialsRef.innerHTML = initials;
@@ -44,11 +45,13 @@ function editContact(){
     
 }
 
-function deleteContact(){
+function deleteContact(inputString){
     let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     let showContact =  document.getElementById("singleContactID");
 
-    contacts.splice(remindIndex, 1);
+    const rightIndex = findIndexFromUsername(contacts, inputString);
+
+    contacts.splice(rightIndex, 1);
 
     localStorage.removeItem("contacts");
     localStorage.setItem("contacts", JSON.stringify(contacts));
@@ -59,9 +62,28 @@ function deleteContact(){
 
 }
 
+function deleteContactinEditContactWindow(){
+    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+    let usernameRef = document.getElementById("edit-contact-usernameID").value;
+    let showContact =  document.getElementById("singleContactID");
+
+    const rightIndex = findIndexFromUsername(contacts, usernameRef);
+
+    contacts.splice(rightIndex, 1);
+
+    localStorage.removeItem("contacts");
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+
+    showContact.innerHTML = "";
+    hideEditContactFormular();
+    renderContactList();
+}
+
 
 function renderEditContact(){
     let contentRef = document.getElementById("edit-contactID");
+
+
 
     contentRef.innerHTML = `
                                 <div class="main-container-edit-contact right-side-rounded">
@@ -96,7 +118,7 @@ function renderEditContact(){
                                                 </div>
 
                                                 <div class="button-edit-contact-order">
-                                                    <button onclick="deleteContact()" class="button-edit-contact button-edit-contact-grey">
+                                                    <button onclick="deleteContactinEditContactWindow()" class="button-edit-contact button-edit-contact-grey">
                                                         Delete
                                                     </button>
                                                     <button onclick="editContact()" class="button-edit-contact button-edit-contact-blue">
