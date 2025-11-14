@@ -20,7 +20,8 @@ function setColorCodeBackto0WhenItsToBig(inputColorCode){
 }
 
 function addNewContact(){
-    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };
+    contacts = getUserData.friends|| [];
 
     const usernameRef = document.getElementById("add-contact-usernameID").value;
     const usermailRef = document.getElementById("add-contact-mailID").value; 
@@ -46,8 +47,11 @@ function addNewContact(){
 }
 
 function addContactToLocalStorage(inputContacts){
-    sortUserToAlphabeticalOrder(inputContacts);
-    localStorage.setItem("contacts", JSON.stringify(inputContacts));
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };
+    let updatedContacts = sortUserToAlphabeticalOrder(inputContacts);
+
+    getUserData.friends = updatedContacts;
+    localStorage.setItem("userData", JSON.stringify(getUserData));
 }
 
 function makeFirstLetterBig(inputString){
@@ -55,6 +59,7 @@ function makeFirstLetterBig(inputString){
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 
 }
+
 
 
 

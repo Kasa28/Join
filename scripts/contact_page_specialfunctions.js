@@ -49,10 +49,9 @@ for (let index = 0; index < inputContactArray.length; index++) {
 }
 
 
-function setContactsIntoContactblock(){
+function setContactsIntoContactblock(inputContacts){
     removeContentfromAllContactBlocks();
-    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-    contacts.forEach((contact) => {
+    inputContacts.forEach((contact) => {
 
         let actualChar = contact.username.charAt(0).toUpperCase();
 

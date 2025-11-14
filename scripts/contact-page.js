@@ -16,19 +16,15 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
                         {"username": "reset", "email": "reset@gmail.de", "PhoneNumber": "0000000000000"}];
 
 
-
-
-
-
-function renderContactList(){
-
+   function renderContactList(){
+    let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
+    getContactsFromUser = getUserData.friends|| [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
 
     //pushExampleContactsOneTimeInLocalStorage();
-    setContactsIntoContactblock();
+    setContactsIntoContactblock(getContactsFromUser);
 
-    let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
 
     Object.keys(contactBlock).forEach((key) => {
         let block = contactBlock[key];
@@ -71,10 +67,67 @@ function renderContactList(){
     });
 
     console.clear();
-    console.log(getContacts);
+    console.log(getContactsFromUser);
     console.log(contactBlock);
     
-}
+}                     
+
+
+//function renderContactList(){
+//    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+//    let contactContainerRef = document.getElementById("contactContainerID");
+//    contactContainerRef.innerHTML = "";
+
+    //pushExampleContactsOneTimeInLocalStorage();
+//    setContactsIntoContactblock(contacts);
+
+//    let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+
+//    Object.keys(contactBlock).forEach((key) => {
+//        let block = contactBlock[key];
+
+//        if(!checkIfBlockIsFilled(block)){
+//            return;
+//        }
+
+    
+
+//        contactContainerRef.innerHTML += `
+
+//            <div class="padding-small-contacts">
+//                    <h2>${key}</h2>
+//            </div>
+
+//            <separator class="separator">
+//            </separator>
+
+//        `
+//         block.forEach((contact) => {
+//        contactContainerRef.innerHTML +=  `
+//                    <contact onclick="renderSingleContact('${contact.username}')" class="single-contact display-flex-center-x padding-medium-up-down-contacts">
+
+//                        <div class="contacts-logo ${contact.color}">
+//                            <a>${getInitials(contact.username)}</a>
+//                        </div>
+//                        <div class="padding-left-contacts">
+//                            <div class="name-property padding-bottom-contacts padding-small-left-right-contacts">
+//                                <p>${makeFirstLetterBig(contact.username)}</p>
+//                            </div>
+//                            <div class="mail-property padding-small-left-right-contacts">
+//                                <p>${contact.email}</p>
+//                            </div>
+//                        </div>
+
+//                    </contact>
+//            `;
+//        }); 
+//    });
+
+//    console.clear();
+//    console.log(getContacts);
+//    console.log(contactBlock);
+    
+//}
 
 
 
