@@ -7,6 +7,21 @@ function removeContentfromAllContactBlocks(){
 
 }
 
+function getContactColorType(inputIndex){
+    const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+    const contact = contacts[inputIndex];
+    return contact.color;
+}
+
+
+function checkIfBlockIsFilled(inputBlock){
+    if(inputBlock.length < 1){
+        return false;
+    } else {
+        return true;
+    }
+}
+
 function getInitials(inputFullName){
     const nameParts = inputFullName.split(/\s+/);
     const firstNameInital = nameParts[0]?.charAt(0).toUpperCase() || "";
@@ -33,13 +48,6 @@ for (let index = 0; index < inputContactArray.length; index++) {
     return -1;
 }
 
-function checkIfBlockIsFilled(inputBlock){
-    if(inputBlock.length < 1){
-        return false;
-    } else {
-        return true;
-    }
-}
 
 function setContactsIntoContactblock(){
     removeContentfromAllContactBlocks();

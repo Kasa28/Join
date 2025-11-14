@@ -1,4 +1,6 @@
+let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
 
+let colorCode = 0;
 
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
@@ -8,6 +10,15 @@ function hideAddContactFormular(){
     document.getElementById("add-contactID").classList.add("hide-add-contact")
 }
 
+function setColorCodeBackto0WhenItsToBig(inputColorCode){
+
+    if(inputColorCode > 8){
+        colorCode = 0;
+        return;
+    } return;
+
+}
+
 function addNewContact(){
     let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
 
@@ -15,7 +26,10 @@ function addNewContact(){
     const usermailRef = document.getElementById("add-contact-mailID").value; 
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;  
 
-    const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef}
+    const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef, "color": colors[colorCode]};
+
+    colorCode++;
+    setColorCodeBackto0WhenItsToBig(colorCode);
 
     contacts.push(contactJson);
     sortUserToAlphabeticalOrder(contacts);
@@ -41,9 +55,6 @@ function makeFirstLetterBig(inputString){
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 
 }
-
-
-
 
 
 

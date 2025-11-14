@@ -17,14 +17,17 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
 
 
 
+
+
+
 function renderContactList(){
 
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
 
-    pushExampleContactsOneTimeInLocalStorage();
+    //pushExampleContactsOneTimeInLocalStorage();
     setContactsIntoContactblock();
-    
+
     let getContacts = JSON.parse(localStorage.getItem("contacts"))|| [];
 
     Object.keys(contactBlock).forEach((key) => {
@@ -50,7 +53,7 @@ function renderContactList(){
         contactContainerRef.innerHTML +=  `
                     <contact onclick="renderSingleContact('${contact.username}')" class="single-contact display-flex-center-x padding-medium-up-down-contacts">
 
-                        <div class="contacts-logo">
+                        <div class="contacts-logo ${contact.color}">
                             <a>${getInitials(contact.username)}</a>
                         </div>
                         <div class="padding-left-contacts">
@@ -88,7 +91,7 @@ function renderSingleContact(inputString){
 
             <div class="show-contact-container">
                 <contact class="display-flex-center-x">
-                    <div class="show-contact-logo">
+                    <div class="show-contact-logo ${contact.color}">
                         <a>${getInitials(contact.username)}</a>
                     </div>
                     <div>

@@ -14,6 +14,7 @@ function setUserDataValue(inputIndex){
     const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     const contact = contacts[inputIndex];
     const initials = getInitials(contact.username);
+    const getColor =  getContactColorType(inputIndex);
 
     let initialsRef = document.getElementById("edit-contact-initialsID");
 
@@ -21,10 +22,12 @@ function setUserDataValue(inputIndex){
     document.getElementById("edit-contact-usernameID").value = contact.username;
     document.getElementById("edit-contact-mailID").value = contact.email; 
     document.getElementById("edit-contact-phone-numberID").value = contact.PhoneNumber;
+    document.getElementById("edit-contact-initialsID").classList.add(getColor);
 
     remindIndex = inputIndex;
 
 }
+
 
 function editContact(){
     let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
@@ -80,9 +83,10 @@ function deleteContactinEditContactWindow(){
 }
 
 
+
+
 function renderEditContact(){
     let contentRef = document.getElementById("edit-contactID");
-
 
 
     contentRef.innerHTML = `
@@ -129,5 +133,5 @@ function renderEditContact(){
                                         </div>
                                     </div>
                                 </div>
-    `
+    `;
 }
