@@ -10,17 +10,9 @@ function hideAddContactFormular(){
     document.getElementById("add-contactID").classList.add("hide-add-contact")
 }
 
-function setColorCodeBackto0WhenItsToBig(inputColorCode){
-
-    if(inputColorCode > 8){
-        colorCode = 0;
-        return;
-    } return;
-
-}
 
 function addNewContact(){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
     contacts = getUserData.friends|| [];
 
     const usernameRef = document.getElementById("add-contact-usernameID").value;
@@ -33,8 +25,11 @@ function addNewContact(){
     setColorCodeBackto0WhenItsToBig(colorCode);
 
     contacts.push(contactJson);
+
+    
     sortUserToAlphabeticalOrder(contacts);
-    addContactToLocalStorage(contacts);
+    
+    addContactToLocalStorageAndAPI(contacts);
 
 
     document.getElementById("add-contact-usernameID").value = "";
@@ -46,19 +41,64 @@ function addNewContact(){
     renderContactList();
 }
 
-function addContactToLocalStorage(inputContacts){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };
-    let updatedContacts = sortUserToAlphabeticalOrder(inputContacts);
+async function addContactToLocalStorageAndAPI(inputContacts){
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };    
+    let updatedContacts = inputContacts;
+
+    console.log(updatedContacts);
 
     getUserData.friends = updatedContacts;
+
+
+
+    //set in LocalStorage
     localStorage.setItem("userData", JSON.stringify(getUserData));
+
+    //set in API
+    const userID = await getUserID(getUserData.name);
+    console.log("Aktueller Benutzername:", getUserData.name);
+    if(userID){
+        await updateUserFriendslist(userID, updatedContacts);
+    }else {
+        console.error("etwas funktioniert auf Zeile 67 nicht richtig!");
+    }
 }
 
-function makeFirstLetterBig(inputString){
 
-    return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 
+async function updateUserFriendslist(inputID, inputObject){
+    const updatedData = { friends: inputObject}
+    const response = await patchDataWithID("users", inputID, updatedData);
+    console.log("Aktualisierte Daten:", response);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

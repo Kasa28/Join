@@ -1,3 +1,7 @@
+const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+
+
+
 function removeContentfromAllContactBlocks(){
     contactBlock = {
         A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [],
@@ -7,10 +11,28 @@ function removeContentfromAllContactBlocks(){
 
 }
 
+function makeFirstLetterBig(inputString){
+
+    return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
+
+}
+
+
+
+
 function getContactColorType(inputIndex){
     const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     const contact = contacts[inputIndex];
     return contact.color;
+}
+
+function setColorCodeBackto0WhenItsToBig(inputColorCode){
+
+    if(inputColorCode > 8){
+        colorCode = 0;
+        return;
+    } return;
+
 }
 
 
@@ -50,17 +72,17 @@ for (let index = 0; index < inputContactArray.length; index++) {
 
 
 function setContactsIntoContactblock(inputContacts){
-    removeContentfromAllContactBlocks();
-    inputContacts.forEach((contact) => {
+    
+    const contacts = Array.isArray(inputContacts) ? inputContacts : [];
 
-        let actualChar = contact.username.charAt(0).toUpperCase();
 
-        if(contactBlock[actualChar]){
-        contactBlock[actualChar].unshift(contact);
+    contacts.forEach((contact) => {
+        const firstLetter = contact.username.charAt(0).toUpperCase();
+        if(contactBlock[firstLetter]){
+            contactBlock[firstLetter].unshift(contact);
         } else {
-        contactBlock.other.unshift(contact);
+            contactBlock.other.unshift(contact);
         }
-        
      });
 }
 
@@ -83,7 +105,7 @@ function pushExampleContactsOneTimeInLocalStorage(){
     if (exampleContacts.length > 0) {
         contacts.push(...exampleContacts);
         exampleContacts = []; // Leere das Array nach dem Hinzufügen
-        addContactToLocalStorage(contacts);
+        addContactToLocalStorageAndAPI(contacts);
         console.log("Beispielkontakte wurden hinzugefügt:", contacts);
     } else {
         console.log("Keine Beispielkontakte vorhanden.");

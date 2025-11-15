@@ -50,7 +50,7 @@ function getWhiteScreen() {
 async function createUser(inputName, inputPassword, inputMail) {
   let userResponse = await getAllUsers("users");
   let UserKeysArray = Object.keys(userResponse);
-  const user = { name: inputName, password: inputPassword, email: inputMail, friends: {}};
+  const user = { name: inputName, password: inputPassword, email: inputMail};
   postDataWithID("users", UserKeysArray.length, user);
 }
 

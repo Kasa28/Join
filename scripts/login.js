@@ -53,7 +53,8 @@ function checkUsernamePassword(inputMail, inputPassword){
       let actualMail = users[index].user.email;
       let actualPassword = users[index].user.password;
       let actualID = users[index].id;
-      let actualJson = {"id" : actualID, "name" : actualName, "email" : actualMail}
+      let actualFriendlist = users[index].user.friends || [];
+      let actualJson = {"id" : actualID, "name" : actualName, "email" : actualMail, "friends" : actualFriendlist}
    if(actualMail === inputMail && actualPassword === inputPassword){   
             putUserDataIntoLocalStorage(actualJson);
             return true;
