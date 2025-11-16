@@ -18,6 +18,10 @@ header {
   z-index: 1500;
 }
 
+.task-card {
+  cursor: pointer;
+}
+
 @media (max-width: 1300px) {
   .task-card {
     min-width: 252px;

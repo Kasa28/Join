@@ -62,6 +62,50 @@ function matchesSearch(t) {
 
 
 /* === Drag & Drop Core === */
+
+
+/* === Mobile Long‑Press Drag Support === */
+let longPressTimer = null;
+let longPressActive = false;
+
+document.addEventListener("touchstart", (e) => {
+  e.preventDefault(); // Prevents iOS/macOS context menu / long‑press actions
+  const card = e.target.closest(".task-card");
+  if (!card) return;
+
+  longPressTimer = setTimeout(() => {
+    longPressActive = true;
+    whichCardActuellDrop = Number(card.dataset.id || card.getAttribute("data-id"));
+    currentDragCardEl = card;
+    card.classList.add("is-dragging");
+    document.body.classList.add("dragging");
+  }, 300); // long press duration
+});
+
+document.addEventListener("touchmove", (e) => {
+  e.preventDefault(); // Prevents scrolling while dragging
+  if (!longPressActive || !currentDragCardEl) return;
+  const touch = e.touches[0];
+  const hoverCol = document.elementFromPoint(touch.clientX, touch.clientY)?.closest(".drag-area");
+  if (hoverCol?.id) highlight(hoverCol.id);
+});
+
+document.addEventListener("touchend", (e) => {
+  e.preventDefault(); // Prevents default tap behavior after drag
+  clearTimeout(longPressTimer);
+  if (longPressActive && currentDragCardEl) {
+    const touch = e.changedTouches[0];
+    const dropCol = document.elementFromPoint(touch.clientX, touch.clientY)?.closest(".drag-area");
+    if (dropCol) {
+      const status = statusByColumnId[dropCol.id];
+      if (status) moveTo(status);
+    }
+    currentDragCardEl.classList.remove("is-dragging");
+    document.body.classList.remove("dragging");
+  }
+  longPressActive = false;
+  currentDragCardEl = null;
+});
 window.allowDrop = (e) => e.preventDefault();
 window.highlight = function (id) {
   if (!id) return;
