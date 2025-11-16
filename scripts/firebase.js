@@ -9,6 +9,7 @@ async function getAllTasks() {
   return await response.json() || {};
 }
 
+
 /* === Save Task by ID (PUT Request) === */
 async function saveTask(taskId, taskData) {
   const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
@@ -18,6 +19,7 @@ async function saveTask(taskId, taskData) {
   });
   return await response.json();
 }
+
 
 /* === Delete Task by ID === */
 async function deleteTask(taskId) {
@@ -40,8 +42,8 @@ function subscribeToFirebaseUpdates(callback) {
   setInterval(poll, 2000);
 }
 
-window.subscribeToFirebaseUpdates = subscribeToFirebaseUpdates;
 
+window.subscribeToFirebaseUpdates = subscribeToFirebaseUpdates;
 window.saveTask = saveTask;
 window.getAllTasks = getAllTasks;
 window.deleteTask = deleteTask;
