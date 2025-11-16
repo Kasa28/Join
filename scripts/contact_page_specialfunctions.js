@@ -17,7 +17,17 @@ function makeFirstLetterBig(inputString){
 
 }
 
+function callWhiteScreen() {
+    const contentRef = document.getElementById("white-screen");
+    contentRef.classList.remove("d_none");
+}
 
+function closeWhiteScreen(){
+    const contentRef = document.getElementById("white-screen");
+    contentRef.classList.add("d_none");
+    hideEditContactFormular();
+    hideAddContactFormular();
+}
 
 
 function getContactColorType(inputIndex){

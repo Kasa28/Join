@@ -101,7 +101,7 @@ function renderSingleContact(inputString){
                             <h2>${makeFirstLetterBig(contact.username)}</h2>
                         </div>
                         <div style="display: flex;">
-                            <div onclick="showEditContactFormular(), setUserDataValue(${rightIndex})"  class="edit-delete-container">
+                            <div onclick="showEditContactFormular(), setUserDataValue(${rightIndex}), callWhiteScreen()"  class="edit-delete-container">
                                 <img class="edit-delete-icons" src="./assets/img/edit.svg" alt="edit icon">
                                 Edit
                             </div>

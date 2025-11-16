@@ -27,6 +27,7 @@
 </head>
 <body class="position-relative-overflow-x" onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactList(), renderAddContact(), renderEditContact()">
 
+    <white-screen onclick="closeWhiteScreen()" class="white-screen d_none" id="white-screen"></white-screen>
 
 
 
@@ -104,7 +105,7 @@
         <contacts class="maincontent">
 
             <div class="button-contacts-position">
-                <button onclick="showAddContactFormular()" class="button-contacts display-flex-center-xy">
+                <button onclick="showAddContactFormular(), callWhiteScreen()" class="button-contacts display-flex-center-xy">
                         <a class="font-size-24">Add new contact</a>
                         <img class="img-contact" src="./assets/img/person_add.svg" alt="Board icon">
                 </button>

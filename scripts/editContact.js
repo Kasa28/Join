@@ -33,7 +33,6 @@ function setUserDataValue(inputIndex){
 async function editContact(){
     const getUserData = JSON.parse(localStorage.getItem("userData")) || {};
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
-    const showContact =  document.getElementById("singleContactID");
     
     let contact = contacts[remindIndex];
     
@@ -129,6 +128,7 @@ async function deleteContactinEditContactWindow(){
 
 function renderEditContact(){
     let contentRef = document.getElementById("edit-contactID");
+    
 
 
     contentRef.innerHTML = `
