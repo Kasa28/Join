@@ -1,6 +1,7 @@
 window.selectedUsers = window.selectedUsers || [];
 window.isDropdownOpen = window.isDropdownOpen || false;
 
+
 // === Title Validation ===
 document.addEventListener("DOMContentLoaded", () => {
   const titleInput = document.getElementById("title");
@@ -21,11 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
   titleInput.addEventListener("input", validateTitle);
 });
 
+
 // === Due Date Validation & Input Formatting ===
 function isValidDateFormat(dateString) {
   const regex = /^\d{2}\/\d{2}\/\d{4}$/;
   return regex.test(dateString);
 }
+
 
 function sanitizeDueDateInput(e) {
   let v = e.target.value.replace(/[^\d]/g, "");
@@ -37,6 +40,7 @@ function sanitizeDueDateInput(e) {
   }
   e.target.value = v;
 }
+
 
 function validateDueDate() {
   const dueDateInput = document.getElementById("due-date");
@@ -65,6 +69,7 @@ function validateDueDate() {
   return true;
 }
 
+
 // === Event-Handling ===
 const dueDateInput = document.getElementById("due-date");
 if (dueDateInput) {
@@ -75,6 +80,7 @@ if (dueDateInput) {
   dueDateInput.addEventListener("blur", validateDueDate);
 }
 
+
 function isRealDate(dateString) {
   const [day, month, year] = dateString.split("/").map(Number);
   const date = new Date(year, month - 1, day);
@@ -84,6 +90,7 @@ function isRealDate(dateString) {
     date.getDate() === day
   );
 }
+
 
 // === Priority Selection ===
 function setPriorityAddTask(priority) {
@@ -121,6 +128,7 @@ function setPriorityAddTask(priority) {
   window.currentPrio = priority;
 }
 
+
 // === Subtask Delete ===
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-delete-addTask_page")) {
@@ -130,6 +138,7 @@ document.addEventListener("click", (e) => {
     }
   }
 });
+
 
 // === Subtask Add ===
 document.addEventListener("click", (e) => {
@@ -157,6 +166,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
+
 // === Subtask Remove ===
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-remove-addTask_page")) {
@@ -164,6 +174,7 @@ document.addEventListener("click", (e) => {
     if (li) li.remove();
   }
 });
+
 
 // === Subtask Edit (Beginner-friendly, in-place editing) ===
 function enableSubtaskEditing(e) {
@@ -194,6 +205,7 @@ function enableSubtaskEditing(e) {
 
 document.addEventListener("click", enableSubtaskEditing);
 
+
 // === Subtask Save ===
 function saveEditedSubtask(e) {
   if (!e.target.classList.contains("subtask-save-addTask_page")) return;
@@ -220,7 +232,9 @@ function saveEditedSubtask(e) {
   li.appendChild(actions);
 }
 
+
 document.addEventListener("click", saveEditedSubtask);
+
 
 // === Form Reset ===
 function clearForm() {
@@ -256,6 +270,7 @@ function clearForm() {
   document.querySelectorAll(".error-text").forEach((e) => (e.textContent = ""));
 }
 
+
 // === Toast (GLOBAL) ===
 function showToast(text, { variant = "ok", duration = 1000 } = {}) {
   let root = document.getElementById("toast-root");
@@ -277,7 +292,9 @@ function showToast(text, { variant = "ok", duration = 1000 } = {}) {
   }, duration);
 }
 
+
 window.showToast = showToast;
+
 
 async function createTask() {
   const title = (document.getElementById("title")?.value || "").trim();
