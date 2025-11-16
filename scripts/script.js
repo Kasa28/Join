@@ -12,6 +12,7 @@ window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
 window.currentPrio = window.currentPrio || "low";
 window.selectedUserColors = window.selectedUserColors || {};
 
+
 /* === Add Task Status Handling === */
 if (!window.openAddTaskWithStatus) {
   window.openAddTaskWithStatus = function (status) {
@@ -20,6 +21,7 @@ if (!window.openAddTaskWithStatus) {
   };
 }
 
+
 if (!window.openAddTaskFromPlus) {
   window.openAddTaskFromPlus = function (e) {
     const s = e?.currentTarget?.dataset?.target || window.STATUS.TODO;
@@ -27,10 +29,12 @@ if (!window.openAddTaskFromPlus) {
   };
 }
 
+
 /* === Category Mapping === */
 function mapCategoryToType(value) {
   return value === "technical" ? "Technical Task" : "User Story";
 }
+
 
 /* === Assigned User Extraction === */
 function assignedToDataExtractSafe() {
@@ -56,9 +60,9 @@ function assignedToDataExtractSafe() {
       "#4589ff";
     assigned.push({ name: fullName, color });
   });
-
   return assigned;
 }
+
 
 /* === Subtask Extraction === */
 function getSubtasksSafe() {
@@ -67,6 +71,7 @@ function getSubtasksSafe() {
   return v ? [v] : [];
 }
 
+
 /* === Task ID Generation === */
 function generateTaskId() {
   if (typeof crypto?.randomUUID === "function") {
@@ -74,6 +79,7 @@ function generateTaskId() {
   }
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
+
 
 /* === Collect Task Data from Form === */
 function collectTaskFromForm() {
@@ -99,6 +105,7 @@ function collectTaskFromForm() {
   };
 }
 
+
 /* === Create Task and Update Board === */
 function createTask(event) {
   if (event && event.preventDefault) event.preventDefault();
@@ -117,9 +124,11 @@ function createTask(event) {
   }
 }
 
+
 window.createTask = createTask;
 
 window.currentPrio = window.currentPrio || "low";
+
 
 /* === Priority Button Handling === */
 window.setPriority = function (prio) {
