@@ -40,6 +40,7 @@ const demoTasks = [
   },
 ];
 
+
 /* === Firebase: Tasks laden === */
 async function loadTasksFromFirebase() {
   try {
@@ -74,6 +75,7 @@ async function loadTasksFromFirebase() {
   }
 }
 
+
 /* === Firebase Realtime Subscription === */
 let updateTimeout;
 subscribeToFirebaseUpdates((data) => {
@@ -86,6 +88,7 @@ subscribeToFirebaseUpdates((data) => {
   }, 200);
 });
 
+
 /* === Helper: Detect Demo Tasks === */
 function isDemoTask(taskOrId) {
   const idValue =
@@ -93,6 +96,7 @@ function isDemoTask(taskOrId) {
   const numericId = Number.parseInt(idValue, 10);
   return Number.isFinite(numericId) && numericId > 0 && numericId <= 1000;
 }
+
 
 /* === Globale Zustände & Mappings === */
 let whichCardActuellDrop = null;
@@ -105,6 +109,7 @@ let needsDraggingClassAfterRender = false;
 let pendingDragTiltClass = null;
 let activeHighlightColumnId = null;
 
+
 function updateSearchClearButtonState(inputEl) {
   const clearBtn = document.getElementById("board-search-clear");
   if (!clearBtn) return;
@@ -113,6 +118,7 @@ function updateSearchClearButtonState(inputEl) {
   clearBtn.classList.toggle("is-visible", shouldShow);
   clearBtn.setAttribute("aria-hidden", shouldShow ? "false" : "true");
 }
+
 
 const nameOfTheCard = {
   todo: { id: "drag-area-todo", empty: "No tasks To do" },
@@ -124,15 +130,18 @@ const nameOfTheCard = {
   done: { id: "drag-area-done", empty: "No task in Done" },
 };
 
+
 const statusByColumnId = Object.fromEntries(
   Object.entries(nameOfTheCard).map(([status, { id }]) => [id, status])
 );
+
 
 const prioritätIcon = {
   urgent: "../assets/img/Prio baja-urgent-red.svg",
   medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
   low: "../assets/img/Prio baja-low.svg",
 };
+
 
 window.STATUS = window.STATUS || {
   TODO: "todo",
@@ -141,9 +150,11 @@ window.STATUS = window.STATUS || {
   DONE: "done",
 };
 
+
 window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
 window.currentPrio = window.currentPrio || "low";
 window.selectedUserColors = window.selectedUserColors || {};
+
 
 /* === Persist Tasks to Firebase === */
 async function persistTasks() {
@@ -165,6 +176,7 @@ async function persistTasks() {
     console.warn("Could not update tasks in Firebase:", e);
   }
 }
+
 
 /* === Subtasks-Progress handling === */
 window.updateSubtasks = (id, el) => {
@@ -197,6 +209,7 @@ window.updateSubtasks = (id, el) => {
     });
   }
 };
+
 
 /* === Onload: gespeicherte Subtask-Stände anwenden === */
 
