@@ -16,6 +16,7 @@ function openModalDynamic(id) {
   document.body.classList.add("no-scroll");
 }
 
+
 async function deleteDynamicTask(id) {
   const allTasks = Array.isArray(window.tasks) ? window.tasks : [];
   const task = allTasks.find((t) => t.id === id);
@@ -43,6 +44,7 @@ async function deleteDynamicTask(id) {
   persistTasks();
 }
 
+
 /* === Edit Overlay Setup === */
 function readSubtasksFromForm() {
   const list = document.getElementById("subtask-list");
@@ -57,6 +59,7 @@ function readSubtasksFromForm() {
     })
     .filter(Boolean);
 }
+
 
 function populateEditOverlay(task) {
   const content = document.getElementById("addtask-content");
@@ -111,6 +114,7 @@ function populateEditOverlay(task) {
   }
 }
 
+
 /* === Subtask Progress Normalization === */
 function normaliseSubtaskProgress(task) {
   if (!task) return;
@@ -132,6 +136,7 @@ function normaliseSubtaskProgress(task) {
     }
   }
 }
+
 
 /* === Edit and Save Task Logic === */
 function saveTaskEdits(id) {
@@ -190,6 +195,7 @@ function saveTaskEdits(id) {
   closeAddTask();
 }
 
+
 function startEditTask(id) {
   const task = Array.isArray(window.tasks)
     ? window.tasks.find((t) => t.id === id)
@@ -212,6 +218,7 @@ function startEditTask(id) {
   }
 }
 
+
 window.startEditTask = startEditTask;
 
 /* === Add Task Shortcuts and Creation === */
@@ -222,6 +229,7 @@ if (!window.openAddTaskWithStatus) {
   };
 }
 
+
 if (!window.openAddTaskFromPlus) {
   window.openAddTaskFromPlus = function (e) {
     const s = e?.currentTarget?.dataset?.target || window.STATUS.TODO;
@@ -229,9 +237,11 @@ if (!window.openAddTaskFromPlus) {
   };
 }
 
+
 function mapCategoryToType(value) {
   return value === "technical" ? "Technical Task" : "User Story";
 }
+
 
 function assignedToDataExtractSafe() {
   if (typeof assignedToDataExtract === "function")
@@ -240,7 +250,6 @@ function assignedToDataExtractSafe() {
   const avatars = document.querySelectorAll(
     "#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page"
   );
-
   avatars.forEach((el) => {
     const initials = el.textContent.trim();
     const dataName = el.dataset?.fullName;
@@ -257,7 +266,6 @@ function assignedToDataExtractSafe() {
       "#4589ff";
     assigned.push({ name: fullName, color });
   });
-
   return assigned;
 }
 
@@ -267,12 +275,14 @@ function getSubtasksSafe() {
   return v ? [v] : [];
 }
 
+
 function generateTaskId() {
   if (typeof crypto?.randomUUID === "function") {
     return crypto.randomUUID();
   }
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
+
 
 function collectTaskFromForm() {
   const title = (document.getElementById("title")?.value || "").trim();
@@ -282,7 +292,6 @@ function collectTaskFromForm() {
   const dueDate = (document.getElementById("due-date")?.value || "").trim();
   const categoryVal = document.getElementById("category")?.value || "";
   const subtasks = getSubtasksSafe();
-
   return {
     id: generateTaskId(),
     title,
@@ -297,6 +306,7 @@ function collectTaskFromForm() {
     subTasks: subtasks,
   };
 }
+
 
 function createTask(event) {
   if (event && event.preventDefault) event.preventDefault();
@@ -316,6 +326,7 @@ function createTask(event) {
 }
 
 window.createTask = createTask;
+
 
 /* === Priority Button Handling === */
 window.currentPrio = window.currentPrio || "low";
@@ -338,6 +349,7 @@ window.setPriority = function (prio) {
   const active = wrap.querySelector(map[window.currentPrio]);
   if (active) active.classList.add("active-prio");
 };
+
 
 /* === Modal Fallback Template === */
 function fallbackModal(task) {
