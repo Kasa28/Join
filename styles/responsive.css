@@ -1,9 +1,11 @@
 .button_help {
   display: none;
 }
+
 .side-overlay.open .side-panel {
   height: auto !important;
 }
+
 header {
   position: sticky;
   top: 0;
@@ -102,6 +104,7 @@ header {
   .sidebar-font {
     font-size: 12px;
   }
+
   .header-font,
   .img-headbar {
     display: none;
@@ -264,6 +267,7 @@ header {
     left: 17px !important;
   }
 }
+
 @media (max-width: 1000px) {
   .summary-card {
     border: solid white !important;
@@ -520,6 +524,7 @@ header {
     height: 60px;
   }
 }
+
 @media (max-width: 999px) {
   body {
     -ms-overflow-style: none !important; /* IE and Edge */
@@ -650,13 +655,12 @@ header {
 @media (max-width: 1000px) {
   .urgent-task-card-summary,
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
-    grid-template-columns: 60px min-content 1px 1fr; /* <-- Separator eigene Spalte */
+    grid-template-columns: 60px min-content 1px 1fr; 
     align-items: center;
-    column-gap: 16px; /* Abstand kompakt – verhindert „zu weit weg“ */
+    column-gap: 16px; 
     grid-column: 1 / -1 !important;
   }
 
-  /* Icon links */
   .urgent-task-card-summary .img-summary,
   .summary-cards-low-section .img-summary {
     grid-column: 1;
@@ -665,31 +669,29 @@ header {
     justify-self: start;
   }
 
-  /* Zahl direkt neben dem Icon (schmal halten) */
   .urgent-task-card-summary .h2-font-summray,
   .summary-cards-low-section .h2-font-summray {
     grid-column: 2;
-    margin: 0; /* falls alte Margins stören */
+    margin: 0; 
   }
 
-  /* Separator: eigene Spalte (1px breit, volle Höhe) */
   .urgent-task-card-summary .seperator-summary,
   .summary-cards-low-section .seperator-summary {
     grid-column: 3;
     width: 1px;
     height: 56px;
-    background: currentColor; /* Basisfarbe */
+    background: currentColor; 
     justify-self: center;
   }
-  /* Farben je Karte (damit sichtbar ist) */
+  
   .urgent-task-card-summary .seperator-summary {
     background: #fff;
   }
+
   .summary-cards-low-section .seperator-summary {
     background: #9db7ff;
   }
 
-  /* Text/Label („Todo“) direkt nach dem Separator */
   .urgent-task-card-summary .card-font-a-summary,
   .urgent-task-card-summary .card-font-a-urgent-task-summary,
   .summary-cards-low-section .card-font-a-summary {
@@ -698,6 +700,7 @@ header {
     width: fit-content;
     padding-left: 10px;
   }
+
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
     display: flex;
     flex-direction: row;
@@ -714,7 +717,6 @@ header {
 }
 
 @media (max-width: 1000px) {
-  /* Container als Wrap-Grid/Flex */
   .summary-content-container {
     display: flex;
     flex-wrap: wrap;
@@ -727,7 +729,7 @@ header {
     max-width: 440px;
     padding-right: 0;
     display: grid;
-    grid-template-columns: 60px min-content 1px 1fr; /* Icon | Zahl | | Text */
+    grid-template-columns: 60px min-content 1px 1fr; 
     align-items: center;
     column-gap: 16px;
   }
@@ -740,7 +742,7 @@ header {
 
   .urgent-task-card-summary {
     flex: 1 1 100%;
-    max-width: 440px; /* oder 100% */
+    max-width: 440px; 
     grid-template-columns: 60px min-content 1px 1fr;
     align-items: center;
     column-gap: 16px;
@@ -749,6 +751,7 @@ header {
   .urgent-task-card-summary .seperator-summary {
     background: #fff;
   }
+
   .summary-cards-low-section .seperator-summary {
     background: #9db7ff;
   }
@@ -756,18 +759,23 @@ header {
   .summary-content-container .urgent-task-card-summary {
     order: 0;
   }
+
   .summary-content-container .summary-cards-low-section {
     order: 1;
   }
+
   .summary-content-container .tasks-on-board-card-summary {
     order: 2;
   }
+
   .summary-content-container .progress-section {
     order: 3;
   }
+
   .summary-content-container .feedback {
     order: 4;
   }
+
   .summary-content-container .done {
     order: 5;
   }
@@ -816,6 +824,7 @@ header {
   .task-description_user-story {
     font-size: clamp(16px, 4.5vw, 19px) !important;
   }
+
   .header-wrapper_user-story {
     width: min(500px, 100%) !important;
     padding-left: clamp(20px, 5vw, 40px) !important;
@@ -942,7 +951,6 @@ header {
   }
 }
 
-/* Contacts*/
 @media (max-width: 600px) {
   .button-contacts-position {
     position: fixed;
