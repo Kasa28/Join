@@ -34,6 +34,7 @@ function toggleAssignDropdown(event) {
   }
 }
 
+
 // === Assign User Selection ===
 function selectAssignUser(name, event) {
   if (event && event.stopPropagation) event.stopPropagation();
@@ -62,6 +63,7 @@ function selectAssignUser(name, event) {
   updateAssignPlaceholder();
 }
 
+
 // === Placeholder Updates ===
 function updateAssignPlaceholder() {
   const placeholder = document.querySelector(
@@ -74,6 +76,7 @@ function updateAssignPlaceholder() {
     placeholder.textContent = "";
   }
 }
+
 
 // === Input Filtering ===
 document.addEventListener("input", (e) => {
@@ -114,13 +117,16 @@ function handleAssignInput(e) {
   processAssignSearch(searchValue, e.target);
 }
 
+
 function isAssignPlaceholderEvent(e) {
   return e.target.classList.contains("assign-placeholder-addTask_page");
 }
 
+
 function getAssignSearchValue(target) {
   return target.textContent.toLowerCase().trim();
 }
+
 
 function processAssignSearch(searchValue, target) {
   const items = document.querySelectorAll(".assign-item-addTask_page");
@@ -132,14 +138,17 @@ function processAssignSearch(searchValue, target) {
   finalizeAssignSearch(anyMatch, target);
 }
 
+
 function shouldResetAssignSearch(searchValue) {
   return searchValue === "";
 }
+
 
 function resetAssignSearch() {
   showAllAssignItems();
   updateAssignPlaceholder();
 }
+
 
 function filterAssignList(items, searchValue) {
   let anyMatch = false;
@@ -154,6 +163,7 @@ function filterAssignList(items, searchValue) {
   return anyMatch;
 }
 
+
 function finalizeAssignSearch(anyMatch, target) {
   if (!anyMatch) {
     showAllAssignItems();
@@ -162,6 +172,7 @@ function finalizeAssignSearch(anyMatch, target) {
     updateAssignPlaceholder();
   }
 }
+
 
 // === Dropdown Close Handling ===
 document.addEventListener("click", (e) => {
@@ -182,6 +193,7 @@ document.addEventListener("click", (e) => {
     renderAssignedAvatars();
   }
 });
+
 
 // === Avatar Rendering ===
 function renderAssignedAvatars() {
@@ -211,6 +223,7 @@ function renderAssignedAvatars() {
     container.appendChild(avatar);
   });
 }
+
 
 // === Assign Checkbox Handling ===
 document.addEventListener("click", (e) => {
