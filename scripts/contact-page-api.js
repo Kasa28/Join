@@ -28,3 +28,9 @@ async function getUserID(inputUsername) {
 
     return userID;
 }
+
+async function updateUserFriendslist(inputID, inputObject){
+    const updatedData = { friends: inputObject}
+    const response = await patchDataWithID("users", inputID, updatedData);
+}
+

@@ -18,10 +18,11 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
 
    function renderContactList(){
     let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
+
+    
     let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
-
 
     //pushExampleContactsOneTimeInLocalStorage();
     setContactsIntoContactblock(getContactsFromUser);
@@ -35,7 +36,6 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
         }
 
     
-
         contactContainerRef.innerHTML += `
 
             <div class="padding-small-contacts">
@@ -46,7 +46,7 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
             </separator>
 
         `
-         block.forEach((contact) => {
+        block.forEach((contact) => {
         contactContainerRef.innerHTML +=  `
                     <contact onclick="renderSingleContact('${contact.username}')" class="single-contact display-flex-center-x padding-medium-up-down-contacts">
 
@@ -74,20 +74,20 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
 
 async function consoleLogArray(){
     const result = await getAllUsers("users"); 
-    console.log(result)
 }
 
 
 
 
 function renderSingleContact(inputString){
-    const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-    let singleContactRef = document.getElementById("singleContactID");
-
+    
+    const getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
+    const contacts = getUserData.friends;
+    
     const rightIndex = findIndexFromUsername(contacts, inputString);
-
     const contact = contacts[rightIndex];
     
+    let singleContactRef = document.getElementById("singleContactID");
     singleContactRef.innerHTML = `
     <show-contact>
 

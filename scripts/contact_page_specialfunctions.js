@@ -21,7 +21,8 @@ function makeFirstLetterBig(inputString){
 
 
 function getContactColorType(inputIndex){
-    const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
+    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     const contact = contacts[inputIndex];
     return contact.color;
 }
@@ -72,6 +73,8 @@ for (let index = 0; index < inputContactArray.length; index++) {
 
 
 function setContactsIntoContactblock(inputContacts){
+
+    removeContentfromAllContactBlocks();
     
     const contacts = Array.isArray(inputContacts) ? inputContacts : [];
 

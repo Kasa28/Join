@@ -10,8 +10,9 @@ function hideEditContactFormular(){
 }
 
 function setUserDataValue(inputIndex){
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
+    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
 
-    const contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
     const contact = contacts[inputIndex];
     const initials = getInitials(contact.username);
     const getColor =  getContactColorType(inputIndex);
@@ -29,44 +30,77 @@ function setUserDataValue(inputIndex){
 }
 
 
-function editContact(){
-    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-    let showContact =  document.getElementById("singleContactID");
+async function editContact(){
+    const getUserData = JSON.parse(localStorage.getItem("userData")) || {};
+    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
+    const showContact =  document.getElementById("singleContactID");
+    
+    let contact = contacts[remindIndex];
+    
+    contact.username = document.getElementById("edit-contact-usernameID").value;
+    contact.email = document.getElementById("edit-contact-mailID").value;
+    contact.PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
 
     
-    contacts[remindIndex].username = document.getElementById("edit-contact-usernameID").value;
-    contacts[remindIndex].email = document.getElementById("edit-contact-mailID").value;
-    contacts[remindIndex].PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
+    updateFriendsInLocalStorage(contacts);
 
-    
-    localStorage.removeItem("contacts");
-    localStorage.setItem("contacts", JSON.stringify(contacts));
+    const userID = await getUserID(getUserData.name);
+    if(userID){
+        // Aktualisiere die Freundesliste in der API
+        await updateUserFriendslist(userID, contacts);
+    } else{
+        console.error("Benutzer-ID konnte nicht abgerufen werden.");
+    }
 
-    showContact.innerHTML = "";
+    renderSingleContact(contact.username);
     hideEditContactFormular();
     renderContactList();
-    
 }
 
-function deleteContact(inputString){
-    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
-    let showContact =  document.getElementById("singleContactID");
+function updateFriendsInLocalStorage(updatedFriends){
+    let userData = JSON.parse(localStorage.getItem("userData") || {});
+    userData.friends = updatedFriends;
+    localStorage.setItem("userData", JSON.stringify(userData));
+}
+
+
+async function deleteContact(inputString){
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
+    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
+    
 
     const rightIndex = findIndexFromUsername(contacts, inputString);
 
+     // Überprüfen, ob der Kontakt gefunden wurde
+    if (rightIndex === -1) {
+        console.error("Kontakt nicht gefunden:", inputString);
+        return;
+    }
+
     contacts.splice(rightIndex, 1);
 
-    localStorage.removeItem("contacts");
-    localStorage.setItem("contacts", JSON.stringify(contacts));
+    
+    updateFriendsInLocalStorage(contacts);
 
+    const userID = await getUserID(getUserData.name);
+    if(userID){
+        // Aktualisiere die Freundesliste in der API
+        await updateUserFriendslist(userID, contacts);
+    } else{
+        console.error("Benutzer-ID konnte nicht abgerufen werden.");
+    }
+
+
+    let showContact = document.getElementById("singleContactID");
     showContact.innerHTML = "";
+
     hideEditContactFormular();
     renderContactList();
-
 }
 
-function deleteContactinEditContactWindow(){
-    let contacts = JSON.parse(localStorage.getItem("contacts"))|| [];
+async function deleteContactinEditContactWindow(){
+    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
+    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let usernameRef = document.getElementById("edit-contact-usernameID").value;
     let showContact =  document.getElementById("singleContactID");
 
@@ -74,8 +108,16 @@ function deleteContactinEditContactWindow(){
 
     contacts.splice(rightIndex, 1);
 
-    localStorage.removeItem("contacts");
-    localStorage.setItem("contacts", JSON.stringify(contacts));
+    updateFriendsInLocalStorage(contacts);
+
+    const userID = await getUserID(getUserData.name);
+    if(userID){
+        // Aktualisiere die Freundesliste in der API
+        await updateUserFriendslist(userID, contacts);
+    } else{
+        console.error("Benutzer-ID konnte nicht abgerufen werden.");
+    }
+
 
     showContact.innerHTML = "";
     hideEditContactFormular();

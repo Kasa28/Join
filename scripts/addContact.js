@@ -35,8 +35,9 @@ function addNewContact(){
     document.getElementById("add-contact-usernameID").value = "";
     document.getElementById("add-contact-mailID").value = "";
     document.getElementById("add-contact-phone-numberID").value = "";
-
-
+    
+    console.log(getUserData.friends);
+    
     hideAddContactFormular();
     renderContactList();
 }
@@ -45,7 +46,6 @@ async function addContactToLocalStorageAndAPI(inputContacts){
     let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };    
     let updatedContacts = inputContacts;
 
-    console.log(updatedContacts);
 
     getUserData.friends = updatedContacts;
 
@@ -56,7 +56,6 @@ async function addContactToLocalStorageAndAPI(inputContacts){
 
     //set in API
     const userID = await getUserID(getUserData.name);
-    console.log("Aktueller Benutzername:", getUserData.name);
     if(userID){
         await updateUserFriendslist(userID, updatedContacts);
     }else {
@@ -64,13 +63,6 @@ async function addContactToLocalStorageAndAPI(inputContacts){
     }
 }
 
-
-
-async function updateUserFriendslist(inputID, inputObject){
-    const updatedData = { friends: inputObject}
-    const response = await patchDataWithID("users", inputID, updatedData);
-    console.log("Aktualisierte Daten:", response);
-}
 
 
 
