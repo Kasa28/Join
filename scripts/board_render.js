@@ -146,8 +146,6 @@ function renderCard(t) {
         container.appendChild(avatar);
       });
     }
-  
-
     // Checkboxen synchronisieren
     const items = content.querySelectorAll(".assign-item-addTask_template");
     items.forEach((item) => {
@@ -171,20 +169,26 @@ function renderCard(t) {
     }
   }
   
-  
+
 /* === Task Type and Badge Helpers === */
   function normalizeTaskType(type) {
     return String(type || "")
       .trim()
       .toLowerCase();
   }
+
+
   function isUserStoryType(type) {
     const n = normalizeTaskType(type);
     return n === "user story" || n === "user-story";
   }
+
+
   function isTechnicalType(type) {
     return normalizeTaskType(type) === "technical task";
   }
+
+
   function getBadgeClass(type) {
     return isTechnicalType(type) ? "badge-technical" : "badge-user";
   }
