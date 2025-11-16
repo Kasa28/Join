@@ -4,6 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
   updateSummary();
 });
 
+
 /* === Load Tasks from Firebase === */
 async function loadTasks() {
   try {
@@ -21,8 +22,6 @@ async function loadTasks() {
         t.priority = t.priority.toLowerCase();
       }
     });
-
-    // ✅ Richtig hier:
     return firebaseTasks.length
       ? firebaseTasks
       : [
@@ -39,6 +38,7 @@ async function loadTasks() {
     return [];
   }
 }
+
 
 /* === Calculate Task Counts by Status and Priority === */
 function getTaskCounts(tasks) {
@@ -68,9 +68,9 @@ function getTaskCounts(tasks) {
         break;
     }
   }
-
   return counts;
 }
+
 
 /* === Determine Next Urgent Deadline === */
 function getNextDeadline(tasks) {
@@ -88,11 +88,13 @@ function getNextDeadline(tasks) {
   return urgentTasks[0];
 }
 
+
 /* === Update Summary Text Helper === */
 function setSummaryText(selector, value) {
   const el = document.querySelector(selector);
   if (el) el.textContent = value;
 }
+
 
 /* === Main Summary Update Function === */
 async function updateSummary() {
@@ -134,6 +136,7 @@ async function updateSummary() {
 
 let lastDataString = "";
 
+
 /* === Polling for Firebase Updates === */
 async function pollSummary() {
   try {
@@ -150,6 +153,7 @@ async function pollSummary() {
     console.warn("Polling error (summary):", err);
   }
 }
+
 
 pollSummary();
 setInterval(pollSummary, 3000);
