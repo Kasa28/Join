@@ -70,6 +70,7 @@ window.openModalById = (id) => {
     document.body.classList.add("no-scroll");
   };
   
+
     /* === Close Task Modal === */
   function closeModal() {
     const modal = document.getElementById("task-modal");
@@ -77,11 +78,13 @@ window.openModalById = (id) => {
     document.body.classList.remove("no-scroll");
   }
 
+
     /* === Alias: Close Task Modal Wrapper === */
   function closeTaskModal() {
     closeModal();
   }
   
+
   /* === Add Task Overlay: Open and Close === */
   function openAddTask() {
     const overlay = document.getElementById("addtask-overlay");
@@ -107,6 +110,7 @@ window.openModalById = (id) => {
     if (titleInput) titleInput.focus();
   }
 
+  
   function closeAddTask() {
     const overlay = document.getElementById("addtask-overlay");
     const content = document.getElementById("addtask-content");
