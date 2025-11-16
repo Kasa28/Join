@@ -301,7 +301,10 @@ async function createTask() {
     document.getElementById("description")?.value || ""
   ).trim();
   const category = (document.getElementById("category")?.value || "").trim();
-
+  if (!category) {
+    alert("Bitte wähle eine Kategorie aus.");
+    return;
+  }
   const priority = (window.currentPriority || "medium").toLowerCase();
   const activeBtn = document.querySelector(
     `.priority-btn-${priority}-addTask_page`
