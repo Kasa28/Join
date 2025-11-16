@@ -73,6 +73,7 @@ function bigCardHtml(t) {
   `;
 }
 
+
 function getAddTaskTemplate() {
   return `
     <headline class="header-wrapper-addTask_template">
@@ -190,6 +191,7 @@ function getAddTaskTemplate() {
    `;
 }
 
+
 function getTechnicalTaskTemplate(t) {
   return `
     <main class="main-container-technical-task">
@@ -272,6 +274,7 @@ function getTechnicalTaskTemplate(t) {
   `;
 }
 
+
 function getBigCardDynamicHtml(t) {
   return `
       <headline class="header-wrapper_user-story">
@@ -327,6 +330,7 @@ function getBigCardDynamicHtml(t) {
         </div>
       </main>`;
 }
+
 
 function getBigCardDynamicTechnicalHtml(t) {
   return `
