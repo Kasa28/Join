@@ -10,6 +10,7 @@ async function getAllUsers(path){
   return responseToJson = await response.json();
 }
 
+
 /* === Initialize Users Array === */
 async function fillArray(){
    let userResponse = await getAllUsers("users");
@@ -24,6 +25,7 @@ async function fillArray(){
    }
    console.log(users);
 }
+
 
 /* === Login Handling === */
 function login(event){
@@ -46,6 +48,7 @@ function login(event){
    }
 }
 
+
 /* === Credential Verification === */
 function checkUsernamePassword(inputMail, inputPassword){
    for (let index = 0; index < users.length; index++) {
@@ -63,10 +66,12 @@ function checkUsernamePassword(inputMail, inputPassword){
    return false;
 }
 
+
 /* === Local Storage Handling === */
 function putUserDataIntoLocalStorage(inputJson){
    localStorage.setItem("userData", JSON.stringify(inputJson));
 }
+
 
 /* === Form Validation === */
  function checkLogin() {
