@@ -23,6 +23,7 @@ window.searchTasks = function () {
   msg.className = count === 0 ? "msg-red" : "msg-green";
 };
 
+
 window.clearBoardSearch = function () {
   const input = document.getElementById("board-search");
   if (!input) return;
@@ -31,10 +32,12 @@ window.clearBoardSearch = function () {
   searchTasks();
 };
 
+
 window.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("board-search");
   if (input) updateSearchClearButtonState(input);
 });
+
 
 /* === Search Helper Function === */
 function matchesSearch(t) {
@@ -57,6 +60,7 @@ function matchesSearch(t) {
   );
 }
 
+
 /* === Drag & Drop Core === */
 window.allowDrop = (e) => e.preventDefault();
 window.highlight = function (id) {
@@ -73,6 +77,7 @@ window.highlight = function (id) {
   if (status) scheduleAutoMoveTo(status);
 };
 
+
 window.removeHighlight = function (id) {
   if (!id) return;
   if (activeHighlightColumnId && activeHighlightColumnId !== id) {
@@ -85,12 +90,14 @@ window.removeHighlight = function (id) {
   if (status) cancelScheduledAutoMove(status);
 };
 
+
 function clearAllColumnHighlights() {
   document
     .querySelectorAll(".drag-area.drag-highlight")
     .forEach((el) => el.classList.remove("drag-highlight"));
   activeHighlightColumnId = null;
 }
+
 
 window.onCardDragStart = function (event, whichTaskId) {
   whichCardActuellDrop = whichTaskId;
@@ -109,6 +116,7 @@ window.onCardDragStart = function (event, whichTaskId) {
   }
 };
 
+
 window.onCardDragEnd = function () {
   document.body.classList.remove("dragging");
   cancelScheduledAutoMove();
@@ -126,16 +134,19 @@ window.onCardDragEnd = function () {
   clearAllColumnHighlights();
 };
 
+
 window.moveTo = function (newStatus) {
   cancelScheduledAutoMove();
   applyStatusChangeForDraggedTask(newStatus, { keepDraggingState: false });
   clearAllColumnHighlights();
 };
 
+
 function getDraggedTask() {
   if (whichCardActuellDrop == null || !Array.isArray(window.tasks)) return null;
   return window.tasks.find((t) => t.id === whichCardActuellDrop) || null;
 }
+
 
 /* === Task Status Update on Drop === */
 function applyStatusChangeForDraggedTask(
@@ -159,6 +170,7 @@ function applyStatusChangeForDraggedTask(
   return true;
 }
 
+
 /* === Auto Move Scheduling === */
 function scheduleAutoMoveTo(status) {
   if (!currentDragCardEl || whichCardActuellDrop == null) return;
@@ -177,6 +189,7 @@ function scheduleAutoMoveTo(status) {
   }, 160);
 }
 
+
 function cancelScheduledAutoMove(expectedStatus) {
   if (
     pendingAutoMoveStatus &&
@@ -191,6 +204,7 @@ function cancelScheduledAutoMove(expectedStatus) {
   autoMoveTimeoutId = null;
   pendingAutoMoveStatus = null;
 }
+
 
 /* === Column Detection Logic === */
 const MAX_VERTICAL_SNAP_DISTANCE = 220;
@@ -218,6 +232,7 @@ function findColumnByPointer(clientX, clientY) {
   }
   return null;
 }
+
 
 /* === Dragover Highlight Handling === */
 document.addEventListener("dragover", (event) => {
@@ -252,6 +267,7 @@ document.addEventListener("dragover", (event) => {
     removeHighlight(activeHighlightColumnId);
   }
 });
+
 
 /* === Drag Tilt Animation Handling === */
 document.addEventListener("dragover", (event) => {

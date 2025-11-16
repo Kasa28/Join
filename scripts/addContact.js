@@ -1,5 +1,4 @@
 let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
-
 let colorCode = 0;
 
 function showAddContactFormular(){
