@@ -4,11 +4,13 @@
 const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
+
   /* === Fetch All Users === */
 async function getAllUsers(path) {
   let response = await fetch(BASE_URL + path + ".json");
   return (responseToJson = await response.json());
 }
+
 
 /* === Save User Data to Firebase === */
 async function postDataWithID(path = "", id = "", data = {}) {
@@ -21,6 +23,7 @@ async function postDataWithID(path = "", id = "", data = {}) {
   });
   return await response.json();
 }
+
 
 /* === Signup Form Submission === */
 function onclickFunction(event) {
@@ -35,16 +38,19 @@ function onclickFunction(event) {
   }, 1200);
 }
 
+
 /* === Redirect to Login === */
 function jumpToLogin() {
   window.location.href = "./login.html";
 }
+
 
 /* === UI: White Screen Overlay === */
 function getWhiteScreen() {
   const contentRef = document.getElementById("white-screen");
   contentRef.classList.remove("d_none");
 }
+
 
 /* === Create New User === */
 async function createUser(inputName, inputPassword, inputMail) {
@@ -53,6 +59,7 @@ async function createUser(inputName, inputPassword, inputMail) {
   const user = { name: inputName, password: inputPassword, email: inputMail};
   postDataWithID("users", UserKeysArray.length, user);
 }
+
 
 /* === Form Validation and Policy Check === */
 function checkPolicyandAnswers() {
@@ -69,6 +76,7 @@ function checkPolicyandAnswers() {
     name && email && password && confirmPassword && checkbox.checked;
   button.disabled = !allFilled || !passwordSame;
 }
+
 
 /* === Toast Notification Utility === */
 function showToast(text, { duration = 3000, dim = true } = {}) {
@@ -91,5 +99,6 @@ function showToast(text, { duration = 3000, dim = true } = {}) {
     if (dim && dimEl) dimEl.classList.remove("dim--show");
   }, duration);
 }
+
 
 window.showToast = showToast;
