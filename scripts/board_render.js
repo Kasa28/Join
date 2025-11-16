@@ -31,6 +31,7 @@ function renderCard(t) {
     return tpl;
   }
 
+
   /* === Subtask List Item Builder === */
   function buildSubtaskListItem(text) {
     const li = document.createElement("li");
@@ -46,6 +47,7 @@ function renderCard(t) {
     li.appendChild(actions);
     return li;
   }
+
   
   /* === Board Rendering === */
   function render() {
@@ -66,6 +68,7 @@ function renderCard(t) {
     requestAnimationFrame(afterRender);
   }
   
+
 /* === Post-Render Enhancements (Avatars & Priority Icons) === */
   function afterRender() {
     document.querySelectorAll(".task-card").forEach((card) => {
@@ -97,7 +100,6 @@ function renderCard(t) {
       }
     });
   }
-
   if (needsDraggingClassAfterRender && whichCardActuellDrop != null) {
     const card = document.getElementById(`card-${whichCardActuellDrop}`);
     if (card) {
@@ -111,6 +113,7 @@ function renderCard(t) {
     pendingDragTiltClass = null;
   }
 
+
   /* === Helper: Name Initials === */
   function getInitialsFromName(name) {
     return String(name || "")
@@ -120,11 +123,12 @@ function renderCard(t) {
       .slice(0, 2)
       .join("");
   }
+
+
 /* === Helper: Populate Assign Section === */
   function hydrateAssignSection(task) {
     const content = document.getElementById("addtask-content");
     if (!content) return;
-  
     // Avatare
     const container = content.querySelector("#assigned-avatars");
     if (container) {
@@ -143,6 +147,7 @@ function renderCard(t) {
       });
     }
   
+
     // Checkboxen synchronisieren
     const items = content.querySelectorAll(".assign-item-addTask_template");
     items.forEach((item) => {
@@ -165,6 +170,7 @@ function renderCard(t) {
       placeholder.style.color = "black";
     }
   }
+  
   
 /* === Task Type and Badge Helpers === */
   function normalizeTaskType(type) {
