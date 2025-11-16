@@ -28,11 +28,13 @@ return `<div class="user-menu-container-header">
         </div>`
 }
 
+
 /* === Render User Menu === */
 function renderUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
     contentRef.innerHTML = userMenuTemplate();
 }
+
 
 /* === Toggle User Menu Visibility === */
 function toggleUserMenuePopupMenu(){
@@ -40,10 +42,12 @@ function toggleUserMenuePopupMenu(){
     contentRef.classList.toggle("d_none");
 }
 
+
 /* === Logout Functionality === */
 function deleteIdFromLocalStorage(){
     localStorage.removeItem('userData');
 }
+
 
 /* === Login State Check === */
 function checkIfLogedIn(){
@@ -53,10 +57,12 @@ function checkIfLogedIn(){
     return true;
 }
 
+
 /* === User Initial Display === */
 function onloadFunctionHeader(){
     setLetterInUserBall();
 }
+
 
 function setLetterInUserBall(){
     let contentRef = document.getElementById("user-ball-ID");
@@ -69,10 +75,12 @@ function setLetterInUserBall(){
     }        
 }
 
+
 /* === Greeting Message Rendering === */
 function makeFirstLetterBig(inputString){
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 }
+
 
 function greetUserName(){
     let contentRef = document.getElementById("greetID");
