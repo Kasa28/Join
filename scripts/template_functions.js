@@ -54,6 +54,7 @@ function bigCardDynamicHtml(t) {
   });
 }
 
+
 function bigCardDynamicTechnicalHtml(t) {
   const title = t.title || "No title";
   const description = t.description || "No description provided.";
