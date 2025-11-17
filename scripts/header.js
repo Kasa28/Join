@@ -89,7 +89,7 @@ function greetUserName(){
     }   else{
         let userJson = JSON.parse(localStorage.getItem("userData"));
         let userName = makeFirstLetterBig(userJson.name);
-        contentRef.innerHTML = `<h2 class="summary-h2-font-user" >Good Morning,  </h2>
+        contentRef.innerHTML = `<h2 class="summary-h2-font-user" >Good Morning,&nbsp;</h2>
                                 <h1 class="summary-h1-font-user">${userName}</h1>`
     } 
 }
