@@ -1,5 +1,5 @@
 let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
-let colorCode = 0;
+let colorCode;
 
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
@@ -16,12 +16,11 @@ function addNewContact(){
 
     const usernameRef = document.getElementById("add-contact-usernameID").value;
     const usermailRef = document.getElementById("add-contact-mailID").value; 
-    const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;  
+    const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
+    
+    colorCode = getRandomInt(colors.length);
 
     const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef, "color": colors[colorCode]};
-
-    colorCode++;
-    setColorCodeBackto0WhenItsToBig(colorCode);
 
     contacts.push(contactJson);
 
@@ -63,37 +62,6 @@ async function addContactToLocalStorageAndAPI(inputContacts){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function renderAddContact(){
     let contentRef = document.getElementById("add-contactID");
     
@@ -102,7 +70,7 @@ function renderAddContact(){
         <div class="main-container-edit-contact left-side-rounded">
 
                                     <div class="edit-contact-headcard left-side-rounded">
-                                        <img onclick="hideAddContactFormular()" class="close-icon-edit-contact" src="./assets/img/close.svg" alt="close icon">
+                                        <img onclick="hideAddContactFormular(), closeWhiteScreen()" class="close-icon-edit-contact" src="./assets/img/close.svg" alt="close icon">
                                         <img class="capa-logo-1-edit-contact" src="./assets/img/Capa 1.svg" alt="Capa 1">
                                         <h2 class="h2-edit-contact">Add Contact</h2>
                                         <a class="a-font-edit-contact">Tasks are better in a Team</a>
@@ -132,10 +100,10 @@ function renderAddContact(){
                                                 </div>
 
                                                 <div class="button-edit-contact-order">
-                                                    <button onclick="hideAddContactFormular()" class="button-edit-contact button-edit-contact-grey">
+                                                    <button onclick="hideAddContactFormular(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-grey">
                                                         Cancel 
                                                     </button>
-                                                    <button onclick="addNewContact()" class="button-edit-contact button-edit-contact-blue">
+                                                    <button onclick="addNewContact(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-blue">
                                                         Create Contact 
                                                         <img class="check-icon-edit-contact" src="./assets/img/check.svg" alt="check icon">
                                                     </button>

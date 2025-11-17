@@ -35,6 +35,67 @@ function toggleAssignDropdown(event) {
 }
 
 
+// === A special function to get the Initals from the contacts ===
+function getInitials(inputFullName){
+    const nameParts = inputFullName.split(/\s+/);
+    const firstNameInital = nameParts[0]?.charAt(0).toUpperCase() || "";
+    const lastNameInitial = nameParts[1]?.charAt(0).toUpperCase() || "";
+    return `${firstNameInital}${lastNameInitial}`
+}
+
+
+// === Contacts are rendered when the page are been open ===
+function renderContactsInDropdown(){
+  let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
+  const userContacts = getUserData.friends;
+  const login = checkIfLogedIn();
+  
+  if(!login){
+    demoContactTemplate();
+  }
+  for (let index = 0; index < userContacts.length; index++) {
+    singleContactTemplate(userContacts[index]);
+  }
+}
+
+
+// === Some Templates ===
+function singleContactTemplate(inputContact){
+  let contentRef = document.getElementById("contacts-containerID");
+
+  contentRef.innerHTML += `         
+            <div class="assign-item-addTask_page" onclick="selectAssignUser('${inputContact.username}')">
+              <span class="assign-avatar-addTask_page" style="background-color: ${inputContact.color};">${getInitials(inputContact.username)}</span>
+              <span class="assign-name-addTask_page">${inputContact.username}</span>
+              <input type="checkbox" class="assign-check-addTask_page">
+            </div>`
+}
+
+
+function demoContactTemplate(){
+   let contentRef = document.getElementById("contacts-containerID");
+
+   contentRef.innerHTML += `         
+            <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker')">
+              <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
+              <span class="assign-name-addTask_page">Nils Becker</span>
+              <input type="checkbox" class="assign-check-addTask_page">
+            </div>
+
+            <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König')">
+              <span class="assign-avatar-addTask_page" style="background-color: #ff7eb6;">LK</span>
+              <span class="assign-name-addTask_page">Lara König</span>
+              <input type="checkbox" class="assign-check-addTask_page">
+            </div>
+
+            <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said')">
+              <span class="assign-avatar-addTask_page" style="background-color: #00bfa5;">OS</span>
+              <span class="assign-name-addTask_page">Omar Said</span>
+              <input type="checkbox" class="assign-check-addTask_page">
+            </div>`
+}
+
+
 // === Assign User Selection ===
 function selectAssignUser(name, event) {
   if (event && event.stopPropagation) event.stopPropagation();

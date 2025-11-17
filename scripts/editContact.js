@@ -135,7 +135,7 @@ function renderEditContact(){
                                 <div class="main-container-edit-contact right-side-rounded">
 
                                     <div class="edit-contact-headcard right-side-rounded">
-                                        <img onclick="hideEditContactFormular()" class="close-icon-edit-contact" src="./assets/img/close.svg" alt="close icon">
+                                        <img onclick="hideEditContactFormular(), closeWhiteScreen()" class="close-icon-edit-contact" src="./assets/img/close.svg" alt="close icon">
                                         <img class="capa-logo-1-edit-contact" src="./assets/img/Capa 1.svg" alt="Capa 1">
                                         <h2 class="h2-edit-contact">Edit Contact</h2>
                                     </div>
@@ -164,10 +164,10 @@ function renderEditContact(){
                                                 </div>
 
                                                 <div class="button-edit-contact-order">
-                                                    <button onclick="deleteContactinEditContactWindow()" class="button-edit-contact button-edit-contact-grey">
+                                                    <button onclick="deleteContactinEditContactWindow(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-grey">
                                                         Delete
                                                     </button>
-                                                    <button onclick="editContact()" class="button-edit-contact button-edit-contact-blue">
+                                                    <button onclick="editContact(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-blue">
                                                         Save
                                                         <img class="check-icon-edit-contact" src="./assets/img/check.svg" alt="check icon">
                                                     </button>
