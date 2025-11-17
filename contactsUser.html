@@ -21,6 +21,7 @@
     <script src="./scripts/editContact.js"></script>
     <script src="./scripts/contact_page_specialfunctions.js"></script>
     <script src="./scripts/contact-page-api.js"></script>
+    <script src="./scripts/responsive.js"></script>
     
 
 
@@ -112,27 +113,43 @@
             </div>
 
             <div class="contact-container">
-
-                
-
-                
-
                 <div id="contactContainerID">
 
                 </div>
 
             </div>
-
-
-           
-
         </contacts>
 
+      <div id="singleContactWrapper">
+        <div class="single-contact-header">
+             <h2 class="contact_information">Contact Information</h2>
+        <a href="./contactsUser.html"> <img src="./assets/img/arrow_left.svg" class="back-btn-mobile">
+        </a>
+       </div>
 
+      <div id="singleContactID"></div>
+      <div class="contact-actions-mobile">
+      <input type="checkbox" id="contact-menu-toggle" class="contact-fab-toggle">
 
-        <div id="singleContactID">
+     <label for="contact-menu-toggle" class="contact-fab">
+         <img src="./assets/img/menu_contant.svg" alt="More">
+    </label>
 
-        </div>
+    <div class="contact-fab-menu">
+         <button class="contact-fab-item"
+          onclick="showEditContactFormular(), setUserDataValue(0), callWhiteScreen()">
+    <img src="./assets/img/edit.svg" alt="">
+    <span>Edit</span>
+         </button>
+
+         <button class="contact-fab-item"
+          onclick="deleteContactinEditContactWindow()">
+    <img src="./assets/img/delete.svg" alt="">
+    <span>Delete</span>
+         </button>
+   </div>
+  </div>
+   </div>
 
 
 
@@ -161,6 +178,9 @@
 
 
         </nav-main-container>
+
+          <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+          <div id="toast-dim"></div>
     
 
 

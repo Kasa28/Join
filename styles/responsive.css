@@ -991,3 +991,297 @@ header {
   width: 0;
   height: 0;
 }
+/* ======== Contact ======== */
+.single-contact-header,
+.back-btn-mobile,
+.contact-actions-mobile {
+  display: none;
+}
+
+/* ======== MOBILE (bis 1000px) ======== */
+@media (max-width: 1000px) {
+
+  contacts.maincontent {
+    display: block;
+    width: 100%;
+  }
+
+  #singleContactWrapper {
+    display: none;
+    width: 100%;
+  }
+
+  nav-main-container:has(#singleContactID > *) contacts.maincontent {
+    display: none;
+  }
+
+  nav-main-container:has(#singleContactID > *) #singleContactWrapper {
+    display: block;
+  }
+
+  .single-contact-header {
+    display: block;
+    position: relative;
+    padding: 16px;
+  }
+
+  .contact_information {
+    display: inline;
+  }
+
+  .back-btn-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 24px;
+    height: 24px;
+  }
+
+  /* ==== Mobile-Actions unten rechts ==== */
+  .contact-actions-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: fixed;
+    right: 16px;
+    bottom: 80px;
+    z-index: 1500;
+  }
+
+
+  .contact-fab-menu {
+    margin-bottom: 8px;
+    padding: 8px 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    min-width: 140px;
+  }
+
+  .contact-fab-item {
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .contact-fab-item:hover {
+    background: #f5f5f5;
+  }
+
+  .contact-fab-item img {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* hier blenden wir die alten Edit/Delete-Buttons aus,
+     WENN sie in .contact-actions-inline liegen */
+  .contact-actions-inline {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+
+  .contact-actions-mobile {
+    position: fixed;
+    right: 16px;
+    bottom: 80px;
+    z-index: 1500;
+
+    /* WICHTIG: damit das absolute Menü sich daran orientiert */
+    width: max-content;
+  }
+
+  .contact-fab {
+    cursor: pointer;
+
+    position: relative;   /* Referenz für das Menü */
+    z-index: 2;           /* hinter dem Menü */
+  }
+
+  .contact-fab-menu {
+    position: absolute;
+    right: 0;
+    bottom: 22px;
+
+    /* Menü etwas nach unten schieben → überlappt den Button */
+    transform: translateY(18px);
+
+    z-index: 3;           /* vor dem blauen Button */
+    margin: 0;
+    padding: 8px 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    min-width: 140px;
+  }
+
+  .contact-fab-item {
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .contact-fab-item:hover {
+    background: #f5f5f5;
+  }
+
+  .contact-fab-item img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 1000px) {
+
+  /* ... dein anderer Mobile-Code (Wrapper, Header, etc.) ... */
+
+  /* ==== Mobile-Actions unten rechts ==== */
+  .edit-delete-container{
+    display: none;
+  }
+
+  .contact-actions-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: fixed;
+    right: 16px;
+    bottom: 80px;        /* etwas über der unteren Navi */
+    z-index: 1500;
+  }
+
+  /* Checkbox verstecken */
+  .contact-fab-toggle {
+    display: none;
+  }
+
+
+  .contact-fab img {
+    width: 51px;
+    height: 53px;
+  }
+
+  /* Menü standardmäßig unsichtbar */
+  .contact-fab-menu {
+    display: none;
+    
+    padding: 8px 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    min-width: 140px;
+  }
+
+  .contact-fab-item {
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .contact-fab-item:hover {
+    background: #f5f5f5;
+  }
+
+  .contact-fab-item img {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* === Toggle-Logik ohne JS === */
+
+  /* Wenn Checkbox AN → blauer Button ausblenden ... */
+  .contact-fab-toggle:checked + .contact-fab {
+    display: none;
+  }
+
+  /* ... und Menü anzeigen */
+  .contact-fab-toggle:checked + .contact-fab + .contact-fab-menu {
+    display: block;
+  }
+}
+.contact-fab-toggle {
+  display: none;
+} 
+
+.contact-fab-menu {
+  display: none;
+}
+
+/* === Toast Notifications Container === */
+  #toast-root{
+    position: fixed;
+    left: 50%;
+    top: 0;                 
+    transform: translateX(-50%);
+    z-index: 9999;
+    pointer-events: none;
+  }
+  
+  /* Toast Styling and Animations === */
+  .toast{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #4589ff;
+    color: #fff;
+    padding: 20px 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.18);
+    font: 500 16px/1.2 "Open Sans", system-ui, sans-serif;
+    opacity: 0;
+    transform: translateY(100vh) scale(.98);   
+    pointer-events: none;
+  }
+  
+  .toast img{ width:20px; height:20px; display:block; filter: brightness(0) invert(1); }
+  .toast--show{ animation: toast-up .35s cubic-bezier(.2,.9,.2,1) forwards; }
+  .toast--hide{ animation: toast-down .25s ease-in forwards; }
+  
+  @keyframes toast-up{
+    from { opacity: 0; transform: translateY(100vh) scale(.98); }
+    to   { opacity: 1; transform: translateY(50vh)  scale(1); } /* Mitte */
+  }
+  
+  @keyframes toast-down{
+    from { opacity: 1; transform: translateY(50vh) scale(1); }
+    to   { opacity: 0; transform: translateY(100vh) scale(.98); }
+  }
+  
+  @media (prefers-reduced-motion: reduce){
+    .toast--show,.toast--hide{ animation-duration: .01ms; }
+  }
+  
+  /* === Toast Icons === */
+  .toast-icon{
+    width:20px; height:20px; display:inline-block;
+    background:#fff; 
+    -webkit-mask: url("../assets/img/Board.svg") no-repeat center / contain;
+            mask: url("../assets/img/Board.svg") no-repeat center / contain;
+  }
