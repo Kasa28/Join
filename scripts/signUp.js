@@ -41,7 +41,7 @@ function onclickFunction(event) {
 
 /* === Redirect to Login === */
 function jumpToLogin() {
-  window.location.href = "./login.html";
+  window.location.href = "./index.html";
 }
 
 

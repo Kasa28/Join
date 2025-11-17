@@ -20,7 +20,7 @@ return `<div class="user-menu-container-header">
                     </a>
                 </div>
                 <div>
-                    <a onclick="deleteIdFromLocalStorage()" class="button-sidebar padding-up-down-small" href="../login.html">
+                    <a onclick="deleteIdFromLocalStorage()" class="button-sidebar padding-up-down-small" href="../index.html">
                         <span class="sidebar-font">Logout</span>
                     </a>
                 </div>
