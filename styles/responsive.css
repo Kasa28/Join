@@ -1285,3 +1285,29 @@ header {
     -webkit-mask: url("../assets/img/Board.svg") no-repeat center / contain;
             mask: url("../assets/img/Board.svg") no-repeat center / contain;
   }
+
+  @media (max-width: 1000px) {
+  contacts.maincontent {
+    width: 100%;
+    border-right: none;
+  }
+
+  #singleContactID:empty {
+    display: none;
+  }
+
+  #singleContactID:not(:empty) {
+    display: block;
+    position: fixed;
+    top: 96px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    z-index: 1200;
+    padding: 24px 20px 120px;
+    overflow-y: auto;
+    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.15);
+  }
+
+}

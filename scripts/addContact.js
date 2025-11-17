@@ -38,6 +38,7 @@ function addNewContact(){
     
     hideAddContactFormular();
     renderContactList();
+    showContactToast("Contact successfully created");
 }
 
 async function addContactToLocalStorageAndAPI(inputContacts){

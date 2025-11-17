@@ -121,3 +121,24 @@ function pushExampleContactsOneTimeInLocalStorage(){
     }
 }
 
+function showContactToast(text, { variant = "ok", duration = 1500 } = {}) {
+    let root = document.getElementById("toast-root");
+    if (!root) {
+        root = document.createElement("div");
+        root.id = "toast-root";
+        document.body.appendChild(root);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "toast toast--show" + (variant === "error" ? " toast--error" : "");
+    toast.textContent = text;
+    root.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.remove("toast--show");
+        toast.classList.add("toast--hide");
+        toast.addEventListener("animationend", () => toast.remove(), { once: true });
+    }, duration);
+}
+
+window.showContactToast = showContactToast;
