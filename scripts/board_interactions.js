@@ -81,28 +81,42 @@ document.addEventListener("touchstart", (e) => {
   }, 300);
 }, { passive: false });
 
+
 document.addEventListener("touchmove", (e) => {
   if (!longPressActive || !currentDragCardEl) return;
+
   const touch = e.touches[0];
-  const hoverCol = document.elementFromPoint(touch.clientX, touch.clientY)?.closest(".drag-area");
-  if (hoverCol?.id) highlight(hoverCol.id);
-});
+  const hoverCol = document
+    .elementFromPoint(touch.clientX, touch.clientY)
+    ?.closest(".drag-area");
+
+  if (hoverCol?.id) {
+    highlight(hoverCol.id);
+  }
+}, { passive: false });
+
 
 document.addEventListener("touchend", (e) => {
   clearTimeout(longPressTimer);
+
   if (longPressActive && currentDragCardEl) {
     const touch = e.changedTouches[0];
-    const dropCol = document.elementFromPoint(touch.clientX, touch.clientY)?.closest(".drag-area");
+    const dropCol = document
+      .elementFromPoint(touch.clientX, touch.clientY)
+      ?.closest(".drag-area");
     if (dropCol) {
       const status = statusByColumnId[dropCol.id];
-      if (status) moveTo(status);
+      if (status) {
+        moveTo(status);
+      }
     }
     currentDragCardEl.classList.remove("is-dragging");
     document.body.classList.remove("dragging");
   }
   longPressActive = false;
   currentDragCardEl = null;
-});
+}, { passive: false });
+
 window.allowDrop = (e) => e.preventDefault();
 window.highlight = function (id) {
   if (!id) return;
