@@ -69,7 +69,6 @@ let longPressTimer = null;
 let longPressActive = false;
 
 document.addEventListener("touchstart", (e) => {
-  e.preventDefault(); // Prevents iOS/macOS context menu / long‑press actions
   const card = e.target.closest(".task-card");
   if (!card) return;
 
@@ -79,11 +78,10 @@ document.addEventListener("touchstart", (e) => {
     currentDragCardEl = card;
     card.classList.add("is-dragging");
     document.body.classList.add("dragging");
-  }, 300); // long press duration
-});
+  }, 300);
+}, { passive: false });
 
 document.addEventListener("touchmove", (e) => {
-  e.preventDefault(); // Prevents scrolling while dragging
   if (!longPressActive || !currentDragCardEl) return;
   const touch = e.touches[0];
   const hoverCol = document.elementFromPoint(touch.clientX, touch.clientY)?.closest(".drag-area");
@@ -91,7 +89,6 @@ document.addEventListener("touchmove", (e) => {
 });
 
 document.addEventListener("touchend", (e) => {
-  e.preventDefault(); // Prevents default tap behavior after drag
   clearTimeout(longPressTimer);
   if (longPressActive && currentDragCardEl) {
     const touch = e.changedTouches[0];
