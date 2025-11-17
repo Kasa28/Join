@@ -19,7 +19,6 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
    function renderContactList(){
     let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
 
-    
     let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
@@ -68,9 +67,8 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
     });
 
     consoleLogArray();
-    
-    
-}  
+ 
+};  
 
 async function consoleLogArray(){
     const result = await getAllUsers("users"); 

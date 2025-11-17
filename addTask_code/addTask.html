@@ -14,7 +14,7 @@
   <link rel="icon" type="image/x-icon" href="../assets/img/Capa 2.png">
 </head>
 
-<body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()">
+<body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactsInDropdown()">
 
   <header>
     <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
@@ -122,24 +122,8 @@
 
           <div id="assigned-avatars"></div>
 
-          <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox">
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker')">
-              <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
-              <span class="assign-name-addTask_page">Nils Becker</span>
-              <input type="checkbox" class="assign-check-addTask_page">
-            </div>
-
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König')">
-              <span class="assign-avatar-addTask_page" style="background-color: #ff7eb6;">LK</span>
-              <span class="assign-name-addTask_page">Lara König</span>
-              <input type="checkbox" class="assign-check-addTask_page">
-            </div>
-
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said')">
-              <span class="assign-avatar-addTask_page" style="background-color: #00bfa5;">OS</span>
-              <span class="assign-name-addTask_page">Omar Said</span>
-              <input type="checkbox" class="assign-check-addTask_page">
-            </div>
+          <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID">
+            
           </div>
         </section>
 

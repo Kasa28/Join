@@ -14,13 +14,18 @@ function removeContentfromAllContactBlocks(){
 function makeFirstLetterBig(inputString){
 
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
+}
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
 
 function callWhiteScreen() {
     const contentRef = document.getElementById("white-screen");
     contentRef.classList.remove("d_none");
 }
+
+
 
 function closeWhiteScreen(){
     const contentRef = document.getElementById("white-screen");
@@ -35,15 +40,6 @@ function getContactColorType(inputIndex){
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     const contact = contacts[inputIndex];
     return contact.color;
-}
-
-function setColorCodeBackto0WhenItsToBig(inputColorCode){
-
-    if(inputColorCode > 8){
-        colorCode = 0;
-        return;
-    } return;
-
 }
 
 

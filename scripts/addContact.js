@@ -1,5 +1,5 @@
 let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
-let colorCode = 0;
+let colorCode;
 
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
@@ -16,12 +16,11 @@ function addNewContact(){
 
     const usernameRef = document.getElementById("add-contact-usernameID").value;
     const usermailRef = document.getElementById("add-contact-mailID").value; 
-    const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;  
+    const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
+    
+    colorCode = getRandomInt(colors.length);
 
     const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef, "color": colors[colorCode]};
-
-    colorCode++;
-    setColorCodeBackto0WhenItsToBig(colorCode);
 
     contacts.push(contactJson);
 
