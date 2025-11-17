@@ -3,6 +3,7 @@ async function getAllUsers(path) {
   return (responseToJson = await response.json());
 }
 
+
 async function patchDataWithID(path = "", id = "", data = {}){
 const response = await fetch(`${BASE_URL}${path}/${id}.json`, {
     method: "PATCH",
@@ -13,6 +14,7 @@ const response = await fetch(`${BASE_URL}${path}/${id}.json`, {
     });
     return await response.json();
 }
+
 
 async function getUserID(inputUsername) {
     const responseAllUser = await getAllUsers("users");
@@ -28,6 +30,7 @@ async function getUserID(inputUsername) {
 
     return userID;
 }
+
 
 async function updateUserFriendslist(inputID, inputObject){
     const updatedData = { friends: inputObject}

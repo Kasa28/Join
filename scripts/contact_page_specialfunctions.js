@@ -1,7 +1,5 @@
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
-
-
 function removeContentfromAllContactBlocks(){
     contactBlock = {
         A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [],
@@ -11,20 +9,22 @@ function removeContentfromAllContactBlocks(){
 
 }
 
+
 function makeFirstLetterBig(inputString){
 
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 }
 
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
+
 
 function callWhiteScreen() {
     const contentRef = document.getElementById("white-screen");
     contentRef.classList.remove("d_none");
 }
-
 
 
 function closeWhiteScreen(){
@@ -120,6 +120,7 @@ function pushExampleContactsOneTimeInLocalStorage(){
         console.log("Keine Beispielkontakte vorhanden.");
     }
 }
+
 
 function showContactToast(text, { variant = "ok", duration = 1500 } = {}) {
     let root = document.getElementById("toast-root");

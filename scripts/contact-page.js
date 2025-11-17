@@ -22,8 +22,7 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
     let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
-
-    //pushExampleContactsOneTimeInLocalStorage();
+    
     setContactsIntoContactblock(getContactsFromUser);
 
 
@@ -34,7 +33,6 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
             return;
         }
 
-    
         contactContainerRef.innerHTML += `
 
             <div class="padding-small-contacts">
@@ -64,17 +62,8 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
                     </contact>
             `;
         }); 
-    });
-
-    consoleLogArray();
- 
+    }); 
 };  
-
-async function consoleLogArray(){
-    const result = await getAllUsers("users"); 
-}
-
-
 
 
 function renderSingleContact(inputString){
@@ -84,26 +73,31 @@ function renderSingleContact(inputString){
     
     const rightIndex = findIndexFromUsername(contacts, inputString);
     const contact = contacts[rightIndex];
-    
+
+    singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
+}
+
+
+function singleContactTemplate(inputColor, inputUsername, inputIndex,  inputEmail, inputPhone){
     let singleContactRef = document.getElementById("singleContactID");
     singleContactRef.innerHTML = `
     <show-contact>
 
             <div class="show-contact-container">
                 <contact class="display-flex-center-x">
-                    <div class="show-contact-logo ${contact.color}">
-                        <a>${getInitials(contact.username)}</a>
+                    <div class="show-contact-logo ${inputColor}">
+                        <a>${getInitials(inputUsername)}</a>
                     </div>
                     <div>
                         <div class="name-property">
-                            <h2>${makeFirstLetterBig(contact.username)}</h2>
+                            <h2>${makeFirstLetterBig(inputUsername)}</h2>
                         </div>
                         <div style="display: flex;">
-                            <div onclick="showEditContactFormular(), setUserDataValue(${rightIndex}), callWhiteScreen()"  class="edit-delete-container">
+                            <div onclick="showEditContactFormular(), setUserDataValue(${inputIndex}), callWhiteScreen()"  class="edit-delete-container">
                                 <img class="edit-delete-icons" src="./assets/img/edit.svg" alt="edit icon">
                                 Edit
                             </div>
-                            <div onclick="deleteContact('${contact.username}')" class="edit-delete-container">
+                            <div onclick="deleteContact('${inputUsername}')" class="edit-delete-container">
                                 <img class="edit-delete-icons" src="./assets/img/delete.svg" alt="delete icon">
                                 Delete
                             </div>
@@ -114,11 +108,11 @@ function renderSingleContact(inputString){
                 <br>
                 <h3>E-Mail</h3>
                 <br>
-                <p class="mail-property">${contact.email}</p>
+                <p class="mail-property">${inputEmail}</p>
                 <br>
                 <h3>Phone</h3>
                 <br>
-                <p>${contact.PhoneNumber}</p>
+                <p>${inputPhone}</p>
 
             </div>
 
@@ -126,4 +120,3 @@ function renderSingleContact(inputString){
     
     `
 }
-

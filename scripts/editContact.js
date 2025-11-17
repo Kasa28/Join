@@ -1,22 +1,23 @@
 let remindIndex;
 
-
+// Edit-Contact-Fenster bewegen
 function showEditContactFormular(){
     document.getElementById("edit-contactID").classList.remove("hide-edit-contact")
 }
+
 
 function hideEditContactFormular(){
     document.getElementById("edit-contactID").classList.add("hide-edit-contact")
 }
 
+
+// Edit-Contact-Fenster fuellen
 function setUserDataValue(inputIndex){
     let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
-
     const contact = contacts[inputIndex];
     const initials = getInitials(contact.username);
     const getColor =  getContactColorType(inputIndex);
-
     let initialsRef = document.getElementById("edit-contact-initialsID");
 
     initialsRef.innerHTML = initials;
@@ -26,35 +27,27 @@ function setUserDataValue(inputIndex){
     document.getElementById("edit-contact-initialsID").classList.add(getColor);
 
     remindIndex = inputIndex;
-
 }
 
 
+// Change Name or change other things in Formualar
 async function editContact(){
     const getUserData = JSON.parse(localStorage.getItem("userData")) || {};
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
-    
     let contact = contacts[remindIndex];
     
     contact.username = document.getElementById("edit-contact-usernameID").value;
     contact.email = document.getElementById("edit-contact-mailID").value;
     contact.PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
 
-    
     updateFriendsInLocalStorage(contacts);
-
     const userID = await getUserID(getUserData.name);
-    if(userID){
-        // Aktualisiere die Freundesliste in der API
-        await updateUserFriendslist(userID, contacts);
-    } else{
-        console.error("Benutzer-ID konnte nicht abgerufen werden.");
-    }
-
+    await updateUserFriendslist(userID, contacts);
     renderSingleContact(contact.username);
     hideEditContactFormular();
     renderContactList();
 }
+
 
 function updateFriendsInLocalStorage(updatedFriends){
     let userData = JSON.parse(localStorage.getItem("userData") || {});
@@ -66,57 +59,33 @@ function updateFriendsInLocalStorage(updatedFriends){
 async function deleteContact(inputString){
     let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
-    
-
     const rightIndex = findIndexFromUsername(contacts, inputString);
-
-     // Überprüfen, ob der Kontakt gefunden wurde
-    if (rightIndex === -1) {
-        console.error("Kontakt nicht gefunden:", inputString);
-        return;
-    }
 
     contacts.splice(rightIndex, 1);
 
-    
     updateFriendsInLocalStorage(contacts);
-
     const userID = await getUserID(getUserData.name);
-    if(userID){
-        // Aktualisiere die Freundesliste in der API
-        await updateUserFriendslist(userID, contacts);
-    } else{
-        console.error("Benutzer-ID konnte nicht abgerufen werden.");
-    }
-
+    await updateUserFriendslist(userID, contacts);
 
     let showContact = document.getElementById("singleContactID");
     showContact.innerHTML = "";
-
     hideEditContactFormular();
     renderContactList();
 }
 
+
+// In Edit-Contact-Window is a other Deletefunktion because we dont have any arguments in the Template to give
 async function deleteContactinEditContactWindow(){
     let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let usernameRef = document.getElementById("edit-contact-usernameID").value;
     let showContact =  document.getElementById("singleContactID");
-
     const rightIndex = findIndexFromUsername(contacts, usernameRef);
 
     contacts.splice(rightIndex, 1);
-
     updateFriendsInLocalStorage(contacts);
-
     const userID = await getUserID(getUserData.name);
-    if(userID){
-        // Aktualisiere die Freundesliste in der API
-        await updateUserFriendslist(userID, contacts);
-    } else{
-        console.error("Benutzer-ID konnte nicht abgerufen werden.");
-    }
-
+    await updateUserFriendslist(userID, contacts);
 
     showContact.innerHTML = "";
     hideEditContactFormular();

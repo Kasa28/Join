@@ -1,6 +1,8 @@
 let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
 let colorCode;
 
+
+// Edit-Contact-Fenster bewegen
 function showAddContactFormular(){
     document.getElementById("add-contactID").classList.remove("hide-add-contact")
 }
@@ -10,63 +12,47 @@ function hideAddContactFormular(){
 }
 
 
-function addNewContact(){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
-    contacts = getUserData.friends|| [];
-
-    const usernameRef = document.getElementById("add-contact-usernameID").value;
-    const usermailRef = document.getElementById("add-contact-mailID").value; 
-    const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
-    
-    colorCode = getRandomInt(colors.length);
-
-    const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef, "color": colors[colorCode]};
-
-    contacts.push(contactJson);
-
-    
-    sortUserToAlphabeticalOrder(contacts);
-    
-    addContactToLocalStorageAndAPI(contacts);
-
-
+// After a confrirmed Formular, the Formular gets empty again
+function emptyTheAddContactFormular(){
     document.getElementById("add-contact-usernameID").value = "";
     document.getElementById("add-contact-mailID").value = "";
     document.getElementById("add-contact-phone-numberID").value = "";
-    
-    console.log(getUserData.friends);
-    
+}
+
+
+function addNewContact(){
+    const getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
+    let contacts = getUserData.friends|| [];
+    const usernameRef = document.getElementById("add-contact-usernameID").value;
+    const usermailRef = document.getElementById("add-contact-mailID").value; 
+    const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
+    colorCode = getRandomInt(colors.length);
+    const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef, "color": colors[colorCode]};
+    contacts.push(contactJson);
+    sortUserToAlphabeticalOrder(contacts);
+    addContactToLocalStorageAndAPI(contacts);
+    emptyTheAddContactFormular();
     hideAddContactFormular();
     renderContactList();
     showContactToast("Contact successfully created");
 }
 
+
 async function addContactToLocalStorageAndAPI(inputContacts){
     let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };    
     let updatedContacts = inputContacts;
-
-
     getUserData.friends = updatedContacts;
 
-
-
-    //set in LocalStorage
     localStorage.setItem("userData", JSON.stringify(getUserData));
 
-    //set in API
     const userID = await getUserID(getUserData.name);
-    if(userID){
-        await updateUserFriendslist(userID, updatedContacts);
-    }else {
-        console.error("etwas funktioniert auf Zeile 67 nicht richtig!");
-    }
+    await updateUserFriendslist(userID, updatedContacts);
 }
 
 
 function renderAddContact(){
     let contentRef = document.getElementById("add-contactID");
     
-
     contentRef.innerHTML = `
         <div class="main-container-edit-contact left-side-rounded">
 
