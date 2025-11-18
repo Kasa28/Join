@@ -1418,5 +1418,16 @@ header {
   display: none !important;
 }
 
+/* wird vom JS gesetzt, wenn ein Overlay offen ist */
+body.no-scroll {
+  overflow: hidden;
+}
 
 
+/* Add-Contact-Karte auf Mobile: Höhe begrenzen, eigenes Scrollen */
+@media (max-width: 600px) {
+  .main-container-add-contact {
+    max-height: calc(100vh - 120px); /* ggf. anpassen */
+    overflow-y: auto;
+  }
+}
