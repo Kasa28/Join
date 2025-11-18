@@ -82,14 +82,27 @@ function makeFirstLetterBig(inputString){
 }
 
 
-function greetUserName(){
+function greetUserName() {
     let contentRef = document.getElementById("greetID");
-    if(!checkIfLogedIn()){
-        contentRef.innerHTML = `<h1 class="summary-h1-font-guest">Good Morning</h1>`;
-    }   else{
+
+    const now = new Date();
+    const hour = now.getHours();
+    let greeting = "";
+
+    if (hour < 12) {
+        greeting = "Good Morning";
+    } else if (hour < 18) {
+        greeting = "Good Afternoon";
+    } else {
+        greeting = "Good Evening";
+    }
+
+    if (!checkIfLogedIn()) {
+        contentRef.innerHTML = `<h1 class="summary-h1-font-guest">${greeting}</h1>`;
+    } else {
         let userJson = JSON.parse(localStorage.getItem("userData"));
         let userName = makeFirstLetterBig(userJson.name);
-        contentRef.innerHTML = `<h2 class="summary-h2-font-user" >Good Morning,&nbsp;</h2>
-                                <h1 class="summary-h1-font-user">${userName}</h1>`
-    } 
+        contentRef.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2>
+                                <h1 class="summary-h1-font-user">${userName}</h1>`;
+    }
 }
