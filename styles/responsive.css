@@ -143,6 +143,22 @@ header {
   }
 }
 
+@media (orientation: landscape) and (max-width: 900px) {
+  body > * { display: none !important; }
+
+  body::before {
+      content: "Please rotate your device to portrait mode.";
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      text-align: center;
+      background: #ffffff;
+  }
+}
+
 @media (max-width: 900px) {
   .layout-container-addTask_page {
     flex-direction: column;
