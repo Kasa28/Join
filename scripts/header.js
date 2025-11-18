@@ -61,6 +61,8 @@ function checkIfLogedIn(){
 /* === User Initial Display === */
 function onloadFunctionHeader(){
     setLetterInUserBall();
+    addActiveClassToSidebarButtons();
+    setActiveSidebarByURL();
 }
 
 
@@ -105,4 +107,26 @@ function greetUserName() {
         contentRef.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2>
                                 <h1 class="summary-h1-font-user">${userName}</h1>`;
     }
+}
+
+
+function setActiveSidebarByURL() {
+    const currentPage = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.side-menu .button-sidebar').forEach(btn => {
+        const link = btn.getAttribute('href');
+        btn.classList.remove('active');
+        if (link && link.includes(currentPage)) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+
+function addActiveClassToSidebarButtons() {
+    document.querySelectorAll('.side-menu .button-sidebar').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.button-sidebar').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
 }

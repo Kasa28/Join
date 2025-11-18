@@ -69,3 +69,6 @@
     height: 24px;
 }
 
+.button-sidebar.active {
+    background: #D2E3FF;
+}
