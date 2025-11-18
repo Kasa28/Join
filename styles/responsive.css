@@ -1304,10 +1304,119 @@ header {
     right: 0;
     bottom: 0;
     background: #ffffff;
-    z-index: 1200;
     padding: 24px 20px 120px;
     overflow-y: auto;
     box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.15);
   }
 
+
 }
+
+@media (max-width: 1100px) { .add-contact, .edit-contact { width: 100%; left: 0; right: 0; display: flex; justify-content: center; padding: 107px 16px; box-sizing: border-box; } .main-container-edit-contact { width: 100%; height: auto; min-height: calc(100vh - 32px); border-radius: 30px; } .edit-contact-headcard { width: 100%; height: auto; padding: 72px 32px 40px 32px; } .edit-contact-content { width: 100%; padding: 40px 32px 48px 32px; } .button-edit-contact-order { width: 100%; gap: 16px; } .button-edit-contact { flex: 1; width: 100%; } } @media (max-width: 700px) { .main-container-edit-contact { border-radius: 24px; min-height: 100vh; gap: 56px; } .edit-contact-headcard { padding: 64px 24px 32px 24px; } .edit-contact-content { padding: 32px 20px 40px 20px; gap: 24px; } .user-letter-ball-edit-contact, .empty-user-ball-edit-contact { width: 72px; height: 72px; } .edit-contact-inputfield { width: 100%; } .close-icon-edit-contact { top: 16px; right: 16px; } } @media (max-width: 480px) { .main-container-edit-contact { border-radius: 24px; } .h2-edit-contact { font-size: 36px; text-align: center; } .a-font-edit-contact { font-size: 18px; text-align: center; } .edit-contact-headcard { padding: 48px 20px 28px 20px; } .edit-contact-content { padding: 28px 16px 32px 16px; } .input-icon-edit-contact { right: 12px; } .button-edit-contact-order { flex-direction: column; height: auto; } .button-edit-contact { width: 100%; } } .main-container-edit-contact { display: flex; flex-direction: column; height: 100%; font-family: "open sans"; gap: 72px; background: white; border-radius: 51px; box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08); } .edit-contact-content { display: flex; flex-direction: column; align-items: center; height: 422px; width: min(437px, 100%); gap: 32px; padding: 0 46px 72px 46px; }
+
+.main-container-edit-contact {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: "open sans";
+  gap: 72px;
+  background: white;
+  border-radius: 51px;
+  box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;           
+}
+#singleContactWrapper {
+  padding: 16px;
+}
+
+.single-contact-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  position: static;  
+  top: auto;
+}
+
+.back-btn-mobile {
+  position: static;  
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 1000px) {
+
+  #singleContactWrapper {
+    padding: 16px;
+  }
+
+  .single-contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    position: static;
+    top: auto;
+  }
+
+  .back-btn-mobile {
+    position: static;
+    width: 24px;
+    height: 24px;
+  }
+}
+@media (max-width: 1000px) {
+  .show-contact-container {
+    position: static; 
+    top: auto;
+    margin-top: 24px;   
+  }
+}
+@media (max-width: 1000px) {
+  #singleContactID:empty {
+    display: none;
+  }
+
+  #singleContactID:not(:empty) {
+    display: block;
+    /* KEIN fixed/absolute mehr */
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+
+    background: #ffffff;
+    padding: 24px 20px 120px;
+    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.15);
+  }
+}
+
+/* Standard (Desktop) → NICHT anzeigen */
+.single-contact-header {
+  display: none;
+}
+
+/* Mobile (bis 1000px) → anzeigen */
+@media (max-width: 1000px) {
+  .single-contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 1000px) {
+  #singleContactWrapper .show-contact-container > h2 {
+    display: none !important;
+  }
+}
+
+.d-none {
+  display: none !important;
+}
+
+
+
