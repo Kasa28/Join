@@ -24,18 +24,16 @@ document.addEventListener("DOMContentLoaded", function () {
      1) Kontakt-Detail: Desktop vs. Mobile
      ========================================= */
 
-  const legacy = document.getElementById("singleContactID");
+  const legacy  = document.getElementById("singleContactID");
   const content = document.getElementById("singleContactContent");
 
   if (legacy && content) {
-    // Inhalt von legacy -> content kopieren (für Mobile)
     function syncFromLegacy() {
       if (window.innerWidth <= 1000) {
         content.innerHTML = legacy.innerHTML;
       }
     }
 
-    // Layout umschalten (Desktop vs. Mobile)
     function applyContactLayout() {
       if (window.innerWidth <= 1000) {
         legacy.style.display = "none";
@@ -67,45 +65,74 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function hideMenu() {
-    const menuWrapper = getMenuWrapper();
     const toggle = getToggle();
-    if (!menuWrapper || !toggle) return;
-    menuWrapper.style.display = "none";
+    if (!toggle) return;
     toggle.checked = false;
   }
 
-  function showMenu() {
-    const menuWrapper = getMenuWrapper();
-    const toggle = getToggle();
-    if (!menuWrapper || !toggle) return;
-    menuWrapper.style.display = "";
-    toggle.checked = false;
+  /* =========================================
+     3) Floating-Button ausblenden,
+        wenn Add/Edit-Overlay offen ist
+     ========================================= */
+
+  const fabWrapper  = document.querySelector(".contact-actions-mobile"); 
+  const addOverlay  = document.querySelector(".add-contact");            
+  const editOverlay = document.getElementById("edit-contactID");         
+
+  function isVisible(el) {
+    if (!el) return false;
+    const style = window.getComputedStyle(el);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    if (el.classList.contains("d-none")) return false;
+    if (el.classList.contains("hide-add-contact")) return false;
+    if (el.classList.contains("hide-edit-contact")) return false;
+    return true;
   }
+
+function syncFloatingActions() {
+  if (!fabWrapper) return;
+
+  const overlayOpen =
+    isVisible(addOverlay) ||  
+    isVisible(editOverlay);      
+
+  fabWrapper.style.display = overlayOpen ? "none" : "";
+  document.body.classList.toggle("no-scroll", overlayOpen);
+  document.documentElement.classList.toggle("no-scroll", overlayOpen);
+}
+
+  /* =========================================
+     4) Klick-Handler für Menü + Overlays
+     ========================================= */
 
   document.addEventListener("click", function (event) {
-    const menuWrapper = getMenuWrapper();
-    const toggle = getToggle();
-    if (!menuWrapper || !toggle) return;
+    const wrapper = getMenuWrapper();
+    const toggle  = getToggle();
+    if (!wrapper || !toggle) return;
 
     const target = event.target;
 
-    // Menü schließen, wenn man außerhalb klickt
-    if (!menuWrapper.contains(target)) {
-      toggle.checked = false;
+    if (!wrapper.contains(target)) {
+      hideMenu();
     }
 
-    // Klick auf Eintrag im 3-Punkte-Menü
     const fabItem = target.closest(".contact-actions-mobile .contact-fab-item");
     if (fabItem) {
       hideMenu();
     }
 
-    // Klick auf X / Save / Delete im Edit-Overlay oder White-Screen
-    const closeOrSaveBtn = target.closest(
-      ".close-icon-edit-contact, .button-edit-contact, #white-screen"
-    );
-    if (closeOrSaveBtn) {
-      setTimeout(showMenu, 0);
+    const togglesOverlay =
+      target.closest(".contact-fab-item")             || 
+      target.closest(".button-contacts-position")     || 
+      target.closest(".button-add-contact")           || 
+      target.closest(".close-icon-add-contact")       || 
+      target.closest(".button-cancel-add-contact")    || 
+      target.closest(".button-create-contact")        || 
+      target.closest(".close-icon-edit-contact")      || 
+      target.closest(".button-edit-contact");           
+
+    if (togglesOverlay) {
+      setTimeout(syncFloatingActions, 0);
     }
   });
 });

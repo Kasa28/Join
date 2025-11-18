@@ -971,6 +971,10 @@ header {
   }
 }
 
+
+
+
+
 @media (max-width: 600px) {
   .button-contacts-position {
     position: fixed;
@@ -1445,5 +1449,307 @@ body.no-scroll {
   .main-container-add-contact {
     max-height: calc(100vh - 120px); /* ggf. anpassen */
     overflow-y: auto;
+  }
+}
+
+/* ===========================
+   Mobile: Wenn ein Overlay offen ist (body.no-scroll),
+   Liste + Detailbereich ausblenden
+   =========================== */
+@media (max-width: 1000px) {
+  body.no-scroll contacts.maincontent,
+  body.no-scroll #singleContactWrapper {
+    display: none !important;
+  }
+}
+
+/* ===========================
+   Mobile: Add-Contact sauber verstecken
+   =========================== */
+@media (max-width: 1000px) {
+  /* Panel ist geschlossen → NICHT seitlich raus schieben,
+     sondern komplett ausblenden */
+  .add-contact.hide-add-contact {
+    transform: none;      /* verschiebt es nicht mehr zur Seite */
+    display: none;        /* wirklich weg */
+  }
+}
+
+/* =======================================
+   MOBILE: Add-Contact kleiner machen
+   ======================================= */
+@media (max-width: 600px) {
+  /* Overlay ein Stück vom oberen Rand weg
+     und nicht so viel Höhe „beanspruchen“ */
+  .add-contact {
+    padding: 72px 16px 24px;   /* vorher 107px o.ä. */
+    align-items: flex-start;   /* Karte oben beginnen */
+  }
+
+  /* Die weiße Add-Contact-Karte selbst verkleinern */
+  .main-container-add-contact {
+    max-width: 340px;          /* schmaler */
+    max-height: 480px;         /* niedriger */
+    border-radius: 32px;       /* etwas kleinerer Radius */
+    overflow-y: auto;          /* falls Inhalt länger ist, in der Karte scrollen */
+  }
+}
+
+/* Optional: auf ganz kleinen Geräten noch etwas kleiner skalieren */
+@media (max-width: 380px) {
+  .main-container-add-contact {
+    max-width: 320px;
+    max-height: 440px;
+  }
+}
+
+/* wird vom JS gesetzt, wenn ein Overlay offen ist */
+body.no-scroll {
+  overflow: hidden;      /* kein Scrollen */
+  height: 100vh;         /* fix auf Viewport-Höhe */
+}
+
+/* falls dein Haupt-Content selbst Scrollbalken hat */
+body.no-scroll .maincontent {
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .add-contact {
+    padding: 72px 16px 24px;
+    align-items: flex-start;
+  }
+
+  .main-container-add-contact {
+    max-width: 340px;
+    max-height: calc(100vh - 140px);
+    border-radius: 32px;
+    overflow-y: auto;    /* nur hier Scrollen erlauben */
+  }
+}
+
+
+/* =======================================
+   Globale, unsichtbare Scrollbalken
+   (Scrollen bleibt möglich)
+   ======================================= */
+
+/* Firefox + alte Edge/IE */
+html,
+body,
+.maincontent,
+#singleContactID,
+.main-container-add-contact,
+.main-container-edit-contact {
+  -ms-overflow-style: none;  /* IE / alter Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Chrome, Safari, neuer Edge (WebKit) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.maincontent::-webkit-scrollbar,
+#singleContactID::-webkit-scrollbar,
+.main-container-add-contact::-webkit-scrollbar,
+.main-container-edit-contact::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* =======================================
+   MOBILE: Add / Edit Contact kleiner machen
+   ======================================= */
+@media (max-width: 820px) {
+  /* Der blaue Overlay-Container */
+  .add-contact,
+  .edit-contact {
+    width: 100%;
+    left: 0;
+    right: 0;
+    padding: 56px 16px 24px;   /* weniger Abstand oben */
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;   /* Karte startet oben, nicht in der Mitte */
+  }
+
+  /* Die weiße Karte innen */
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 100%;
+    max-width: 360px;          /* schmaler → keine Vollbreite mehr */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: calc(100vh - 140px); /* nicht höher als der Screen */
+    border-radius: 32px;
+    overflow-y: auto;          /* nur IN der Karte scrollen */
+    gap: 32px;
+  }
+
+  /* Kopf der Karte etwas kompakter */
+  .edit-contact-headcard,
+  .add-contact-headcard {
+    padding: 32px 24px 24px;
+  }
+}
+
+/* Wenn Overlay offen → Seite dahinter darf NICHT scrollen */
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* =======================================
+   MOBILE: Overlay darf nicht über dem Header liegen
+   ======================================= */
+@media (max-width: 820px) {
+  .add-contact,
+  .edit-contact {
+    position: fixed;                 /* sicherheitshalber */
+    left: 0;
+    right: 0;
+
+    top: 96px !important;            /* Höhe deines Headers (ggf. 80/88 anpassen) */
+    height: calc(100vh - 96px) !important;
+
+    padding-top: 24px;               /* kleiner Abstand zwischen Header & Karte */
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 100%;
+    max-width: 360px;
+    max-height: calc(100vh - 140px);
+    border-radius: 32px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .add-contact,
+  .edit-contact {
+    /* bleibt unter dem Header, nicht Vollhöhe */
+    top: 96px;
+    height: calc(100vh - 96px);
+    padding: 16px 0 24px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 90%;          /* nicht ganz randvoll */
+    max-width: 300px;    /* schmaler machen */
+    max-height: 420px;   /* niedriger machen */
+    border-radius: 24px; /* etwas kleinere Ecken */
+    overflow-y: auto;    /* falls Inhalt länger ist, IN der Karte scrollen */
+  }
+}
+
+@media (max-width: 380px) {
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    max-width: 280px;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 600px) {
+  .add-contact,
+  .edit-contact {
+    top: 80px;
+    height: calc(100vh - 80px);
+    padding: 8px 0 16px;
+    display: flex;
+    justify-content: center;   /* HORIZONTAL zentrieren */
+    align-items: flex-start;   /* von oben starten */
+  }
+
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 90%;
+    max-width: 320px;
+    max-height: calc(100vh - 140px);
+    border-radius: 24px;
+    overflow-y: auto;
+    margin: 0 auto;           /* falls nötig zusätzlich zentrieren */
+  }
+}
+
+
+/* =======================================
+   MOBILE: Add/Edit Contact wirklich klein
+/* =======================================
+   MOBILE: Add / Edit Contact komplett im Viewport
+   ======================================= */
+@media (max-width: 600px) {
+
+  /* Overlay-Bereich: zwischen Header und Bottom-Navi,
+     selbst ohne Scrollbar */
+  .add-contact,
+  .edit-contact {
+    position: fixed;
+    top: 96px;          /* direkt unter deinem Header */
+    bottom: 80px;       /* oberhalb der Bottom-Navi */
+    left: 0;
+    right: 0;
+
+    padding: 0;
+    display: flex;
+    justify-content: center;   /* mittig */
+    align-items: center;       /* vertikal zentriert im freien Bereich */
+    overflow: hidden;          /* Overlay selbst scrollt NICHT */
+  }
+
+  /* Die weiße Karte im Overlay */
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 88%;
+    max-width: 320px;
+
+    /* Höhe so, dass sie sicher in den Bereich passt */
+    max-height: calc(100vh - 96px - 80px - 24px);  /* 24px Luft */
+
+    margin: 0 auto;
+    border-radius: 24px;
+
+    /* Wenn’s auf SE mal 1–2px zu viel wird, scrollt nur die Karte selbst
+       (meist aber nicht nötig, weil sie kleiner ist als der Bereich) */
+    overflow-y: auto;
+  }
+
+}
+
+
+/* ===== Mobile: Add + Edit Contact gleich groß ===== */
+/* =========================================
+   MOBILE: Innenkarte (Add + Edit) kleiner
+   ========================================= */
+@media (max-width: 600px) {
+
+  /* weiße Karte im Overlay */
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 100%;
+    max-width: 320px;          /* schmaler wie im guten Beispiel */
+    margin: 16px auto 16px;    /* nach oben/unten Luft + zentriert */
+    border-radius: 28px;
+
+    /* Höhe begrenzen, damit man alles ohne Scrollen sieht */
+    max-height: 520px;         /* bei iPhone-Breite passt das komplett rein */
+    overflow-y: auto;          /* falls Text doch länger ist → nur IN der Karte scrollen */
+  }
+
+  /* optional: Inhalt etwas kompakter */
+  .edit-contact-content,
+  .add-contact-content {
+    padding: 24px 20px 32px;
+    gap: 20px;
   }
 }
