@@ -109,14 +109,12 @@ function greetUserName() {
     }
 }
 
+
 function setActiveSidebarByURL() {
     const currentPage = window.location.pathname.split('/').pop();
-
-    document.querySelectorAll('.button-sidebar').forEach(btn => {
+    document.querySelectorAll('.side-menu .button-sidebar').forEach(btn => {
         const link = btn.getAttribute('href');
-
         btn.classList.remove('active');
-
         if (link && link.includes(currentPage)) {
             btn.classList.add('active');
         }
@@ -125,7 +123,7 @@ function setActiveSidebarByURL() {
 
 
 function addActiveClassToSidebarButtons() {
-    document.querySelectorAll('.button-sidebar').forEach(btn => {
+    document.querySelectorAll('.side-menu .button-sidebar').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.button-sidebar').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
