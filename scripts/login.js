@@ -32,6 +32,11 @@ function login(event){
    if (event) event.preventDefault(); 
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showToast("Ungültige E‑Mail!", { duration: 1500, dim: true });
+      return;
+    }
     const loginSuccessful = checkUsernamePassword(email, password);
    checkUsernamePassword(email, password);
    if(loginSuccessful){

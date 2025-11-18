@@ -31,6 +31,15 @@ function onclickFunction(event) {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showToast("Bitte eine gültige E‑Mail eingeben!", { duration: 1500, dim: true });
+    return;
+  }
+  if (!name || !password) {
+    showToast("Bitte alle Felder korrekt ausfüllen!", { duration: 1500, dim: true });
+    return;
+  }
   createUser(name, password, email);
   showToast("You signed up successfully", { duration: 1000, dim: true });
   setTimeout(() => {
@@ -72,9 +81,10 @@ function checkPolicyandAnswers() {
   const checkbox = document.getElementById("accept_terms");
   const button = document.querySelector(".primary_button");
   const passwordSame = password == confirmPassword;
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const allFilled =
     name && email && password && confirmPassword && checkbox.checked;
-  button.disabled = !allFilled || !passwordSame;
+    button.disabled = !allFilled || !passwordSame || !emailValid;
 }
 
 
