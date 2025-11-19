@@ -29,6 +29,7 @@ header {
     z-index: 100;
   }
   .main-content {
+    flex: unset;
     display: block;
   }
 }
