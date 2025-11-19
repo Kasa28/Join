@@ -1,3 +1,5 @@
+
+
 body.signUp_body {
   background: var(--splash-blue) !important;
   animation: none !important;
@@ -156,4 +158,15 @@ body.signUp_body .login_form {
     opacity: 0;
     transform: translateY(100vh) scale(0.98);
   }
+}
+
+.error-message {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  color: red;
+}
+
+.visually-hidden {
+  display: none;
 }

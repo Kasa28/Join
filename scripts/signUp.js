@@ -33,13 +33,20 @@ function onclickFunction(event) {
   const password = document.getElementById("password").value.trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    showToast("Bitte eine gültige E‑Mail eingeben!", { duration: 1500, dim: true });
+    const errorEl = document.getElementById("error_message");
+    errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
     return;
   }
   if (!name || !password) {
-    showToast("Bitte alle Felder korrekt ausfüllen!", { duration: 1500, dim: true });
+    const errorEl = document.getElementById("error_message");
+    errorEl.textContent = "Bitte alle Felder korrekt ausfüllen!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
     return;
   }
+  const errorEl = document.getElementById("error_message");
   createUser(name, password, email);
   showToast("You signed up successfully", { duration: 1000, dim: true });
   setTimeout(() => {
@@ -82,6 +89,15 @@ function checkPolicyandAnswers() {
   const button = document.querySelector(".primary_button");
   const passwordSame = password == confirmPassword;
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const errorEl = document.getElementById("error_message");
+  if (!emailValid && email.length > 0) {
+    errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
+  } else {
+    errorEl.textContent = "";
+    errorEl.classList.add("visually-hidden");
+  }
   const allFilled =
     name && email && password && confirmPassword && checkbox.checked;
     button.disabled = !allFilled || !passwordSame || !emailValid;
