@@ -271,3 +271,14 @@ footer {
 .main_login{
   padding-top: 60px;
 }
+
+.error-message {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  color: red;
+}
+
+.visually-hidden {
+  display: none;
+}
