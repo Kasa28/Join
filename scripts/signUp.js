@@ -94,7 +94,21 @@ function checkPolicyandAnswers() {
     errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
-  } else {
+  }
+  // Name too short
+  else if (name.length > 0 && name.length < 3) {
+    errorEl.textContent = "Der Name muss mindestens 3 Zeichen lang sein!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
+  }
+  // Password mismatch
+  else if (password.length > 0 && confirmPassword.length > 0 && !passwordSame) {
+    errorEl.textContent = "Die Passwörter stimmen nicht überein!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
+  }
+  // Everything valid so far
+  else {
     errorEl.textContent = "";
     errorEl.classList.add("visually-hidden");
   }
