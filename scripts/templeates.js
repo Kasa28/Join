@@ -148,7 +148,7 @@ function getAddTaskTemplate() {
 
 
 
-    <div onclick="renderContactsInDropdown()" class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID"></div>
+    <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID"></div>
   
   
   </div>
