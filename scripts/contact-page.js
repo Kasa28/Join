@@ -23,6 +23,7 @@ function putUsernameInContactList(inputContacts){
 
     console.log(getUserData);
     
+    
 
     colorCode = getRandomInt(colors.length);
     const nameExists = inputContacts.some(contact =>
