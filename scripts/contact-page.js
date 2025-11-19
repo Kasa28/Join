@@ -20,13 +20,18 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
 function putUsernameInContactList(inputContacts){
     let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
     let getUserFriends = getUserData.friends;
+    if (!Array.isArray(getUserFriends)) {
+        getUserFriends = [];
+        getUserData.friends = getUserFriends;
+        localStorage.setItem("userData", JSON.stringify(getUserData));
+    }
 
     console.log(getUserData);
     
     
 
     colorCode = getRandomInt(colors.length);
-    const nameExists = inputContacts.some(contact =>
+    const nameExists = getUserFriends.some(contact =>
         contact && (contact.username === getUserData.name)
     );
 
@@ -50,13 +55,8 @@ function renderContactList(){
 
     putUsernameInContactList(getContactsFromUser);
     
-    const login = checkIfLogedIn();
-
-    if(!login){
-        pushExampleContactsOneTimeInLocalStorage(exampleContacts);
-    } else {
-        setContactsIntoContactblock(getContactsFromUser);
-    }
+      // Always place the real contacts (including the logged-in user)
+      setContactsIntoContactblock(getContactsFromUser);
 
     Object.keys(contactBlock).forEach((key) => {
         let block = contactBlock[key];
@@ -125,8 +125,12 @@ function renderSingleContact(inputString){
     
     
     if(contact.username == remindString){
+        document.getElementById(contact.username + "-contactID").classList.add("single-contact-hover");
+        document.getElementById(contact.username + "-contactID").classList.remove("backgroundcolor-blue");
+        document.getElementById(contact.username + "-emailID").classList.remove("font-color-white");
         let singleContactRef = document.getElementById("singleContactID");
         singleContactRef.innerHTML = ""; 
+        remindString = null;    
     }   else{
                 singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
                 makeContactBlue(contact.username);
