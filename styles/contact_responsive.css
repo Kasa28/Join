@@ -1,0 +1,596 @@
+
+@media (max-width: 600px) {
+  .button-contacts-position {
+    position: fixed;
+    bottom: 96px;
+    right: 24px;
+  }
+
+  .button-contacts {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-contacts .font-size-24 {
+    display: none;
+  }
+
+  .button-contacts .img-contact {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+  }
+}
+
+/* ===========================
+   maincontent – Scrollbalken ausblenden
+   =========================== */
+.maincontent {
+  scrollbar-width: none;
+}
+
+.maincontent::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* ===========================
+   Contact – Basis
+   =========================== */
+.single-contact-header,
+.back-btn-mobile,
+.contact-actions-mobile {
+  display: none;
+}
+
+/* ===========================
+   Contact – Mobile Layout (bis 1000px)
+   =========================== */
+@media (max-width: 1000px) {
+  contacts.maincontent {
+    display: block;
+    width: 100%;
+  }
+
+  #singleContactWrapper {
+    display: none;
+    width: 100%;
+    padding: 16px;
+  }
+
+  nav-main-container:has(#singleContactID > *) contacts.maincontent {
+    display: none;
+  }
+
+  nav-main-container:has(#singleContactID > *) #singleContactWrapper {
+    display: block;
+  }
+
+  .single-contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 16px;
+  }
+
+  .contact_information {
+    display: inline;
+  }
+
+  .back-btn-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    position: static;
+    width: 24px;
+    height: 24px;
+  }
+
+  .show-contact-container {
+    position: static;
+    top: auto;
+    margin-top: 24px;
+    padding: 14px;
+  }
+
+  #singleContactWrapper .show-contact-container > h2 {
+    display: none !important;
+  }
+
+  /* Mobile FAB-Actions unten rechts */
+  .edit-delete-container {
+    display: none;
+  }
+
+  .contact-actions-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: fixed;
+    right: 16px;
+    bottom: 80px; /* über der unteren Navi */
+    z-index: 1500;
+    width: max-content;
+  }
+
+  .contact-fab-toggle {
+    display: none;
+  }
+
+  .contact-fab img {
+    width: 51px;
+    height: 53px;
+  }
+
+  .contact-fab-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 22px;
+    transform: translateY(18px);
+    z-index: 3;
+    margin: 0;
+    padding: 8px 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    min-width: 140px;
+  }
+
+  .contact-fab-item {
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .contact-fab-item:hover {
+    background: #f5f5f5;
+  }
+
+  .contact-fab-item img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .contact-actions-inline {
+    display: none;
+  }
+
+  /* Checkbox-Toggle: FAB ausblenden, Menü zeigen */
+  .contact-fab-toggle:checked + .contact-fab {
+    display: none;
+  }
+
+  .contact-fab-toggle:checked + .contact-fab + .contact-fab-menu {
+    display: block;
+  }
+}
+
+.contact-fab-toggle {
+  display: none;
+}
+
+.contact-fab-menu {
+  display: none;
+}
+
+/* ===========================
+   Toast Notifications
+   =========================== */
+#toast-root {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #4589ff;
+  color: #fff;
+  padding: 20px 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .18);
+  font: 500 16px/1.2 "Open Sans", system-ui, sans-serif;
+  opacity: 0;
+  transform: translateY(100vh) scale(.98);
+  pointer-events: none;
+}
+
+.toast img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.toast--show {
+  animation: toast-up .35s cubic-bezier(.2, .9, .2, 1) forwards;
+}
+
+.toast--hide {
+  animation: toast-down .25s ease-in forwards;
+}
+
+@keyframes toast-up {
+  from {
+    opacity: 0;
+    transform: translateY(100vh) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(50vh) scale(1);
+  }
+}
+
+@keyframes toast-down {
+  from {
+    opacity: 1;
+    transform: translateY(50vh) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100vh) scale(.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast--show,
+  .toast--hide {
+    animation-duration: .01ms;
+  }
+}
+
+.toast-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background: #fff;
+  -webkit-mask: url("../assets/img/Board.svg") no-repeat center / contain;
+  mask: url("../assets/img/Board.svg") no-repeat center / contain;
+}
+
+/* ===========================
+   SingleContact Panel (Mobile)
+   =========================== */
+@media (max-width: 1000px) {
+  contacts.maincontent {
+    width: 100%;
+    border-right: none;
+  }
+
+  #singleContactID:empty {
+    display: none;
+  }
+
+  #singleContactID:not(:empty) {
+    display: block;
+    position: static;
+    background: #ffffff;
+    padding: 24px 20px 120px;
+    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.15);
+  }
+}
+
+/* Standard: Header im Detail nicht anzeigen */
+.single-contact-header {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .single-contact-header {
+    display: flex;
+  }
+}
+
+/* ===========================
+   Edit-Contact generelles Layout
+   =========================== */
+@media (max-width: 1100px) {
+  .add-contact,
+  .edit-contact {
+    width: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: 107px 16px;
+    box-sizing: border-box;
+  }
+
+  .main-container-edit-contact {
+    width: 100%;
+    height: auto;
+    min-height: calc(100vh - 32px);
+    border-radius: 30px;
+  }
+
+  .edit-contact-headcard {
+    width: 100%;
+    height: auto;
+    padding: 72px 32px 40px 32px;
+  }
+
+  .edit-contact-content {
+    width: 100%;
+    padding: 40px 32px 48px 32px;
+  }
+
+  .button-edit-contact-order {
+    width: 100%;
+    gap: 16px;
+  }
+
+  .button-edit-contact {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .main-container-edit-contact {
+    border-radius: 24px;
+    min-height: 100vh;
+    gap: 56px;
+  }
+
+  .edit-contact-headcard {
+    padding: 64px 24px 32px 24px;
+  }
+
+  .edit-contact-content {
+    padding: 32px 20px 40px 20px;
+    gap: 24px;
+  }
+
+  .user-letter-ball-edit-contact,
+  .empty-user-ball-edit-contact {
+    width: 72px;
+    height: 72px;
+  }
+
+  .edit-contact-inputfield {
+    width: 100%;
+  }
+
+  .close-icon-edit-contact {
+    top: 16px;
+    right: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container-edit-contact {
+    border-radius: 24px;
+  }
+
+  .h2-edit-contact {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .a-font-edit-contact {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .edit-contact-headcard {
+    padding: 48px 20px 28px 20px;
+  }
+
+  .edit-contact-content {
+    padding: 28px 16px 32px 16px;
+  }
+
+  .input-icon-edit-contact {
+    right: 12px;
+  }
+
+  .button-edit-contact-order {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .button-edit-contact {
+    width: 100%;
+  }
+}
+
+/* Basis-Layout Edit-Contact-Karte */
+.main-container-edit-contact {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: "open sans";
+  gap: 72px;
+  background: white;
+  border-radius: 51px;
+  box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* ===========================
+   Utility-Klassen
+   =========================== */
+.d-none {
+  display: none !important;
+}
+
+/* wird vom JS gesetzt, wenn ein Overlay offen ist */
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ===========================
+   Add-Contact-Karte: Höhe begrenzen (kleine Screens)
+   =========================== */
+@media (max-width: 600px) {
+  .main-container-add-contact {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+}
+
+/* ===========================
+   Mobile: Liste + Detail ausblenden, wenn Overlay offen
+   =========================== */
+@media (max-width: 1000px) {
+  body.no-scroll contacts.maincontent,
+  body.no-scroll #singleContactWrapper {
+    display: none !important;
+  }
+}
+
+/* ===========================
+   Mobile: Add-Contact Panel geschlossen komplett verstecken
+   =========================== */
+@media (max-width: 1000px) {
+  .add-contact.hide-add-contact {
+    transform: none;
+    display: none;
+  }
+
+  .capa-logo-1-edit-contact {
+    display: none;
+  }
+}
+
+/* ===========================
+   Globale unsichtbare Scrollbalken
+   =========================== */
+html,
+body,
+.maincontent,
+#singleContactID,
+.main-container-add-contact,
+.main-container-edit-contact {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;     
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.maincontent::-webkit-scrollbar,
+#singleContactID::-webkit-scrollbar,
+.main-container-add-contact::-webkit-scrollbar,
+.main-container-edit-contact::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* ===========================
+   MOBILE: Overlay zwischen Header & Footer
+   + Karte kleiner wie im Beispiel
+   =========================== */
+@media (max-width: 820px) {
+  .add-contact,
+  .edit-contact {
+    position: fixed;
+    top: 96px;                
+    left: 0;
+    right: 0;
+    bottom: 80px;             
+    padding: 0 16px;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #f6f7fb;      
+    overflow: hidden;
+    z-index: 1200;
+  }
+
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 100%;
+    max-width: 360px;
+    max-height: 100%;
+    border-radius: 32px;
+    overflow-y: auto;
+    margin: 0 auto;
+  }
+
+  .add-contact-headcard,
+  .edit-contact-headcard {
+    padding: 24px 24px 20px;
+  }
+}
+
+/* ===========================
+   MOBILE (sehr klein, z.B. iPhone SE)
+   =========================== */
+@media (max-width: 600px) {
+  .add-contact,
+  .edit-contact {
+    top: 105px;
+    bottom: 80px;
+    padding: 0 12px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    width: 100%;
+    max-width: 320px;
+    max-height: 100%;
+    border-radius: 24px;
+    margin: 0 auto;
+    overflow-y: auto;
+  }
+
+  .edit-contact-content {
+    padding: 0 27px 115px 46px;
+    gap: 20px;
+  }
+
+  .edit-contact-headcard {
+    padding: 46px 20px 18px;
+  }
+
+  .a-font-edit-contact {
+    font-size: 22px !important;
+  }
+
+  .capa-logo-1-edit-contact {
+    display: none;
+  }
+
+  .button-edit-contact-grey {
+    display: none !important;
+  }
+
+  .edit-contact-inputfield {
+    padding: 17px 10px 2px 7px;
+  }
+}
+
+@media (max-width: 380px) {
+  .main-container-add-contact,
+  .main-container-edit-contact {
+    max-width: 280px;
+  }
+}
