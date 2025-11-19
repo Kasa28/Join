@@ -1,4 +1,3 @@
-
 @media (max-width: 600px) {
   .button-contacts-position {
     position: fixed;
@@ -55,6 +54,7 @@
   contacts.maincontent {
     display: block;
     width: 100%;
+    border-right: none;
   }
 
   #singleContactWrapper {
@@ -69,6 +69,18 @@
 
   nav-main-container:has(#singleContactID > *) #singleContactWrapper {
     display: block;
+  }
+
+  #singleContactID:empty {
+    display: none;
+  }
+
+  #singleContactID:not(:empty) {
+    display: block;
+    position: static;
+    background: #ffffff;
+    padding: 24px 20px 120px;
+    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.15);
   }
 
   .single-contact-header {
@@ -182,6 +194,7 @@
   }
 }
 
+/* Sicherheit: Basiswerte für Toggle/Menu */
 .contact-fab-toggle {
   display: none;
 }
@@ -268,39 +281,6 @@
   background: #fff;
   -webkit-mask: url("../assets/img/Board.svg") no-repeat center / contain;
   mask: url("../assets/img/Board.svg") no-repeat center / contain;
-}
-
-/* ===========================
-   SingleContact Panel (Mobile)
-   =========================== */
-@media (max-width: 1000px) {
-  contacts.maincontent {
-    width: 100%;
-    border-right: none;
-  }
-
-  #singleContactID:empty {
-    display: none;
-  }
-
-  #singleContactID:not(:empty) {
-    display: block;
-    position: static;
-    background: #ffffff;
-    padding: 24px 20px 120px;
-    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.15);
-  }
-}
-
-/* Standard: Header im Detail nicht anzeigen */
-.single-contact-header {
-  display: none;
-}
-
-@media (max-width: 1000px) {
-  .single-contact-header {
-    display: flex;
-  }
 }
 
 /* ===========================
@@ -442,51 +422,31 @@ body.no-scroll {
   height: 100vh;
 }
 
-/* ===========================
-   Add-Contact-Karte: Höhe begrenzen (kleine Screens)
-   =========================== */
-@media (max-width: 600px) {
-  .main-container-add-contact {
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-  }
-}
-
-/* ===========================
-   Mobile: Liste + Detail ausblenden, wenn Overlay offen
-   =========================== */
-@media (max-width: 1000px) {
-  body.no-scroll contacts.maincontent,
-  body.no-scroll #singleContactWrapper {
-    display: none !important;
-  }
-}
-
-/* ===========================
-   Mobile: Add-Contact Panel geschlossen komplett verstecken
-   =========================== */
-@media (max-width: 1000px) {
+/* Add-Contact-Panel sauber verstecken */
+@media (max-width: 1100px) {
   .add-contact.hide-add-contact {
     transform: none;
     display: none;
   }
 
-  .capa-logo-1-edit-contact {
+  .main-container-edit-contact{
+        max-width: 600px;
+        scrol
+  }
+  .capa-logo-1-edit-contact{
     display: none;
   }
 }
 
-/* ===========================
-   Globale unsichtbare Scrollbalken
-   =========================== */
+
 html,
 body,
 .maincontent,
 #singleContactID,
 .main-container-add-contact,
 .main-container-edit-contact {
-  -ms-overflow-style: none;  
-  scrollbar-width: none;     
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 html::-webkit-scrollbar,
@@ -507,20 +467,16 @@ body::-webkit-scrollbar,
   .add-contact,
   .edit-contact {
     position: fixed;
-    top: 96px;                
+    top: 96px;           /* unter dem Header */
     left: 0;
     right: 0;
-    bottom: 80px;             
+    bottom: 80px;        /* über der Bottom-Navi */
     padding: 0 16px;
     box-sizing: border-box;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background: #f6f7fb;      
     overflow: hidden;
-    z-index: 1200;
   }
 
   .main-container-add-contact,
@@ -529,6 +485,8 @@ body::-webkit-scrollbar,
     max-width: 360px;
     max-height: 100%;
     border-radius: 32px;
+    background: #ffffff;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.15);
     overflow-y: auto;
     margin: 0 auto;
   }
@@ -539,17 +497,12 @@ body::-webkit-scrollbar,
   }
 }
 
-/* ===========================
-   MOBILE (sehr klein, z.B. iPhone SE)
-   =========================== */
 @media (max-width: 600px) {
   .add-contact,
   .edit-contact {
     top: 105px;
     bottom: 80px;
     padding: 0 12px;
-    justify-content: center;
-    align-items: center;
   }
 
   .main-container-add-contact,
@@ -559,7 +512,6 @@ body::-webkit-scrollbar,
     max-height: 100%;
     border-radius: 24px;
     margin: 0 auto;
-    overflow-y: auto;
   }
 
   .edit-contact-content {
@@ -573,10 +525,6 @@ body::-webkit-scrollbar,
 
   .a-font-edit-contact {
     font-size: 22px !important;
-  }
-
-  .capa-logo-1-edit-contact {
-    display: none;
   }
 
   .button-edit-contact-grey {
@@ -593,4 +541,18 @@ body::-webkit-scrollbar,
   .main-container-edit-contact {
     max-width: 280px;
   }
+  .edit-contact-headcard {
+    padding: 13px 20px 4px;
+  }
+  .h2-edit-contact{
+    font-size: 32px;
+
+  }
+  .a-font-edit-contact{
+  font-size: 15px !important;
+}
+.close-icon-edit-contact{
+     top: 9px;
+    right: 3px;
+}
 }

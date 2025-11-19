@@ -24,18 +24,21 @@ document.addEventListener("DOMContentLoaded", function () {
      1) Kontakt-Detail: Desktop vs. Mobile
      ========================================= */
 
-  const legacy  = document.getElementById("singleContactID");
+  const legacy = document.getElementById("singleContactID");
   const content = document.getElementById("singleContactContent");
 
   if (legacy && content) {
+    // Inhalte von legacy -> content kopieren (nur für Mobile)
     function syncFromLegacy() {
       if (window.innerWidth <= 1000) {
         content.innerHTML = legacy.innerHTML;
       }
     }
 
+    // Layout je nach Breite umschalten
     function applyContactLayout() {
       if (window.innerWidth <= 1000) {
+        // MOBILE: nur singleContactContent anzeigen
         legacy.style.display = "none";
         content.style.display = "";
         syncFromLegacy();
@@ -53,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* =========================================
-     2) 3-Punkte-Menü im Kontakt-Detail
+     2) 3-Punkte-Menü im Kontakt-Detail (mobile FAB Menü)
      ========================================= */
 
   function getMenuWrapper() {
@@ -65,74 +68,122 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function hideMenu() {
+    const menuWrapper = getMenuWrapper();
     const toggle = getToggle();
-    if (!toggle) return;
+    if (!menuWrapper || !toggle) return;
+    menuWrapper.style.display = "none";
     toggle.checked = false;
   }
 
+  function showMenu() {
+    const menuWrapper = getMenuWrapper();
+    const toggle = getToggle();
+    if (!menuWrapper || !toggle) return;
+    menuWrapper.style.display = "";
+    toggle.checked = false;
+  }
+
+  document.addEventListener("click", function (event) {
+    const menuWrapper = getMenuWrapper();
+    const toggle = getToggle();
+    if (!menuWrapper || !toggle) return;
+
+    const target = event.target;
+
+    // Klick außerhalb des 3-Punkte-Menüs → Menü schließen
+    if (!menuWrapper.contains(target)) {
+      toggle.checked = false;
+    }
+
+    // Klick auf Menü-Eintrag (Edit/Delete) → Menü schließen
+    const fabItem = target.closest(".contact-actions-mobile .contact-fab-item");
+    if (fabItem) {
+      hideMenu();
+    }
+
+    // Wenn Edit-Overlay geschlossen wurde → Menü wieder zeigen
+    const closeOrSaveBtn = target.closest(
+      ".close-icon-edit-contact, .button-edit-contact, #white-screen"
+    );
+    if (closeOrSaveBtn) {
+      setTimeout(showMenu, 0);
+    }
+  });
+
   /* =========================================
-     3) Floating-Button ausblenden,
-        wenn Add/Edit-Overlay offen ist
+     3) Blauer +-Button (Add-FAB) & Add/Edit Overlays
+        – Button soll verschwinden, wenn Overlay offen ist
+        – und wiederkommen, wenn Overlay geschlossen wird
      ========================================= */
 
-  const fabWrapper  = document.querySelector(".contact-actions-mobile"); 
-  const addOverlay  = document.querySelector(".add-contact");            
-  const editOverlay = document.getElementById("edit-contactID");         
+  const addFab = document.querySelector(".button-contacts-position"); // blauer +
+  const addOverlay = document.querySelector(".add-contact");
+  const editOverlay = document.querySelector(".edit-contact");
+  let overlayObserver;
 
-  function isVisible(el) {
+  // Ist ein Overlay wirklich sichtbar?
+  function overlayVisible(el) {
     if (!el) return false;
-    const style = window.getComputedStyle(el);
-    if (style.display === "none" || style.visibility === "hidden") return false;
+    const st = window.getComputedStyle(el);
+    if (st.display === "none" || st.visibility === "hidden") return false;
     if (el.classList.contains("d-none")) return false;
     if (el.classList.contains("hide-add-contact")) return false;
     if (el.classList.contains("hide-edit-contact")) return false;
     return true;
   }
 
-function syncFloatingActions() {
-  if (!fabWrapper) return;
+  function anyOverlayOpen() {
+    return overlayVisible(addOverlay) || overlayVisible(editOverlay);
+  }
 
-  const overlayOpen =
-    isVisible(addOverlay) ||  
-    isVisible(editOverlay);      
+  // Steuert Sichtbarkeit des blauen +-Buttons
+  function syncAddFab() {
+    if (!addFab) return;
 
-  fabWrapper.style.display = overlayOpen ? "none" : "";
-  document.body.classList.toggle("no-scroll", overlayOpen);
-  document.documentElement.classList.toggle("no-scroll", overlayOpen);
-}
-
-  /* =========================================
-     4) Klick-Handler für Menü + Overlays
-     ========================================= */
-
-  document.addEventListener("click", function (event) {
-    const wrapper = getMenuWrapper();
-    const toggle  = getToggle();
-    if (!wrapper || !toggle) return;
-
-    const target = event.target;
-
-    if (!wrapper.contains(target)) {
-      hideMenu();
+    // Desktop: FAB immer sichtbar
+    if (window.innerWidth > 1000) {
+      addFab.style.display = "";
+      return;
     }
 
-    const fabItem = target.closest(".contact-actions-mobile .contact-fab-item");
-    if (fabItem) {
-      hideMenu();
-    }
+    // Mobile: FAB nur anzeigen, wenn KEIN Overlay offen ist
+    addFab.style.display = anyOverlayOpen() ? "none" : "";
+  }
 
-    const togglesOverlay =
-      target.closest(".contact-fab-item")             || 
-      target.closest(".button-contacts-position")     || 
-      target.closest(".button-add-contact")           || 
-      target.closest(".close-icon-add-contact")       || 
-      target.closest(".button-cancel-add-contact")    || 
-      target.closest(".button-create-contact")        || 
-      target.closest(".close-icon-edit-contact")      || 
-      target.closest(".button-edit-contact");           
+  // Mobile: Add-Overlay initial verstecken
+  if (window.innerWidth <= 1000 && addOverlay) {
+    addOverlay.classList.add("d-none");
+  }
 
-    if (togglesOverlay) {
-      setTimeout(syncFloatingActions, 0);
-    }
-  });
+  // Klick auf blauen +-Button → Add-Overlay öffnen (auf Mobile)
+  if (addFab && addOverlay) {
+    addFab.addEventListener("click", function () {
+      if (window.innerWidth <= 1000) {
+        addOverlay.classList.remove("d-none");
+        addOverlay.style.display = "";
+        syncAddFab(); // FAB ausblenden
+      }
+    });
+  }
+
+  // Änderungen an Overlays beobachten, damit der FAB automatisch
+  // wieder erscheint, wenn z.B. closeAddContact/closeEditContact laufen
+  function initOverlayObserver() {
+    if (overlayObserver) overlayObserver.disconnect();
+    const targets = [addOverlay, editOverlay].filter(Boolean);
+    if (!targets.length) return;
+
+    overlayObserver = new MutationObserver(syncAddFab);
+    targets.forEach((el) =>
+      overlayObserver.observe(el, {
+        attributes: true,
+        attributeFilter: ["class", "style"],
+      })
+    );
+  }
+
+  // Initial ausführen
+  syncAddFab();
+  initOverlayObserver();
+  window.addEventListener("resize", syncAddFab);
 });
