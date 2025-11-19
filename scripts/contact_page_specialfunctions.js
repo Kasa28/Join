@@ -96,29 +96,31 @@ function setContactsIntoContactblock(inputContacts){
 }
 
 
-function pushExampleContactsOneTimeInLocalStorage(){
-    let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+function pushExampleContactsOneTimeInLocalStorage(inputContacts){
+    
+    setContactsIntoContactblock(inputContacts);
+
 
 
     // Überprüfen, ob einer der Namen bereits im Array vorhanden ist
-    const nameExists = contacts.some(contact =>
-        contact && (contact.username === "reset")
-    );
+    //const nameExists = contacts.some(contact =>
+    //    contact && (contact.username === "reset")
+    //);
 
     // Wenn einer der Namen existiert, Funktion abbrechen
-    if (nameExists) {
-        return;
-    }
+    //if (nameExists) {
+    //    return;
+    //}
 
     // Namen hinzufügen, wenn sie nicht existieren
-    if (exampleContacts.length > 0) {
-        contacts.push(...exampleContacts);
-        exampleContacts = []; // Leere das Array nach dem Hinzufügen
-        addContactToLocalStorageAndAPI(contacts);
-        console.log("Beispielkontakte wurden hinzugefügt:", contacts);
-    } else {
-        console.log("Keine Beispielkontakte vorhanden.");
-    }
+    //if (exampleContacts.length > 0) {
+    //    contacts.push(...exampleContacts);
+    //    exampleContacts = []; // Leere das Array nach dem Hinzufügen
+    //    addContactToLocalStorageAndAPI(contacts);
+    //    console.log("Beispielkontakte wurden hinzugefügt:", contacts);
+    //} else {
+    //    console.log("Keine Beispielkontakte vorhanden.");
+    //}
 }
 
 
