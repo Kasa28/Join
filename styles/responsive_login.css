@@ -1,3 +1,12 @@
+@media (min-width: 2000px) {
+
+    header {
+      position: fixed;
+      top: 0;
+      right: calc((100vw - 1440px) / 2 + 16px);
+      z-index: 100;
+    }
+}
 
 @media (max-width: 768px) {
   .content {

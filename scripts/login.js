@@ -34,7 +34,10 @@ function login(event){
     const password = document.getElementById('password').value.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      showToast("Ungültige E‑Mail!", { duration: 1500, dim: true });
+      const errorEl = document.getElementById("error_message");
+      errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
+      errorEl.classList.remove("visually-hidden");
+      errorEl.style.color = "red";
       return;
     }
     const loginSuccessful = checkUsernamePassword(email, password);
@@ -43,13 +46,11 @@ function login(event){
       console.log("Login erfolgreich! Weiterleitung...");
       window.location.href = "./summaryAll.html";  
    } else {
-       console.log("Login fehlgeschlagen.");
-      let errorRef = document.getElementById("errorMessageID");
-
-      errorRef = `
-        <span class="span_login">Login Fehlgeschlagen!</span>
-      `
-
+      console.log("Login fehlgeschlagen.");
+      const errorEl = document.getElementById("error_message");
+      errorEl.textContent = "E-Mail oder Passwort ist ungültig!";
+      errorEl.classList.remove("visually-hidden");
+      errorEl.style.color = "red";  
    }
 }
 
@@ -79,9 +80,40 @@ function putUserDataIntoLocalStorage(inputJson){
 
 
 /* === Form Validation === */
- function checkLogin() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const button = document.getElementById('login_button');
-    button.disabled = !(email && password);
+function checkLogin() {
+   const email = document.getElementById('email').value.trim();
+   const password = document.getElementById('password').value.trim();
+   const button = document.getElementById('login_button');
+   button.disabled = !(email && password);
  }
+
+
+ document.getElementById("email").addEventListener("blur", () => {
+   const email = document.getElementById("email").value.trim();
+   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+   const errorEl = document.getElementById("error_message");
+ 
+   if (email && !emailValid) {
+     errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
+     errorEl.classList.remove("visually-hidden");
+   } else {
+     errorEl.textContent = "";
+     errorEl.classList.add("visually-hidden");
+   }
+ });
+
+
+ document.getElementById("password").addEventListener("blur", () => {
+   const email = document.getElementById("email").value.trim();
+   const password = document.getElementById("password").value.trim();
+   const errorEl = document.getElementById("error_message");
+ 
+   if (email && password && !checkUsernamePassword(email, password)) {
+     errorEl.textContent = "E-Mail oder Passwort ist ungültig!";
+     errorEl.classList.remove("visually-hidden");
+   } else if (email && password && checkUsernamePassword(email, password)) {
+     errorEl.textContent = "";
+     errorEl.classList.add("visually-hidden");
+   }
+ });
+
