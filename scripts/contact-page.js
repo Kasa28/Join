@@ -1,3 +1,5 @@
+let remindString;
+
 let contactBlock = {
     A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [],
     K: [], L: [], M: [], N: [], O: [], P: [], Q: [], R: [], S: [], T: [],
@@ -23,8 +25,17 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
     
-    setContactsIntoContactblock(getContactsFromUser);
+    const login = checkIfLogedIn();
 
+    console.log("login is "+ login);
+    
+
+    if(!login){
+        console.log("if abfrage");
+        pushExampleContactsOneTimeInLocalStorage(exampleContacts);
+    } else {
+        setContactsIntoContactblock(getContactsFromUser);
+    }
 
     Object.keys(contactBlock).forEach((key) => {
         let block = contactBlock[key];
@@ -43,9 +54,9 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
             </separator>
 
         `
-        block.forEach((contact) => {
+        block.forEach((contact) => {   
         contactContainerRef.innerHTML +=  `
-                    <contact onclick="renderSingleContact('${contact.username}')" class="single-contact display-flex-center-x padding-medium-up-down-contacts">
+                    <contact onclick="renderSingleContact('${contact.username}')" class="single-contact single-contact-hover display-flex-center-x padding-medium-up-down-contacts" id="${contact.username}-contactID">
 
                         <div class="contacts-logo ${contact.color}">
                             <a>${getInitials(contact.username)}</a>
@@ -54,7 +65,7 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
                             <div class="name-property padding-bottom-contacts padding-small-left-right-contacts">
                                 <p>${makeFirstLetterBig(contact.username)}</p>
                             </div>
-                            <div class="mail-property padding-small-left-right-contacts">
+                            <div class="mail-property padding-small-left-right-contacts" id="${contact.username}-emailID">
                                 <p>${contact.email}</p>
                             </div>
                         </div>
@@ -66,15 +77,40 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
 };  
 
 
+function makeContactBlue(inputName){
+
+    if(remindString != null){
+        document.getElementById(remindString + "-contactID").classList.add("single-contact-hover");
+        document.getElementById(remindString + "-contactID").classList.remove("backgroundcolor-blue");
+        document.getElementById(remindString + "-emailID").classList.remove("font-color-white");
+    } else {}
+        document.getElementById(inputName + "-contactID").classList.remove("single-contact-hover");
+        document.getElementById(inputName + "-contactID").classList.add("backgroundcolor-blue");
+        document.getElementById(inputName + "-emailID").classList.add("font-color-white");
+        remindString = inputName;
+}
+
+
 function renderSingleContact(inputString){
-    
     const getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
     const contacts = getUserData.friends;
+
+    
+    
     
     const rightIndex = findIndexFromUsername(contacts, inputString);
     const contact = contacts[rightIndex];
 
-    singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
+    
+    
+    if(contact.username == remindString){
+        let singleContactRef = document.getElementById("singleContactID");
+        singleContactRef.innerHTML = ""; 
+    }   else{
+                singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
+                makeContactBlue(contact.username);
+            }
+    
 }
 
 

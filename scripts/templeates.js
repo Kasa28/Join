@@ -75,6 +75,7 @@ function bigCardHtml(t) {
 
 
 function getAddTaskTemplate() {
+
   return `
     <headline class="header-wrapper-addTask_template">
         <h1 class="h1-addTask_template">Add Task</h1>
@@ -136,27 +137,34 @@ function getAddTaskTemplate() {
          class="assign-arrow-addTask_template">
   </div>
 
+
+
+
+
+
   <div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox">
-    <div class="assign-item-addTask_template" onclick="selectAssignUser('Nils Becker')">
-      <span class="assign-avatar-addTask_template" style="background-color: #4589ff;">NB</span>
-      <span class="assign-name-addTask_template">Nils Becker</span>
-      <input type="checkbox" class="assign-check-addTask_template">
-    </div>
 
-    <div class="assign-item-addTask_template" onclick="selectAssignUser('Lara König')">
-      <span class="assign-avatar-addTask_template" style="background-color: #ff7eb6;">LK</span>
-      <span class="assign-name-addTask_template">Lara König</span>
-      <input type="checkbox" class="assign-check-addTask_template">
-    </div>
 
-    <div class="assign-item-addTask_template" onclick="selectAssignUser('Omar Said')">
-      <span class="assign-avatar-addTask_template" style="background-color: #00bfa5;">OS</span>
-      <span class="assign-name-addTask_template">Omar Said</span>
-      <input type="checkbox" class="assign-check-addTask_template">
-    </div>
+
+
+
+    <div onclick="renderContactsInDropdown()" class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID"></div>
+  
+  
   </div>
   <div id="assigned-avatars" class="assigned-avatars-addTask_template"></div>
 </section>
+
+
+
+
+
+
+
+
+
+
+
 
     <section>
       <label for="category" class="label-addTask_template">Category</label>
