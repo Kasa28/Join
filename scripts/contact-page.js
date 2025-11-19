@@ -6,32 +6,52 @@ let contactBlock = {
     U: [], V: [], W: [], X: [], Y: [], Z: [], other: []
 };
 
-let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563"},
-                        {"username": "Karsten", "email": "karsten-stahl@gmail.de", "PhoneNumber": "+49151478632475"},
-                        {"username": "Thomas", "email": "thomas-gottschalck@live.de", "PhoneNumber": "+491517896455"},
-                        {"username": "Rainer", "email": "rainer-winkler@gmail.de", "PhoneNumber": "+491507489652"},
-                        {"username": "Angela", "email": "angela-merkel@gmail.de", "PhoneNumber": "+491511462385"},
-                        {"username": "Kai", "email": "kai-pflaume@live.de", "PhoneNumber": "+491504896257"},
-                        {"username": "Til", "email": "til-schweiger@gmail.de", "PhoneNumber": "+491514563248"},
-                        {"username": "Günther", "email": "günther-jauch@gmail.de", "PhoneNumber": "+4915157652244"},
-                        {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354"},
-                        {"username": "reset", "email": "reset@gmail.de", "PhoneNumber": "0000000000000"}];
+let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563", "color": "pink"},
+                        {"username": "Karsten", "email": "karsten-stahl@gmail.de", "PhoneNumber": "+49151478632475", "color": "orange"},
+                        {"username": "Thomas", "email": "thomas-gottschalck@live.de", "PhoneNumber": "+491517896455", "color": "green"},
+                        {"username": "Rainer", "email": "rainer-winkler@gmail.de", "PhoneNumber": "+491507489652", "color": "blue"},
+                        {"username": "Angela", "email": "angela-merkel@gmail.de", "PhoneNumber": "+491511462385", "color": "red"},
+                        {"username": "Kai", "email": "kai-pflaume@live.de", "PhoneNumber": "+491504896257", "color": "yellow"},
+                        {"username": "Til", "email": "til-schweiger@gmail.de", "PhoneNumber": "+491514563248", "color": "orange"},
+                        {"username": "Günther", "email": "günther-jauch@gmail.de", "PhoneNumber": "+4915157652244", "color": "blue"},
+                        {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354", "color": "red"},];
 
 
-   function renderContactList(){
+function putUsernameInContactList(inputContacts){
+    let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
+    let getUserFriends = getUserData.friends;
+
+    console.log(getUserData);
+    
+
+    colorCode = getRandomInt(colors.length);
+    const nameExists = inputContacts.some(contact =>
+        contact && (contact.username === getUserData.name)
+    );
+
+    if(nameExists){
+        return;
+    } else {
+        let userJson = {"username": getUserData.name, "email": getUserData.email, "PhoneNumber": "4915135468484", "color": colors[colorCode]};
+        getUserFriends.push(userJson);
+        sortUserToAlphabeticalOrder(getUserFriends);
+        addContactToLocalStorageAndAPI(getUserFriends);
+    }
+
+}
+
+function renderContactList(){
     let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
 
     let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
+
+    putUsernameInContactList(getContactsFromUser);
     
     const login = checkIfLogedIn();
 
-    console.log("login is "+ login);
-    
-
     if(!login){
-        console.log("if abfrage");
         pushExampleContactsOneTimeInLocalStorage(exampleContacts);
     } else {
         setContactsIntoContactblock(getContactsFromUser);
