@@ -14,49 +14,51 @@ let exampleContacts = [ {"username": "Peter", "email": "peter-lustig@hotmail.de"
                         {"username": "Kai", "email": "kai-pflaume@live.de", "PhoneNumber": "+491504896257", "color": "yellow"},
                         {"username": "Til", "email": "til-schweiger@gmail.de", "PhoneNumber": "+491514563248", "color": "orange"},
                         {"username": "Günther", "email": "günther-jauch@gmail.de", "PhoneNumber": "+4915157652244", "color": "blue"},
-                        {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354", "color": "red"},];
+                        {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354", "color": "red"}];
 
 
-function putUsernameInContactList(inputContacts){
+async function putUsernameInContactList(){
     let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
-    let getUserFriends = getUserData.friends;
-    if (!Array.isArray(getUserFriends)) {
-        getUserFriends = [];
-        getUserData.friends = getUserFriends;
-        localStorage.setItem("userData", JSON.stringify(getUserData));
-    }
-
-    console.log(getUserData);
-    
-    
+    let getUserFriends = Array.isArray(getUserData.friends) ? getUserData.friends : [];
 
     colorCode = getRandomInt(colors.length);
     const nameExists = getUserFriends.some(contact =>
         contact && (contact.username === getUserData.name)
     );
 
-    if(nameExists){
-        return;
-    } else {
-        let userJson = {"username": getUserData.name, "email": getUserData.email, "PhoneNumber": "4915135468484", "color": colors[colorCode]};
+    if (nameExists) {
+        return getUserFriends;
+    }
+        
+    let userJson = {"username": getUserData.name, "email": getUserData.email, "PhoneNumber": "4915135468484", "color": colors[colorCode]};
         getUserFriends.push(userJson);
         sortUserToAlphabeticalOrder(getUserFriends);
-        addContactToLocalStorageAndAPI(getUserFriends);
+        // falls die Funktion async ist: warten bis API-Update fertig ist
+    if (typeof addContactToLocalStorageAndAPI === "function") {
+        await addContactToLocalStorageAndAPI(getUserFriends);
     }
 
+    return getUserFriends;
 }
 
-function renderContactList(){
-    let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
+async function renderContactList(){
+    const login = checkIfLogedIn();
 
+    if(login){
+        await putUsernameInContactList();
+    }
+
+    let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
     let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
 
-    putUsernameInContactList(getContactsFromUser);
-    
-      // Always place the real contacts (including the logged-in user)
-      setContactsIntoContactblock(getContactsFromUser);
+    if(!login){
+        pushExampleContactsOneTimeInLocalStorage(exampleContacts);
+    }else {
+        setContactsIntoContactblock(getContactsFromUser);
+    }
+      
 
     Object.keys(contactBlock).forEach((key) => {
         let block = contactBlock[key];
@@ -83,7 +85,7 @@ function renderContactList(){
                             <a>${getInitials(contact.username)}</a>
                         </div>
                         <div class="padding-left-contacts">
-                            <div class="name-property padding-bottom-contacts padding-small-left-right-contacts">
+                            <div class="name-property padding-bottom-contacts padding-small-left-right-contacts" id="${contact.username}-usernameID">
                                 <p>${makeFirstLetterBig(contact.username)}</p>
                             </div>
                             <div class="mail-property padding-small-left-right-contacts" id="${contact.username}-emailID">
@@ -102,41 +104,41 @@ function makeContactBlue(inputName){
 
     if(remindString != null){
         document.getElementById(remindString + "-contactID").classList.add("single-contact-hover");
+        document.getElementById(remindString + "-contactID").classList.remove("cursor-pointer");
         document.getElementById(remindString + "-contactID").classList.remove("backgroundcolor-blue");
+        document.getElementById(remindString + "-usernameID").classList.remove("font-color-white");
         document.getElementById(remindString + "-emailID").classList.remove("font-color-white");
     } else {}
         document.getElementById(inputName + "-contactID").classList.remove("single-contact-hover");
+        document.getElementById(inputName + "-contactID").classList.add("cursor-pointer");
         document.getElementById(inputName + "-contactID").classList.add("backgroundcolor-blue");
+        document.getElementById(inputName + "-usernameID").classList.add("font-color-white");
         document.getElementById(inputName + "-emailID").classList.add("font-color-white");
         remindString = inputName;
 }
 
-
 function renderSingleContact(inputString){
     const getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
     const contacts = getUserData.friends;
-
-    
-    
-    
     const rightIndex = findIndexFromUsername(contacts, inputString);
     const contact = contacts[rightIndex];
 
-    
-    
+
+
     if(contact.username == remindString){
         document.getElementById(contact.username + "-contactID").classList.add("single-contact-hover");
         document.getElementById(contact.username + "-contactID").classList.remove("backgroundcolor-blue");
+        document.getElementById(remindString + "-usernameID").classList.remove("font-color-white");
         document.getElementById(contact.username + "-emailID").classList.remove("font-color-white");
         let singleContactRef = document.getElementById("singleContactID");
         singleContactRef.innerHTML = ""; 
-        remindString = null;    
-    }   else{
-                singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
-                makeContactBlue(contact.username);
-            }
-    
+        remindString = null;  
+        }  else{
+                    singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
+                    makeContactBlue(contact.username);
+                }
 }
+
 
 
 function singleContactTemplate(inputColor, inputUsername, inputIndex,  inputEmail, inputPhone){
