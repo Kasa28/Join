@@ -1,6 +1,7 @@
 <!--Ab hier kopieren-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,28 +24,31 @@
     <script src="./scripts/contact_page_specialfunctions.js"></script>
     <script src="./scripts/contact-page-api.js"></script>
     <script src="./scripts/responsive.js"></script>
-    
+
 
 
 </head>
-<body class="position-relative-overflow-x" onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactList(), renderAddContact(), renderEditContact()">
+
+<body class="position-relative-overflow-x"
+    onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactList(), renderAddContact(), renderEditContact()">
 
     <white-screen onclick="closeWhiteScreen()" class="white-screen d_none" id="white-screen"></white-screen>
 
 
-
-    <header>
-        <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
-        <div class="header-right-part">
-            <a class="header-font"> Kanban Project Management Tool</a>
-            <a href="./help.html">
-                <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
-            </a>
-            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-                <a class="g-unit" id="user-ball-ID">G</a>
+    <div class="header-wrapper-responsive">
+        <header>
+            <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
+            <div class="header-right-part">
+                <a class="header-font"> Kanban Project Management Tool</a>
+                <a href="./help.html">
+                    <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
+                </a>
+                <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+                    <a class="g-unit" id="user-ball-ID">G</a>
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
+    </div>
 
     <div class="d_none" id="user-menue-header">
 
@@ -54,52 +58,52 @@
 
 
 
-    
-        <nav-main-container style="display: flex;">
+
+    <nav-main-container style="display: flex;">
 
 
-                <nav class="side-menu">
+        <nav class="side-menu">
 
-                    <div class="sidebar-high-section-container">
-                        
-                            <a href="./summaryAll.html" class="button-sidebar">
-                                <img class="img-size-sidebar" src="./assets/img/Vector.svg" alt="Board icon">
-                                <span class="sidebar-font">Summary</span>
-                            </a>
-                        
-                            <a href="./addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="./assets/img/edit_square.svg" alt="Brett icon">
-                                <span class="sidebar-font">Add Task</span>
-                            </a>
-                        
-                            <a href="./board_code/board.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="./assets/img/Board.svg" alt="Board-2 icon">
-                                <span class="sidebar-font">Board</span>
-                            </a>
+            <div class="sidebar-high-section-container">
 
-                            <a href="./contactsUser.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="./assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
-                                <span class="sidebar-font">Contacts</span>
-                            </a>
+                <a href="./summaryAll.html" class="button-sidebar">
+                    <img class="img-size-sidebar" src="./assets/img/Vector.svg" alt="Board icon">
+                    <span class="sidebar-font">Summary</span>
+                </a>
 
-                    </div>
+                <a href="./addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="./assets/img/edit_square.svg" alt="Brett icon">
+                    <span class="sidebar-font">Add Task</span>
+                </a>
 
-                     <div class="sidebar-low-section-container">
-                        <div class="padding-up-down-small">
-                            <a class="button-sidebar padding-up-down-small" href="./privacy.html">
-                                <span  class="sidebar-font">Privacy Policy</span>
-                            </a>
-                        </div>
-                        <div class="padding-up-down-small">
-                            <a class="button-sidebar padding-up-down-small" href="./legal.html">
-                                <span  class="sidebar-font">Legal Notice</span>
-                            </a>
-                        </div>
-                    </div>
+                <a href="./board_code/board.html" class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="./assets/img/Board.svg" alt="Board-2 icon">
+                    <span class="sidebar-font">Board</span>
+                </a>
 
-                </nav>
+                <a href="./contactsUser.html" class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="./assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
+                    <span class="sidebar-font">Contacts</span>
+                </a>
 
-                
+            </div>
+
+            <div class="sidebar-low-section-container">
+                <div class="padding-up-down-small">
+                    <a class="button-sidebar padding-up-down-small" href="./privacy.html">
+                        <span class="sidebar-font">Privacy Policy</span>
+                    </a>
+                </div>
+                <div class="padding-up-down-small">
+                    <a class="button-sidebar padding-up-down-small" href="./legal.html">
+                        <span class="sidebar-font">Legal Notice</span>
+                    </a>
+                </div>
+            </div>
+
+        </nav>
+
+
 
 
 
@@ -107,9 +111,10 @@
         <contacts class="maincontent">
 
             <div class="button-contacts-position">
-                <button onclick="showAddContactFormular(), callWhiteScreen()" class="button-contacts display-flex-center-xy">
-                        <a class="font-size-24">Add new contact</a>
-                        <img class="img-contact" src="./assets/img/person_add.svg" alt="Board icon">
+                <button onclick="showAddContactFormular(), callWhiteScreen()"
+                    class="button-contacts display-flex-center-xy">
+                    <a class="font-size-24">Add new contact</a>
+                    <img class="img-contact" src="./assets/img/person_add.svg" alt="Board icon">
                 </button>
             </div>
 
@@ -124,60 +129,60 @@
 
 
         <div id="singleContactWrapper">
-  <!-- bleibt IMMER stehen -->
-  <div class="single-contact-header">
-    <h2 class="contact_information">Contact Information</h2>
-    <a href="./contactsUser.html">
-      <img src="./assets/img/arrow_left.svg" class="back-btn-mobile">
-    </a>
-  </div>
+            <!-- bleibt IMMER stehen -->
+            <div class="single-contact-header">
+                <h2 class="contact_information">Contact Information</h2>
+                <a href="./contactsUser.html">
+                    <img src="./assets/img/arrow_left.svg" class="back-btn-mobile">
+                </a>
+            </div>
 
-  <!-- HIER darf das JS reinschreiben -->
-  <div id="singleContactContent"></div>
-  <div id="singleContactID"></div>
+            <!-- HIER darf das JS reinschreiben -->
+            <div id="singleContactContent"></div>
+            <div id="singleContactID"></div>
 
-  <!-- 3-Punkte-Button unten -->
-  <div class="contact-actions-mobile">
-    <input type="checkbox" id="contact-menu-toggle" class="contact-fab-toggle">
+            <!-- 3-Punkte-Button unten -->
+            <div class="contact-actions-mobile">
+                <input type="checkbox" id="contact-menu-toggle" class="contact-fab-toggle">
 
-    <label for="contact-menu-toggle" class="contact-fab">
-      <img src="./assets/img/menu_contant.svg" alt="More">
-    </label>
+                <label for="contact-menu-toggle" class="contact-fab">
+                    <img src="./assets/img/menu_contant.svg" alt="More">
+                </label>
 
-    <div class="contact-fab-menu">
-      <button class="contact-fab-item"
-        onclick="showEditContactFormular(), setUserDataValue(0), callWhiteScreen()">
-        <img src="./assets/img/edit.svg" alt="">
-        <span>Edit</span>
-      </button>
+                <div class="contact-fab-menu">
+                    <button class="contact-fab-item"
+                        onclick="showEditContactFormular(), setUserDataValue(0), callWhiteScreen()">
+                        <img src="./assets/img/edit.svg" alt="">
+                        <span>Edit</span>
+                    </button>
 
-      <button class="contact-fab-item"
-        onclick="deleteContactinEditContactWindow()">
-        <img src="./assets/img/delete.svg" alt="">
-        <span>Delete</span>
-      </button>
-    </div>
-  </div>
- </div>
+                    <button class="contact-fab-item" onclick="deleteContactinEditContactWindow()">
+                        <img src="./assets/img/delete.svg" alt="">
+                        <span>Delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-            <addContact class="add-contact hide-add-contact" id="add-contactID">
+        <addContact class="add-contact hide-add-contact" id="add-contactID">
 
-            </addContact>
+        </addContact>
 
-            <edit-contact class="edit-contact hide-edit-contact" id="edit-contactID">    
+        <edit-contact class="edit-contact hide-edit-contact" id="edit-contactID">
 
-            </edit-contact>   
+        </edit-contact>
 
 
         <!--bis hier ersetzen-->
 
 
-        </nav-main-container>
+    </nav-main-container>
 
-          <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
-          <div id="toast-dim"></div>
-    
+    <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+    <div id="toast-dim"></div>
+
 
     <script type="module" src="./scripts/firebase.js"></script>
 </body>
+
 </html>

@@ -28,6 +28,11 @@
   font-style: italic;
 }
 
+.header-wrapper-responsive {
+  background-color:#4589ff;
+  width: 100%;
+}
+
 .layout-container-addTask_page {
   display: flex;
 }
