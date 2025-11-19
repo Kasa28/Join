@@ -28,17 +28,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const content = document.getElementById("singleContactContent");
 
   if (legacy && content) {
-    // Inhalte von legacy -> content kopieren (nur für Mobile)
     function syncFromLegacy() {
       if (window.innerWidth <= 1000) {
         content.innerHTML = legacy.innerHTML;
       }
     }
 
-    // Layout je nach Breite umschalten
     function applyContactLayout() {
       if (window.innerWidth <= 1000) {
-        // MOBILE: nur singleContactContent anzeigen
         legacy.style.display = "none";
         content.style.display = "";
         syncFromLegacy();
@@ -70,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function hideMenu() {
     const toggle = getToggle();
     if (!toggle) return;
-    // Nur das Menü zuklappen, den Wrapper NICHT verstecken
+    // Nur Menü zuklappen (Checkbox), Wrapper bleibt sichtbar
     toggle.checked = false;
   }
 
@@ -79,15 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggle = getToggle();
     if (!toggle) return;
 
-    // Sicherheitshalber Wrapper wieder sichtbar machen
-    if (menuWrapper.style.display === "none") {
+    if (menuWrapper && menuWrapper.style.display === "none") {
       menuWrapper.style.display = "";
     }
-    // Menü standardmäßig zu
     toggle.checked = false;
   }
 
-  // Klicks allgemein (außerhalb Menü schließen usw.)
   document.addEventListener("click", function (event) {
     const menuWrapper = getMenuWrapper();
     const toggle = getToggle();
@@ -95,18 +89,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const target = event.target;
 
-    // Klick außerhalb des 3-Punkte-Menüs → Menü schließen
+    // Klick außerhalb des Menüs → einklappen
     if (!menuWrapper.contains(target)) {
       toggle.checked = false;
     }
 
-    // Klick auf Menü-Eintrag (Edit/Delete) → Menü schließen
+    // Klick auf Menü-Eintrag (Edit/Delete) → Menü einklappen
     const fabItem = target.closest(".contact-actions-mobile .contact-fab-item");
     if (fabItem) {
       hideMenu();
     }
 
-    // Wenn Edit-Overlay geschlossen wurde → Menü wieder zeigen
+    // Wenn Edit-Overlay geschlossen wurde → Menü-Wrapper wieder normal
     const closeOrSaveBtn = target.closest(
       ".close-icon-edit-contact, .button-edit-contact, #white-screen"
     );
@@ -124,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const editOverlay = document.querySelector(".edit-contact");
   let overlayObserver;
 
-  // Ist ein Overlay wirklich sichtbar?
   function overlayVisible(el) {
     if (!el) return false;
     const st = window.getComputedStyle(el);
@@ -139,17 +132,16 @@ document.addEventListener("DOMContentLoaded", function () {
     return overlayVisible(addOverlay) || overlayVisible(editOverlay);
   }
 
-  // Steuert Sichtbarkeit des blauen +-Buttons
   function syncAddFab() {
     if (!addFab) return;
 
-    // Desktop: FAB immer sichtbar
     if (window.innerWidth > 1000) {
+      // Desktop: FAB immer sichtbar
       addFab.style.display = "";
       return;
     }
 
-    // Mobile: FAB nur anzeigen, wenn KEIN Overlay offen ist
+    // Mobile: nur, wenn kein Overlay offen ist
     addFab.style.display = anyOverlayOpen() ? "none" : "";
   }
 
@@ -158,18 +150,17 @@ document.addEventListener("DOMContentLoaded", function () {
     addOverlay.classList.add("d-none");
   }
 
-  // Klick auf blauen +-Button → Add-Overlay öffnen (auf Mobile)
+  // Klick auf blauen +-Button → Add-Overlay öffnen (mobile)
   if (addFab && addOverlay) {
     addFab.addEventListener("click", function () {
       if (window.innerWidth <= 1000) {
         addOverlay.classList.remove("d-none");
         addOverlay.style.display = "";
-        syncAddFab(); // FAB ausblenden
+        syncAddFab();
       }
     });
   }
 
-  // Änderungen an Overlays beobachten
   function initOverlayObserver() {
     if (overlayObserver) overlayObserver.disconnect();
     const targets = [addOverlay, editOverlay].filter(Boolean);
@@ -184,24 +175,19 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  // Initial ausführen
   syncAddFab();
   initOverlayObserver();
   window.addEventListener("resize", syncAddFab);
 
   /* =========================================
-     4) NEU: Mobile FAB-Menu → richtigen Kontakt
-        für Edit/Delete ermitteln
+     4) Mobile FAB-Menu → richtigen Kontakt finden
      ========================================= */
 
-  // Hilfsfunktion: aktuell angezeigter Name im Detail
   function getCurrentContactName() {
-    // Mobile-Spiegel (content) hat Vorrang
     const hMobile = document.querySelector("#singleContactContent h2");
     if (hMobile && hMobile.textContent.trim()) {
       return hMobile.textContent.trim();
     }
-    // Fallback: normales Detail
     const hDesktop = document.querySelector("#singleContactID h2");
     if (hDesktop) {
       return hDesktop.textContent.trim();
@@ -211,19 +197,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.addEventListener("click", function (event) {
     const item = event.target.closest(".contact-fab-item");
-    if (!item) return; // kein Menü-Eintrag
+    if (!item) return;
 
     const label = item.textContent.toLowerCase();
     const isEdit = label.includes("edit");
     const isDelete = label.includes("delete");
     if (!isEdit && !isDelete) return;
 
-    // Kontakte aus LocalStorage holen
     const data = JSON.parse(localStorage.getItem("userData")) || {};
     const contacts = Array.isArray(data.friends) ? data.friends : [];
     if (!contacts.length) return;
 
-    // Namen aus dem sichtbaren Detail holen
     const displayedName = getCurrentContactName();
     if (!displayedName) return;
 
@@ -234,7 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (idx === -1) return;
 
     if (isEdit) {
-      // RICHTIGEN Kontakt ins Edit-Formular schreiben
       if (typeof setUserDataValue === "function") {
         setUserDataValue(idx);
       }
@@ -252,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isDelete) {
       const username = contacts[idx].username;
       if (typeof deleteContact === "function") {
-        deleteContact(username); // async Funktion, läuft im Hintergrund
+        deleteContact(username);
       }
       hideMenu();
       event.preventDefault();
@@ -260,71 +243,154 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-  /* =========================================
-     5) Sicheres Löschen überschreibt globale
-        deleteContact-Funktionen
-     ========================================= */
+/* =========================================
+   5) Sicheres Löschen überschreibt globale
+      deleteContact-Funktionen
+   ========================================= */
 
-  // Hilfsfunktion: Kontakt per Name aus LocalStorage holen
-  function findContactByName(rawName) {
-    const data = JSON.parse(localStorage.getItem("userData")) || {};
-    const contacts = Array.isArray(data.friends) ? data.friends : [];
+// Kontakt per Name in localStorage finden
+function findContactByName(rawName) {
+  const data = JSON.parse(localStorage.getItem("userData")) || {};
+  const contacts = Array.isArray(data.friends) ? data.friends : [];
 
-    const needle = String(rawName || "").trim().toLowerCase();
-    const index = contacts.findIndex(
-      (c) => (c.username || "").trim().toLowerCase() === needle
+  const needle = String(rawName || "").trim().toLowerCase();
+  const index = contacts.findIndex(
+    (c) => (c.username || "").trim().toLowerCase() === needle
+  );
+
+  return { data, contacts, index };
+}
+
+// Zentrale Delete-Funktion: löscht genau EINEN Kontakt
+async function safeDeleteContact(nameFromClick) {
+  const { data, contacts, index } = findContactByName(nameFromClick);
+
+  if (index === -1) {
+    console.warn("safeDeleteContact: Kontakt nicht gefunden:", nameFromClick);
+    return;
+  }
+
+  contacts.splice(index, 1);
+  data.friends = contacts;
+  localStorage.setItem("userData", JSON.stringify(data));
+
+  const userID = await getUserID(data.name);
+  if (userID) {
+    await updateUserFriendslist(userID, contacts);
+  }
+
+  const showContact = document.getElementById("singleContactID");
+  if (showContact) showContact.innerHTML = "";
+
+  if (typeof hideEditContactFormular === "function") {
+    hideEditContactFormular();
+  }
+
+  // Auswahl zurücksetzen → kein Fehler in makeContactBlue
+  if (typeof remindString !== "undefined") {
+    remindString = null;
+  }
+
+  renderContactList();
+}
+
+// Delete über Edit-Overlay (nimmt aktuellen Namen aus dem Formular)
+async function safeDeleteContactFromEdit() {
+  const input = document.getElementById("edit-contact-usernameID");
+  const nameFromForm = input ? input.value : "";
+  await safeDeleteContact(nameFromForm);
+}
+
+window.addEventListener("load", function () {
+  // Delete-Funktionen global überschreiben
+  window.deleteContact = safeDeleteContact;
+  window.deleteContactinEditContactWindow = safeDeleteContactFromEdit;
+
+  // makeContactBlue robust machen
+  window.makeContactBlue = safeMakeContactBlue;
+
+  // Falls es eine alte renderSingleContact gibt → merken (falls du sie noch brauchst)
+  if (typeof window.renderSingleContact === "function") {
+    window._renderSingleContactOriginal = window.renderSingleContact;
+  }
+
+  // Unsere eigene, sichere Variante überschreibt alles andere
+  window.renderSingleContact = safeRenderSingleContact;
+});
+
+
+
+// =========================================
+// 6) Robuste Version von makeContactBlue
+//    (verhindert Fehler, wenn alter Kontakt
+//    im DOM nicht mehr existiert)
+// =========================================
+function safeMakeContactBlue(inputName) {
+  const prevName = typeof remindString === "string" ? remindString : null;
+
+  // Alte Auswahl zurücksetzen – aber nur, wenn die Elemente noch existieren
+  if (prevName) {
+    const prevCard = document.getElementById(prevName + "-contactID");
+    const prevMail = document.getElementById(prevName + "-emailID");
+
+    if (prevCard) {
+      prevCard.classList.add("single-contact-hover");
+      prevCard.classList.remove("backgroundcolor-blue");
+    }
+    if (prevMail) {
+      prevMail.classList.remove("font-color-white");
+    }
+  }
+
+  // Neue Auswahl einfärben – auch hier defensiv prüfen
+  const card = document.getElementById(inputName + "-contactID");
+  const mail = document.getElementById(inputName + "-emailID");
+
+  if (card) {
+    card.classList.remove("single-contact-hover");
+    card.classList.add("backgroundcolor-blue");
+  }
+  if (mail) {
+    mail.classList.add("font-color-white");
+  }
+
+  // Merken, welcher Kontakt aktuell aktiv ist
+  remindString = inputName;
+}
+// =========================================
+// 7) Eigene Version von renderSingleContact
+//    (ohne kaputte Toggle-Logik mit remindString)
+// =========================================
+function safeRenderSingleContact(inputName) {
+  // Daten aus localStorage holen
+  const data = JSON.parse(localStorage.getItem("userData")) || {};
+  const contacts = Array.isArray(data.friends) ? data.friends : [];
+
+  if (!contacts.length) {
+    console.warn("safeRenderSingleContact: keine Kontakte gefunden");
+    return;
+  }
+
+  // richtigen Kontakt suchen
+  const idx = findIndexFromUsername(contacts, inputName);
+  if (idx === -1) {
+    console.warn("safeRenderSingleContact: Kontakt nicht gefunden:", inputName);
+    return;
+  }
+
+  const contact = contacts[idx];
+
+  if (typeof singleContactTemplate === "function") {
+    singleContactTemplate(
+      contact.color,
+      contact.username,
+      idx,
+      contact.email,
+      contact.PhoneNumber
     );
-
-    return { data, contacts, index };
   }
-
-  // Neue, „sichere“ Delete-Funktion (für Detail-Delete + Mobile-FAB-Delete)
-  async function safeDeleteContact(nameFromClick) {
-    const { data, contacts, index } = findContactByName(nameFromClick);
-
-    if (index === -1) {
-      console.warn("safeDeleteContact: Kontakt nicht gefunden:", nameFromClick);
-      return;
-    }
-
-    // genau EINEN Kontakt entfernen
-    contacts.splice(index, 1);
-    data.friends = contacts;
-    localStorage.setItem("userData", JSON.stringify(data));
-
-    const userID = await getUserID(data.name);
-    if (userID) {
-      await updateUserFriendslist(userID, contacts);
-    }
-
-    // Detailbereich leeren
-    const showContact = document.getElementById("singleContactID");
-    if (showContact) showContact.innerHTML = "";
-
-    // Edit-Overlay schließen, falls offen
-    if (typeof hideEditContactFormular === "function") {
-      hideEditContactFormular();
-    }
-
-    // Auswahl zurücksetzen → kein makeContactBlue-Fehler
-    if (typeof remindString !== "undefined") {
-      remindString = null;
-    }
-
-    // Liste neu zeichnen
-    renderContactList();
+  if (typeof makeContactBlue === "function") {
+    makeContactBlue(contact.username);
   }
+}
 
-  // Delete aus dem Edit-Overlay (nutzt den Namen aus dem Formular)
-  async function safeDeleteContactFromEdit() {
-    const input = document.getElementById("edit-contact-usernameID");
-    const nameFromForm = input ? input.value : "";
-    await safeDeleteContact(nameFromForm);
-  }
-
-  // Wenn alle anderen Scripts geladen sind, globale Funktionen ersetzen
-  window.addEventListener("load", function () {
-    // überschreibt die alten Implementierungen überall (Detail, FAB, etc.)
-    window.deleteContact = safeDeleteContact;
-    window.deleteContactinEditContactWindow = safeDeleteContactFromEdit;
-  });
