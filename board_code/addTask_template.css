@@ -250,6 +250,10 @@ addtask_template.css * {
   padding-right: 70px;
 }
 
+.subtask-item-addTask_template .subtask-value-addTask_template {
+  padding-right: 70px; 
+}
+
 /* === Buttons & Footer === */
 .task-buttons-addTask_template {
   position: absolute;
