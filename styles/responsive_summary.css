@@ -109,6 +109,10 @@
 }
 
 @media (max-width: 398px) {
+  .header-wrapper-responsive{
+    position: sticky;
+    top: 0;
+  }
   .summary-content-container {
     max-width: 300px;
   }
