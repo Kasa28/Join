@@ -60,4 +60,3 @@ async function updateUserFriendslist(inputID, inputObject){
     const updatedData = { friends: inputObject}
     await patchDataWithID("users", inputID, updatedData);
 }
-
