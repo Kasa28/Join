@@ -82,10 +82,21 @@ function setContactsIntoContactblock(inputContacts){
 
     removeContentfromAllContactBlocks();
     
-    const contacts = Array.isArray(inputContacts) ? inputContacts : [];
+    let contacts = [];
+    if (Array.isArray(inputContacts)) {
+        contacts = inputContacts;
+    } else if (inputContacts && typeof inputContacts === "object") {
+        contacts = Object.values(inputContacts);
+    } else {
+        contacts = [];
+    }
 
 
     contacts.forEach((contact) => {
+        // Safeguard: skippe ungültige Einträge
+        if (!contact || typeof contact.username !== "string" || contact.username.length === 0) {
+            return;
+        }
         const firstLetter = contact.username.charAt(0).toUpperCase();
         if(contactBlock[firstLetter]){
             contactBlock[firstLetter].unshift(contact);

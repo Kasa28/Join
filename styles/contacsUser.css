@@ -143,6 +143,10 @@
     background-color: #4589FF;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
 .font-color-white{
     color: white;
 }
