@@ -25,6 +25,9 @@ header {
     width: calc(100% - 25.5rem);
     z-index: 100;
   }
+  #greetID{
+    margin-left: 60px;
+  }
   .header-wrapper-responsive {
     background-color:#4589ff;
     width: 100%;
@@ -36,6 +39,9 @@ header {
   .edit-contact-headcard {
     z-index: 2000;
 }
+.wrapper-main-task-btn-addTask_page {
+  padding-right: 20%;
+}
 }
 
 @media (min-width: 2500px) {
@@ -43,6 +49,9 @@ header {
     top: 0;
     width: 60%;
     z-index: 100;
+  }
+  .wrapper-main-task-btn-addTask_page {
+    padding-right: 40%;
   }
 }
 
@@ -52,6 +61,9 @@ header {
     width: 50%;
     z-index: 100;
   }
+  .wrapper-main-task-btn-addTask_page {
+    padding-right: 50%;
+  }
 }
 
 @media (min-width: 4000px) {
@@ -59,6 +71,12 @@ header {
     top: 0;
     width: 40%;
     z-index: 100;
+  }
+   #greetID{
+  margin-left: 58px;
+}
+  .wrapper-main-task-btn-addTask_page {
+    padding-right: 60%;
   }
 }
 

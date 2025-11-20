@@ -6,13 +6,13 @@
 
 .page {
   font-family: "Open Sans", Arial, sans-serif;
-  margin: 0 auto;
   height: calc(100vh - 96px);
   overflow-y: auto;
   overflow-x: hidden;
   width: 80%;
   padding-left: 80px;
   padding-top: 60px;
+  max-width: 60%;
 }
 
 .ul_legal {
