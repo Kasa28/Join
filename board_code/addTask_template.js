@@ -7,6 +7,7 @@ window.setPriority = function(p) {
   return setPriorityAddTask(p);
 };
 
+
 // === Initialization and Field Validation ===
 function initAddTaskTemplateHandlers() {
   const titleInput = document.getElementById("title");
@@ -25,7 +26,6 @@ function initAddTaskTemplateHandlers() {
     titleInput.addEventListener("blur", validateTitle);
     titleInput.addEventListener("input", validateTitle);
   }
-
   const dueDateInput = document.getElementById("due-date");
   if (dueDateInput) {
     dueDateInput.addEventListener("input", (e) => {
@@ -36,18 +36,16 @@ function initAddTaskTemplateHandlers() {
   }
 }
 
+
 // === Assign Dropdown Handling ===
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
   const placeholder = document.querySelector(".assign-placeholder-addTask_template");
   const arrow = document.querySelector(".assign-arrow-addTask_template");
-
   if (!dropdown || !placeholder || !arrow) return;
-
   isDropdownOpen = dropdown.style.display !== "block";
   dropdown.style.display = isDropdownOpen ? "block" : "none";
-
   if (isDropdownOpen) {
     placeholder.contentEditable = true;
     placeholder.textContent = "";
@@ -68,6 +66,7 @@ function toggleAssignDropdown(event) {
     renderAssignedAvatars();
   }
 }
+
 
 // === Shared helper: Extract avatar/user color ===
 function getColorFromItem(item) {
@@ -151,6 +150,8 @@ function updateAssignPlaceholder() {
     placeholder.textContent = "";
   }
 }
+
+
 document.addEventListener("input", (e) => {
   if (e.target.classList.contains("assign-placeholder-addTask_template")) {
     const searchValue = e.target.textContent.toLowerCase();
@@ -228,7 +229,6 @@ function renderAssignedAvatars() {
   if (dataColor) return dataColor;
   return "#4589ff";
 };
-
 (window.selectedUsers || []).forEach((name) => {
   const item = [...document.querySelectorAll(".assign-item-addTask_template")].find(
     (el) =>
@@ -243,7 +243,6 @@ function renderAssignedAvatars() {
       .split(" ")
       .map((n) => n[0]?.toUpperCase())
       .join("");
-
       const avatar = document.createElement("div");
       avatar.textContent = initials;
       avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
