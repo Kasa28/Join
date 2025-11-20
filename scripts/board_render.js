@@ -1,4 +1,36 @@
 /* === board_render.js | Handles rendering of task cards and visuals === */
+/**
+ * @typedef {Object} AssignedUser
+ * @property {string} name
+ * @property {string} [img]
+ * @property {string} [color]
+ */
+/**
+ * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
+ */
+/**
+ * @typedef {"urgent"|"medium"|"low"} TaskPriority
+ */
+/**
+ * @typedef {Object} Task
+ * @property {number|string} id
+ * @property {string} title
+ * @property {string} description
+ * @property {string} type
+ * @property {TaskStatus} status
+ * @property {string} dueDate
+ * @property {TaskPriority} priority
+ * @property {string} [priorityIcon]
+ * @property {number} subtasksDone
+ * @property {number} subtasksTotal
+ * @property {AssignedUser[]} assignedTo
+ * @property {string[]} [subTasks]
+ */
+/**
+ * Renders a single task into a cloned card template.
+ * @param {Task} t
+ * @returns {DocumentFragment}
+ */
 
 /* === Task Card Rendering === */
 function renderCard(t) {
@@ -33,6 +65,11 @@ function renderCard(t) {
 
 
   /* === Subtask List Item Builder === */
+    /**
+   * Builds a subtask list <li> element for edit UI.
+   * @param {string} text
+   * @returns {HTMLLIElement}
+   */
   function buildSubtaskListItem(text) {
     const li = document.createElement("li");
     li.classList.add("subtask-entry-edit");
@@ -50,6 +87,11 @@ function renderCard(t) {
 
   
   /* === Board Rendering === */
+    /**
+   * Renders all board columns and visible task cards.
+   * Respects current search filter and empty-column pills.
+   * @returns {void}
+   */
   function render() {
     Object.values(nameOfTheCard).forEach(({ id }) =>
       document.getElementById(id)?.replaceChildren()
@@ -70,6 +112,10 @@ function renderCard(t) {
   
 
 /* === Post-Render Enhancements (Avatars & Priority Icons) === */
+  /**
+   * Post-render pass to inject assignee avatars/initials and priority icons.
+   * @returns {void}
+   */
   function afterRender() {
     document.querySelectorAll(".task-card").forEach((card) => {
       const task = window.tasks.find((t) => t.id == card.id.replace("card-", ""));
@@ -115,6 +161,11 @@ function renderCard(t) {
 
 
   /* === Helper: Name Initials === */
+    /**
+   * Creates initials from a full name (max 2 letters).
+   * @param {string} name
+   * @returns {string}
+   */
   function getInitialsFromName(name) {
     return String(name || "")
       .split(/\s+/)
@@ -126,6 +177,11 @@ function renderCard(t) {
 
 
 /* === Helper: Populate Assign Section === */
+  /**
+   * Hydrates the assign section in AddTask overlay based on task data.
+   * @param {Task} task
+   * @returns {void}
+   */
   function hydrateAssignSection(task) {
     const content = document.getElementById("addtask-content");
     if (!content) return;
@@ -170,24 +226,41 @@ function renderCard(t) {
   
 
 /* === Task Type and Badge Helpers === */
+  /**
+   * Normalizes a task type string for comparisons.
+   * @param {string} type
+   * @returns {string}
+   */
   function normalizeTaskType(type) {
     return String(type || "")
       .trim()
       .toLowerCase();
   }
 
-
+  /**
+   * Checks if type represents a user story.
+   * @param {string} type
+   * @returns {boolean}
+   */
   function isUserStoryType(type) {
     const n = normalizeTaskType(type);
     return n === "user story" || n === "user-story";
   }
 
-
+  /**
+   * Checks if type represents a technical task.
+   * @param {string} type
+   * @returns {boolean}
+   */
   function isTechnicalType(type) {
     return normalizeTaskType(type) === "technical task";
   }
 
-
+  /**
+   * Returns badge CSS class based on type.
+   * @param {string} type
+   * @returns {"badge-technical"|"badge-user"}
+   */
   function getBadgeClass(type) {
     return isTechnicalType(type) ? "badge-technical" : "badge-user";
   }
