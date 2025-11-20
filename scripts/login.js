@@ -44,8 +44,6 @@ function login(event){
     }
     const loginSuccessful = checkUsernamePassword(email, password);
     checkUsernamePassword(email, password);
-
-
    if(loginSuccessful){
       console.log("Login erfolgreich! Weiterleitung...");
       window.location.href = "./summaryAll.html";  
@@ -56,6 +54,18 @@ function login(event){
       errorEl.classList.remove("visually-hidden");
       errorEl.style.color = "red";  
    }
+}
+
+
+function loginAsGuest() {
+   const guest = {
+      id: "guest",
+      name: "Guest",
+      email: "guest@guest.com",
+      friends: []
+   };
+   localStorage.setItem("userData", JSON.stringify(guest));
+   window.location.href = "./summaryAll.html";
 }
 
 
