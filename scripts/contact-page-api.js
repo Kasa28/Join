@@ -33,7 +33,10 @@ async function getUserID(inputUsername) {
 
 
 async function updateUserFriendslist(inputID, inputObject){
+    
+    
     const updatedData = { friends: inputObject}
-    const response = await patchDataWithID("users", inputID, updatedData);
+    await patchDataWithID("users", inputID, updatedData);
+    console.log("funktioniert");
 }
 

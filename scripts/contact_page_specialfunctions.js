@@ -106,6 +106,34 @@ function setContactsIntoContactblock(inputContacts){
      });
 }
 
+function flattenContactBlockToArray() {
+    const result = [];
+    if (!contactBlock || typeof contactBlock !== "object") return result;
+
+    // keys A..Z in natural order if present
+    const alphaKeys = Object.keys(contactBlock)
+        .filter(k => k !== "other")
+        .sort((a,b) => a.localeCompare(b));
+
+    alphaKeys.forEach(key => {
+        const list = Array.isArray(contactBlock[key]) ? contactBlock[key] : [];
+        list.forEach(contact => {
+            if (contact && typeof contact.username === "string") result.push(contact);
+        });
+    });
+
+    // append 'other' block last
+    if (Array.isArray(contactBlock.other)) {
+        contactBlock.other.forEach(contact => {
+            if (contact && typeof contact.username === "string") result.push(contact);
+        });
+    }
+
+    return result;
+}
+
+
+
 
 function pushExampleContactsOneTimeInLocalStorage(inputContacts){
     
