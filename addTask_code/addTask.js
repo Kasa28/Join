@@ -24,12 +24,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // === Due Date Validation & Input Formatting ===
+/**
+ * Validates whether a string matches the date format dd/mm/yyyy.
+ * @param {string} dateString - The input date string.
+ * @returns {boolean} True if format is valid.
+ */
 function isValidDateFormat(dateString) {
   const regex = /^\d{2}\/\d{2}\/\d{4}$/;
   return regex.test(dateString);
 }
 
 
+/**
+ * Sanitizes and formats the due date input into dd/mm/yyyy as the user types.
+ * @param {InputEvent} e - The input event.
+ */
 function sanitizeDueDateInput(e) {
   let v = e.target.value.replace(/[^\d]/g, "");
   if (v.length > 8) v = v.slice(0, 8);
@@ -42,6 +51,10 @@ function sanitizeDueDateInput(e) {
 }
 
 
+/**
+ * Validates the due date input field for format and real date values.
+ * @returns {boolean} True if the due date is valid.
+ */
 function validateDueDate() {
   const dueDateInput = document.getElementById("due-date");
   if (!dueDateInput) return false;
@@ -81,6 +94,11 @@ if (dueDateInput) {
 }
 
 
+/**
+ * Checks whether a date string represents a real calendar date.
+ * @param {string} dateString - Date string in dd/mm/yyyy format.
+ * @returns {boolean} True if the date exists on the calendar.
+ */
 function isRealDate(dateString) {
   const [day, month, year] = dateString.split("/").map(Number);
   const date = new Date(year, month - 1, day);
@@ -93,6 +111,10 @@ function isRealDate(dateString) {
 
 
 // === Priority Selection ===
+/**
+ * Sets the priority level for the task and applies visual styling.
+ * @param {string} priority - One of "urgent", "medium", or "low".
+ */
 function setPriorityAddTask(priority) {
   const urgentBtn = document.querySelector(".priority-btn-urgent-addTask_page");
   const mediumBtn = document.querySelector(".priority-btn-medium-addTask_page");
@@ -130,6 +152,9 @@ function setPriorityAddTask(priority) {
 
 
 // === Subtask Delete ===
+/**
+ * Handles deleting the current subtask input when clicking the delete icon.
+ */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-delete-addTask_page")) {
     const subtaskInput = document.getElementById("subtask");
@@ -141,6 +166,9 @@ document.addEventListener("click", (e) => {
 
 
 // === Subtask Add ===
+/**
+ * Handles adding a new subtask to the list when clicking the check icon.
+ */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-check-addTask_page")) {
     const subtaskInput = document.getElementById("subtask");
@@ -168,6 +196,9 @@ document.addEventListener("click", (e) => {
 
 
 // === Subtask Remove ===
+/**
+ * Handles removing an existing subtask from the list.
+ */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-remove-addTask_page")) {
     const li = e.target.closest("li");
@@ -177,6 +208,10 @@ document.addEventListener("click", (e) => {
 
 
 // === Subtask Edit (Beginner-friendly, in-place editing) ===
+/**
+ * Enables in-place editing of a subtask item.
+ * @param {MouseEvent} e - The click event that initiates editing.
+ */
 function enableSubtaskEditing(e) {
   if (!e.target.classList.contains("subtask-edit-addTask_page")) return;
 
@@ -207,6 +242,10 @@ document.addEventListener("click", enableSubtaskEditing);
 
 
 // === Subtask Save ===
+/**
+ * Saves changes to an edited subtask item.
+ * @param {MouseEvent} e - The click event that triggers the save action.
+ */
 function saveEditedSubtask(e) {
   if (!e.target.classList.contains("subtask-save-addTask_page")) return;
 
@@ -237,6 +276,9 @@ document.addEventListener("click", saveEditedSubtask);
 
 
 // === Form Reset ===
+/**
+ * Resets all form fields in the Add Task page to default state.
+ */
 function clearForm() {
   document.getElementById("title").value = "";
   document.getElementById("description").value = "";
@@ -272,6 +314,13 @@ function clearForm() {
 
 
 // === Toast (GLOBAL) ===
+/**
+ * Displays a temporary toast notification on the screen.
+ * @param {string} text - The message to display.
+ * @param {Object} [options] - Additional display settings.
+ * @param {string} [options.variant="ok"] - "ok" or "error".
+ * @param {number} [options.duration=1000] - Display duration in milliseconds.
+ */
 function showToast(text, { variant = "ok", duration = 1000 } = {}) {
   let root = document.getElementById("toast-root");
   if (!root) {
@@ -296,24 +345,28 @@ function showToast(text, { variant = "ok", duration = 1000 } = {}) {
 window.showToast = showToast;
 
 
+/**
+ * Displays a temporary toast notification on the screen.
+ * @param {string} text - The message to display.
+ * @param {Object} [options] - Additional display settings.
+ * @param {string} [options.variant="ok"] - "ok" or "error".
+ * @param {number} [options.duration=1000] - Display duration in milliseconds.
+ */
 async function createTask() {
   const title = (document.getElementById("title")?.value || "").trim();
   if (!title) {
     alert("Please enter a title");
     return;
   }
-
   const dueDate = (document.getElementById("due-date")?.value || "").trim();
   if (!dueDate) {
     alert("Please enter a due date");
     return;
   }
-
   if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) {
     alert("Please enter a valid date in format dd/mm/yyyy");
     return;
   }
-
   const description = (
     document.getElementById("description")?.value || ""
   ).trim();
@@ -334,9 +387,7 @@ async function createTask() {
     medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
     low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
   };
-
   let priorityIcon = priorityIcons[priority] || priorityIcons.low;
-
   const assignedTo = (window.selectedUsers || []).map((name) => {
     const sourceAvatar = [
       ...document.querySelectorAll(".assign-item-addTask_page"),
@@ -350,7 +401,6 @@ async function createTask() {
     const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
     return { name, color };
   });
-
   const subtaskItems = document.querySelectorAll("#subtask-list li");
   const subTasks = Array.from(subtaskItems).map((li) => li.textContent.trim());
   const subtasksTotal = subTasks.length;
@@ -369,7 +419,6 @@ async function createTask() {
     subtasksTotal,
     assignedTo,
   };
-
   try {
     await saveTask(task.id, task); 
     showToast("Task added to board", { duration: 1600 });
