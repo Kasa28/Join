@@ -227,7 +227,7 @@ addtask_template.css * {
   border-bottom: 3px solid #ffa800;
 }
 
-/* === Task Input Layout === */
+/* === Task Input Layout & subtasks === */
 .task-input-addTask_template {
   display: flex;
   flex-direction: column;
@@ -240,6 +240,18 @@ addtask_template.css * {
   padding-left: 10px;
   width: 20px;
   height: 15px;
+}
+
+.subtask-wrapper-addTask_template {
+  position: relative;
+}
+
+.subtask-wrapper-addTask_template .task-subtask-addTask_template {
+  padding-right: 70px;
+}
+
+.subtask-item-addTask_template .subtask-value-addTask_template {
+  padding-right: 70px; 
 }
 
 /* === Buttons & Footer === */
