@@ -1,6 +1,38 @@
 /* === board_tasks_edit.js | Handles editing, creation, and form logic === */
+/**
+ * @typedef {Object} AssignedUser
+ * @property {string} name
+ * @property {string} [img]
+ * @property {string} [color]
+ */
+/**
+ * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
+ */
+/**
+ * @typedef {"urgent"|"medium"|"low"} TaskPriority
+ */
+/**
+ * @typedef {Object} Task
+ * @property {number|string} id
+ * @property {string} title
+ * @property {string} description
+ * @property {string} type
+ * @property {TaskStatus} status
+ * @property {string} dueDate
+ * @property {TaskPriority} priority
+ * @property {string} [priorityIcon]
+ * @property {number} subtasksDone
+ * @property {number} subtasksTotal
+ * @property {AssignedUser[]} assignedTo
+ * @property {string[]} [subTasks]
+ */
 
 /* === Dynamic Modal Handling (open, delete) === */
+/**
+ * Opens the task modal and renders dynamic task content.
+ * @param {number|string} id
+ * @returns {void}
+ */
 function openModalDynamic(id) {
   const task = window.tasks?.find((t) => t.id === id);
   if (!task) return;
@@ -16,7 +48,12 @@ function openModalDynamic(id) {
   document.body.classList.add("no-scroll");
 }
 
-
+/**
+ * Deletes a task (except demo tasks), updates UI and Firebase, then persists.
+ * @async
+ * @param {number|string} id
+ * @returns {Promise<void>}
+ */
 async function deleteDynamicTask(id) {
   const allTasks = Array.isArray(window.tasks) ? window.tasks : [];
   const task = allTasks.find((t) => t.id === id);
@@ -46,6 +83,10 @@ async function deleteDynamicTask(id) {
 
 
 /* === Edit Overlay Setup === */
+/**
+ * Reads subtasks from the edit form list (#subtask-list).
+ * @returns {string[]}
+ */
 function readSubtasksFromForm() {
   const list = document.getElementById("subtask-list");
   if (!list) return [];
@@ -60,7 +101,11 @@ function readSubtasksFromForm() {
     .filter(Boolean);
 }
 
-
+/**
+ * Populates the AddTask overlay with an existing task for editing.
+ * @param {Task} task
+ * @returns {void}
+ */
 function populateEditOverlay(task) {
   const content = document.getElementById("addtask-content");
   if (!content) return;
@@ -116,6 +161,11 @@ function populateEditOverlay(task) {
 
 
 /* === Subtask Progress Normalization === */
+/**
+ * Normalizes subtasksDone/subtasksTotal for a task and syncs saved checkbox states.
+ * @param {Task} task
+ * @returns {void}
+ */
 function normaliseSubtaskProgress(task) {
   if (!task) return;
   const total = Array.isArray(task.subTasks) ? task.subTasks.length : 0;
@@ -139,6 +189,11 @@ function normaliseSubtaskProgress(task) {
 
 
 /* === Edit and Save Task Logic === */
+/**
+ * Saves edits for an existing task back to window.tasks and Firebase.
+ * @param {number|string} id
+ * @returns {void}
+ */
 function saveTaskEdits(id) {
   const task = Array.isArray(window.tasks)
     ? window.tasks.find((t) => t.id === id)
@@ -195,7 +250,11 @@ function saveTaskEdits(id) {
   closeAddTask();
 }
 
-
+/**
+ * Starts editing a task by opening the AddTask overlay prefilled.
+ * @param {number|string} id
+ * @returns {void}
+ */
 function startEditTask(id) {
   const task = Array.isArray(window.tasks)
     ? window.tasks.find((t) => t.id === id)
@@ -222,6 +281,11 @@ function startEditTask(id) {
 window.startEditTask = startEditTask;
 
 /* === Add Task Shortcuts and Creation === */
+/**
+ * Opens AddTask overlay and sets target status.
+ * @param {TaskStatus} status
+ * @returns {void}
+ */
 if (!window.openAddTaskWithStatus) {
   window.openAddTaskWithStatus = function (status) {
     window.nextTaskTargetStatus = status || window.STATUS.TODO;
@@ -229,7 +293,11 @@ if (!window.openAddTaskWithStatus) {
   };
 }
 
-
+/**
+ * Click handler for "+" buttons that open AddTask with a column status.
+ * @param {MouseEvent} e
+ * @returns {void}
+ */
 if (!window.openAddTaskFromPlus) {
   window.openAddTaskFromPlus = function (e) {
     const s = e?.currentTarget?.dataset?.target || window.STATUS.TODO;
@@ -237,12 +305,20 @@ if (!window.openAddTaskFromPlus) {
   };
 }
 
-
+/**
+ * Maps category select value to visible type string.
+ * @param {string} value
+ * @returns {string}
+ */
 function mapCategoryToType(value) {
   return value === "technical" ? "Technical Task" : "User Story";
 }
 
-
+/**
+ * Safe wrapper for assignedToDataExtract().
+ * If the original function exists it is used; otherwise DOM is read.
+ * @returns {AssignedUser[]}
+ */
 function assignedToDataExtractSafe() {
   if (typeof assignedToDataExtract === "function")
     return assignedToDataExtract();
@@ -268,14 +344,20 @@ function assignedToDataExtractSafe() {
   });
   return assigned;
 }
-
+/**
+ * Safe wrapper for getSubtasks().
+ * @returns {string[]}
+ */
 function getSubtasksSafe() {
   if (typeof getSubtasks === "function") return getSubtasks();
   const v = (document.getElementById("subtask")?.value || "").trim();
   return v ? [v] : [];
 }
 
-
+/**
+ * Generates a unique task id.
+ * @returns {string}
+ */
 function generateTaskId() {
   if (typeof crypto?.randomUUID === "function") {
     return crypto.randomUUID();
@@ -283,7 +365,10 @@ function generateTaskId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-
+/**
+ * Collects the task payload from the AddTask form.
+ * @returns {Task}
+ */
 function collectTaskFromForm() {
   const title = (document.getElementById("title")?.value || "").trim();
   const description = (
@@ -307,7 +392,11 @@ function collectTaskFromForm() {
   };
 }
 
-
+/**
+ * Creates a new task from form values and persists it.
+ * @param {Event} [event]
+ * @returns {void}
+ */
 function createTask(event) {
   if (event && event.preventDefault) event.preventDefault();
   const task = collectTaskFromForm();
@@ -330,6 +419,11 @@ window.createTask = createTask;
 
 /* === Priority Button Handling === */
 window.currentPrio = window.currentPrio || "low";
+/**
+ * Sets current priority and updates active priority button styles.
+ * @param {TaskPriority|string} prio
+ * @returns {void}
+ */
 window.setPriority = function (prio) {
   window.currentPrio = String(prio || "low").toLowerCase();
   const wrap = document.querySelector(
@@ -352,6 +446,11 @@ window.setPriority = function (prio) {
 
 
 /* === Modal Fallback Template === */
+/**
+ * Fallback modal HTML if no dynamic template exists.
+ * @param {Task} task
+ * @returns {string}
+ */
 function fallbackModal(task) {
   return `
       <div style="padding:24px">
