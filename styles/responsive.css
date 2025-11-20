@@ -36,6 +36,9 @@ header {
   .edit-contact-headcard {
     z-index: 2000;
 }
+.wrapper-main-task-btn-addTask_page {
+  padding-right: 20%;
+}
 }
 
 @media (min-width: 2500px) {
