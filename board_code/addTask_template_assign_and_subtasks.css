@@ -191,9 +191,11 @@
 .subtask-list-addTask_template li {
   position: relative;
   display: flex;
-  align-items: center;
   padding-right: 60px;
   line-height: 140%;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .subtask-list-addTask_template li::before {
@@ -248,9 +250,4 @@
 
 .subtask-list-addTask_template li {
   padding-right: 60px;   
-}
-
-.subtask-list-addTask_template li .task-subtask-addTask_template {
-  white-space: normal;
-  word-break: break-word;
 }
