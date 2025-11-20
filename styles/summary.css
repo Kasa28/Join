@@ -47,18 +47,18 @@ body {
 }
 
 .summary-h1-font-guest {
-  font-size: 64px;
+  font-size: 52px;
   font-style: bold;
   font-weight: 700px;
 }
 
 .summary-h2-font-user {
-  font-size: 64px;
+  font-size: 52px;
   font-weight: 5;
 }
 
 .summary-h1-font-user {
-  font-size: 64px;
+  font-size: 52px;
   font-style: bold;
   font-weight: 700px;
   color: #4589ff;
