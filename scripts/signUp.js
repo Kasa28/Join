@@ -1,18 +1,39 @@
-/* === signUp.js | Handles user registration and validation === */
-
-/* === Firebase Configuration === */
+/**
+ * Firebase Realtime Database base URL.
+ * @type {string}
+ */
 const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
 
-  /* === Fetch All Users === */
+ /**
+ * @typedef {Object} User
+ * @property {string} name
+ * @property {string} password
+ * @property {string} email
+ */
+
+
+/**
+ * Fetches JSON data from Firebase for a given path.
+ * @async
+ * @param {string} path - Firebase collection/path (without .json).
+ * @returns {Promise<any>} Parsed JSON response.
+ */
 async function getAllUsers(path) {
   let response = await fetch(BASE_URL + path + ".json");
   return (responseToJson = await response.json());
 }
 
 
-/* === Save User Data to Firebase === */
+/**
+ * Saves/overwrites data to Firebase at path/id (PUT).
+ * @async
+ * @param {string} [path=""] - Firebase collection/path.
+ * @param {string|number} [id=""] - Firebase node id/key.
+ * @param {Object} [data={}] - Payload to store.
+ * @returns {Promise<any>} Firebase response JSON.
+ */
 async function postDataWithID(path = "", id = "", data = {}) {
   const response = await fetch(`${BASE_URL}${path}/${id}.json`, {
     method: "PUT",
@@ -25,7 +46,12 @@ async function postDataWithID(path = "", id = "", data = {}) {
 }
 
 
-/* === Signup Form Submission === */
+/**
+ * Handles signup form submit:
+ * validates inputs, creates user, shows toast, and redirects to login.
+ * @param {Event} [event]
+ * @returns {void}
+ */
 function onclickFunction(event) {
   if (event) event.preventDefault();
   const name = document.getElementById("name").value.trim();
@@ -55,20 +81,33 @@ function onclickFunction(event) {
 }
 
 
-/* === Redirect to Login === */
+/**
+ * Redirects to login page.
+ * @returns {void}
+ */
 function jumpToLogin() {
   window.location.href = "./index.html";
 }
 
 
-/* === UI: White Screen Overlay === */
+/**
+ * Shows the white-screen overlay.
+ * @returns {void}
+ */
 function getWhiteScreen() {
   const contentRef = document.getElementById("white-screen");
   contentRef.classList.remove("d_none");
 }
 
 
-/* === Create New User === */
+/**
+ * Creates a new user entry in Firebase.
+ * @async
+ * @param {string} inputName
+ * @param {string} inputPassword
+ * @param {string} inputMail
+ * @returns {Promise<void>}
+ */
 async function createUser(inputName, inputPassword, inputMail) {
   let userResponse = await getAllUsers("users");
   let UserKeysArray = Object.keys(userResponse);
@@ -77,7 +116,11 @@ async function createUser(inputName, inputPassword, inputMail) {
 }
 
 
-/* === Form Validation and Policy Check === */
+/**
+ * Validates form fields + policy checkbox and enables/disables submit button.
+ * Shows inline error messages if invalid.
+ * @returns {void}
+ */
 function checkPolicyandAnswers() {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
@@ -117,6 +160,20 @@ function checkPolicyandAnswers() {
     button.disabled = !allFilled || !passwordSame || !emailValid;
 }
 
+/**
+ * @typedef {Object} ToastOptions
+ * @property {number} [duration=3000]
+ * @property {boolean} [dim=true]
+ */
+
+
+/**
+ * Shows a toast message. Optionally dims background while visible.
+ * @param {string} text
+ * @param {ToastOptions} [options]
+ * @returns {void}
+ */
+
 
 /* === Toast Notification Utility === */
 function showToast(text, { duration = 3000, dim = true } = {}) {
@@ -140,5 +197,8 @@ function showToast(text, { duration = 3000, dim = true } = {}) {
   }, duration);
 }
 
-
+/**
+ * Exposes showToast globally.
+ * @type {(text: string, options?: ToastOptions) => void}
+ */
 window.showToast = showToast;
