@@ -62,7 +62,7 @@ function loginAsGuest() {
       id: "guest",
       name: "Guest",
       email: "guest@guest.com",
-      friends: []
+      friends: (typeof exampleContacts !== "undefined" ? exampleContacts : [])
    };
    localStorage.setItem("userData", JSON.stringify(guest));
    window.location.href = "./summaryAll.html";
