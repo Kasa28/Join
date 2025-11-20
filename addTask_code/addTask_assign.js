@@ -76,19 +76,19 @@ function demoContactTemplate(){
    let contentRef = document.getElementById("contacts-containerID");
 
    contentRef.innerHTML += `         
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker')">
+            <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker', event)">
               <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
               <span class="assign-name-addTask_page">Nils Becker</span>
               <input type="checkbox" class="assign-check-addTask_page">
             </div>
 
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König')">
+            <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König', event)">
               <span class="assign-avatar-addTask_page" style="background-color: #ff7eb6;">LK</span>
               <span class="assign-name-addTask_page">Lara König</span>
               <input type="checkbox" class="assign-check-addTask_page">
             </div>
 
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said')">
+            <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said', event)">
               <span class="assign-avatar-addTask_page" style="background-color: #00bfa5;">OS</span>
               <span class="assign-name-addTask_page">Omar Said</span>
               <input type="checkbox" class="assign-check-addTask_page">
@@ -100,16 +100,22 @@ function demoContactTemplate(){
 function selectAssignUser(name, event) {
   if (event && event.stopPropagation) event.stopPropagation();
 
-  let item = event && event.currentTarget ? event.currentTarget : null;
+  // Ensure item is the correct assign-item element
+  let item = null;
+
+  if (event && event.target) {
+    item = event.target.closest(".assign-item-addTask_page");
+  }
+
   if (!item) {
+    // fallback: search by name
     const candidates = document.querySelectorAll(".assign-item-addTask_page");
     candidates.forEach((el) => {
-      const label = el
-        .querySelector(".assign-name-addTask_page")
-        .textContent.trim();
+      const label = el.querySelector(".assign-name-addTask_page").textContent.trim();
       if (!item && label === name) item = el;
     });
   }
+
   if (!item) return;
 
   const checkbox = item.querySelector(".assign-check-addTask_page");
