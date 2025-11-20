@@ -16,7 +16,13 @@ let exampleContacts = [
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 users = [];
 
+
 /* === Fetch Users from Firebase === */
+/**
+ * Fetches all user records from Firebase at the specified path.
+ * @param {string} path - The database path to query.
+ * @returns {Promise<Object>} The JSON response containing all users.
+ */
 async function getAllUsers(path){
   let response = await fetch(BASE_URL + path + ".json");
   return responseToJson = await response.json();
@@ -24,6 +30,11 @@ async function getAllUsers(path){
 
 
 /* === Initialize Users Array === */
+/**
+ * Fills the global users array with all users from Firebase,
+ * mapping each entry to an object containing its ID and data.
+ * @returns {Promise<void>}
+ */
 async function fillArray(){
    let userResponse = await getAllUsers("users");
    let UserKeysArray = Object.keys(userResponse);
@@ -40,6 +51,11 @@ async function fillArray(){
 
 
 /* === Login Handling === */
+/**
+ * Processes a login attempt: validates email format, checks credentials,
+ * displays error messages, and redirects on success.
+ * @param {Event} event - The form submit event.
+ */
 function login(event){
    if (event) event.preventDefault(); 
     const email = document.getElementById('email').value.trim();
@@ -67,6 +83,10 @@ function login(event){
 }
 
 
+/**
+ * Logs the user in as a guest, stores guest data locally,
+ * and redirects to the summary page.
+ */
 function loginAsGuest() {
    const guest = {
       id: "guest",
@@ -80,6 +100,12 @@ function loginAsGuest() {
 
 
 /* === Credential Verification === */
+/**
+ * Validates the user's email and password against the Firebase-loaded users array.
+ * @param {string} inputMail - The email entered by the user.
+ * @param {string} inputPassword - The password entered by the user.
+ * @returns {boolean} True if credentials match, otherwise false.
+ */
 function checkUsernamePassword(inputMail, inputPassword){
    for (let index = 0; index < users.length; index++) {
       let actualName = users[index].user.name;
@@ -98,12 +124,20 @@ function checkUsernamePassword(inputMail, inputPassword){
 
 
 /* === Local Storage Handling === */
+/**
+ * Stores logged-in user data in localStorage.
+ * @param {Object} inputJson - The user data object to store.
+ */
 function putUserDataIntoLocalStorage(inputJson){
    localStorage.setItem("userData", JSON.stringify(inputJson));
 }
 
 
 /* === Login Guard === */
+/**
+ * Guards protected pages by checking login state.
+ * Redirects to the login page if no user is found in localStorage.
+ */
 function checkIfLogedIn() {
    const user = localStorage.getItem("userData");
    if (!user) {
@@ -114,6 +148,9 @@ function checkIfLogedIn() {
 }
 
 /* === Form Validation === */
+/**
+ * Enables or disables the login button based on email and password input fields.
+ */
 function checkLogin() {
    const email = document.getElementById('email').value.trim();
    const password = document.getElementById('password').value.trim();
