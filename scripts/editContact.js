@@ -1,63 +1,98 @@
-let remindIndex;
+let remindIndex = null;
 
-// Edit-Contact-Fenster bewegen
-function showEditContactFormular(){
-    document.getElementById("edit-contactID").classList.remove("hide-edit-contact")
+/* ---------------------------------------------------------
+   EDIT-CONTACT-FENSTER ÖFFNEN
+--------------------------------------------------------- */
+function showEditContactFormular() {
+    document.getElementById("edit-contactID").classList.remove("hide-edit-contact");
 }
 
-
-function hideEditContactFormular(){
-    document.getElementById("edit-contactID").classList.add("hide-edit-contact")
+/* ---------------------------------------------------------
+   EDIT-CONTACT-FENSTER SCHLIESSEN
+--------------------------------------------------------- */
+function hideEditContactFormular() {
+    document.getElementById("edit-contactID").classList.add("hide-edit-contact");
 }
 
-
-// Edit-Contact-Fenster fuellen
-function setUserDataValue(inputIndex){
+/* ---------------------------------------------------------
+   KONTAKTDATEN IN DAS EDIT-FORMULAR LADEN
+--------------------------------------------------------- */
+function setUserDataValue(inputIndex) {
     const contacts = flattenContactBlockToArray() || [];
     const contact = contacts[inputIndex];
-    const initials = getInitials(contact.username);
-    const getColor =  contact.color;
-    let initialsRef = document.getElementById("edit-contact-initialsID");
-
-    initialsRef.innerHTML = initials;
-    document.getElementById("edit-contact-usernameID").value = contact.username;
-    document.getElementById("edit-contact-mailID").value = contact.email; 
-    document.getElementById("edit-contact-phone-numberID").value = contact.PhoneNumber;
-    document.getElementById("edit-contact-initialsID").classList.add(getColor);
 
     remindIndex = inputIndex;
+
+    const initials = getInitials(contact.username);
+    const color = contact.color;
+
+    // Initialen + farblichen Kreis setzen
+    const initialsRef = document.getElementById("edit-contact-initialsID");
+    initialsRef.innerHTML = initials;
+    initialsRef.className = "";
+    initialsRef.classList.add(color);
+
+    // Formular-Felder füllen
+    document.getElementById("edit-contact-usernameID").value = contact.username;
+    document.getElementById("edit-contact-mailID").value = contact.email;
+    document.getElementById("edit-contact-phone-numberID").value = contact.PhoneNumber;
 }
 
-
-// Change Name or change other things in Formualar
-async function editContact(){
+/* ---------------------------------------------------------
+   KONTAKT SPEICHERN (EDITIEREN)
+--------------------------------------------------------- */
+async function editContact() {
     const login = checkIfLogedIn();
-
     let contacts = flattenContactBlockToArray() || [];
-    let contact = contacts[remindIndex];
-    
 
+    const contact = contacts[remindIndex];
+
+    // Neue Eingaben übernehmen
     contact.username = document.getElementById("edit-contact-usernameID").value;
     contact.email = document.getElementById("edit-contact-mailID").value;
     contact.PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
 
-
-    if(login){
+    if (login) {
         updateFriendsInLocalStorage(contacts);
-        const getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
+
+        const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
         const userID = await getUserID(getUserData.name);
+
         await updateUserFriendslist(userID, contact);
-    }   else{ 
-        contacts.splice((remindIndex, 1));
+
+    } else {
+        contacts.splice(remindIndex, 1);
         contacts.push(contact);
-    };
-    
+    }
+
+    // Aktualisieren der Anzeige
     renderSingleContact(contact.username);
     hideEditContactFormular();
     renderContactList();
 }
 
+/* ---------------------------------------------------------
+   KONTAKT LÖSCHEN
+--------------------------------------------------------- */
+async function deleteContactinEditContactWindow() {
+    let contacts = flattenContactBlockToArray() || [];
+    const login = checkIfLogedIn();
 
+    contacts.splice(remindIndex, 1);
 
+    if (login) {
+        updateFriendsInLocalStorage(contacts);
 
+        const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
+        const userID = await getUserID(getUserData.name);
 
+        await updateUserFriendslist(userID, contacts);
+
+    } else {
+        setContactsIntoContactblock(contacts);
+    }
+
+    hideEditContactFormular();
+    closeWhiteScreen();
+    renderContactList();
+}
