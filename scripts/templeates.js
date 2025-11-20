@@ -133,33 +133,12 @@ function getAddTaskTemplate() {
          class="assign-arrow-addTask_template">
   </div>
 
+<div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox" id="contacts-containerID">
+</div>
 
 
-
-
-
-  <div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox">
-
-
-
-
-
-    <div onclick="renderContactsInDropdown()" class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID"></div>
-  
-  
-  </div>
   <div id="assigned-avatars" class="assigned-avatars-addTask_template"></div>
 </section>
-
-
-
-
-
-
-
-
-
-
 
 
     <section>
