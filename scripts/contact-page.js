@@ -52,10 +52,6 @@ let contactBlock = {
  * @property {Contact[]} other
  */
 
-
-/* ---------------------------------------------------------
-   Nutzer einfügen, falls noch nicht in der eigenen Liste
---------------------------------------------------------- */
 /**
  * Ensures the logged-in user is included in their own friends list.
  * If missing, adds the user with a random color, sorts list,
@@ -71,9 +67,7 @@ async function putUsernameInContactList(){
     const nameExists = getUserFriends.some(contact =>
         contact && (contact.username === getUserData.name)
     );
-
     if (nameExists) return getUserFriends;
-
     let colorIndex = getRandomInt(9);
     let userJson = {
         "username": getUserData.name,
@@ -81,20 +75,15 @@ async function putUsernameInContactList(){
         "PhoneNumber": "4915135468484",
         "color": colors[colorIndex]
     };
-
     getUserFriends.push(userJson);
     sortUserToAlphabeticalOrder(getUserFriends);
-
     if (typeof addContactToLocalStorageAndAPI === "function") {
         await addContactToLocalStorageAndAPI(getUserFriends);
     }
-
     return getUserFriends;
 }
 
-/* ---------------------------------------------------------
-   Kontaktliste rendern
---------------------------------------------------------- */
+
 /**
  * Renders the full contact list grouped by first letter.
  * If logged in, syncs user into list first, otherwise loads example contacts.
@@ -108,20 +97,16 @@ async function putUsernameInContactList(){
  */
 async function renderContactList(){
     const login = checkIfLogedIn();
-
     if (login) await putUsernameInContactList();
-
     let getUserData = JSON.parse(localStorage.getItem("userData")) || [];
     let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
-
     if (!login) {
         pushExampleContactsOneTimeInLocalStorage(exampleContacts);
     } else {
         setContactsIntoContactblock(getContactsFromUser);
     }
-
     Object.keys(contactBlock).forEach((key) => {
         let block = contactBlock[key];
         if (!checkIfBlockIsFilled(block)) return;
@@ -157,9 +142,7 @@ async function renderContactList(){
     });
 }
 
-/* ---------------------------------------------------------
-   Kontakt optisch markieren (blau + weiß)
---------------------------------------------------------- */
+
 /**
  * Toggles highlight for a given contact.
  * Unhighlights previous selection, highlights the new one,
@@ -170,31 +153,25 @@ async function renderContactList(){
  */
 function toggleContactHighlight(contactId) {
     const same = currentlySelectedContact === contactId;
-
     if (currentlySelectedContact) {
         const oldBase = currentlySelectedContact.replace("-contactID", "");
         document.getElementById(currentlySelectedContact)?.classList.remove("backgroundcolor-blue");
         document.getElementById(oldBase + "-usernameID")?.classList.remove("font-color-white");
         document.getElementById(oldBase + "-emailID")?.classList.remove("font-color-white");
     }
-
     if (same) {
         currentlySelectedContact = null;
         return false;
     }
-
     const base = contactId.replace("-contactID", "");
     document.getElementById(contactId)?.classList.add("backgroundcolor-blue");
     document.getElementById(base + "-usernameID")?.classList.add("font-color-white");
     document.getElementById(base + "-emailID")?.classList.add("font-color-white");
-
     currentlySelectedContact = contactId;
     return true;
 }
 
-/* ---------------------------------------------------------
-   Kontakt-Klick: Highlight + Render + Edit-Fenster öffnen
---------------------------------------------------------- */
+
 /**
  * Handles click on a contact:
  * - toggles highlight
@@ -207,27 +184,20 @@ function toggleContactHighlight(contactId) {
  */
 function handleContactClick(contactId, username) {
     const becameSelected = toggleContactHighlight(contactId);
-
     if (!becameSelected) {
-
-        // ➤ Datenbereich schließen
         const singleRef = document.getElementById("singleContactID");
         if (singleRef) singleRef.innerHTML = "";
     
         closeWhiteScreen();
         return;
     }
-
     renderSingleContact(username);
-
     const contacts = flattenContactBlockToArray() || [];
     const index = findIndexFromUsername(contacts, username);
     if (index >= 0) setUserDataValue(index);
 }
 
-/* ---------------------------------------------------------
-   Einzelnen Kontakt anzeigen
---------------------------------------------------------- */
+
 /**
  * Renders a single contact into the detail view using singleContactTemplate().
  *
