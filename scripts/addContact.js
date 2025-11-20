@@ -1,40 +1,42 @@
 let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
 let colorCode;
 
-/** -----------------------------------------------------
- *  ADD-CONTACT-FENSTER ÖFFNEN
- * ---------------------------------------------------- */
+/**
+ * Opens the Add Contact form by removing the hidden class.
+ */
 function showAddContactFormular() {
     document.getElementById("add-contactID").classList.remove("hide-add-contact");
 }
 
-/** -----------------------------------------------------
- *  ADD-CONTACT-FENSTER SCHLIESSEN
- * ---------------------------------------------------- */
+
+/**
+ * Closes the Add Contact form by adding the hidden class.
+ */
 function hideAddContactFormular() {
     document.getElementById("add-contactID").classList.add("hide-add-contact");
 }
 
-/** -----------------------------------------------------
- *  FORMULAR LEEREN
- * ---------------------------------------------------- */
+
+/**
+ * Clears all input fields in the Add Contact form.
+ */
 function emptyTheAddContactFormular() {
     document.getElementById("add-contact-usernameID").value = "";
     document.getElementById("add-contact-mailID").value = "";
     document.getElementById("add-contact-phone-numberID").value = "";
 }
 
-/** -----------------------------------------------------
- *  NEUEN KONTAKT HINZUFÜGEN
- * ---------------------------------------------------- */
+
+/**
+ * Creates a new contact, validates input fields, assigns a random color,
+ * stores the contact locally or via API depending on login status,
+ * updates the UI, and shows success or error messages.
+ */
 function addNewContact() {
     let contacts = flattenContactBlockToArray() || [];
-
     const usernameRef = document.getElementById("add-contact-usernameID").value;
     const usermailRef = document.getElementById("add-contact-mailID").value;
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
-
-    // Email & Phone validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+?[0-9 ]+$/;
 
@@ -42,41 +44,37 @@ function addNewContact() {
         showContactToast("Please enter a valid email address");
         return;
     }
-
     if (!phoneRegex.test(phonenumberRef)) {
         showContactToast("Phone number must contain only numbers");
         return;
     }
-
-
     const login = checkIfLogedIn();
     colorCode = getRandomInt(colors.length);
-
     const contactJson = {
         "username": usernameRef,
         "email": usermailRef,
         "PhoneNumber": phonenumberRef,
         "color": colors[colorCode]
     };
-
     contacts.push(contactJson);
     sortUserToAlphabeticalOrder(contacts);
-
     if (login) {
         addContactToLocalStorageAndAPI(contacts);
     } else {
         setContactsIntoContactblock(contacts);
     }
-
     emptyTheAddContactFormular();
     hideAddContactFormular();
     renderContactList();
     showContactToast("Contact successfully created");
 }
 
-/** -----------------------------------------------------
- *  SPEICHERN IN LOCALSTORAGE & API
- * ---------------------------------------------------- */
+
+/**
+ * Saves updated contacts to localStorage and synchronizes them with the API.
+ * @param {Array<Object>} inputContacts - The list of contacts to store.
+ * @returns {Promise<void>}
+ */
 async function addContactToLocalStorageAndAPI(inputContacts) {
     let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };
     let updatedContacts = inputContacts;

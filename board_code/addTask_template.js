@@ -9,6 +9,10 @@ window.setPriority = function(p) {
 
 
 // === Initialization and Field Validation ===
+/**
+ * Initializes event handlers for the Add Task template, including title validation
+ * and due date formatting and validation.
+ */
 function initAddTaskTemplateHandlers() {
   const titleInput = document.getElementById("title");
   if (titleInput) {
@@ -38,6 +42,10 @@ function initAddTaskTemplateHandlers() {
 
 
 // === Assign Dropdown Handling ===
+/**
+ * Toggles the assign dropdown open or closed and updates placeholder and arrow UI.
+ * @param {Event} event - The click event triggering the toggle.
+ */
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
@@ -69,48 +77,47 @@ function toggleAssignDropdown(event) {
 
 
 // === Shared helper: Extract avatar/user color ===
+/**
+ * Extracts a background color from an assign item, avatar element, CSS variable,
+ * or fallback sources.
+ * @param {HTMLElement} item - The DOM element representing a contact item.
+ * @returns {string} The resolved color value.
+ */
 function getColorFromItem(item) {
   if (!item) return "#4589ff";
-
-  // 1. Try avatar element with template class
   const avatarEl =
     item.querySelector(".assign-avatar-addTask_template") ||
     item.querySelector(".assign-avatar-addTask_page");
-
   if (avatarEl) {
     let c = avatarEl.style.backgroundColor;
     if (!c) c = getComputedStyle(avatarEl).backgroundColor;
-
     if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
-
-    // CSS variable fallback
     const varCol = getComputedStyle(avatarEl)
       .getPropertyValue("--avatar-color")
       .trim();
     if (varCol) return varCol;
   }
-
-  // 2. Fallback on any color-* class or avatar container
   const colorEl =
     item.querySelector('[class*="color"]') ||
     item.querySelector('[class*="avatar"]') ||
     item;
-
   if (colorEl) {
     let c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
     if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
   }
-
-  // 3. data-color fallback
   const dataColor = item.getAttribute("data-color");
   if (dataColor) return dataColor;
-
-  // 4. Final fallback
   return "#4589ff";
 }
 
 
 // === Assign User Selection ===
+/**
+ * Selects or deselects a user from the assign dropdown and updates
+ * selected user tracking and color mapping.
+ * @param {string} name - The name of the user to select.
+ * @param {Event} event - The click event that triggered the selection.
+ */
 function selectAssignUser(name, event) {
   if (event && event.stopPropagation) event.stopPropagation();
   let item = event && event.currentTarget ? event.currentTarget : null;
@@ -141,6 +148,9 @@ function selectAssignUser(name, event) {
 
 
 // === Assign Input Filtering ===
+/**
+ * Updates the assign placeholder text depending on whether users are selected.
+ */
 function updateAssignPlaceholder() {
   const placeholder = document.querySelector(".assign-placeholder-addTask_template");
   if (selectedUsers.length === 0) {
@@ -152,6 +162,9 @@ function updateAssignPlaceholder() {
 }
 
 
+/**
+ * Handles live filtering of assign dropdown items based on user input.
+ */
 document.addEventListener("input", (e) => {
   if (e.target.classList.contains("assign-placeholder-addTask_template")) {
     const searchValue = e.target.textContent.toLowerCase();
@@ -184,6 +197,9 @@ document.addEventListener("input", (e) => {
 
 
 // === Assign Dropdown Close Handling ===
+/**
+ * Detects clicks outside the assign dropdown to close it and reset UI state.
+ */
 document.addEventListener("click", (e) => {
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
   const assignSelect = document.getElementById("assign-select");
@@ -201,6 +217,9 @@ document.addEventListener("click", (e) => {
 
 
 // === Assigned Avatars Rendering ===
+/**
+ * Renders avatars for all currently selected users, including initials and colors.
+ */
 function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
@@ -256,6 +275,10 @@ function renderAssignedAvatars() {
 
 
 // === Priority Handling ===
+/**
+ * Sets the priority for the task and updates corresponding button styles.
+ * @param {string} priority - One of "urgent", "medium", or "low".
+ */
 function setPriorityAddTask(priority) {
   const urgentBtn = document.querySelector(".priority-btn-urgent-addTask_template");
   const mediumBtn = document.querySelector(".priority-btn-medium-addTask_template");
@@ -289,6 +312,9 @@ function setPriorityAddTask(priority) {
 
 
 // === Subtask Management (Add, Edit, Remove, Save) ===
+/**
+ * Handles adding, editing, saving, and removing subtasks within the Add Task template.
+ */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-delete-addTask_template")) {
     const subtaskInput = document.getElementById("subtask");
@@ -359,17 +385,31 @@ document.addEventListener("click", (e) => {
 
 
 // === Due Date Validation and Formatting ===
+/**
+ * Sanitizes date input to allow only digits and slashes, enforcing max length.
+ * @param {InputEvent} e - The input event.
+ */
 function sanitizeDueDateInput(e) {
   const input = e.target;
   input.value = input.value.replace(/[^0-9/]/g, "").slice(0, 10);
 }
 
 
+/**
+ * Checks if a date string matches the dd/mm/yyyy format.
+ * @param {string} dateString - The date string to validate.
+ * @returns {boolean} True if the format is valid.
+ */
 function isValidDateFormat(dateString) {
   return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString);
 }
 
 
+/**
+ * Determines whether the given date string represents a real valid calendar date.
+ * @param {string} dateString - A dd/mm/yyyy formatted date.
+ * @returns {boolean} True if the date exists.
+ */
 function isRealDate(dateString) {
   const [d, m, y] = dateString.split("/").map(Number);
   const date = new Date(y, m - 1, d);
@@ -382,6 +422,10 @@ function isRealDate(dateString) {
 }
 
 
+/**
+ * Validates the due date input field for presence, format, and correctness.
+ * @returns {boolean} True if the due date passes all validations.
+ */
 function validateDueDate() {
   const dueDateInput = document.getElementById("due-date");
   const errorMsg = document.getElementById("due-date-error");
