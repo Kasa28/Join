@@ -1,11 +1,41 @@
-/* === summary.js | Handles dashboard summary data, task counts, and deadlines === */
 
+/**
+ * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
+ */
+
+/**
+ * @typedef {"urgent"|"medium"|"low"} TaskPriority
+ */
+
+/**
+ * @typedef {Object} Task
+ * @property {number|string} id
+ * @property {string} [title]
+ * @property {TaskStatus} status
+ * @property {TaskPriority|string} priority
+ * @property {string} [dueDate] - Format: "dd/mm/yyyy"
+ */
+
+/**
+ * @typedef {Object} TaskCounts
+ * @property {number} total
+ * @property {number} urgent
+ * @property {number} todo
+ * @property {number} inProgress
+ * @property {number} feedback
+ * @property {number} done
+ */
 window.addEventListener("DOMContentLoaded", () => {
   updateSummary();
 });
 
 
-/* === Load Tasks from Firebase === */
+/**
+ * Loads tasks from Firebase. Normalizes priority to lowercase.
+ * Falls back to a minimal demo task if Firebase returns empty.
+ * @async
+ * @returns {Promise<Task[]>}
+ */
 async function loadTasks() {
   try {
     const response = await fetch(
@@ -40,7 +70,11 @@ async function loadTasks() {
 }
 
 
-/* === Calculate Task Counts by Status and Priority === */
+/**
+ * Calculates task counts for summary KPIs.
+ * @param {Task[]} tasks
+ * @returns {TaskCounts}
+ */
 function getTaskCounts(tasks) {
   const counts = {
     total: tasks.length,
@@ -72,7 +106,11 @@ function getTaskCounts(tasks) {
 }
 
 
-/* === Determine Next Urgent Deadline === */
+/**
+ * Returns the closest due date among urgent tasks.
+ * @param {Task[]} tasks
+ * @returns {Date|null}
+ */
 function getNextDeadline(tasks) {
   const urgentTasks = tasks
     .filter(
@@ -89,14 +127,23 @@ function getNextDeadline(tasks) {
 }
 
 
-/* === Update Summary Text Helper === */
+/**
+ * Sets textContent for a selector if element exists.
+ * @param {string} selector
+ * @param {string|number} value
+ * @returns {void}
+ */
 function setSummaryText(selector, value) {
   const el = document.querySelector(selector);
   if (el) el.textContent = value;
 }
 
 
-/* === Main Summary Update Function === */
+/**
+ * Loads tasks, computes summary KPIs and renders them into the DOM.
+ * @async
+ * @returns {Promise<void>}
+ */
 async function updateSummary() {
   const tasks = await loadTasks();
   const counts = getTaskCounts(tasks);
@@ -137,7 +184,11 @@ async function updateSummary() {
 let lastDataString = "";
 
 
-/* === Polling for Firebase Updates === */
+/**
+ * Polls Firebase for changes and updates summary if data differs.
+ * @async
+ * @returns {Promise<void>}
+ */
 async function pollSummary() {
   try {
     const res = await fetch(
