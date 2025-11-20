@@ -20,9 +20,6 @@ function showToast(text, { variant = "ok", duration = 1000 } = {}) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  /* =========================================
-     1) Kontakt-Detail: Desktop vs. Mobile
-     ========================================= */
 
   const legacy = document.getElementById("singleContactID");
   const content = document.getElementById("singleContactContent");
@@ -44,17 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
         content.style.display = "none";
       }
     }
-
     const contactObserver = new MutationObserver(syncFromLegacy);
     contactObserver.observe(legacy, { childList: true, subtree: true });
 
     window.addEventListener("resize", applyContactLayout);
     applyContactLayout();
   }
-
-  /* =========================================
-     2) 3-Punkte-Menü im Kontakt-Detail (mobile FAB Menü)
-     ========================================= */
 
   function getMenuWrapper() {
     return document.querySelector(".contact-actions-mobile");
@@ -105,11 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  /* =========================================
-     3) Blauer +-Button (Add-FAB) & Add/Edit Overlays
-     ========================================= */
-
-  const addFab = document.querySelector(".button-contacts-position"); // blauer +
+  const addFab = document.querySelector(".button-contacts-position"); 
   const addOverlay = document.querySelector(".add-contact");
   const editOverlay = document.querySelector(".edit-contact");
   let overlayObserver;
@@ -129,13 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function syncAddFab() {
-    // FAB zeigen/verstecken
     if (addFab) {
       if (window.innerWidth > 1000) {
-        // Desktop: FAB immer sichtbar
         addFab.style.display = "";
       } else {
-        // Mobile: FAB nur wenn kein Overlay offen ist
         addFab.style.display = anyOverlayOpen() ? "none" : "";
       }
     }
