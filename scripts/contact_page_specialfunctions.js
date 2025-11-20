@@ -1,4 +1,52 @@
+/**
+ * Firebase base URL for all database requests.
+ * @type {string}
+ */
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+/**
+ * @typedef {Object} Contact
+ * @property {string} username
+ * @property {string} [email]
+ * @property {string} [phone]
+ * @property {string} [color]
+ */
+
+/**
+ * @typedef {Object} ContactBlock
+ * @property {Contact[]} A
+ * @property {Contact[]} B
+ * @property {Contact[]} C
+ * @property {Contact[]} D
+ * @property {Contact[]} E
+ * @property {Contact[]} F
+ * @property {Contact[]} G
+ * @property {Contact[]} H
+ * @property {Contact[]} I
+ * @property {Contact[]} J
+ * @property {Contact[]} K
+ * @property {Contact[]} L
+ * @property {Contact[]} M
+ * @property {Contact[]} N
+ * @property {Contact[]} O
+ * @property {Contact[]} P
+ * @property {Contact[]} Q
+ * @property {Contact[]} R
+ * @property {Contact[]} S
+ * @property {Contact[]} T
+ * @property {Contact[]} U
+ * @property {Contact[]} V
+ * @property {Contact[]} W
+ * @property {Contact[]} X
+ * @property {Contact[]} Y
+ * @property {Contact[]} Z
+ * @property {Contact[]} other
+ */
+
+/**
+ * Resets all contact blocks (A–Z + other) to empty arrays.
+ * Side effect: overwrites global `contactBlock`.
+ * @returns {void}
+ */
 
 function removeContentfromAllContactBlocks(){
     contactBlock = {
@@ -9,24 +57,38 @@ function removeContentfromAllContactBlocks(){
 
 }
 
-
+/**
+ * Capitalizes the first character of a string.
+ * @param {string} inputString
+ * @returns {string}
+ */
 function makeFirstLetterBig(inputString){
 
     return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 }
 
-
+/**
+ * Returns a random integer in the range [0, max).
+ * @param {number} max
+ * @returns {number}
+ */
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-
+/**
+ * Shows the white-screen overlay.
+ * @returns {void}
+ */
 function callWhiteScreen() {
     const contentRef = document.getElementById("white-screen");
     contentRef.classList.remove("d_none");
 }
 
-
+/**
+ * Hides the white-screen overlay and closes edit/add contact forms.
+ * @returns {void}
+ */
 function closeWhiteScreen(){
     const contentRef = document.getElementById("white-screen");
     contentRef.classList.add("d_none");
@@ -34,7 +96,11 @@ function closeWhiteScreen(){
     hideAddContactFormular();
 }
 
-
+/**
+ * Gets the color of a contact by index from the current user's friends.
+ * @param {number} inputIndex
+ * @returns {string|undefined}
+ */
 function getContactColorType(inputIndex){
     let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
@@ -42,7 +108,11 @@ function getContactColorType(inputIndex){
     return contact.color;
 }
 
-
+/**
+ * Checks if a contact block has at least one entry.
+ * @param {any[]} inputBlock
+ * @returns {boolean}
+ */
 function checkIfBlockIsFilled(inputBlock){
     if(inputBlock.length < 1){
         return false;
@@ -50,7 +120,11 @@ function checkIfBlockIsFilled(inputBlock){
         return true;
     }
 }
-
+/**
+ * Builds initials from a full name (first + last).
+ * @param {string} inputFullName
+ * @returns {string}
+ */
 function getInitials(inputFullName){
     const nameParts = inputFullName.split(/\s+/);
     const firstNameInital = nameParts[0]?.charAt(0).toUpperCase() || "";
@@ -58,14 +132,22 @@ function getInitials(inputFullName){
     return `${firstNameInital}${lastNameInitial}`
 }
 
-
+/**
+ * Updates the friends list inside localStorage userData.
+ * @param {Contact[]} updatedFriends
+ * @returns {void}
+ */
 function updateFriendsInLocalStorage(updatedFriends){
     let userData = JSON.parse(localStorage.getItem("userData") || {});
     userData.friends = updatedFriends;
     localStorage.setItem("userData", JSON.stringify(userData));
 }
 
-
+/**
+ * Sorts contacts in-place by username (case-insensitive).
+ * @param {Contact[]} inputArray
+ * @returns {void}
+ */
 function sortUserToAlphabeticalOrder(inputArray){
 
     inputArray.sort((a, b) => {
@@ -74,7 +156,12 @@ function sortUserToAlphabeticalOrder(inputArray){
         return 0;
     });
 }
-
+/**
+ * Finds the index of a contact by username.
+ * @param {Contact[]} inputContactArray
+ * @param {string} inputUsername
+ * @returns {number} Index or -1 if not found.
+ */
 function findIndexFromUsername(inputContactArray, inputUsername){
 for (let index = 0; index < inputContactArray.length; index++) {
         if (inputContactArray[index].username === inputUsername) {
@@ -85,7 +172,12 @@ for (let index = 0; index < inputContactArray.length; index++) {
     return -1;
 }
 
-
+/**
+ * Splits contacts into alphabetical blocks in global `contactBlock`.
+ * Accepts either an array of contacts or an object of contacts.
+ * @param {Contact[]|Record<string, Contact>} inputContacts
+ * @returns {void}
+ */
 function setContactsIntoContactblock(inputContacts){
 
     removeContentfromAllContactBlocks();
@@ -142,12 +234,26 @@ function flattenContactBlockToArray() {
 
 
 
-
+/**
+ * Initializes contact blocks from input contacts (one-time).
+ * @param {Contact[]|Record<string, Contact>} inputContacts
+ * @returns {void}
+ */
 function pushExampleContactsOneTimeInLocalStorage(inputContacts){
 
     setContactsIntoContactblock(inputContacts);
-    
 }
+/**
+ * @typedef {Object} ToastOptions
+ * @property {"ok"|"error"} [variant="ok"]
+ * @property {number} [duration=1500]
+ */
+/**
+ * Shows a toast message in the contacts UI.
+ * @param {string} text
+ * @param {ToastOptions} [options]
+ * @returns {void}
+ */
 
 
 function showContactToast(text, { variant = "ok", duration = 1500 } = {}) {
@@ -169,5 +275,8 @@ function showContactToast(text, { variant = "ok", duration = 1500 } = {}) {
         toast.addEventListener("animationend", () => toast.remove(), { once: true });
     }, duration);
 }
-
+/**
+ * Exposes showContactToast globally.
+ * @type {(text: string, options?: ToastOptions) => void}
+ */
 window.showContactToast = showContactToast;
