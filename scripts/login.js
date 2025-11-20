@@ -1,4 +1,6 @@
-/* === login.js | Handles user authentication and login logic === */
+/* === login.js | Handles user authentication, login guard and login logic === */
+
+
 
 /* === Firebase Configuration === */
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -41,7 +43,9 @@ function login(event){
       return;
     }
     const loginSuccessful = checkUsernamePassword(email, password);
-   checkUsernamePassword(email, password);
+    checkUsernamePassword(email, password);
+
+
    if(loginSuccessful){
       console.log("Login erfolgreich! Weiterleitung...");
       window.location.href = "./summaryAll.html";  
