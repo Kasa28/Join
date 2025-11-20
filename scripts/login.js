@@ -1,16 +1,5 @@
 /* === login.js | Handles user authentication, login guard and login logic === */
 
-/* === Login Guard === */
-function checkIfLogedIn() {
-   const user = localStorage.getItem("userData");
-   console.log("Login-Guard check:", user);
-   if (!user) {
-     console.log("Kein User — Weiterleitung ausgeführt");
-     window.location.href = "./index.html";
-     return;
-   }
-   document.body.style.visibility = "visible";
- }
 
 
 /* === Firebase Configuration === */
@@ -54,6 +43,9 @@ function login(event){
       return;
     }
     const loginSuccessful = checkUsernamePassword(email, password);
+    checkUsernamePassword(email, password);
+
+
    if(loginSuccessful){
       console.log("Login erfolgreich! Weiterleitung...");
       window.location.href = "./summaryAll.html";  
