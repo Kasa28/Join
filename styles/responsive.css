@@ -25,6 +25,9 @@ header {
     width: calc(100% - 25.5rem);
     z-index: 100;
   }
+  #greetID{
+    margin-left: 60px;
+  }
   .header-wrapper-responsive {
     background-color:#4589ff;
     width: 100%;
@@ -60,6 +63,9 @@ header {
     width: 40%;
     z-index: 100;
   }
+   #greetID{
+  margin-left: 58px;
+}
 }
 
 @media (max-width: 1300px) {
