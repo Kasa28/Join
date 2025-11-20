@@ -137,6 +137,11 @@ function handleContactClick(contactId, username) {
     const becameSelected = toggleContactHighlight(contactId);
 
     if (!becameSelected) {
+
+        // ➤ Datenbereich schließen
+        const singleRef = document.getElementById("singleContactID");
+        if (singleRef) singleRef.innerHTML = "";
+    
         closeWhiteScreen();
         return;
     }
