@@ -1,15 +1,69 @@
+/**
+ * Currently selected contact DOM id (e.g. "Alice-contactID"), or null if none.
+ * @type {string|null}
+ */
 let currentlySelectedContact = null;
-
+/**
+ * Alphabetical contact buckets (A–Z + other).
+ * @type {ContactBlock}
+ */
 let contactBlock = {
     A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [],
     K: [], L: [], M: [], N: [], O: [], P: [], Q: [], R: [], S: [], T: [],
     U: [], V: [], W: [], X: [], Y: [], Z: [], other: []
 };
 
+/**
+ * @typedef {Object} Contact
+ * @property {string} username
+ * @property {string} [email]
+ * @property {string} [PhoneNumber]
+ * @property {string} [color]
+ */
+
+/**
+ * @typedef {Object} ContactBlock
+ * @property {Contact[]} A
+ * @property {Contact[]} B
+ * @property {Contact[]} C
+ * @property {Contact[]} D
+ * @property {Contact[]} E
+ * @property {Contact[]} F
+ * @property {Contact[]} G
+ * @property {Contact[]} H
+ * @property {Contact[]} I
+ * @property {Contact[]} J
+ * @property {Contact[]} K
+ * @property {Contact[]} L
+ * @property {Contact[]} M
+ * @property {Contact[]} N
+ * @property {Contact[]} O
+ * @property {Contact[]} P
+ * @property {Contact[]} Q
+ * @property {Contact[]} R
+ * @property {Contact[]} S
+ * @property {Contact[]} T
+ * @property {Contact[]} U
+ * @property {Contact[]} V
+ * @property {Contact[]} W
+ * @property {Contact[]} X
+ * @property {Contact[]} Y
+ * @property {Contact[]} Z
+ * @property {Contact[]} other
+ */
+
 
 /* ---------------------------------------------------------
    Nutzer einfügen, falls noch nicht in der eigenen Liste
 --------------------------------------------------------- */
+/**
+ * Ensures the logged-in user is included in their own friends list.
+ * If missing, adds the user with a random color, sorts list,
+ * and persists via addContactToLocalStorageAndAPI if available.
+ *
+ * @async
+ * @returns {Promise<Contact[]>} Updated friends list.
+ */
 async function putUsernameInContactList(){
     let getUserData = JSON.parse(localStorage.getItem("userData")) || [];
     let getUserFriends = Array.isArray(getUserData.friends) ? getUserData.friends : [];
@@ -41,6 +95,17 @@ async function putUsernameInContactList(){
 /* ---------------------------------------------------------
    Kontaktliste rendern
 --------------------------------------------------------- */
+/**
+ * Renders the full contact list grouped by first letter.
+ * If logged in, syncs user into list first, otherwise loads example contacts.
+ *
+ * Side effects:
+ * - Mutates global contactBlock
+ * - Writes to #contactContainerID
+ *
+ * @async
+ * @returns {Promise<void>}
+ */
 async function renderContactList(){
     const login = checkIfLogedIn();
 
@@ -95,6 +160,14 @@ async function renderContactList(){
 /* ---------------------------------------------------------
    Kontakt optisch markieren (blau + weiß)
 --------------------------------------------------------- */
+/**
+ * Toggles highlight for a given contact.
+ * Unhighlights previous selection, highlights the new one,
+ * and updates currentlySelectedContact.
+ *
+ * @param {string} contactId - DOM id like "Alice-contactID".
+ * @returns {boolean} True if contact is now selected, false if deselected.
+ */
 function toggleContactHighlight(contactId) {
     const same = currentlySelectedContact === contactId;
 
@@ -122,6 +195,16 @@ function toggleContactHighlight(contactId) {
 /* ---------------------------------------------------------
    Kontakt-Klick: Highlight + Render + Edit-Fenster öffnen
 --------------------------------------------------------- */
+/**
+ * Handles click on a contact:
+ * - toggles highlight
+ * - if selected: renders single contact + sets user data
+ * - if deselected: clears single contact view and closes overlay
+ *
+ * @param {string} contactId - DOM id like "Alice-contactID".
+ * @param {string} username - Username of clicked contact.
+ * @returns {void}
+ */
 function handleContactClick(contactId, username) {
     const becameSelected = toggleContactHighlight(contactId);
 
@@ -145,6 +228,12 @@ function handleContactClick(contactId, username) {
 /* ---------------------------------------------------------
    Einzelnen Kontakt anzeigen
 --------------------------------------------------------- */
+/**
+ * Renders a single contact into the detail view using singleContactTemplate().
+ *
+ * @param {string} inputString - Username to render.
+ * @returns {void}
+ */
 function renderSingleContact(inputString){
     const contacts = flattenContactBlockToArray() || [];
     const rightIndex = findIndexFromUsername(contacts, inputString);
