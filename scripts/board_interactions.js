@@ -1,6 +1,6 @@
-/* === board_interactions.js | Handles search, drag & drop, and user actions === */
-
-/* === Search Functionality === */
+/**
+ * Performs a live search on all task cards, updates the UI and result count message.
+ */
 window.searchTasks = function () {
   const input = document.getElementById("board-search");
   const msg = document.getElementById("search-msg");
@@ -23,7 +23,9 @@ window.searchTasks = function () {
   msg.className = count === 0 ? "msg-red" : "msg-green";
 };
 
-
+/**
+ * Clears the board search input and triggers a fresh search render.
+ */
 window.clearBoardSearch = function () {
   const input = document.getElementById("board-search");
   if (!input) return;
@@ -32,14 +34,20 @@ window.clearBoardSearch = function () {
   searchTasks();
 };
 
-
+/**
+ * Initializes the search clear button state once the board has loaded.
+ */
 window.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("board-search");
   if (input) updateSearchClearButtonState(input);
 });
 
-
 /* === Search Helper Function === */
+/**
+ * Checks whether a task object matches the active search query.
+ * @param {Object} t - The task object.
+ * @returns {boolean} True if the task matches search terms.
+ */
 function matchesSearch(t) {
   if (!searchQuery) return true;
   const title = String(t.title || "").toLowerCase();
@@ -60,64 +68,85 @@ function matchesSearch(t) {
   );
 }
 
-
-/* === Drag & Drop Core === */
-
-
-/* === Mobile Long‑Press Drag Support === */
 let longPressTimer = null;
 let longPressActive = false;
 
-document.addEventListener("touchstart", (e) => {
-  const card = e.target.closest(".task-card");
-  if (!card) return;
+/**
+ * Handles long‑press detection on mobile to initiate drag mode for a task card.
+ */
+document.addEventListener(
+  "touchstart",
+  (e) => {
+    const card = e.target.closest(".task-card");
+    if (!card) return;
 
-  longPressTimer = setTimeout(() => {
-    longPressActive = true;
-    whichCardActuellDrop = Number(card.dataset.id || card.getAttribute("data-id"));
-    currentDragCardEl = card;
-    card.classList.add("is-dragging");
-    document.body.classList.add("dragging");
-  }, 300);
-}, { passive: false });
+    longPressTimer = setTimeout(() => {
+      longPressActive = true;
+      whichCardActuellDrop = Number(
+        card.dataset.id || card.getAttribute("data-id")
+      );
+      currentDragCardEl = card;
+      card.classList.add("is-dragging");
+      document.body.classList.add("dragging");
+    }, 300);
+  },
+  { passive: false }
+);
 
 
+/**
+ * Updates drag hover highlighting while dragging a task on mobile.
+ */
 document.addEventListener("touchmove", (e) => {
-  if (!longPressActive || !currentDragCardEl) return;
-
-  const touch = e.touches[0];
-  const hoverCol = document
-    .elementFromPoint(touch.clientX, touch.clientY)
-    ?.closest(".drag-area");
-
-  if (hoverCol?.id) {
-    highlight(hoverCol.id);
-  }
-}, { passive: false });
-
-
-document.addEventListener("touchend", (e) => {
-  clearTimeout(longPressTimer);
-
-  if (longPressActive && currentDragCardEl) {
-    const touch = e.changedTouches[0];
-    const dropCol = document
+    if (!longPressActive || !currentDragCardEl) return;
+    const touch = e.touches[0];
+    const hoverCol = document
       .elementFromPoint(touch.clientX, touch.clientY)
       ?.closest(".drag-area");
-    if (dropCol) {
-      const status = statusByColumnId[dropCol.id];
-      if (status) {
-        moveTo(status);
-      }
+    if (hoverCol?.id) {
+      highlight(hoverCol.id);
     }
-    currentDragCardEl.classList.remove("is-dragging");
-    document.body.classList.remove("dragging");
-  }
-  longPressActive = false;
-  currentDragCardEl = null;
-}, { passive: false });
+  },
+  { passive: false }
+);
 
+
+/**
+ * Finalizes long‑press drag actions on mobile and drops the card if applicable.
+ */
+document.addEventListener("touchend", (e) => {
+    clearTimeout(longPressTimer);
+    if (longPressActive && currentDragCardEl) {
+      const touch = e.changedTouches[0];
+      const dropCol = document
+        .elementFromPoint(touch.clientX, touch.clientY)
+        ?.closest(".drag-area");
+      if (dropCol) {
+        const status = statusByColumnId[dropCol.id];
+        if (status) {
+          moveTo(status);
+        }
+      }
+      currentDragCardEl.classList.remove("is-dragging");
+      document.body.classList.remove("dragging");
+    }
+    longPressActive = false;
+    currentDragCardEl = null;
+  },
+  { passive: false }
+);
+
+
+/**
+ * Allows dropping of dragged items onto valid drop zones.
+ * @param {DragEvent} e - The dragover event.
+ */
 window.allowDrop = (e) => e.preventDefault();
+
+/**
+ * Highlights a drag-area column while dragging a task card.
+ * @param {string} id - The ID of the column to highlight.
+ */
 window.highlight = function (id) {
   if (!id) return;
   if (activeHighlightColumnId && activeHighlightColumnId !== id) {
@@ -133,6 +162,10 @@ window.highlight = function (id) {
 };
 
 
+/**
+ * Removes highlight styling from a drag-area column.
+ * @param {string} id - The ID of the column to remove highlight from.
+ */
 window.removeHighlight = function (id) {
   if (!id) return;
   if (activeHighlightColumnId && activeHighlightColumnId !== id) {
@@ -146,6 +179,9 @@ window.removeHighlight = function (id) {
 };
 
 
+/**
+ * Removes highlight styling from all drag-area columns.
+ */
 function clearAllColumnHighlights() {
   document
     .querySelectorAll(".drag-area.drag-highlight")
@@ -154,6 +190,11 @@ function clearAllColumnHighlights() {
 }
 
 
+/**
+ * Starts desktop drag-and-drop behavior for a task card.
+ * @param {DragEvent} event - The dragstart event.
+ * @param {number} whichTaskId - ID of the dragged task.
+ */
 window.onCardDragStart = function (event, whichTaskId) {
   whichCardActuellDrop = whichTaskId;
   currentDragCardEl = event.currentTarget;
@@ -163,8 +204,7 @@ window.onCardDragStart = function (event, whichTaskId) {
   try {
     event.dataTransfer.setData("text/plain", String(whichTaskId));
     event.dataTransfer.effectAllowed = "move";
-  } catch (e) {
-  }
+  } catch (e) {}
   document.body.classList.add("dragging");
   if (currentDragCardEl) {
     currentDragCardEl.classList.add("is-dragging");
@@ -172,6 +212,9 @@ window.onCardDragStart = function (event, whichTaskId) {
 };
 
 
+/**
+ * Finalizes drag behavior and resets all drag UI states.
+ */
 window.onCardDragEnd = function () {
   document.body.classList.remove("dragging");
   cancelScheduledAutoMove();
@@ -190,6 +233,10 @@ window.onCardDragEnd = function () {
 };
 
 
+/**
+ * Moves the dragged task to a new status column.
+ * @param {string} newStatus - Target status for the task.
+ */
 window.moveTo = function (newStatus) {
   cancelScheduledAutoMove();
   applyStatusChangeForDraggedTask(newStatus, { keepDraggingState: false });
@@ -197,6 +244,10 @@ window.moveTo = function (newStatus) {
 };
 
 
+/**
+ * Retrieves the task object currently being dragged.
+ * @returns {Object|null} The dragged task or null.
+ */
 function getDraggedTask() {
   if (whichCardActuellDrop == null || !Array.isArray(window.tasks)) return null;
   return window.tasks.find((t) => t.id === whichCardActuellDrop) || null;
@@ -204,6 +255,12 @@ function getDraggedTask() {
 
 
 /* === Task Status Update on Drop === */
+/**
+ * Applies a status update to the dragged task and triggers re-rendering.
+ * @param {string} newStatus - The new status to apply.
+ * @param {Object} options - Optional configuration.
+ * @returns {boolean} True if the status changed.
+ */
 function applyStatusChangeForDraggedTask(
   newStatus,
   { keepDraggingState } = {}
@@ -227,6 +284,10 @@ function applyStatusChangeForDraggedTask(
 
 
 /* === Auto Move Scheduling === */
+/**
+ * Schedules an automatic move of a dragged task when hovering over a column.
+ * @param {string} status - The status associated with the hovered column.
+ */
 function scheduleAutoMoveTo(status) {
   if (!currentDragCardEl || whichCardActuellDrop == null) return;
   const draggedTask = getDraggedTask();
@@ -245,6 +306,10 @@ function scheduleAutoMoveTo(status) {
 }
 
 
+/**
+ * Cancels any scheduled automatic task move action.
+ * @param {string} [expectedStatus] - Optional status to verify before canceling.
+ */
 function cancelScheduledAutoMove(expectedStatus) {
   if (
     pendingAutoMoveStatus &&
@@ -264,6 +329,12 @@ function cancelScheduledAutoMove(expectedStatus) {
 /* === Column Detection Logic === */
 const MAX_VERTICAL_SNAP_DISTANCE = 220;
 
+/**
+ * Determines the closest valid drop column based on pointer coordinates.
+ * @param {number} clientX - Pointer X coordinate.
+ * @param {number} clientY - Pointer Y coordinate.
+ * @returns {HTMLElement|null} The matched column or null.
+ */
 function findColumnByPointer(clientX, clientY) {
   const columns = Array.from(document.querySelectorAll(".drag-area"));
   let best = null;
@@ -290,6 +361,9 @@ function findColumnByPointer(clientX, clientY) {
 
 
 /* === Dragover Highlight Handling === */
+/**
+ * Handles card tilt animation and hover detection during desktop drag operations.
+ */
 document.addEventListener("dragover", (event) => {
   if (!currentDragCardEl) return;
   const { clientX, clientY } = event;
@@ -325,6 +399,9 @@ document.addEventListener("dragover", (event) => {
 
 
 /* === Drag Tilt Animation Handling === */
+/**
+ * Updates drag tilt animation based on horizontal pointer movement.
+ */
 document.addEventListener("dragover", (event) => {
   if (!currentDragCardEl) return;
   const { clientX } = event;
