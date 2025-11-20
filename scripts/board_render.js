@@ -136,13 +136,12 @@ function renderCard(t) {
       (task.assignedTo || []).forEach((person) => {
         const initials = getInitialsFromName(person.name);
         const avatar = document.createElement("div");
-        avatar.classList.add("assign-avatar-addTask_template");
         avatar.textContent = initials;
-        const color = person.color || "#4589ff";
+        avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
         avatar.style.backgroundColor = color;
-        avatar.dataset.fullName = person.name || initials;
+        avatar.dataset.fullName = name;
         avatar.dataset.color = color;
-        avatar.title = person.name || initials;
+        avatar.title = name;
         container.appendChild(avatar);
       });
     }

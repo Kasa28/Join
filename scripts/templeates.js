@@ -73,9 +73,7 @@ function bigCardHtml(t) {
   `;
 }
 
-
 function getAddTaskTemplate() {
-
   return `
     <headline class="header-wrapper-addTask_template">
         <h1 class="h1-addTask_template">Add Task</h1>
@@ -85,13 +83,11 @@ function getAddTaskTemplate() {
   <main class="main-addTask_template">
 
     <section>
-      <label for="title" class="label-addTask_template">Title</label>
       <input id="title" input type="text" class="task-title-addTask_template" name="title" placeholder="Enter a title">
       <small id="title-error" class="error-text"></small>
       </section>
 
     <section>
-      <label for="description" class="label-addTask_template">Description</label>
       <p class="section-heading-addTask_template"><strong>Description</strong> (optional)</p>
       <textarea id="description" class="task-description-addTask_template" name="description"
         placeholder="Enter a description"></textarea>
@@ -108,7 +104,6 @@ function getAddTaskTemplate() {
     </div>
 
     <section>
-      <label class="label-addTask_template">Priority</label>
       <p class="section-heading-addTask_template"><strong>Priority</strong></p>
       <div class="priority-group-addTask_template">
 
@@ -126,45 +121,20 @@ function getAddTaskTemplate() {
       </div>
     </section>
 
-    <section class="task-input-addTask_template">
-  <label for="assign" class="label-addTask_template">Assign to</label>
-  <p class="section-heading-addTask_template"><strong>Assign to</strong> (optional)</p>
 
-  <div class="assign-select-addTask_template" id="assign-select" onclick="toggleAssignDropdown(event)">
-    <span class="assign-placeholder-addTask_template">Select contact to assign</span>
-    <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" 
-         alt="Open assign menu"
-         class="assign-arrow-addTask_template">
-  </div>
+  <section class="task-input-addTask_template">
+    <p class="section-heading-addTask_template"><strong>Assign to</strong> (optional)</p>
+    <div class="assign-select-addTask_template assign-select-addTask_page" id="assign-select" onclick="toggleAssignDropdown(event)">
+      <span class="assign-placeholder-addTask_template assign-placeholder-addTask_page">Select contact to assign</span>
+      <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu" class="assign-arrow-addTask_template assign-arrow-addTask_page">
+    </div>
 
+    <div class="assign-dropdown-addTask_template assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID">
+    </div>
 
-
-
-
-
-  <div class="assign-dropdown-addTask_template" aria-label="Assign to options" role="listbox">
-
-
-
-
-
-    <div class="assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID"></div>
-  
-  
-  </div>
-  <div id="assigned-avatars" class="assigned-avatars-addTask_template"></div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
+    <div id="assigned-avatars" class="assigned-avatars-addTask_template assigned-avatars-addTask_page">
+    </div>
+  </section>
 
     <section>
       <label for="category" class="label-addTask_template">Category</label>
@@ -198,7 +168,6 @@ function getAddTaskTemplate() {
 </div>
    `;
 }
-
 
 function getTechnicalTaskTemplate(t) {
   return `
@@ -282,7 +251,6 @@ function getTechnicalTaskTemplate(t) {
   `;
 }
 
-
 function getBigCardDynamicHtml(t) {
   return `
       <headline class="header-wrapper_user-story">
@@ -338,7 +306,6 @@ function getBigCardDynamicHtml(t) {
         </div>
       </main>`;
 }
-
 
 function getBigCardDynamicTechnicalHtml(t) {
   return `

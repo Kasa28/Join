@@ -7,6 +7,7 @@ window.setPriority = function(p) {
   return setPriorityAddTask(p);
 };
 
+
 // === Initialization and Field Validation ===
 function initAddTaskTemplateHandlers() {
   const titleInput = document.getElementById("title");
@@ -25,7 +26,6 @@ function initAddTaskTemplateHandlers() {
     titleInput.addEventListener("blur", validateTitle);
     titleInput.addEventListener("input", validateTitle);
   }
-
   const dueDateInput = document.getElementById("due-date");
   if (dueDateInput) {
     dueDateInput.addEventListener("input", (e) => {
@@ -36,18 +36,16 @@ function initAddTaskTemplateHandlers() {
   }
 }
 
+
 // === Assign Dropdown Handling ===
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
   const placeholder = document.querySelector(".assign-placeholder-addTask_template");
   const arrow = document.querySelector(".assign-arrow-addTask_template");
-
   if (!dropdown || !placeholder || !arrow) return;
-
   isDropdownOpen = dropdown.style.display !== "block";
   dropdown.style.display = isDropdownOpen ? "block" : "none";
-
   if (isDropdownOpen) {
     placeholder.contentEditable = true;
     placeholder.textContent = "";
@@ -68,6 +66,49 @@ function toggleAssignDropdown(event) {
     renderAssignedAvatars();
   }
 }
+
+
+// === Shared helper: Extract avatar/user color ===
+function getColorFromItem(item) {
+  if (!item) return "#4589ff";
+
+  // 1. Try avatar element with template class
+  const avatarEl =
+    item.querySelector(".assign-avatar-addTask_template") ||
+    item.querySelector(".assign-avatar-addTask_page");
+
+  if (avatarEl) {
+    let c = avatarEl.style.backgroundColor;
+    if (!c) c = getComputedStyle(avatarEl).backgroundColor;
+
+    if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
+
+    // CSS variable fallback
+    const varCol = getComputedStyle(avatarEl)
+      .getPropertyValue("--avatar-color")
+      .trim();
+    if (varCol) return varCol;
+  }
+
+  // 2. Fallback on any color-* class or avatar container
+  const colorEl =
+    item.querySelector('[class*="color"]') ||
+    item.querySelector('[class*="avatar"]') ||
+    item;
+
+  if (colorEl) {
+    let c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
+    if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
+  }
+
+  // 3. data-color fallback
+  const dataColor = item.getAttribute("data-color");
+  if (dataColor) return dataColor;
+
+  // 4. Final fallback
+  return "#4589ff";
+}
+
 
 // === Assign User Selection ===
 function selectAssignUser(name, event) {
@@ -98,6 +139,7 @@ function selectAssignUser(name, event) {
   updateAssignPlaceholder();
 }
 
+
 // === Assign Input Filtering ===
 function updateAssignPlaceholder() {
   const placeholder = document.querySelector(".assign-placeholder-addTask_template");
@@ -108,6 +150,8 @@ function updateAssignPlaceholder() {
     placeholder.textContent = "";
   }
 }
+
+
 document.addEventListener("input", (e) => {
   if (e.target.classList.contains("assign-placeholder-addTask_template")) {
     const searchValue = e.target.textContent.toLowerCase();
@@ -138,6 +182,7 @@ document.addEventListener("input", (e) => {
   }
 });
 
+
 // === Assign Dropdown Close Handling ===
 document.addEventListener("click", (e) => {
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
@@ -153,6 +198,7 @@ document.addEventListener("click", (e) => {
     renderAssignedAvatars();
   }
 });
+
 
 // === Assigned Avatars Rendering ===
 function renderAssignedAvatars() {
@@ -183,7 +229,6 @@ function renderAssignedAvatars() {
   if (dataColor) return dataColor;
   return "#4589ff";
 };
-
 (window.selectedUsers || []).forEach((name) => {
   const item = [...document.querySelectorAll(".assign-item-addTask_template")].find(
     (el) =>
@@ -198,17 +243,17 @@ function renderAssignedAvatars() {
       .split(" ")
       .map((n) => n[0]?.toUpperCase())
       .join("");
-
-    const avatar = document.createElement("div");
-    avatar.textContent = initials;
-    avatar.classList.add("assign-avatar-addTask_template");
-    avatar.style.backgroundColor = color;
-    avatar.dataset.fullName = name;
-    avatar.dataset.color = color;
-    avatar.title = name;
-    container.appendChild(avatar);
+      const avatar = document.createElement("div");
+      avatar.textContent = initials;
+      avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
+      avatar.style.backgroundColor = color;
+      avatar.dataset.fullName = name;
+      avatar.dataset.color = color;
+      avatar.title = name;
+      container.appendChild(avatar);
   });
 }
+
 
 // === Priority Handling ===
 function setPriorityAddTask(priority) {
@@ -241,6 +286,7 @@ function setPriorityAddTask(priority) {
   window.currentPriority = priority;
   window.currentPrio = priority;
 }
+
 
 // === Subtask Management (Add, Edit, Remove, Save) ===
 document.addEventListener("click", (e) => {
@@ -311,15 +357,18 @@ document.addEventListener("click", (e) => {
   }
 });
 
+
 // === Due Date Validation and Formatting ===
 function sanitizeDueDateInput(e) {
   const input = e.target;
   input.value = input.value.replace(/[^0-9/]/g, "").slice(0, 10);
 }
 
+
 function isValidDateFormat(dateString) {
   return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString);
 }
+
 
 function isRealDate(dateString) {
   const [d, m, y] = dateString.split("/").map(Number);
@@ -331,6 +380,7 @@ function isRealDate(dateString) {
     date.getFullYear() === y
   );
 }
+
 
 function validateDueDate() {
   const dueDateInput = document.getElementById("due-date");
