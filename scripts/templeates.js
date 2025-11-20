@@ -127,7 +127,6 @@ function getAddTaskTemplate() {
 <section class="task-input-addTask_template">
   <p class="section-heading-addTask_template"><strong>Assign to</strong> (optional)</p>
 
-  <!-- Select Box -->
   <div 
     class="assign-select-addTask_template assign-select-addTask_page" 
     id="assign-select" 
@@ -144,17 +143,16 @@ function getAddTaskTemplate() {
     >
   </div>
 
-  <!-- Dropdown Container (contacts will be rendered here) -->
   <div 
     class="assign-dropdown-addTask_template assign-dropdown-addTask_page"
     aria-label="Assign to options" 
     role="listbox" 
-    id="contacts-containerID"
-  >
+    id="contacts-containerID">
   </div>
-
-  <!-- Assigned avatars preview -->
-  <div id="assigned-avatars" class="assigned-avatars-addTask_template"></div>
+  <div 
+    id="assigned-avatars" 
+    class="assigned-avatars-addTask_template assigned-avatars-addTask_page">
+  </div>
 </section>
 
 

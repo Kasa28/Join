@@ -64,11 +64,15 @@ function singleContactTemplate(inputContact){
   let contentRef = document.getElementById("contacts-containerID");
 
   contentRef.innerHTML += `         
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('${inputContact.username}')">
-              <span class="assign-avatar-addTask_page" style="background-color: ${inputContact.color};">${getInitials(inputContact.username)}</span>
-              <span class="assign-name-addTask_page">${inputContact.username}</span>
-              <input type="checkbox" class="assign-check-addTask_page">
-            </div>`
+    <div class="assign-item-addTask_page assign-item-addTask_template" onclick="selectAssignUser('${inputContact.username}', event)">
+      <span class="assign-avatar-addTask_page assign-avatar-addTask_template" style="background-color: ${inputContact.color};">
+        ${getInitials(inputContact.username)}
+      </span>
+      <span class="assign-name-addTask_page assign-name-addTask_template">
+        ${inputContact.username}
+      </span>
+      <input type="checkbox" class="assign-check-addTask_page assign-check-addTask_template">
+    </div>`;
 }
 
 
@@ -287,11 +291,14 @@ function renderAssignedAvatars() {
       .split(" ")
       .map((n) => n[0].toUpperCase())
       .join("");
-    const avatar = document.createElement("div");
-    avatar.textContent = initials;
-    avatar.classList.add("assign-avatar-addTask_page");
-    avatar.style.backgroundColor = color;
-    container.appendChild(avatar);
+      const avatar = document.createElement("div");
+      avatar.textContent = initials;
+      avatar.classList.add(
+        "assign-avatar-addTask_page",
+        "assign-avatar-addTask_template"
+      );
+      avatar.style.backgroundColor = color;
+      container.appendChild(avatar);
   });
 }
 

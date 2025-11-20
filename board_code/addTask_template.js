@@ -199,14 +199,14 @@ function renderAssignedAvatars() {
       .map((n) => n[0]?.toUpperCase())
       .join("");
 
-    const avatar = document.createElement("div");
-    avatar.textContent = initials;
-    avatar.classList.add("assign-avatar-addTask_template");
-    avatar.style.backgroundColor = color;
-    avatar.dataset.fullName = name;
-    avatar.dataset.color = color;
-    avatar.title = name;
-    container.appendChild(avatar);
+      const avatar = document.createElement("div");
+      avatar.textContent = initials;
+      avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
+      avatar.style.backgroundColor = color;
+      avatar.dataset.fullName = name;
+      avatar.dataset.color = color;
+      avatar.title = name;
+      container.appendChild(avatar);
   });
 }
 
