@@ -1,5 +1,9 @@
 
 // === Assign Dropdown Handling ===
+/**
+ * Toggles the assign dropdown open or closed and handles placeholder & arrow UI updates.
+ * @param {Event} event - The click event triggering the toggle.
+ */
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const dropdown = document.querySelector(".assign-dropdown-addTask_page");
@@ -7,12 +11,9 @@ function toggleAssignDropdown(event) {
     ".assign-placeholder-addTask_page"
   );
   const arrow = document.querySelector(".assign-arrow-addTask_page");
-
   if (!dropdown || !placeholder || !arrow) return;
-
   isDropdownOpen = dropdown.style.display !== "block";
   dropdown.style.display = isDropdownOpen ? "block" : "none";
-
   if (isDropdownOpen) {
     placeholder.contentEditable = true;
     placeholder.textContent = "";
@@ -36,6 +37,11 @@ function toggleAssignDropdown(event) {
 
 
 // === A special function to get the Initals from the contacts ===
+/**
+ * Extracts initials from a full name string.
+ * @param {string} inputFullName - The full name of the contact.
+ * @returns {string} The initials derived from the full name.
+ */
 function getInitials(inputFullName){
     const nameParts = inputFullName.split(/\s+/);
     const firstNameInital = nameParts[0]?.charAt(0).toUpperCase() || "";
@@ -45,11 +51,14 @@ function getInitials(inputFullName){
 
 
 // === Contacts are rendered when the page are been open ===
+/**
+ * Renders all contacts into the assign dropdown.
+ * Loads user data from localStorage and falls back to demo data if not logged in.
+ */
 function renderContactsInDropdown(){
   let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
   const userContacts = getUserData.friends;
   const login = checkIfLogedIn();
-  
   if(!login){
     demoContactTemplate();
   }
@@ -60,9 +69,14 @@ function renderContactsInDropdown(){
 
 
 // === Some Templates ===
+/**
+ * Generates and appends a single contact HTML template to the dropdown.
+ * @param {Object} inputContact - A contact object containing user data.
+ * @param {string} inputContact.username - The contact's full name.
+ * @param {string} inputContact.color - Background color for the contact avatar.
+ */
 function singleContactTemplate(inputContact){
   let contentRef = document.getElementById("contacts-containerID");
-
   contentRef.innerHTML += `         
     <div class="assign-item-addTask_page assign-item-addTask_template" onclick="selectAssignUser('${inputContact.username}', event)">
       <span class="assign-avatar-addTask_page assign-avatar-addTask_template" style="background-color: ${inputContact.color};">
@@ -76,6 +90,9 @@ function singleContactTemplate(inputContact){
 }
 
 
+/**
+ * Renders fallback demo contacts when no user is logged in.
+ */
 function demoContactTemplate(){
    let contentRef = document.getElementById("contacts-containerID");
 
@@ -101,18 +118,18 @@ function demoContactTemplate(){
 
 
 // === Assign User Selection ===
+/**
+ * Handles selection and deselection of a user inside the assign dropdown.
+ * @param {string} name - The selected user's name.
+ * @param {Event} event - The triggering event.
+ */
 function selectAssignUser(name, event) {
   if (event && event.stopPropagation) event.stopPropagation();
-
-  // Ensure item is the correct assign-item element
   let item = null;
-
   if (event && event.target) {
     item = event.target.closest(".assign-item-addTask_page");
   }
-
   if (!item) {
-    // fallback: search by name
     const candidates = document.querySelectorAll(".assign-item-addTask_page");
     candidates.forEach((el) => {
       const label = el.querySelector(".assign-name-addTask_page").textContent.trim();
@@ -136,6 +153,9 @@ function selectAssignUser(name, event) {
 
 
 // === Placeholder Updates ===
+/**
+ * Updates placeholder text depending on whether users are selected.
+ */
 function updateAssignPlaceholder() {
   const placeholder = document.querySelector(
     ".assign-placeholder-addTask_page"
@@ -154,7 +174,6 @@ document.addEventListener("input", (e) => {
   if (e.target.classList.contains("assign-placeholder-addTask_page")) {
     const searchValue = e.target.textContent.toLowerCase();
     const items = document.querySelectorAll(".assign-item-addTask_page");
-
     if (searchValue.trim() === "") {
       items.forEach((item) => (item.style.display = "flex"));
       return;
@@ -182,6 +201,12 @@ document.addEventListener("input", (e) => {
     }
   }
 });
+
+
+/**
+ * Processes input events inside the assign placeholder to filter contacts.
+ * @param {InputEvent} e - The input event.
+ */
 function handleAssignInput(e) {
   if (!isAssignPlaceholderEvent(e)) return;
   const searchValue = getAssignSearchValue(e.target);
@@ -189,16 +214,31 @@ function handleAssignInput(e) {
 }
 
 
+/**
+ * Checks whether the event target is the assign placeholder element.
+ * @param {Event} e - The event to check.
+ * @returns {boolean} True if the event targets the assign placeholder.
+ */
 function isAssignPlaceholderEvent(e) {
   return e.target.classList.contains("assign-placeholder-addTask_page");
 }
 
 
+/**
+ * Returns the lowercase trimmed search value from the assign placeholder.
+ * @param {HTMLElement} target - The placeholder element.
+ * @returns {string} The processed search value.
+ */
 function getAssignSearchValue(target) {
   return target.textContent.toLowerCase().trim();
 }
 
 
+/**
+ * Filters the assign dropdown based on the given search value.
+ * @param {string} searchValue - The search input.
+ * @param {HTMLElement} target - The placeholder element triggering the search.
+ */
 function processAssignSearch(searchValue, target) {
   const items = document.querySelectorAll(".assign-item-addTask_page");
   if (shouldResetAssignSearch(searchValue)) {
@@ -210,17 +250,31 @@ function processAssignSearch(searchValue, target) {
 }
 
 
+/**
+ * Checks if the search should reset based on whether the input is empty.
+ * @param {string} searchValue - The current search text.
+ * @returns {boolean} True if search string is empty.
+ */
 function shouldResetAssignSearch(searchValue) {
   return searchValue === "";
 }
 
 
+/**
+ * Resets the assign dropdown list to show all contacts.
+ */
 function resetAssignSearch() {
   showAllAssignItems();
   updateAssignPlaceholder();
 }
 
 
+/**
+ * Filters the provided list of items by a search string.
+ * @param {NodeListOf<Element>} items - List of assign dropdown items.
+ * @param {string} searchValue - The search string.
+ * @returns {boolean} True if at least one item matches.
+ */
 function filterAssignList(items, searchValue) {
   let anyMatch = false;
   items.forEach((item) => {
@@ -235,6 +289,11 @@ function filterAssignList(items, searchValue) {
 }
 
 
+/**
+ * Finalizes search by resetting view if no results match and updating placeholder state.
+ * @param {boolean} anyMatch - Whether any contacts matched the filter.
+ * @param {HTMLElement} target - The placeholder element.
+ */
 function finalizeAssignSearch(anyMatch, target) {
   if (!anyMatch) {
     showAllAssignItems();
@@ -271,6 +330,9 @@ document.addEventListener("click", (e) => {
 
 
 // === Avatar Rendering ===
+/**
+ * Renders selected user avatars into the assigned avatar container.
+ */
 function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
@@ -285,7 +347,6 @@ function renderAssignedAvatars() {
           name
       )
       ?.querySelector(".assign-avatar-addTask_page");
-
     const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
     const initials = name
       .split(" ")
@@ -304,6 +365,9 @@ function renderAssignedAvatars() {
 
 
 // === Assign Checkbox Handling ===
+/**
+ * Handles checkbox click events inside the assign dropdown to ensure correct selection logic.
+ */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("assign-check-addTask_page")) {
     e.stopPropagation();
