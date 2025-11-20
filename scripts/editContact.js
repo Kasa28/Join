@@ -51,18 +51,13 @@ async function editContact() {
 
     if (login) {
         updateFriendsInLocalStorage(contacts);
-
         const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
         const userID = await getUserID(getUserData.name);
-
         await updateUserFriendslist(userID, contact);
-
     } else {
         contacts.splice(remindIndex, 1);
         contacts.push(contact);
     }
-
-    // Aktualisieren der Anzeige
     renderSingleContact(contact.username);
     hideEditContactFormular();
     renderContactList();
@@ -74,21 +69,15 @@ async function editContact() {
 async function deleteContactinEditContactWindow() {
     let contacts = flattenContactBlockToArray() || [];
     const login = checkIfLogedIn();
-
     contacts.splice(remindIndex, 1);
-
     if (login) {
         updateFriendsInLocalStorage(contacts);
-
         const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
         const userID = await getUserID(getUserData.name);
-
         await updateUserFriendslist(userID, contacts);
-
     } else {
         setContactsIntoContactblock(contacts);
     }
-
     hideEditContactFormular();
     closeWhiteScreen();
     renderContactList();

@@ -101,7 +101,10 @@
 
 .single-contact-hover:hover{
     cursor: pointer;
-    background-color: #D2E3FF;
+}
+
+.single-contact-hover:hover:not(.backgroundcolor-blue) {
+    background-color: #e3f0ff !important; 
 }
 
 .contacts-logo{
@@ -140,7 +143,6 @@
 }
 
 .backgroundcolor-blue{
-    background-color: #4589FF;
     color: white;
 }
 
