@@ -7,13 +7,13 @@
 .privacy-policy {
   font-family: "Open Sans", Arial, sans-serif;
   width: 85%;
-  margin: 0 auto;
   padding: 61px 119px 0px;
   overflow: hidden;
   overflow-y: auto;
   height: calc(100vh - 96px);
   scrollbar-width: none;
   -ms-overflow-style: none;
+  max-width: 60%;
 }
 
 .privacy-policy .h1_privacy_policy {
