@@ -58,6 +58,14 @@ function getInitials(inputFullName){
     return `${firstNameInital}${lastNameInitial}`
 }
 
+
+function updateFriendsInLocalStorage(updatedFriends){
+    let userData = JSON.parse(localStorage.getItem("userData") || {});
+    userData.friends = updatedFriends;
+    localStorage.setItem("userData", JSON.stringify(userData));
+}
+
+
 function sortUserToAlphabeticalOrder(inputArray){
 
     inputArray.sort((a, b) => {
@@ -136,30 +144,9 @@ function flattenContactBlockToArray() {
 
 
 function pushExampleContactsOneTimeInLocalStorage(inputContacts){
-    
+
     setContactsIntoContactblock(inputContacts);
-
-
-
-    // Überprüfen, ob einer der Namen bereits im Array vorhanden ist
-    //const nameExists = contacts.some(contact =>
-    //    contact && (contact.username === "reset")
-    //);
-
-    // Wenn einer der Namen existiert, Funktion abbrechen
-    //if (nameExists) {
-    //    return;
-    //}
-
-    // Namen hinzufügen, wenn sie nicht existieren
-    //if (exampleContacts.length > 0) {
-    //    contacts.push(...exampleContacts);
-    //    exampleContacts = []; // Leere das Array nach dem Hinzufügen
-    //    addContactToLocalStorageAndAPI(contacts);
-    //    console.log("Beispielkontakte wurden hinzugefügt:", contacts);
-    //} else {
-    //    console.log("Keine Beispielkontakte vorhanden.");
-    //}
+    
 }
 
 

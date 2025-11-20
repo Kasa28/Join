@@ -1,5 +1,7 @@
 let remindString;
 
+let currentlySelectedContact = null;
+
 let contactBlock = {
     A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [],
     K: [], L: [], M: [], N: [], O: [], P: [], Q: [], R: [], S: [], T: [],
@@ -56,6 +58,7 @@ async function renderContactList(){
     if(!login){
         pushExampleContactsOneTimeInLocalStorage(exampleContacts);
     }else {
+        
         setContactsIntoContactblock(getContactsFromUser);
     }
 
@@ -82,18 +85,18 @@ async function renderContactList(){
         `
         block.forEach((contact) => {   
         contactContainerRef.innerHTML +=  `
-                    <contact onclick="renderSingleContact('${contact.username}')" class="single-contact single-contact-hover display-flex-center-x padding-medium-up-down-contacts" id="${contact.username}-contactID">
+                    <contact onclick="toggleContactHighlight('${contact.username}-contactID'), renderSingleContact('${contact.username}')" class="single-contact single-contact-hover display-flex-center-x padding-medium-up-down-contacts" id="${contact.username}-contactID">
 
                         <div class="contacts-logo ${contact.color}">
                             <a>${getInitials(contact.username)}</a>
                         </div>
                         <div class="padding-left-contacts">
-                            <div class="name-property padding-bottom-contacts padding-small-left-right-contacts" id="${contact.username}-usernameID">
-                                <p>${makeFirstLetterBig(contact.username)}</p>
-                            </div>
-                            <div class="mail-property padding-small-left-right-contacts" id="${contact.username}-emailID">
-                                <p>${contact.email}</p>
-                            </div>
+                                <div class="name-property padding-bottom-contacts padding-small-left-right-contacts" id="${contact.username}-usernameID">
+                                    <p>${makeFirstLetterBig(contact.username)}</p>
+                                </div>
+                                <div class="mail-property padding-small-left-right-contacts" id="${contact.username}-emailID">
+                                    <p>${contact.email}</p>
+                                </div>
                         </div>
 
                     </contact>
@@ -103,22 +106,52 @@ async function renderContactList(){
 };  
 
 
-function makeContactBlue(inputName){
+//function makeContactBlue(inputName){
 
-    if(remindString != null){
-        document.getElementById(remindString + "-contactID").classList.add("single-contact-hover");
-        document.getElementById(remindString + "-contactID").classList.remove("cursor-pointer");
-        document.getElementById(remindString + "-contactID").classList.remove("backgroundcolor-blue");
-        document.getElementById(remindString + "-usernameID").classList.remove("font-color-white");
-        document.getElementById(remindString + "-emailID").classList.remove("font-color-white");
-    } else {}
-        document.getElementById(inputName + "-contactID").classList.remove("single-contact-hover");
-        document.getElementById(inputName + "-contactID").classList.add("cursor-pointer");
-        document.getElementById(inputName + "-contactID").classList.add("backgroundcolor-blue");
-        document.getElementById(inputName + "-usernameID").classList.add("font-color-white");
-        document.getElementById(inputName + "-emailID").classList.add("font-color-white");
-        remindString = inputName;
+//    if(remindString != null){
+//        document.getElementById(remindString + "-contactID").classList.add("single-contact-hover");
+//        document.getElementById(remindString + "-contactID").classList.remove("cursor-pointer");
+//        document.getElementById(remindString + "-contactID").classList.remove("backgroundcolor-blue");
+//        document.getElementById(remindString + "-usernameID").classList.remove("font-color-white");
+//        document.getElementById(remindString + "-emailID").classList.remove("font-color-white");
+//    } else {}
+//        document.getElementById(inputName + "-contactID").classList.remove("single-contact-hover");
+//        document.getElementById(inputName + "-contactID").classList.add("cursor-pointer");
+//        document.getElementById(inputName + "-contactID").classList.add("backgroundcolor-blue");
+//        document.getElementById(inputName + "-usernameID").classList.add("font-color-white");
+//        document.getElementById(inputName + "-emailID").classList.add("font-color-white");
+//        remindString = inputName;
+//}
+
+
+function toggleContactHighlight(contactId) {
+    // Entferne die blaue Hintergrundfarbe vom vorherigen Kontakt
+    if (currentlySelectedContact) {
+        const previousContact = document.getElementById(currentlySelectedContact);
+        if (previousContact) {
+            previousContact.classList.remove("backgroundcolor-blue");
+            //previousContact.classList.remove("cursor-pointer");
+            //previousContact.classList.add("single-contact-hover");
+
+        }
+    }
+
+    // Wenn derselbe Kontakt erneut angeklickt wird, deselektiere ihn
+    if (currentlySelectedContact === contactId) {
+        currentlySelectedContact = null; // Kein Kontakt ist ausgewählt
+        return;
+    }
+
+    // Setze den neuen Kontakt als ausgewählt und füge die blaue Hintergrundfarbe hinzu
+    const newContact = document.getElementById(contactId);
+    if (newContact) {
+        newContact.classList.add("backgroundcolor-blue");
+        //previousContact.classList.add("cursor-pointer");
+        //previousContact.classList.remove("single-contact-hover");
+        currentlySelectedContact = contactId; // Speichere den neuen ausgewählten Kontakt
+    }
 }
+
 
 function renderSingleContact(inputString){
     const contacts = flattenContactBlockToArray() || [];
@@ -128,61 +161,19 @@ function renderSingleContact(inputString){
 
 
 
-    if(contact.username == remindString){
-        document.getElementById(contact.username + "-contactID").classList.add("single-contact-hover");
-        document.getElementById(contact.username + "-contactID").classList.remove("backgroundcolor-blue");
-        document.getElementById(remindString + "-usernameID").classList.remove("font-color-white");
-        document.getElementById(contact.username + "-emailID").classList.remove("font-color-white");
-        let singleContactRef = document.getElementById("singleContactID");
-        singleContactRef.innerHTML = ""; 
-        remindString = null;  
-        }  else{
+//    if(contact.username == remindString){
+//        document.getElementById(contact.username + "-contactID").classList.add("single-contact-hover");
+//        document.getElementById(contact.username + "-contactID").classList.remove("backgroundcolor-blue");
+//        document.getElementById(remindString + "-usernameID").classList.remove("font-color-white");
+//        document.getElementById(contact.username + "-emailID").classList.remove("font-color-white");
+//        let singleContactRef = document.getElementById("singleContactID");
+//        singleContactRef.innerHTML = ""; 
+//        remindString = null;  
+//        }  else{
                     singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
                     //makeContactBlue(contact.username);
-                }
+//                }
 }
 
 
 
-function singleContactTemplate(inputColor, inputUsername, inputIndex,  inputEmail, inputPhone){
-    let singleContactRef = document.getElementById("singleContactID");
-    singleContactRef.innerHTML = `
-    <show-contact>
-
-            <div class="show-contact-container">
-                <contact class="display-flex-center-x">
-                    <div class="show-contact-logo ${inputColor}">
-                        <a>${getInitials(inputUsername)}</a>
-                    </div>
-                    <div>
-                        <div class="name-property">
-                            <h2>${makeFirstLetterBig(inputUsername)}</h2>
-                        </div>
-                        <div style="display: flex;">
-                            <div onclick="showEditContactFormular(), setUserDataValue(${inputIndex}), callWhiteScreen()"  class="edit-delete-container">
-                                <img class="edit-delete-icons" src="./assets/img/edit.svg" alt="edit icon">
-                                Edit
-                            </div>
-                            <div onclick="deleteContact('${inputUsername}')" class="edit-delete-container">
-                                <img class="edit-delete-icons" src="./assets/img/delete.svg" alt="delete icon">
-                                Delete
-                            </div>
-                        </div>
-                    </div>
-                </contact>
-                <h2>Contact Information</h2>
-                <br>
-                <h3>E-Mail</h3>
-                <br>
-                <p class="mail-property">${inputEmail}</p>
-                <br>
-                <h3>Phone</h3>
-                <br>
-                <p>${inputPhone}</p>
-
-            </div>
-
-        </show-contact>
-    
-    `
-}

@@ -33,9 +33,10 @@ function addNewContact(){
 
     if(login){
         addContactToLocalStorageAndAPI(contacts);
-    } else {return; }
+    } else {
+        setContactsIntoContactblock(contacts);
+    }
     
-    addContactToLocalStorageAndAPI(contacts);
     emptyTheAddContactFormular();
     hideAddContactFormular();
     renderContactList();
@@ -54,58 +55,4 @@ async function addContactToLocalStorageAndAPI(inputContacts){
     await updateUserFriendslist(userID, updatedContacts);
 }
 
-
-function renderAddContact(){
-    let contentRef = document.getElementById("add-contactID");
-    
-    contentRef.innerHTML = `
-        <div class="main-container-edit-contact left-side-rounded">
-
-                                    <div class="edit-contact-headcard left-side-rounded">
-                                        <img onclick="hideAddContactFormular(), closeWhiteScreen()" class="close-icon-edit-contact" src="./assets/img/close.svg" alt="close icon">
-                                        <img class="capa-logo-1-edit-contact" src="./assets/img/Capa 1.svg" alt="Capa 1">
-                                        <h2 class="h2-edit-contact">Add Contact</h2>
-                                        <a class="a-font-edit-contact">Tasks are better in a Team</a>
-                                    </div>
-
-                                <div style="display: flex; justify-content: center; align-items: center;">
-
-                                        <div class="edit-contact-content">
-                                            
-                                                <div class="empty-user-ball-edit-contact">
-                                                    <img src="./assets/img/person.svg" class="empty-user-ball-icon-edit-contact" alt="Icon">
-                                                </div>
-
-                                                <div class="input-icon-container">
-                                                    <input class="edit-contact-inputfield" placeholder="Name" type="text" name="" id="add-contact-usernameID">
-                                                    <img src="./assets/img/person.svg" class="input-icon-edit-contact" alt="Icon">
-                                                </div>
-
-                                                <div class="input-icon-container">
-                                                    <input class="edit-contact-inputfield" placeholder="Email" type="email" name="" id="add-contact-mailID">
-                                                    <img src="./assets/img/mail.svg" class="input-icon-edit-contact" alt="Icon">
-                                                </div>
-
-                                                <div class="input-icon-container">
-                                                    <input class="edit-contact-inputfield" placeholder="Phone" type="text" name="" id="add-contact-phone-numberID">
-                                                    <img src="./assets/img/call.svg" class="input-icon-edit-contact" alt="Icon">
-                                                </div>
-
-                                                <div class="button-edit-contact-order">
-                                                    <button onclick="hideAddContactFormular(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-grey">
-                                                        Cancel 
-                                                    </button>
-                                                    <button onclick="addNewContact(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-blue">
-                                                        Create Contact 
-                                                        <img class="check-icon-edit-contact" src="./assets/img/check.svg" alt="check icon">
-                                                    </button>
-                                                </div>
-
-                                        </div>
-                                </div>
-
-                            </div>
-    
-    `
-}
 
