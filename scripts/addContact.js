@@ -21,15 +21,20 @@ function emptyTheAddContactFormular(){
 
 
 function addNewContact(){
-    const getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
-    let contacts = getUserData.friends|| [];
+    let contacts = flattenContactBlockToArray() || [];
     const usernameRef = document.getElementById("add-contact-usernameID").value;
     const usermailRef = document.getElementById("add-contact-mailID").value; 
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
+    const login = checkIfLogedIn();
     colorCode = getRandomInt(colors.length);
     const contactJson = {"username": usernameRef, "email": usermailRef, "PhoneNumber": phonenumberRef, "color": colors[colorCode]};
     contacts.push(contactJson);
     sortUserToAlphabeticalOrder(contacts);
+
+    if(login){
+        addContactToLocalStorageAndAPI(contacts);
+    } else {return; }
+    
     addContactToLocalStorageAndAPI(contacts);
     emptyTheAddContactFormular();
     hideAddContactFormular();

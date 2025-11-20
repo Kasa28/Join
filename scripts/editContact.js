@@ -13,11 +13,10 @@ function hideEditContactFormular(){
 
 // Edit-Contact-Fenster fuellen
 function setUserDataValue(inputIndex){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
-    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
+    const contacts = flattenContactBlockToArray() || [];
     const contact = contacts[inputIndex];
     const initials = getInitials(contact.username);
-    const getColor =  getContactColorType(inputIndex);
+    const getColor =  contact.color;
     let initialsRef = document.getElementById("edit-contact-initialsID");
 
     initialsRef.innerHTML = initials;
@@ -32,17 +31,26 @@ function setUserDataValue(inputIndex){
 
 // Change Name or change other things in Formualar
 async function editContact(){
-    const getUserData = JSON.parse(localStorage.getItem("userData")) || {};
-    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
+    const login = checkIfLogedIn();
+
+    const contacts = flattenContactBlockToArray() || [];
     let contact = contacts[remindIndex];
     
+
     contact.username = document.getElementById("edit-contact-usernameID").value;
     contact.email = document.getElementById("edit-contact-mailID").value;
     contact.PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
 
+    
     updateFriendsInLocalStorage(contacts);
-    const userID = await getUserID(getUserData.name);
-    await updateUserFriendslist(userID, contacts);
+
+
+    if(login){
+        const getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
+        const userID = await getUserID(getUserData.name);
+        await updateUserFriendslist(userID, contact);
+    }   else{};
+    
     renderSingleContact(contact.username);
     hideEditContactFormular();
     renderContactList();

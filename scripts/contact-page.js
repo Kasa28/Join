@@ -58,6 +58,9 @@ async function renderContactList(){
     }else {
         setContactsIntoContactblock(getContactsFromUser);
     }
+
+
+    
       
 
     Object.keys(contactBlock).forEach((key) => {
@@ -118,10 +121,10 @@ function makeContactBlue(inputName){
 }
 
 function renderSingleContact(inputString){
-    const getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
-    const contacts = getUserData.friends;
+    const contacts = flattenContactBlockToArray() || [];
     const rightIndex = findIndexFromUsername(contacts, inputString);
     const contact = contacts[rightIndex];
+
 
 
 
@@ -135,7 +138,7 @@ function renderSingleContact(inputString){
         remindString = null;  
         }  else{
                     singleContactTemplate(contact.color, contact.username, rightIndex,  contact.email, contact.PhoneNumber);
-                    makeContactBlue(contact.username);
+                    //makeContactBlue(contact.username);
                 }
 }
 
