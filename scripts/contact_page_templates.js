@@ -1,8 +1,21 @@
-function singleContactTemplate(inputColor, inputUsername, inputIndex,  inputEmail, inputPhone){
-    let singleContactRef = document.getElementById("singleContactID");
-    singleContactRef.innerHTML = `
+/**
+ * Renders the detailed view of a single contact into the contact panel.
+ * @param {string} inputColor - The CSS color class for the contact avatar.
+ * @param {string} inputUsername - The full name of the contact.
+ * @param {number} inputIndex - Index of the contact in the contacts list.
+ * @param {string} inputEmail - The contact's email address.
+ * @param {string} inputPhone - The contact's phone number.
+ */
+function singleContactTemplate(
+  inputColor,
+  inputUsername,
+  inputIndex,
+  inputEmail,
+  inputPhone
+) {
+  let singleContactRef = document.getElementById("singleContactID");
+  singleContactRef.innerHTML = `
     <show-contact>
-
             <div class="show-contact-container">
                 <contact class="display-flex-center-x">
                     <div class="show-contact-logo ${inputColor}">
@@ -33,20 +46,19 @@ function singleContactTemplate(inputColor, inputUsername, inputIndex,  inputEmai
                 <h3>Phone</h3>
                 <br>
                 <p>${inputPhone}</p>
-
             </div>
-
-        </show-contact>
-    
-    `
+    </show-contact>`;
 }
 
-function renderEditContact(){
-    let contentRef = document.getElementById("edit-contactID");
-    
 
+/**
+ * Renders the Edit Contact form template into the UI, including input fields
+ * and action buttons for saving or deleting the contact.
+ */
+function renderEditContact() {
+  let contentRef = document.getElementById("edit-contactID");
 
-    contentRef.innerHTML = `
+  contentRef.innerHTML = `
                                 <div class="main-container-edit-contact right-side-rounded">
 
                                     <div class="edit-contact-headcard right-side-rounded">
@@ -89,14 +101,18 @@ function renderEditContact(){
                                                 </div>
                                         </div>
                                     </div>
-                                </div>
-    `;
+                                </div>`;
 }
 
-function renderAddContact(){
-    let contentRef = document.getElementById("add-contactID");
-    
-    contentRef.innerHTML = `
+
+/**
+ * Renders the Add Contact form template into the UI, including input fields
+ * and action buttons for creating a new contact.
+ */
+function renderAddContact() {
+  let contentRef = document.getElementById("add-contactID");
+
+  contentRef.innerHTML = `
         <div class="main-container-edit-contact left-side-rounded">
 
                                     <div class="edit-contact-headcard left-side-rounded">
@@ -142,8 +158,5 @@ function renderAddContact(){
                                         </div>
                                 </div>
 
-                            </div>
-    
-    `
+                            </div>`;
 }
-
