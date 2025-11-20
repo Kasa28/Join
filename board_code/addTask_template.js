@@ -69,6 +69,48 @@ function toggleAssignDropdown(event) {
   }
 }
 
+// === Shared helper: Extract avatar/user color ===
+function getColorFromItem(item) {
+  if (!item) return "#4589ff";
+
+  // 1. Try avatar element with template class
+  const avatarEl =
+    item.querySelector(".assign-avatar-addTask_template") ||
+    item.querySelector(".assign-avatar-addTask_page");
+
+  if (avatarEl) {
+    let c = avatarEl.style.backgroundColor;
+    if (!c) c = getComputedStyle(avatarEl).backgroundColor;
+
+    if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
+
+    // CSS variable fallback
+    const varCol = getComputedStyle(avatarEl)
+      .getPropertyValue("--avatar-color")
+      .trim();
+    if (varCol) return varCol;
+  }
+
+  // 2. Fallback on any color-* class or avatar container
+  const colorEl =
+    item.querySelector('[class*="color"]') ||
+    item.querySelector('[class*="avatar"]') ||
+    item;
+
+  if (colorEl) {
+    let c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
+    if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
+  }
+
+  // 3. data-color fallback
+  const dataColor = item.getAttribute("data-color");
+  if (dataColor) return dataColor;
+
+  // 4. Final fallback
+  return "#4589ff";
+}
+
+
 // === Assign User Selection ===
 function selectAssignUser(name, event) {
   if (event && event.stopPropagation) event.stopPropagation();
@@ -97,6 +139,7 @@ function selectAssignUser(name, event) {
   }
   updateAssignPlaceholder();
 }
+
 
 // === Assign Input Filtering ===
 function updateAssignPlaceholder() {
@@ -138,6 +181,7 @@ document.addEventListener("input", (e) => {
   }
 });
 
+
 // === Assign Dropdown Close Handling ===
 document.addEventListener("click", (e) => {
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
@@ -153,6 +197,7 @@ document.addEventListener("click", (e) => {
     renderAssignedAvatars();
   }
 });
+
 
 // === Assigned Avatars Rendering ===
 function renderAssignedAvatars() {
@@ -210,6 +255,7 @@ function renderAssignedAvatars() {
   });
 }
 
+
 // === Priority Handling ===
 function setPriorityAddTask(priority) {
   const urgentBtn = document.querySelector(".priority-btn-urgent-addTask_template");
@@ -241,6 +287,7 @@ function setPriorityAddTask(priority) {
   window.currentPriority = priority;
   window.currentPrio = priority;
 }
+
 
 // === Subtask Management (Add, Edit, Remove, Save) ===
 document.addEventListener("click", (e) => {
@@ -311,15 +358,18 @@ document.addEventListener("click", (e) => {
   }
 });
 
+
 // === Due Date Validation and Formatting ===
 function sanitizeDueDateInput(e) {
   const input = e.target;
   input.value = input.value.replace(/[^0-9/]/g, "").slice(0, 10);
 }
 
+
 function isValidDateFormat(dateString) {
   return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString);
 }
+
 
 function isRealDate(dateString) {
   const [d, m, y] = dateString.split("/").map(Number);
@@ -331,6 +381,7 @@ function isRealDate(dateString) {
     date.getFullYear() === y
   );
 }
+
 
 function validateDueDate() {
   const dueDateInput = document.getElementById("due-date");
