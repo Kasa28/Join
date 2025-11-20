@@ -124,9 +124,12 @@
 .subtask-list-addTask_page li {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding-right: 60px;
   line-height: 140%;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .subtask-list-addTask_page li::before {
