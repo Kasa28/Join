@@ -1,4 +1,52 @@
-/* === template_functions.js | Functions handling dynamic template generation === */
+/**
+ * @typedef {Object} AssignedUser
+ * @property {string} name
+ * @property {string} [img]
+ * @property {string} [color]
+ */
+
+/**
+ * @typedef {"urgent"|"medium"|"low"} TaskPriority
+ */
+
+/**
+ * @typedef {Object} Task
+ * @property {number|string} id
+ * @property {string} [title]
+ * @property {string} [description]
+ * @property {string} [dueDate]
+ * @property {TaskPriority|string} [priority]
+ * @property {string} [priorityIcon]
+ * @property {string} [type]
+ * @property {AssignedUser[]} [assignedTo]
+ * @property {string[]} [subTasks]
+ * @property {number} [subtasksDone]
+ * @property {number} [subtasksTotal]
+ */
+
+/**
+ * @typedef {Object} DynamicBigCardData
+ * @property {number|string} id
+ * @property {string} title
+ * @property {string} description
+ * @property {string} dueDate
+ * @property {string} priority
+ * @property {string} priorityIcon
+ * @property {string} type
+ * @property {string} assignedHTML
+ * @property {string} subtasksHTML
+ */
+
+/**
+ * @typedef {DynamicBigCardData & { priorityText?: string }} DynamicTechnicalBigCardData
+ */
+
+/**
+ * Builds and returns the dynamic big card HTML for user stories.
+ * Delegates final HTML to getBigCardDynamicHtml().
+ * @param {Task} t
+ * @returns {string}
+ */
 
 function bigCardDynamicHtml(t) {
   const title = t.title || "No title";
@@ -54,7 +102,12 @@ function bigCardDynamicHtml(t) {
   });
 }
 
-
+/**
+ * Builds and returns the dynamic big card HTML for technical tasks.
+ * Delegates final HTML to getBigCardDynamicTechnicalHtml().
+ * @param {Task} t
+ * @returns {string}
+ */
 function bigCardDynamicTechnicalHtml(t) {
   const title = t.title || "No title";
   const description = t.description || "No description provided.";
