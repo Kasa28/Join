@@ -1,5 +1,43 @@
 /* === templates.js | Static and dynamic HTML templates for user stories, technical tasks, and the Add Task form === */
-
+/**
+ * @typedef {Object} AssignedUser
+ * @property {string} name
+ * @property {string} [img]
+ * @property {string} [color]
+ */
+/**
+ * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
+ */
+/**
+ * @typedef {"urgent"|"medium"|"low"} TaskPriority
+ */
+/**
+ * @typedef {Object} Task
+ * @property {number|string} id
+ * @property {string} title
+ * @property {string} description
+ * @property {string} type
+ * @property {TaskStatus} status
+ * @property {string} dueDate
+ * @property {TaskPriority|string} priority
+ * @property {string} [priorityIcon]
+ * @property {number} subtasksDone
+ * @property {number} subtasksTotal
+ * @property {AssignedUser[]} assignedTo
+ * @property {string[]} [subTasks]
+ */
+/**
+ * @typedef {Task & {
+ *   assignedHTML?: string,
+ *   subtasksHTML?: string,
+ *   priorityText?: string
+ * }} DynamicTask
+ */
+/**
+ * Returns the static big card HTML for a (demo) User Story.
+ * @param {Task} t
+ * @returns {string}
+ */
 function bigCardHtml(t) {
   return `
     <headline class="header-wrapper_user-story">
@@ -72,7 +110,10 @@ function bigCardHtml(t) {
     </main>
   `;
 }
-
+/**
+ * Returns the Add Task overlay HTML template.
+ * @returns {string}
+ */
 function getAddTaskTemplate() {
   return `
     <headline class="header-wrapper-addTask_template">
@@ -168,7 +209,11 @@ function getAddTaskTemplate() {
 </div>
    `;
 }
-
+/**
+ * Returns the static big card HTML for a (demo) Technical Task.
+ * @param {Task} t
+ * @returns {string}
+ */
 function getTechnicalTaskTemplate(t) {
   return `
     <main class="main-container-technical-task">
@@ -250,7 +295,12 @@ function getTechnicalTaskTemplate(t) {
     </main>
   `;
 }
-
+/**
+ * Returns dynamic big card HTML for user stories and technical tasks.
+ * Uses t.assignedHTML and t.subtasksHTML if provided.
+ * @param {DynamicTask} t
+ * @returns {string}
+ */
 function getBigCardDynamicHtml(t) {
   return `
       <headline class="header-wrapper_user-story">
@@ -306,6 +356,12 @@ function getBigCardDynamicHtml(t) {
         </div>
       </main>`;
 }
+/**
+ * Returns dynamic big card HTML specifically styled for technical tasks.
+ * Uses t.assignedHTML, t.subtasksHTML, and t.priorityText if provided.
+ * @param {DynamicTask} t
+ * @returns {string}
+ */
 
 function getBigCardDynamicTechnicalHtml(t) {
   return `
