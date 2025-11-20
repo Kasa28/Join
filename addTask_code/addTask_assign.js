@@ -254,9 +254,13 @@ document.addEventListener("click", (e) => {
 
   if (!assignSelect.contains(e.target) && !dropdown.contains(e.target)) {
     dropdown.style.display = "none";
-    placeholder.contentEditable = false;
-    placeholder.classList.remove("typing");
+    if (placeholder) {
+      placeholder.contentEditable = false;
+      placeholder.classList.remove("typing");
+  }
+  if (arrow) {
     arrow.style.transform = "rotate(0deg)";
+  }
     renderAssignedAvatars();
   }
 });

@@ -101,7 +101,8 @@ window.openModalById = (id) => {
       typeof getAddTaskTemplate === "function"
         ? getAddTaskTemplate()
         : '<div style="padding:16px">AddTask-Template fehlt.</div>';
-    overlay.classList.add("open");
+        renderContactsInDropdown();
+        overlay.classList.add("open");
     document.body.classList.add("no-scroll");
     if (typeof initAddTaskTemplateHandlers === "function") {
       initAddTaskTemplateHandlers();

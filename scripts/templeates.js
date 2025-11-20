@@ -85,13 +85,11 @@ function getAddTaskTemplate() {
   <main class="main-addTask_template">
 
     <section>
-      <label for="title" class="label-addTask_template">Title</label>
       <input id="title" input type="text" class="task-title-addTask_template" name="title" placeholder="Enter a title">
       <small id="title-error" class="error-text"></small>
       </section>
 
     <section>
-      <label for="description" class="label-addTask_template">Description</label>
       <p class="section-heading-addTask_template"><strong>Description</strong> (optional)</p>
       <textarea id="description" class="task-description-addTask_template" name="description"
         placeholder="Enter a description"></textarea>
@@ -108,7 +106,6 @@ function getAddTaskTemplate() {
     </div>
 
     <section>
-      <label class="label-addTask_template">Priority</label>
       <p class="section-heading-addTask_template"><strong>Priority</strong></p>
       <div class="priority-group-addTask_template">
 
@@ -127,7 +124,6 @@ function getAddTaskTemplate() {
     </section>
 
     <section class="task-input-addTask_template">
-  <label for="assign" class="label-addTask_template">Assign to</label>
   <p class="section-heading-addTask_template"><strong>Assign to</strong> (optional)</p>
 
   <div class="assign-select-addTask_template" id="assign-select" onclick="toggleAssignDropdown(event)">
