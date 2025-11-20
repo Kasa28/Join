@@ -36,7 +36,7 @@ function addNewContact() {
 
     // Email & Phone validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]+$/;
+    const phoneRegex = /^\+?[0-9 ]+$/;
 
     if (!emailRegex.test(usermailRef)) {
         showContactToast("Please enter a valid email address");

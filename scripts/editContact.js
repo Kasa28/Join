@@ -51,7 +51,7 @@ async function editContact() {
 
     // Email & Phone validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]+$/;
+    const phoneRegex = /^\+?[0-9 ]+$/;
 
     if (!emailRegex.test(contact.email)) {
         showContactToast("Please enter a valid email address");
