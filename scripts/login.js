@@ -93,6 +93,16 @@ function putUserDataIntoLocalStorage(inputJson){
 }
 
 
+/* === Login Guard === */
+function checkIfLogedIn() {
+   const user = localStorage.getItem("userData");
+   if (!user) {
+      window.location.href = "./index.html";
+      return;
+   }
+   document.body.style.visibility = "visible";
+}
+
 /* === Form Validation === */
 function checkLogin() {
    const email = document.getElementById('email').value.trim();
