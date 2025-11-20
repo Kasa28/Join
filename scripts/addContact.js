@@ -34,6 +34,21 @@ function addNewContact() {
     const usermailRef = document.getElementById("add-contact-mailID").value;
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
 
+    // Email & Phone validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]+$/;
+
+    if (!emailRegex.test(usermailRef)) {
+        showContactToast("Please enter a valid email address");
+        return;
+    }
+
+    if (!phoneRegex.test(phonenumberRef)) {
+        showContactToast("Phone number must contain only numbers");
+        return;
+    }
+
+
     const login = checkIfLogedIn();
     colorCode = getRandomInt(colors.length);
 

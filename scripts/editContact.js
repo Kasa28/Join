@@ -49,6 +49,21 @@ async function editContact() {
     contact.email = document.getElementById("edit-contact-mailID").value;
     contact.PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
 
+    // Email & Phone validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]+$/;
+
+    if (!emailRegex.test(contact.email)) {
+        showContactToast("Please enter a valid email address");
+        return;
+    }
+
+    if (!phoneRegex.test(contact.PhoneNumber)) {
+        showContactToast("Phone number must contain only numbers");
+        return;
+    }
+
+
     if (login) {
         updateFriendsInLocalStorage(contacts);
         const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
