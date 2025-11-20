@@ -25,14 +25,11 @@ function setUserDataValue(inputIndex) {
 
     const initials = getInitials(contact.username);
     const color = contact.color;
-
-    // Initialen + farblichen Kreis setzen
     const initialsRef = document.getElementById("edit-contact-initialsID");
     initialsRef.innerHTML = initials;
     initialsRef.className = "";
+    initialsRef.classList.add("user-letter-ball-edit-contact");
     initialsRef.classList.add(color);
-
-    // Formular-Felder füllen
     document.getElementById("edit-contact-usernameID").value = contact.username;
     document.getElementById("edit-contact-mailID").value = contact.email;
     document.getElementById("edit-contact-phone-numberID").value = contact.PhoneNumber;
