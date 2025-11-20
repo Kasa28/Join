@@ -242,6 +242,14 @@ addtask_template.css * {
   height: 15px;
 }
 
+.subtask-wrapper-addTask_template {
+  position: relative;
+}
+
+.subtask-wrapper-addTask_template .task-subtask-addTask_template {
+  padding-right: 70px;
+}
+
 /* === Buttons & Footer === */
 .task-buttons-addTask_template {
   position: absolute;

@@ -73,9 +73,7 @@ function bigCardHtml(t) {
   `;
 }
 
-
 function getAddTaskTemplate() {
-
   return `
     <headline class="header-wrapper-addTask_template">
         <h1 class="h1-addTask_template">Add Task</h1>
@@ -124,37 +122,19 @@ function getAddTaskTemplate() {
     </section>
 
 
-<section class="task-input-addTask_template">
-  <p class="section-heading-addTask_template"><strong>Assign to</strong> (optional)</p>
+  <section class="task-input-addTask_template">
+    <p class="section-heading-addTask_template"><strong>Assign to</strong> (optional)</p>
+    <div class="assign-select-addTask_template assign-select-addTask_page" id="assign-select" onclick="toggleAssignDropdown(event)">
+      <span class="assign-placeholder-addTask_template assign-placeholder-addTask_page">Select contact to assign</span>
+      <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg" alt="Open assign menu" class="assign-arrow-addTask_template assign-arrow-addTask_page">
+    </div>
 
-  <div 
-    class="assign-select-addTask_template assign-select-addTask_page" 
-    id="assign-select" 
-    onclick="toggleAssignDropdown(event)"
-  >
-    <span class="assign-placeholder-addTask_template assign-placeholder-addTask_page">
-      Select contact to assign
-    </span>
+    <div class="assign-dropdown-addTask_template assign-dropdown-addTask_page" aria-label="Assign to options" role="listbox" id="contacts-containerID">
+    </div>
 
-    <img 
-      src="/addTask_code/icons_addTask/separatedAddTaskIcons/arrow_drop_down.svg"
-      alt="Open assign menu"
-      class="assign-arrow-addTask_template assign-arrow-addTask_page"
-    >
-  </div>
-
-  <div 
-    class="assign-dropdown-addTask_template assign-dropdown-addTask_page"
-    aria-label="Assign to options" 
-    role="listbox" 
-    id="contacts-containerID">
-  </div>
-  <div 
-    id="assigned-avatars" 
-    class="assigned-avatars-addTask_template assigned-avatars-addTask_page">
-  </div>
-</section>
-
+    <div id="assigned-avatars" class="assigned-avatars-addTask_template assigned-avatars-addTask_page">
+    </div>
+  </section>
 
     <section>
       <label for="category" class="label-addTask_template">Category</label>
@@ -188,7 +168,6 @@ function getAddTaskTemplate() {
 </div>
    `;
 }
-
 
 function getTechnicalTaskTemplate(t) {
   return `
@@ -272,7 +251,6 @@ function getTechnicalTaskTemplate(t) {
   `;
 }
 
-
 function getBigCardDynamicHtml(t) {
   return `
       <headline class="header-wrapper_user-story">
@@ -328,7 +306,6 @@ function getBigCardDynamicHtml(t) {
         </div>
       </main>`;
 }
-
 
 function getBigCardDynamicTechnicalHtml(t) {
   return `
