@@ -227,7 +227,7 @@ addtask_template.css * {
   border-bottom: 3px solid #ffa800;
 }
 
-/* === Task Input Layout === */
+/* === Task Input Layout & subtasks === */
 .task-input-addTask_template {
   display: flex;
   flex-direction: column;

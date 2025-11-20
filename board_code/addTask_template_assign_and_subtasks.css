@@ -238,10 +238,19 @@
 
 .subtask-list-addTask_template li:has(input) .task-subtask-addTask_template {
   flex: 1;
-  padding-right: 80px;
+  padding-right: 10px;
 }
 
 .subtask-list-addTask_template li:has(input) .subtask-actions-addTask_template {
   position: static;
   display: flex;
+}
+
+.subtask-list-addTask_template li {
+  padding-right: 60px;   
+}
+
+.subtask-list-addTask_template li .task-subtask-addTask_template {
+  white-space: normal;
+  word-break: break-word;
 }
