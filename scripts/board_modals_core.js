@@ -2,6 +2,12 @@
 
 
 /* === Task Modal: Open by ID === */
+/**
+ * Opens the task modal for a given task ID, loads the appropriate template,
+ * applies user-story or technical styling, restores subtask states, and
+ * prevents background scrolling.
+ * @param {number} id - The ID of the task to open in the modal.
+ */
 window.openModalById = (id) => {
     const task = Array.isArray(window.tasks)
       ? window.tasks.find((x) => x.id === id)
@@ -72,7 +78,10 @@ window.openModalById = (id) => {
   
 
     /* === Close Task Modal === */
-  function closeModal() {
+  /**
+ * Closes the task modal and restores page scrolling.
+ */
+function closeModal() {
     const modal = document.getElementById("task-modal");
     if (modal) modal.style.display = "none";
     document.body.classList.remove("no-scroll");
@@ -80,13 +89,20 @@ window.openModalById = (id) => {
 
 
     /* === Alias: Close Task Modal Wrapper === */
-  function closeTaskModal() {
+  /**
+ * Wrapper function for closing the task modal.
+ */
+function closeTaskModal() {
     closeModal();
   }
   
 
   /* === Add Task Overlay: Open and Close === */
-  function openAddTask() {
+/**
+ * Opens the Add Task overlay, loads its template, initializes handlers,
+ * renders contacts, injects required CSS, and focuses the title input.
+ */
+function openAddTask() {
     const overlay = document.getElementById("addtask-overlay");
     const content = document.getElementById("addtask-content");
     if (!overlay || !content) return;
@@ -112,7 +128,11 @@ window.openModalById = (id) => {
   }
 
   
-  function closeAddTask() {
+  /**
+ * Closes the Add Task overlay, resets global task-editing state,
+ * clears selected users, removes injected CSS, and restores scroll.
+ */
+function closeAddTask() {
     const overlay = document.getElementById("addtask-overlay");
     const content = document.getElementById("addtask-content");
     if (!overlay || !content) return;
