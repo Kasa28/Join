@@ -1,10 +1,14 @@
 /* === board.js | Data management and Firebase synchronization === */
 
-/* === Persistente Daten (Subtask-Checkboxen) === */
+/**
+ * @type {Record<string, boolean[]>}
+ */
 window.saved = JSON.parse(localStorage.getItem("checks") || "{}");
 const saved = window.saved;
 
-/* === Demo-Tasks & Firebase Loading === */
+/**
+ * @type {Task[]}
+ */
 const demoTasks = [
   {
     id: 1,
@@ -42,6 +46,10 @@ const demoTasks = [
 
 
 /* === Firebase: Tasks laden === */
+/**
+ * @async
+ * @returns {Promise<void>}
+ */
 async function loadTasksFromFirebase() {
   try {
     const response = await fetch(
@@ -77,7 +85,14 @@ async function loadTasksFromFirebase() {
 
 
 /* === Firebase Realtime Subscription === */
+/**
+ * @type {number|undefined}
+ */
 let updateTimeout;
+/**
+ * @param {Record<string, Task>|null} data
+ * @returns {void}
+ */
 subscribeToFirebaseUpdates((data) => {
   clearTimeout(updateTimeout);
   updateTimeout = setTimeout(() => {
@@ -90,6 +105,10 @@ subscribeToFirebaseUpdates((data) => {
 
 
 /* === Helper: Detect Demo Tasks === */
+/**
+ * @param {Task|number|string} taskOrId
+ * @returns {boolean}
+ */
 function isDemoTask(taskOrId) {
   const idValue =
     typeof taskOrId === "object" && taskOrId !== null ? taskOrId.id : taskOrId;
@@ -99,17 +118,47 @@ function isDemoTask(taskOrId) {
 
 
 /* === Globale Zustände & Mappings === */
+/**
+ * @type {string|null}
+ */
 let whichCardActuellDrop = null;
+/**
+ * @type {string}
+ */
 let searchQuery = "";
+/**
+ * @type {HTMLElement|null}
+ */
 let currentDragCardEl = null;
+/**
+ * @type {number|null}
+ */
 let lastDragPointerX = null;
+/**
+ * @type {number|null}
+ */
 let autoMoveTimeoutId = null;
+/**
+ * @type {TaskStatus|null}
+ */
 let pendingAutoMoveStatus = null;
+/**
+ * @type {boolean}
+ */
 let needsDraggingClassAfterRender = false;
+/**
+ * @type {string|null}
+ */
 let pendingDragTiltClass = null;
+/**
+ * @type {string|null}
+ */
 let activeHighlightColumnId = null;
 
-
+/**
+ * @param {HTMLInputElement|null} inputEl
+ * @returns {void}
+ */
 function updateSearchClearButtonState(inputEl) {
   const clearBtn = document.getElementById("board-search-clear");
   if (!clearBtn) return;
@@ -119,7 +168,9 @@ function updateSearchClearButtonState(inputEl) {
   clearBtn.setAttribute("aria-hidden", shouldShow ? "false" : "true");
 }
 
-
+/**
+ * @type {Record<TaskStatus, {id: string, empty: string}>}
+ */
 const nameOfTheCard = {
   todo: { id: "drag-area-todo", empty: "No tasks To do" },
   "in-progress": { id: "drag-area-in-progress", empty: "No tasks in Progress" },
@@ -130,19 +181,25 @@ const nameOfTheCard = {
   done: { id: "drag-area-done", empty: "No task in Done" },
 };
 
-
+/**
+ * @type {Record<string, TaskStatus>}
+ */
 const statusByColumnId = Object.fromEntries(
   Object.entries(nameOfTheCard).map(([status, { id }]) => [id, status])
 );
 
-
+/**
+ * @type {Record<TaskPriority, string>}
+ */
 const prioritätIcon = {
   urgent: "../assets/img/Prio baja-urgent-red.svg",
   medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
   low: "../assets/img/Prio baja-low.svg",
 };
 
-
+/**
+ * @type {{TODO: TaskStatus, INPROGRESS: TaskStatus, AWAIT: TaskStatus, DONE: TaskStatus}}
+ */
 window.STATUS = window.STATUS || {
   TODO: "todo",
   INPROGRESS: "in-progress",
@@ -150,13 +207,25 @@ window.STATUS = window.STATUS || {
   DONE: "done",
 };
 
-
+/**
+ * @type {TaskStatus}
+ */
 window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
+/**
+ * @type {TaskPriority}
+ */
 window.currentPrio = window.currentPrio || "low";
+/**
+ * @type {Record<string, string>}
+ */
 window.selectedUserColors = window.selectedUserColors || {};
 
 
 /* === Persist Tasks to Firebase === */
+/**
+ * @async
+ * @returns {Promise<void>}
+ */
 async function persistTasks() {
   try {
     for (const t of window.tasks) {
@@ -179,6 +248,11 @@ async function persistTasks() {
 
 
 /* === Subtasks-Progress handling === */
+/**
+ * @param {number|string} id
+ * @param {HTMLElement} el
+ * @returns {void}
+ */
 window.updateSubtasks = (id, el) => {
   const subtaskListe = [
     ...el.closest(".subtask-list").querySelectorAll('input[type="checkbox"]'),
@@ -212,8 +286,14 @@ window.updateSubtasks = (id, el) => {
 
 
 /* === Onload: gespeicherte Subtask-Stände anwenden === */
-
+/**
+ * @type {((this: Window, ev: Event) => any)|null}
+ */
 const prevOnload = window.onload;
+/**
+ * @async
+ * @returns {Promise<void>}
+ */
 window.onload = async () => {
   if (typeof prevOnload === "function") prevOnload();
   await loadTasksFromFirebase();
