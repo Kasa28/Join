@@ -70,20 +70,17 @@
       <main class="main-addTask_page">
 
         <section class="task-input-addTask_page">
-          <label for="title" class="label-addTask_page">Title</label>
           <input type="text" id="title" class="task-title-addTask_page" name="title" placeholder="Enter a title">
           <p id="title-error" class="error-text"></p>
         </section>
 
         <section class="task-input-addTask_page">
-          <label for="description" class="label-addTask_page">Description</label>
           <p class="section-heading-addTask_page"><strong>Description</strong> (optional)</p>
           <textarea id="description" class="task-description-addTask_page" name="description"
             placeholder="Enter a description"></textarea>
         </section>
 
         <div class="date-input-wrapper-addTask_page">
-          <label for="due-date" class="label-addTask_page">Due date</label>
           <p class="section-heading-addTask_page"><strong>Due date</strong></p>
           <div class="date-field-addTask_page">
             <input type="text" id="due-date" class="task-date-addTask_page" name="due-date" placeholder="dd/mm/yyyy">
@@ -93,7 +90,6 @@
         </div>
 
         <section class="task-input-addTask_page">
-          <label class="label-addTask_page">Priority</label>
           <p class="section-heading-addTask_page"><strong>Priority</strong></p>
           <div class="priority-group-addTask_page">
             <button type="button" class="priority-btn-urgent-addTask_page" onclick="setPriorityAddTask('urgent')">Urgent
@@ -112,7 +108,6 @@
         </section>
 
         <section class="task-input-addTask_page">
-          <label for="assign" class="label-addTask_page">Assign to</label>
           <p class="section-heading-addTask_page"><strong>Assign to</strong> (optional)</p>
 
           <div class="assign-select-addTask_page" id="assign-select" onclick="toggleAssignDropdown(event)">
@@ -128,7 +123,6 @@
         </section>
 
         <section class="task-input-addTask_page">
-          <label for="category" class="label-addTask_page">Category</label>
           <p class="section-heading-addTask_page"><strong>Category</strong></p>
           <select id="category" class="task-select-addTask_page" name="category">
             <option value="">Select task category</option>
@@ -138,7 +132,6 @@
         </section>
 
         <section class="task-input-addTask_page">
-          <label for="subtask" class="label-addTask_page">Subtasks</label>
           <p class="section-heading-addTask_page"><strong>Subtasks</strong> (optional)</p>
 
           <div class="subtask-wrapper-addTask_page">
