@@ -178,7 +178,6 @@ function getAddTaskTemplate() {
   </section>
 
     <section>
-      <label for="category" class="label-addTask_template">Category</label>
       <p class="section-heading-addTask_template"><strong>Category</strong></p>
       <select id="category" class="task-select-addTask_template" name="category">
         <option value="">Select task category</option>
@@ -188,7 +187,6 @@ function getAddTaskTemplate() {
     </section>
 
     <section>
-      <label for="subtask" class="label-addTask_template">Subtasks</label>
       <p class="section-heading-addTask_template"><strong>Subtasks</strong> (optional)</p>
       <div class="subtask-wrapper-addTask_template">
         <input type="text" id="subtask" class="task-subtask-addTask_template" name="subtask" placeholder="Add new subtask">
