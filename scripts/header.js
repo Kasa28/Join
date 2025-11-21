@@ -68,7 +68,13 @@ function deleteIdFromLocalStorage(){
  * @returns {boolean} True if logged in, false otherwise.
  */
 function checkIfLogedIn(){
-    if (!localStorage.getItem("userData")) {
+       const isLoggedIn = Boolean(localStorage.getItem("userData"));
+
+    if (!isLoggedIn) {
+        const currentPath = window.location.pathname;
+        const isNestedPage = currentPath.includes("/board_code/") || currentPath.includes("/addTask_code/");
+        const loginPath = isNestedPage ? "../index.html" : "./index.html";
+        window.location.href = loginPath;
         return false;
     }
     return true;
