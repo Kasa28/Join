@@ -94,7 +94,7 @@ function renderEditContact() {
                                                     <button onclick="deleteContactinEditContactWindow(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-grey">
                                                         Delete
                                                     </button>
-                                                    <button onclick="editContact(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-blue">
+                                                 <button onclick="handleEditContact()" class="button-edit-contact button-edit-contact-blue">
                                                         Save
                                                         <img class="check-icon-edit-contact" src="./assets/img/check.svg" alt="check icon">
                                                     </button>
@@ -149,7 +149,7 @@ function renderAddContact() {
                                                     <button onclick="hideAddContactFormular(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-grey">
                                                         Cancel 
                                                     </button>
-                                                    <button onclick="addNewContact(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-blue">
+                                                     <button onclick="handleAddContact()" class="button-edit-contact button-edit-contact-blue">
                                                         Create Contact 
                                                         <img class="check-icon-edit-contact" src="./assets/img/check.svg" alt="check icon">
                                                     </button>

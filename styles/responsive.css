@@ -24,6 +24,7 @@ header {
     top: 0;
     width: calc(100% - 25.5rem);
     z-index: 100;
+    background-color: transparent;
   }
   #greetID{
     margin-left: 60px;

@@ -53,7 +53,7 @@ header {
   background: var(--blue);
   color: #fff;
   border: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 10px 16px;
   font-weight: 600;
   text-decoration: none;
@@ -71,7 +71,7 @@ header {
   background: none;
   border: 1px solid var(--blue);
   color: var(--blue);
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 10px 16px;
   font-weight: 700;
   cursor: pointer;
@@ -107,11 +107,13 @@ header {
   justify-content: center;
   opacity: 0;/*Hier wird es ausgeblendet , nach animation also nach 0.5s erscheint */
   animation: form_fade 0.5s ease 1.4s forwards;
+    position: relative;
+  z-index: 2;
 }
 
 .login_box {
   width: 100%;
-  max-width: 520px;
+  max-width: 600px;
   padding: 40px 32px;
   background: #fff;
   border: none;
@@ -269,7 +271,11 @@ footer {
 }
 
 .main_login{
-  padding-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      min-height: calc(100vh - 310px);
+  padding: 40px 0 20px;
 }
 
 .error-message {

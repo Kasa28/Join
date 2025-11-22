@@ -42,11 +42,11 @@ function addNewContact() {
 
     if (!emailRegex.test(usermailRef)) {
         showContactToast("Please enter a valid email address");
-        return;
+        return false;
     }
     if (!phoneRegex.test(phonenumberRef)) {
         showContactToast("Phone number must contain only numbers");
-        return;
+        return false;
     }
     const login = checkIfLogedIn();
     colorCode = getRandomInt(colors.length);
@@ -67,8 +67,19 @@ function addNewContact() {
     hideAddContactFormular();
     renderContactList();
     showContactToast("Contact successfully created");
+        return true;
 }
 
+/**
+ * Handles the Add Contact button click and only closes overlays when the
+ * contact was created successfully.
+ */
+function handleAddContact() {
+    const contactCreated = addNewContact();
+    if (contactCreated) {
+        closeWhiteScreen();
+    }
+}
 
 /**
  * Saves updated contacts to localStorage and synchronizes them with the API.

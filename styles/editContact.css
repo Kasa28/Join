@@ -62,7 +62,7 @@
   height: 100%;
   top: 0;
   right: 0;
-  transition: all 3200ms ease-in-out;
+  transition: all 250ms ease-in-out;
 }
 
 .hide-add-contact {
@@ -74,7 +74,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  transition: all 3200ms ease-in-out;
+  transition: all 250ms ease-in-out;
 }
 
 .hide-edit-contact {
@@ -94,13 +94,14 @@
 .right-side-rounded {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  border-top-right-radius: 30px;
+  border-top-right-radius: 0;
 }
 
 .left-side-rounded {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   border-top-left-radius: 30px;
+  border-top-left-radius: 0;
 }
 
 .edit-contact-headcard {
@@ -166,6 +167,9 @@
   border-style: none;
   border-bottom: solid 2px grey;
 }
+.edit-contact-inputfield::placeholder {
+  color: #c7ccd5;
+}
 
 .input-icon-container {
   position: relative;
@@ -205,6 +209,7 @@
   height: 60px;
   width: 106px;
   font-size: 18px;
+  white-space: nowrap;
 }
 
 .button-edit-contact-grey {
