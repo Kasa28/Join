@@ -12,7 +12,7 @@ header {
 .user-menu-container-header {
   position: fixed;
   top: 96px;
-  right: 0;
+  right: 24px;
   z-index: 1500;
 }
 .task-card {

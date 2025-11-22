@@ -220,6 +220,9 @@
   transform: translateY(100vh) scale(.98);
   pointer-events: none;
 }
+.toast--error {
+  background: #e53935;
+}
 
 .toast img {
   width: 20px;

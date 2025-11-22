@@ -70,9 +70,10 @@ header {
 }
 
 .user-menu-container-header {
-  position: absolute;
+  position: fixed;
   top: 96px;
-  right: 0px;
+  right: 24px;
+  z-index: 2000;
 }
 
 .user-menu-content-header {

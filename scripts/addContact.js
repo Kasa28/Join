@@ -41,11 +41,11 @@ function addNewContact() {
     const phoneRegex = /^\+?[0-9 ]+$/;
 
     if (!emailRegex.test(usermailRef)) {
-        showContactToast("Please enter a valid email address");
+        showContactToast("Please enter a valid email address", { variant: "error" });
         return false;
     }
     if (!phoneRegex.test(phonenumberRef)) {
-        showContactToast("Phone number must contain only numbers");
+        showContactToast("Phone number must contain only numbers", { variant: "error" });
         return false;
     }
     const login = checkIfLogedIn();

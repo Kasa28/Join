@@ -86,7 +86,7 @@ header {
 
 .login_icon {
   position: fixed;
-  z-index: 5;
+  z-index: 1;
   top: 50%;
   left: 50%;
   width: 250px;
@@ -105,15 +105,17 @@ header {
 .login_form {
   display: flex;
   justify-content: center;
-  opacity: 0;/*Hier wird es ausgeblendet , nach animation also nach 0.5s erscheint */
+  position: relative;
+  z-index: 2;
+  opacity: 0;
   animation: form_fade 0.5s ease 1.4s forwards;
     position: relative;
   z-index: 2;
 }
 
 .login_box {
-  width: 100%;
-  max-width: 600px;
+  width: 400px;
+  max-width: 680px;
   padding: 40px 32px;
   background: #fff;
   border: none;
@@ -182,7 +184,7 @@ header {
 
 .button_group {
   display: flex;
-  gap: 12px;
+  gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -248,10 +250,17 @@ footer {
     top: 8px;
     right: 10px;
   }
+  .login_icon,
+  .login_icon .logo {
+    width: 160px;
+    height: 160px;
+  }
+
 
   .login_box {
     margin-top: 28px;
     padding: 24px 18px;
+     max-width: 540px;
   }
 
   .login_header h1 {
@@ -287,4 +296,15 @@ footer {
 
 .visually-hidden {
   display: none;
+}
+@media (max-width: 900px) {
+  .login_icon,
+  .login_icon .logo {
+    width: 190px;
+    height: 190px;
+  }
+
+  .login_box {
+    max-width: 720px;
+  }
 }

@@ -66,6 +66,32 @@ function renderUserMenuePopupMenu(){
 function toggleUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
     contentRef.classList.toggle("d_none");
+     if (!contentRef.classList.contains("d_none")) {
+        updateUserMenuPosition();
+    }
+}
+
+/**
+ * Positions the user menu directly beneath the avatar circle so it stays visually connected.
+ */
+function updateUserMenuPosition() {
+    const wrapper = document.getElementById("user-menue-header");
+    const menu = wrapper?.querySelector(".user-menu-container-header");
+    const trigger = document.querySelector(".guest-logo-header");
+
+    if (!wrapper || !menu || !trigger || wrapper.classList.contains("d_none")) {
+        return;
+    }
+
+    const rect = trigger.getBoundingClientRect();
+    const menuWidth = menu.offsetWidth || menu.getBoundingClientRect().width || 181;
+    const calculatedLeft = rect.right - menuWidth + window.scrollX;
+    const minLeft = 8;
+
+    menu.style.position = "fixed";
+    menu.style.top = `${rect.bottom + 8 + window.scrollY}px`;
+    menu.style.left = `${Math.max(minLeft, calculatedLeft)}px`;
+    menu.style.right = "auto";
 }
 
 
@@ -193,3 +219,5 @@ function addActiveClassToSidebarButtons() {
         });
     });
 }
+window.addEventListener('resize', updateUserMenuPosition);
+window.addEventListener('scroll', updateUserMenuPosition);

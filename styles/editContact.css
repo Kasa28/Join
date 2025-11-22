@@ -62,6 +62,7 @@
   height: 100%;
   top: 0;
   right: 0;
+    z-index: 1600;
   transition: all 250ms ease-in-out;
 }
 
@@ -74,6 +75,7 @@
   height: 100%;
   top: 0;
   left: 0;
+    z-index: 1600;
   transition: all 250ms ease-in-out;
 }
 
@@ -100,7 +102,6 @@
 .left-side-rounded {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  border-top-left-radius: 30px;
   border-top-left-radius: 0;
 }
 
