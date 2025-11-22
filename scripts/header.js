@@ -70,17 +70,16 @@ function deleteIdFromLocalStorage(){
  */
 function checkIfLogedIn() {
     const currentPath = window.location.pathname;
-    const publicPages = ["help.html", "legal.html", "privacy.html", "index.html"];
-    const isPublicPage = publicPages.some(page => currentPath.includes(page));
+    const publicPages = ["help.html", "legal.html", "privacy.html", "index.html", "/"];
+    const isPublicPage =
+        currentPath === "/" ||
+        publicPages.some(page => currentPath.endsWith(page));
     if (isPublicPage) {
         return true;
     }
     const isLoggedIn = Boolean(localStorage.getItem("userData"));
     if (!isLoggedIn) {
-        const isNestedPage =
-            currentPath.includes("/board_code/") ||
-            currentPath.includes("/addTask_code/");
-        const loginPath = isNestedPage ? "../index.html" : "./index.html";
+        const loginPath = "/index.html";
         window.location.href = loginPath;
         return false;
     }
