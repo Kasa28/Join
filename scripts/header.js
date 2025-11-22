@@ -1,7 +1,12 @@
 /* === header.js | Handles user menu, login state, and header rendering === */
 
-/* === User Menu Template === */
-
+/**
+ * Determines the correct base path for links depending on the current page location.
+ * Returns `".."` if the current page is inside a nested folder (e.g., /board_code/ or /addTask_code/),
+ * otherwise returns `"."` for root-level pages.
+ *
+ * @returns {string} The relative base path to use for link generation.
+ */
 function getBasePath() {
     const path = window.location.pathname;
     if (path.includes("/board_code/") || path.includes("/addTask_code/")) {
@@ -9,6 +14,7 @@ function getBasePath() {
     }
     return ".";
 }
+
 
 /**
  * Returns the HTML template for the user menu displayed in the header.
