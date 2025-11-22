@@ -65,14 +65,21 @@ function deleteIdFromLocalStorage(){
 /* === Login State Check === */
 /**
  * Checks whether a user is currently logged in by verifying stored user data.
+ * Allows public access to help, legal, and privacy pages.
  * @returns {boolean} True if logged in, false otherwise.
  */
-function checkIfLogedIn(){
-       const isLoggedIn = Boolean(localStorage.getItem("userData"));
-
+function checkIfLogedIn() {
+    const currentPath = window.location.pathname;
+    const publicPages = ["help.html", "legal.html", "privacy.html", "index.html"];
+    const isPublicPage = publicPages.some(page => currentPath.includes(page));
+    if (isPublicPage) {
+        return true;
+    }
+    const isLoggedIn = Boolean(localStorage.getItem("userData"));
     if (!isLoggedIn) {
-        const currentPath = window.location.pathname;
-        const isNestedPage = currentPath.includes("/board_code/") || currentPath.includes("/addTask_code/");
+        const isNestedPage =
+            currentPath.includes("/board_code/") ||
+            currentPath.includes("/addTask_code/");
         const loginPath = isNestedPage ? "../index.html" : "./index.html";
         window.location.href = loginPath;
         return false;
