@@ -1,37 +1,47 @@
 /* === header.js | Handles user menu, login state, and header rendering === */
 
 /* === User Menu Template === */
+
+function getBasePath() {
+    const path = window.location.pathname;
+    if (path.includes("/board_code/") || path.includes("/addTask_code/")) {
+        return "..";
+    }
+    return ".";
+}
+
 /**
  * Returns the HTML template for the user menu displayed in the header.
  * @returns {string} The user menu HTML string.
  */
-function userMenuTemplate(){
-return `<div class="user-menu-container-header">
-            <div class="user-menu-content-header">
-            <div>
-                    <a class="button-sidebar padding-up-down-small button_help" href="../help.html">
-                        <span class="sidebar-font">Help</span>
-                    </a>
-                </div>
-                <div>
-                    <a class="button-sidebar padding-up-down-small" href="../legal.html">
-                        <span class="sidebar-font">Legal Notice</span>
-                    </a>
-                </div>
-                <div>
-                    <a class="button-sidebar padding-up-down-small" href="../privacy.html">
-                        <span class="sidebar-font">Privacy Policy</span>
-                    </a>
-                </div>
-                <div>
-                    <a onclick="deleteIdFromLocalStorage()" class="button-sidebar padding-up-down-small" href="../index.html">
-                        <span class="sidebar-font">Logout</span>
-                    </a>
-                </div>
-            </div>
-        </div>`
-}
 
+function userMenuTemplate() {
+    const base = getBasePath();
+    return `<div class="user-menu-container-header">
+                <div class="user-menu-content-header">
+                    <div>
+                        <a class="button-sidebar padding-up-down-small button_help" href="${base}/help.html">
+                            <span class="sidebar-font">Help</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a class="button-sidebar padding-up-down-small" href="${base}/legal.html">
+                            <span class="sidebar-font">Legal Notice</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a class="button-sidebar padding-up-down-small" href="${base}/privacy.html">
+                            <span class="sidebar-font">Privacy Policy</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a onclick="deleteIdFromLocalStorage()" class="button-sidebar padding-up-down-small" href="${base}/index.html">
+                            <span class="sidebar-font">Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>`;
+}
 
 /* === Render User Menu === */
 /**
