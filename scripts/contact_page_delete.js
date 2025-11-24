@@ -14,10 +14,7 @@ async function deleteContact(inputString){
     
 
     contacts.splice(rightIndex, 1);
-
-    console.log(contacts);
     
-
     if(login){
         let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
         updateFriendsInLocalStorage(contacts);

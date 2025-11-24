@@ -46,7 +46,6 @@ async function fillArray(){
          }
       ) 
    }
-   console.log(users);
 }
 
 
@@ -71,10 +70,8 @@ function login(event){
     const loginSuccessful = checkUsernamePassword(email, password);
     checkUsernamePassword(email, password);
    if(loginSuccessful){
-      console.log("Login erfolgreich! Weiterleitung...");
       window.location.href = "./summaryAll.html";  
    } else {
-      console.log("Login fehlgeschlagen.");
       const errorEl = document.getElementById("error_message");
       errorEl.textContent = "E-Mail oder Passwort ist ungültig!";
       errorEl.classList.remove("visually-hidden");

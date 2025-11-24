@@ -182,7 +182,6 @@ function normaliseSubtaskProgress(task) {
     try {
       localStorage.setItem("checks", JSON.stringify(window.saved));
     } catch (e) {
-      console.warn("Could not persist checkbox states", e);
     }
   }
 }

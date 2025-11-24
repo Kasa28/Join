@@ -178,7 +178,6 @@ async function updateSummary() {
       deadlineEl.textContent = "No urgent deadlines";
     }
   }
-  console.log("Summary updated:", counts);
 }
 
 let lastDataString = "";
@@ -201,7 +200,6 @@ async function pollSummary() {
       await updateSummary();
     }
   } catch (err) {
-    console.warn("Polling error (summary):", err);
   }
 }
 
