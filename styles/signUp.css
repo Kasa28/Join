@@ -168,3 +168,15 @@ body.signUp_body .login_form {
 .visually-hidden {
   display: none;
 }
+
+.accept_privacy{
+  text-decoration: none;
+  color: #1e74ff;
+   display: inline-block;  
+     text-decoration-color: 0.15s ease;
+}
+.accept_privacy:hover{
+color: #165bd1;
+text-decoration: underline;
+transform: scale(1.09s);   
+}
