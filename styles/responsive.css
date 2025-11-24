@@ -23,6 +23,9 @@
     z-index: 100;
     background-color: transparent;
   }
+  .privacy-policy{
+    max-width: 70%;
+  }
   #greetID{
     margin-left: 60px;
   }
@@ -62,6 +65,8 @@
   .wrapper-main-task-btn-addTask_page {
     padding-right: 50%;
   }
+    .privacy-policy{
+    max-width: 45%;
 }
 
 @media (min-width: 4000px) {
