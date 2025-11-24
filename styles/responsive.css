@@ -10,7 +10,6 @@
   top: 96px;
   right: 24px;
   z-index: 1500;
-  background-color: white;
 }
 .task-card {
   cursor: pointer;

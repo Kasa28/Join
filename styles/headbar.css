@@ -86,10 +86,13 @@ header {
   height: 135px;
   width: 181px;
   padding: 11px 8px 11px 8px;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  gap: 4px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e5e9f0;
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.12),
+    0 14px 38px rgba(0, 0, 0, 0.16);
 }
 
 .d_none {
