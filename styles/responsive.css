@@ -26,6 +26,12 @@
   .privacy-policy{
     max-width: 70%;
   }
+  .page{
+    max-width: 67%;
+  }
+  .what_is_join{
+    max-width: 67%;
+  }
   #greetID{
     margin-left: 60px;
   }
@@ -54,6 +60,12 @@
   .wrapper-main-task-btn-addTask_page {
     padding-right: 40%;
   }
+  .page{
+    max-width: 51%;
+  }
+  .what_is_join{
+    max-width:48%;
+  }
 }
 
 @media (min-width: 3000px) {
@@ -67,6 +79,12 @@
   }
     .privacy-policy{
     max-width: 45%;
+}
+.page{
+  max-width: 41%;
+}
+.what_is_join{
+  max-width: 41%;
 }
 }
 
@@ -314,9 +332,6 @@
 }
 
 @media (max-width: 398px) {
-    .h1_Help {
-    font-size: 34px !important;
-  }
   .h1_privacy_policy {
     font-size: 25px !important;
   }
@@ -344,7 +359,6 @@
   }
   .page {
     padding-bottom: 90px;
-    padding-left: 0;
   }
   .privacy-policy {
     padding-left: 36px;

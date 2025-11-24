@@ -25,16 +25,16 @@
 }
 
 .what_is_join {
-  padding-left: 96px;
+  padding-left: 27px;
   font-family: "Open Sans", sans-serif;
   overflow: hidden;
   overflow-y: auto;
   height: calc(100vh - 96px);
   scrollbar-width: none;
   -ms-overflow-style: none;
-  width: 80%;
   padding-top: 50px;
-  max-width: 60%;
+  max-width: 85%;
+  padding-bottom: 10px;
 }
 
 .h1_Help {
