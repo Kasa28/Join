@@ -94,15 +94,18 @@
 }
 
 .right-side-rounded {
-  border-bottom-left-radius: 30px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
-  border-top-right-radius: 0;
+ 
 }
 
 .left-side-rounded {
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0;
   border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  border-top-left-radius: 0;
 }
 
 .edit-contact-headcard {
@@ -255,4 +258,15 @@
 .button-text-edit-contact {
   flex: 1;
   text-align: center;
+}
+
+.main-container-edit-contact{
+  border-top-left-radius: 40px;
+}
+
+.main-container-edit-contact.right-side-rounded{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
