@@ -41,8 +41,6 @@ body.signUp_body .login_icon {
 }
 
 body.signUp_body .login_icon .logo {
-  width: 110px !important;
-  height: 110px !important;
   filter: brightness(0) invert(1) !important;
   animation: none !important;
 }

@@ -251,6 +251,9 @@ footer {
   .login_header h1 {
     font-size: 34px;
   }
+  .input_row{
+    margin: 0px;
+  }
 }
 
 .primary_button:disabled {
@@ -314,8 +317,8 @@ footer {
 
   .login_icon,
   .login_icon .logo {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
   }
 
   .login_box {
