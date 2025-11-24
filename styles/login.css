@@ -99,7 +99,7 @@ header {
   width: 250px;
   height: 250px;
   filter: brightness(0) invert(1);
-  animation: J_shrink_color 1.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s forwards; /*benutz die regeln aus keyframes hier wird nur gesagt wie die asugefüllt werden soollten,4s wartet bis animation startet also nur j und blaue hintregrund sichtbar */
+  animation: J_shrink_color 1.8s cubic-bezier(0.25, 1, 0.5, 1) 0.4s forwards;
 }
 
 .login_form {
@@ -299,8 +299,8 @@ footer {
 
 .login_icon,
 .login_icon .logo {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
 }
 @media (max-width: 900px) {
   .login_icon,
