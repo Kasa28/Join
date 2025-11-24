@@ -46,24 +46,30 @@ async function editContact() {
     const login = checkIfLogedIn();
     let contacts = flattenContactBlockToArray() || [];
     const contact = contacts[remindIndex];
-    contact.username = document.getElementById("edit-contact-usernameID").value;
-    contact.email = document.getElementById("edit-contact-mailID").value;
-    contact.PhoneNumber = document.getElementById("edit-contact-phone-numberID").value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+?[0-9 ]+$/;
-    if (!emailRegex.test(contact.email)) {
-        showContactToast("Please enter a valid email address");
+    const username = document.getElementById("edit-contact-usernameID").value;
+    const email = document.getElementById("edit-contact-mailID").value;
+    const phoneNumber = document.getElementById("edit-contact-phone-numberID").value;
+    const nameRegex = /^[A-Za-zÄÖÜäöüß\s'-]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|de)$/i;
+    const phoneRegex = /^(?:\+49|01)\d+$/;
+
+    if (!nameRegex.test(username)) {
+        showContactToast("Please enter a valid name without numbers", { variant: "error" });
         return;
     }
-    if (!phoneRegex.test(contact.PhoneNumber)) {
-        showContactToast("Phone number must contain only numbers");
+    if (!emailRegex.test(email)) {
+        showContactToast("Please enter a valid email with @ and ending in .com or .de", { variant: "error" });
+        return;
+    }
+        if (!phoneRegex.test(phoneNumber)) {
+        showContactToast("Phone number must start with +49 or 01 and contain only numbers", { variant: "error" });
         return;
     }
     if (login) {
         updateFriendsInLocalStorage(contacts);
         const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
         const userID = await getUserID(getUserData.name);
-        await updateUserFriendslist(userID, contact);
+        await updateUserFriendslist(userID, contacts);
     } else {
         contacts.splice(remindIndex, 1);
         contacts.push(contact);
