@@ -53,6 +53,9 @@
     width: 100%;
     padding: 16px;
   }
+  .main-container-edit-contact{
+    border-top-left-radius: 24px;
+  }
 
   nav-main-container:has(#singleContactID > *) contacts.maincontent {
     display: none;

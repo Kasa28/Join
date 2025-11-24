@@ -14,6 +14,7 @@ header {
   top: 96px;
   right: 24px;
   z-index: 1500;
+  background-color: white;
 }
 .task-card {
   cursor: pointer;
@@ -130,7 +131,7 @@ header {
     align-items: center;
     justify-content: center;
     gap: 0;
-    z-index: 1000;
+    z-index: 2000;
   }
   .sidebar-high-section-container {
     flex-direction: row;
