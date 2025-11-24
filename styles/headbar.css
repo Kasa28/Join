@@ -71,9 +71,9 @@ header {
 
 .user-menu-container-header {
   position: fixed;
-  top: 96px;
+  top: 96px !important;
   right: 24px;
-  z-index: 2000;
+  z-index: 2000 ;
 }
 
 .user-menu-content-header {
