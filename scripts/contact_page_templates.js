@@ -94,7 +94,7 @@ function renderEditContact() {
                                                     <button onclick="deleteContactinEditContactWindow(), closeWhiteScreen()" class="button-edit-contact button-edit-contact-grey">
                                                         Delete
                                                     </button>
-                                                 <button onclick="handleEditContact()" class="button-edit-contact button-edit-contact-blue">
+                                                 <button onclick="editContact()" class="button-edit-contact button-edit-contact-blue">
                                                         Save
                                                         <img class="check-icon-edit-contact" src="./assets/img/check.svg" alt="check icon">
                                                     </button>

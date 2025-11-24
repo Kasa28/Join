@@ -45,7 +45,10 @@ function setUserDataValue(inputIndex) {
 async function editContact() {
     const login = checkIfLogedIn();
     let contacts = flattenContactBlockToArray() || [];
-    const contact = contacts[remindIndex];
+    if (remindIndex === null || !contacts[remindIndex]) {
+        showContactToast("No contact selected to edit", { variant: "error" });
+        return false;
+    }
     const username = document.getElementById("edit-contact-usernameID").value;
     const email = document.getElementById("edit-contact-mailID").value;
     const phoneNumber = document.getElementById("edit-contact-phone-numberID").value;
@@ -55,28 +58,41 @@ async function editContact() {
 
     if (!nameRegex.test(username)) {
         showContactToast("Please enter a valid name without numbers", { variant: "error" });
-        return;
+        return false;
     }
     if (!emailRegex.test(email)) {
         showContactToast("Please enter a valid email with @ and ending in .com or .de", { variant: "error" });
-        return;
+        return false;
     }
-        if (!phoneRegex.test(phoneNumber)) {
+    if (!phoneRegex.test(phoneNumber)) {
         showContactToast("Phone number must start with +49 or 01 and contain only numbers", { variant: "error" });
-        return;
+        return false;
     }
+    const contact = contacts[remindIndex];
+    const updatedContact = {
+        ...contact,
+        username,
+        email,
+        PhoneNumber: phoneNumber,
+    };
+
+    contacts[remindIndex] = updatedContact;
+    sortUserToAlphabeticalOrder(contacts);
+    setContactsIntoContactblock(contacts);
+
     if (login) {
         updateFriendsInLocalStorage(contacts);
         const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
         const userID = await getUserID(getUserData.name);
         await updateUserFriendslist(userID, contacts);
     } else {
-        contacts.splice(remindIndex, 1);
-        contacts.push(contact);
+
     }
-    renderSingleContact(contact.username);
-    hideEditContactFormular();
+    renderSingleContact(updatedContact.username);
     renderContactList();
+    closeWhiteScreen();
+    showContactToast("Contact successfully saved");
+    return true;
 }
 
 
