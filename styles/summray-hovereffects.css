@@ -1,11 +1,9 @@
 .urgent-task-card-summary:hover {
   cursor: pointer;
-  background-color: white;
-  color: #4589ff;
-  padding: 22px 38px 22px 38px;
-  width: 698px;
-  height: 108%;
-  border-top-left-radius: 0;
+  background-color: #5c9cff;
+  color: white;
+  box-shadow: 0 10px 30px -18px #2a3647;
+  transform: translateY(-2px);
 }
 
 .urgent-task-card-summary:hover .seperator-summary {
