@@ -85,11 +85,11 @@ function updateUserMenuPosition() {
 
     const rect = trigger.getBoundingClientRect();
     const menuWidth = menu.offsetWidth || menu.getBoundingClientRect().width || 181;
-    const calculatedLeft = rect.right - menuWidth + window.scrollX;
+    const calculatedLeft = rect.left + rect.width / 2 - menuWidth / 2 + window.scrollX;
     const minLeft = 8;
 
     menu.style.position = "fixed";
-    menu.style.top = `${rect.bottom + 8 + window.scrollY}px`;
+     menu.style.top = `${rect.bottom + 6 + window.scrollY}px`;
     menu.style.left = `${Math.max(minLeft, calculatedLeft)}px`;
     menu.style.right = "auto";
 }
