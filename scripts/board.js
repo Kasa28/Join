@@ -58,7 +58,6 @@ async function loadTasksFromFirebase() {
     const data = await response.json();
     const firebaseTasks = data ? Object.values(data) : [];
     if (firebaseTasks.length === 0) {
-      console.log("Firebase leer – lade Demo-Tasks hoch...");
       const demoObject = demoTasks.reduce(
         (acc, t) => ({ ...acc, [t.id]: t }),
         {}
@@ -99,7 +98,6 @@ subscribeToFirebaseUpdates((data) => {
     if (!data) return;
     window.tasks = Object.values(data);
     render();
-    console.log("🔄 Board updated via Firebase realtime");
   }, 200);
 });
 
@@ -311,6 +309,5 @@ window.onload = async () => {
       if (!data) return;
       window.tasks = Object.values(data);
       render();
-      console.log("🔄 Board updated via Firebase realtime");
     });  
 };
