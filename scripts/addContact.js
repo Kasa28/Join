@@ -37,15 +37,21 @@ function addNewContact() {
     const usernameRef = document.getElementById("add-contact-usernameID").value;
     const usermailRef = document.getElementById("add-contact-mailID").value;
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+?[0-9 ]+$/;
+     const nameRegex = /^[A-Za-zÄÖÜäöüß\s'-]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|de)$/i;
+     const phoneRegex = /^(?:\+49|01)\d+$/;
+
+    if (!nameRegex.test(usernameRef)) {
+        showContactToast("Please enter a valid name without numbers", { variant: "error" });
+        return false;
+    }
 
     if (!emailRegex.test(usermailRef)) {
-        showContactToast("Please enter a valid email address", { variant: "error" });
+       showContactToast("Please enter a valid email with @ and ending in .com or .de", { variant: "error" });
         return false;
     }
     if (!phoneRegex.test(phonenumberRef)) {
-        showContactToast("Phone number must contain only numbers", { variant: "error" });
+        showContactToast("Phone number must start with +49 or 01 and contain only numbers", { variant: "error" });
         return false;
     }
     const login = checkIfLogedIn();
