@@ -352,3 +352,10 @@ header {
   to { opacity: 1; }
 }
 
+.input-font {
+  color: #4b5563;        
+}
+
+.input-font::placeholder {
+  color: #c7ccd5;         
+}
