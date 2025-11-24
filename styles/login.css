@@ -114,7 +114,6 @@ header {
 }
 
 .login_box {
-  width: 400px;
   max-width: 680px;
   padding: 40px 32px;
   background: #fff;
@@ -297,7 +296,36 @@ footer {
 .visually-hidden {
   display: none;
 }
+
+.login_icon,
+.login_icon .logo {
+  width: 150px;
+  height: 150px;
+}
 @media (max-width: 900px) {
+  .login_icon,
+  .login_icon .logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .login_box {
+    max-width: 720px;
+  }
+}
+@media (max-width:400px) {
+  min-height: calc(89vh - 310px);
+}
+@media (max-height: 800px) {
+  .content {
+    padding-top: 80px;
+    padding-bottom: 24px;
+  }
+
+  header {
+    top: 16px;
+  }
+
   .login_icon,
   .login_icon .logo {
     width: 190px;
@@ -305,6 +333,16 @@ footer {
   }
 
   .login_box {
-    max-width: 720px;
+    padding: 26px 20px;
+    row-gap: 8px;
+  }
+
+  .login_header h1 {
+    font-size: 32px;
+  }
+
+  .main_login {
+    min-height: calc(100vh - 220px);
+    padding: 22px 0 12px;
   }
 }
