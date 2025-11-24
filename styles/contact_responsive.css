@@ -46,6 +46,7 @@
     display: block;
     width: 100%;
     border-right: none;
+    padding-bottom: 80px;
   }
 
   #singleContactWrapper {
