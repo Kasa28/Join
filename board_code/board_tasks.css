@@ -85,8 +85,17 @@
     padding: 20px;
     cursor: grab;
     user-select: none;
+    box-shadow:
+      0 2px 6px rgba(15, 23, 42, 0.08),
+      0 10px 30px rgba(15, 23, 42, 0.16);
     transition: transform 120ms ease, box-shadow 120ms ease;
   }
+  .main-content-board .task-card:hover{
+        box-shadow:
+      0 4px 12px rgba(15, 23, 42, 0.1),
+      0 14px 40px rgba(15, 23, 42, 0.18);
+  }
+  
   
   .main-content-board .task-card:active {
     cursor: grabbing;
