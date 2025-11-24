@@ -394,7 +394,6 @@
   font-family: "open sans";
   gap: 72px;
   background: white;
-  border-radius: 51px;
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
