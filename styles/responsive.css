@@ -116,6 +116,7 @@ header {
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
+    padding-bottom: 50px;
   }
   .side-menu {
     position: fixed;
