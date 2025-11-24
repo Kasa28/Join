@@ -25,3 +25,21 @@
 }
 
 @keyframes form_fade { to { opacity: 1; } } 
+
+:root{
+  --logo-left: 16px;        
+  --j-scale-end: 0.44;     
+}
+
+@media (max-width: 900px){
+  :root{
+    --logo-left: 12px;   
+    --j-scale-end: 0.35;    
+  }
+}
+
+@media (max-width: 560px){
+  :root{
+    --j-scale-end: 0.30;    
+  }
+}
