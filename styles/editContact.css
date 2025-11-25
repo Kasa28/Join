@@ -135,6 +135,7 @@
   width: 80px;
   height: 80px;
   display: flex;
+  aspect-ratio: 1/1;
   align-items: center;
   justify-content: center;
   color: white;
@@ -142,12 +143,14 @@
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 0 0 2px #ffff;
+  flex-shrink: 0;
 }
 
 .empty-user-ball-edit-contact {
   width: 80px;
   height: 80px;
   display: flex;
+  aspect-ratio: 1/1;
   align-items: center;
   justify-content: center;
   color: white;
@@ -156,6 +159,7 @@
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 0 0 2px #ffff;
+  flex-shrink: 0;
 }
 
 .empty-user-ball-icon-edit-contact {

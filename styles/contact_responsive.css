@@ -185,12 +185,7 @@
   .contact-fab-toggle:checked + .contact-fab + .contact-fab-menu {
     display: block;
   }
-  .empty-user-ball-edit-contact {
-    width: 55px;
-  }
-  .empty-user-ball-icon-edit-contact {
-    width: 30px;
-  }
+
 }
 
 .contact-fab-toggle {
@@ -617,11 +612,6 @@ body.no-scroll .contact-actions-mobile {
   .button-add-contact-order {
     margin-top: auto;
     padding-bottom: 16px;
-  }
-  .user-letter-ball-edit-contact,
-  .empty-user-ball-edit-contact {
-    width: 42px;
-    height: 41px;
   }
 }
 @media (max-width: 500px) {
