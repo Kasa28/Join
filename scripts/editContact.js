@@ -49,15 +49,15 @@ async function editContact() {
         showContactToast("No contact selected to edit", { variant: "error" });
         return false;
     }
-    const username = document.getElementById("edit-contact-usernameID").value;
+    const username = document.getElementById("edit-contact-usernameID").value.trim();;
     const email = document.getElementById("edit-contact-mailID").value;
     const phoneNumber = document.getElementById("edit-contact-phone-numberID").value;
-    const nameRegex = /^[A-Za-zÄÖÜäöüß\s'-]+$/;
+    const nameRegex = /^(?=.*[A-Za-zÄÖÜäöüß])[A-Za-zÄÖÜäöüß\s'-]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.(com|de)$/i;
     const phoneRegex = /^(?:\+49|01)\d+$/;
 
     if (!nameRegex.test(username)) {
-        showContactToast("Please enter a valid name without numbers", { variant: "error" });
+        showContactToast("Please enter a valid name containing letters and no numbers", { variant: "error" });
         return false;
     }
     if (!emailRegex.test(email)) {
