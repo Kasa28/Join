@@ -42,12 +42,7 @@ async function deleteTask(taskId) {
 }
 
 
-/* === Firebase Realtime Polling (Pseudo-Streaming) === */
-/**
- * Subscribes to Firebase task updates using periodic polling.
- * Calls the provided callback with the latest task data every 2 seconds.
- * @param {Function} callback - Function executed with the updated task dataset.
- */
+/* === Firebase Realtime Polling (Pseudo-Streaming) === 
 function subscribeToFirebaseUpdates(callback) {
   async function poll() {
     try {
@@ -61,6 +56,7 @@ function subscribeToFirebaseUpdates(callback) {
   poll();
   setInterval(poll, 2000);
 }
+  */
 
 
 window.subscribeToFirebaseUpdates = subscribeToFirebaseUpdates;
