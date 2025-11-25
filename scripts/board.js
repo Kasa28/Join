@@ -92,6 +92,7 @@ let updateTimeout;
  * @param {Record<string, Task>|null} data
  * @returns {void}
  */
+/*
 subscribeToFirebaseUpdates((data) => {
   clearTimeout(updateTimeout);
   updateTimeout = setTimeout(() => {
@@ -100,7 +101,7 @@ subscribeToFirebaseUpdates((data) => {
     render();
   }, 200);
 });
-
+*/
 
 /* === Helper: Detect Demo Tasks === */
 /**
@@ -304,10 +305,10 @@ window.onload = async () => {
       task.subtasksDone = states.filter(Boolean).length;
     }
   }
-  updateSearchClearButtonState(document.getElementById("board-search"));
+    /*updateSearchClearButtonState(document.getElementById("board-search"));
     subscribeToFirebaseUpdates((data) => {
       if (!data) return;
       window.tasks = Object.values(data);
       render();
-    });  
+    });  */
 };

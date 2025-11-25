@@ -59,7 +59,7 @@ function subscribeToFirebaseUpdates(callback) {
   */
 
 
-window.subscribeToFirebaseUpdates = subscribeToFirebaseUpdates;
+/*window.subscribeToFirebaseUpdates = subscribeToFirebaseUpdates;*/
 window.saveTask = saveTask;
 window.getAllTasks = getAllTasks;
 window.deleteTask = deleteTask;
