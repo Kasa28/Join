@@ -5,11 +5,13 @@
   align-items: center;
   justify-content: center;
   color: white;
+  aspect-ratio: 1/1;
   font-size: 33px;
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 0 0 2px #ffff;
   margin: 15px 25px 15px 0;
+  flex-shrink: 0;
 }
 
 .show-contact-container {
