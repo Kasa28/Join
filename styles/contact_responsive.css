@@ -341,12 +341,6 @@
     gap: 24px;
   }
 
-  .user-letter-ball-edit-contact,
-  .empty-user-ball-edit-contact {
-    width: 55px;
-    height: 72px;
-  }
-
   .edit-contact-inputfield {
     width: 100%;
   }
@@ -625,10 +619,6 @@ body.no-scroll .contact-actions-mobile {
   .button-add-contact-order {
     margin-top: auto;        
     padding-bottom: 16px;    
-  }
-  .user-letter-ball-edit-contact, .empty-user-ball-edit-contact{
-    width: 42px;
-    height: 41px;
   }
 }
 @media (max-width: 500px) {
