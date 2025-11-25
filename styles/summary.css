@@ -150,7 +150,8 @@ body {
 
 .urgent-task-card-summary {
   width: 672px;
-  padding: 28px 48px 28px 48px;
+  padding-left: 20px;
+  padding-top: 10px;
   gap: 35px;
   color: white;
 }
