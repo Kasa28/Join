@@ -34,15 +34,15 @@ function emptyTheAddContactFormular() {
  */
 function addNewContact() {
     let contacts = flattenContactBlockToArray() || [];
-    const usernameRef = document.getElementById("add-contact-usernameID").value;
+    const usernameRef = document.getElementById("add-contact-usernameID").value.trim();
     const usermailRef = document.getElementById("add-contact-mailID").value;
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
-     const nameRegex = /^[A-Za-zÄÖÜäöüß\s'-]+$/;
+    const nameRegex = /^(?=.*[A-Za-zÄÖÜäöüß])[A-Za-zÄÖÜäöüß\s'-]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.(com|de)$/i;
      const phoneRegex = /^(?:\+49|01)\d+$/;
 
     if (!nameRegex.test(usernameRef)) {
-        showContactToast("Please enter a valid name without numbers", { variant: "error" });
+        showContactToast("Please enter a valid name containing letters and no numbers", { variant: "error" });
         return false;
     }
 
