@@ -190,7 +190,9 @@ function renderCard(t) {
     if (container) {
       container.innerHTML = "";
       (task.assignedTo || []).forEach((person) => {
-        const initials = getInitialsFromName(person.name);
+        const name = person?.name || "";
+        const color = person?.color || "#4589ff";
+        const initials = getInitialsFromName(name);
         const avatar = document.createElement("div");
         avatar.textContent = initials;
         avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
