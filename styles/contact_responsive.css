@@ -320,6 +320,9 @@
     flex: 1;
     width: 100%;
   }
+  .main-container-edit-contact.right-side-rounded {
+    border-top-left-radius:30px
+  }
 }
 
 @media (max-width: 700px) {
@@ -528,4 +531,136 @@ body::-webkit-scrollbar,
 
 body.no-scroll .contact-actions-mobile {
   display: none;
+}
+
+@media (max-width: 500px) {
+  .add-contact,
+  .edit-contact {
+    position: fixed;
+    inset: 0;             
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    z-index: 2000;
+  }
+        .edit-contact-headcard {
+        padding: 95px 37px 65px;
+}
+
+  .main-container-edit-contact,
+  .left-side-rounded,
+  .edit-contact {
+    width: 100%;
+    height: 100%;
+    border-radius: 0 !important;   
+    box-sizing: border-box;
+  }
+
+  .edit-contact-header {
+    border-radius: 0 !important;
+  }
+    .edit-contact-header,
+  .add-contact-header {
+    border-radius: 0 !important;
+  }
+}
+@media (max-width: 500px) {
+
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;              
+  }
+
+  .add-contact,
+  .edit-contact {
+    position: fixed;
+    inset: 0;                
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    z-index: 2000;
+    overflow: hidden;            
+  }
+
+  .main-container-edit-contact,
+  .main-container-add-contact {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;              
+  }
+  .edit-contact-headcard,
+  .add-contact-headcard,
+  .right-side-rounded,
+  .left-side-rounded {
+    border-radius: 0 !important;
+  }
+  @media (max-width: 500px) {
+  .main-container-edit-contact,
+  .main-container-add-contact {
+    height: auto;     
+  }
+    .button-edit-contact-order {
+    margin-top: 32px;   
+    margin-bottom: 24px;
+  }
+}
+  .edit-contact-content,
+  .add-contact-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;       
+  }
+  .button-edit-contact-order,
+  .button-add-contact-order {
+    margin-top: auto;        
+    padding-bottom: 16px;    
+  }
+  .user-letter-ball-edit-contact, .empty-user-ball-edit-contact{
+    width: 42px;
+    height: 41px;
+  }
+}
+@media (max-width: 500px) {
+
+  .edit-contact-content,
+  .add-contact-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;             
+  }
+
+  .button-edit-contact-order,
+  .button-add-contact-order {
+    margin-top: auto;      
+    padding-bottom: 16px;   
+  }
+}
+@media (max-width: 500px) {
+
+  .main-container-edit-contact {
+    height: auto;        
+    max-height: none;      
+    overflow: visible;    
+  }
+
+  .button-edit-contact-order {
+    margin-top: 32px;     
+    margin-bottom: 24px;
+  }
+
+  .button-edit-contact {
+    flex: 0 0 auto;        
+    width: 100%;      
+  }
 }
