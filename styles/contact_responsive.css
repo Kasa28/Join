@@ -481,7 +481,7 @@ body::-webkit-scrollbar,
 
   .edit-contact-content {
     padding: 0 25px 115px 25px;
-    gap: 20px;
+    gap: 9px;
   }
 
   .edit-contact-headcard {
@@ -591,6 +591,7 @@ body.no-scroll .contact-actions-mobile {
   .right-side-rounded,
   .left-side-rounded {
     border-radius: 0 !important;
+    height: 100%;
   }
   @media (max-width: 500px) {
     .main-container-edit-contact,
