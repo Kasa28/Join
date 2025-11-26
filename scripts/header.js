@@ -110,22 +110,26 @@ function deleteIdFromLocalStorage(){
  * Allows public access to help, legal, and privacy pages.
  * @returns {boolean} True if logged in, false otherwise.
  */
-function checkIfLogedIn() {
-    const currentPath = window.location.pathname;
-    const publicPages = ["help.html", "legal.html", "privacy.html", "index.html", "/"];
-    const isPublicPage =
-        currentPath === "/" ||
-        publicPages.some(page => currentPath.endsWith(page));
-    if (isPublicPage) {
+function isPublicPage() {
+    const normalizedPath = window.location.pathname.toLowerCase();
+    const publicPages = ["help", "legal", "privacy", "index", "/"];
+
+    if (normalizedPath === "/") {
         return true;
     }
-    const isLoggedIn = Boolean(localStorage.getItem("userData"));
-    if (!isLoggedIn) {
+        return publicPages.some((page) => normalizedPath.endsWith(`${page}.html`) || normalizedPath.endsWith(`/${page}`));
+}
+
+function checkIfLogedIn() {
+    const loggedIn = Boolean(localStorage.getItem("userData"));
+
+    if (!loggedIn && !isPublicPage()) {
         const loginPath = "/index.html";
         window.location.href = loginPath;
         return false;
     }
-    return true;
+ 
+    return loggedIn;
 }
 
 
@@ -135,18 +139,21 @@ function checkIfLogedIn() {
  * activating sidebar button behaviors, and highlighting the current page.
  */
 function onloadFunctionHeader(){
-    setLetterInUserBall();
+    const isLoggedIn = checkIfLogedIn();
+    setLetterInUserBall(isLoggedIn);
+    toggleNavigationForGuest(isLoggedIn);
     addActiveClassToSidebarButtons();
     setActiveSidebarByURL();
+    document.body.classList.remove("preload");
 }
 
 
 /**
  * Sets the displayed initial in the user avatar circle based on login state.
  */
-function setLetterInUserBall(){
+function setLetterInUserBall(isLoggedIn){
     let contentRef = document.getElementById("user-ball-ID");
-    if(!checkIfLogedIn()){
+        if(!isLoggedIn){
         contentRef.innerHTML = "G";
     }   else{
         let userJson = JSON.parse(localStorage.getItem("userData"));
@@ -154,7 +161,6 @@ function setLetterInUserBall(){
         contentRef.innerHTML = userLetter;
     }        
 }
-
 
 /* === Greeting Message Rendering === */
 /**
@@ -220,4 +226,39 @@ function addActiveClassToSidebarButtons() {
     });
 }
 window.addEventListener('resize', updateUserMenuPosition);
-window.addEventListener('scroll', updateUserMenuPosition);
+function toggleNavigationForGuest(isLoggedIn) {
+    const isPublic = isPublicPage();
+    const isGuestOnPublic = !isLoggedIn && isPublic;
+
+    const sidebarHighSection = document.querySelector(".sidebar-high-section-container");
+    const userAvatar = document.querySelector(".guest-logo-header");
+    const loginLink = document.getElementById("guest-login-link");
+    const headerHelpLink = document.getElementById("header-help-link");
+
+    // Klasse für Layout (unten / oben verteilen usw.)
+    document.body.classList.toggle("guest-mode", isGuestOnPublic);
+
+    // === Sidebar oben (Summary, Add Task, Board, Contacts) ===
+    // Nur zeigen, wenn User eingeloggt ODER keine öffentliche Seite
+    if (sidebarHighSection) {
+        sidebarHighSection.classList.toggle("d_none", isGuestOnPublic);
+    }
+
+    // === Avatar-Kreis oben rechts ===
+    // Für Gäste auf öffentlichen Seiten ausblenden
+    if (userAvatar) {
+        userAvatar.classList.toggle("d_none", isGuestOnPublic);
+    }
+
+    // === Help-Icon (?) oben rechts ===
+    // Für Gäste auf öffentlichen Seiten ausblenden
+    if (headerHelpLink) {
+        headerHelpLink.classList.toggle("d_none", isGuestOnPublic);
+    }
+
+    // === Login-Link in der Sidebar ===
+    // Nur im Gast-Modus auf öffentlichen Seiten anzeigen
+    if (loginLink) {
+        loginLink.classList.toggle("d_none", !isGuestOnPublic);
+    }
+}

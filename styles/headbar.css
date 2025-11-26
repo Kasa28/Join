@@ -98,3 +98,31 @@ header {
 .d_none {
   display: none;
 }
+.guest-mode #header-help-link,
+.guest-mode .guest-logo-header {
+  display: none !important;
+}
+
+.guest-mode .sidebar-high-section-container {
+    display: none !important;
+}
+
+.guest-mode .side-menu {
+    justify-content: flex-start; 
+}
+
+.guest-mode .sidebar-low-section-container {
+    margin-top: auto;             
+}
+.login-link { display:none; }
+.guest-mode .login-link { display:inline-flex; }
+
+
+
+body:not(.guest-mode) .login-link {
+  display: none !important;
+}
+
+body.guest-mode .login-link {
+  display: inline-flex !important;
+}
