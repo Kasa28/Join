@@ -86,7 +86,6 @@ function stableHighlight(columnId) {
   }, 80); // small delay to avoid flicker
 }
 
-
 /**
  * Handles long‑press detection on mobile to initiate drag mode for a task card.
  */
@@ -109,11 +108,12 @@ document.addEventListener(
   { passive: false }
 );
 
-
 /**
  * Updates drag hover highlighting while dragging a task on mobile.
  */
-document.addEventListener("touchmove", (e) => {
+document.addEventListener(
+  "touchmove",
+  (e) => {
     if (!longPressActive || !currentDragCardEl) return;
     const touch = e.touches[0];
     const hoverCol = document
@@ -126,11 +126,12 @@ document.addEventListener("touchmove", (e) => {
   { passive: false }
 );
 
-
 /**
  * Finalizes long‑press drag actions on mobile and drops the card if applicable.
  */
-document.addEventListener("touchend", (e) => {
+document.addEventListener(
+  "touchend",
+  (e) => {
     clearTimeout(longPressTimer);
     if (longPressActive && currentDragCardEl) {
       const touch = e.changedTouches[0];
@@ -151,7 +152,6 @@ document.addEventListener("touchend", (e) => {
   },
   { passive: false }
 );
-
 
 /**
  * Allows dropping of dragged items onto valid drop zones.
@@ -177,7 +177,6 @@ window.highlight = function (id) {
   if (status) scheduleAutoMoveTo(status);
 };
 
-
 /**
  * Removes highlight styling from a drag-area column.
  * @param {string} id - The ID of the column to remove highlight from.
@@ -194,7 +193,6 @@ window.removeHighlight = function (id) {
   if (status) cancelScheduledAutoMove(status);
 };
 
-
 /**
  * Removes highlight styling from all drag-area columns.
  */
@@ -204,7 +202,6 @@ function clearAllColumnHighlights() {
     .forEach((el) => el.classList.remove("drag-highlight"));
   activeHighlightColumnId = null;
 }
-
 
 /**
  * Starts desktop drag-and-drop behavior for a task card.
@@ -227,7 +224,6 @@ window.onCardDragStart = function (event, whichTaskId) {
   }
 };
 
-
 /**
  * Finalizes drag behavior and resets all drag UI states.
  */
@@ -248,7 +244,6 @@ window.onCardDragEnd = function () {
   clearAllColumnHighlights();
 };
 
-
 /**
  * Moves the dragged task to a new status column.
  * @param {string} newStatus - Target status for the task.
@@ -259,7 +254,6 @@ window.moveTo = function (newStatus) {
   clearAllColumnHighlights();
 };
 
-
 /**
  * Retrieves the task object currently being dragged.
  * @returns {Object|null} The dragged task or null.
@@ -268,7 +262,6 @@ function getDraggedTask() {
   if (whichCardActuellDrop == null || !Array.isArray(window.tasks)) return null;
   return window.tasks.find((t) => t.id === whichCardActuellDrop) || null;
 }
-
 
 /* === Task Status Update on Drop === */
 /**
@@ -298,7 +291,6 @@ function applyStatusChangeForDraggedTask(
   return true;
 }
 
-
 /* === Auto Move Scheduling === */
 /**
  * Schedules an automatic move of a dragged task when hovering over a column.
@@ -321,7 +313,6 @@ function scheduleAutoMoveTo(status) {
   }, 160);
 }
 
-
 /**
  * Cancels any scheduled automatic task move action.
  * @param {string} [expectedStatus] - Optional status to verify before canceling.
@@ -340,7 +331,6 @@ function cancelScheduledAutoMove(expectedStatus) {
   autoMoveTimeoutId = null;
   pendingAutoMoveStatus = null;
 }
-
 
 /* === Column Detection Logic === */
 const MAX_VERTICAL_SNAP_DISTANCE = 220;
@@ -375,7 +365,6 @@ function findColumnByPointer(clientX, clientY) {
   return null;
 }
 
-
 /* === Dragover Highlight Handling === */
 /**
  * Handles card tilt animation and hover detection during desktop drag operations.
@@ -383,7 +372,18 @@ function findColumnByPointer(clientX, clientY) {
 document.addEventListener("dragover", (event) => {
   if (!currentDragCardEl) return;
   const { clientX, clientY } = event;
-  
+  if (typeof clientX === "number") {
+    if (lastDragPointerX == null) {
+      lastDragPointerX = clientX;
+    } else {
+      const deltaX = clientX - lastDragPointerX;
+      if (Math.abs(deltaX) >= 2) {
+        currentDragCardEl.classList.remove("tilt-left", "tilt-right");
+        currentDragCardEl.classList.add(deltaX > 0 ? "tilt-right" : "tilt-left");
+        lastDragPointerX = clientX;
+      }
+    }
+  }
   if (typeof clientX !== "number" || typeof clientY !== "number") return;
   let hoveredColumn = event.target?.closest?.(".drag-area") || null;
   if (!hoveredColumn) {
@@ -394,11 +394,12 @@ document.addEventListener("dragover", (event) => {
     hoveredColumn = findColumnByPointer(clientX, clientY);
   }
   if (hoveredColumn?.id) {
-    if (activeHighlightColumnId === hoveredColumn.id) {
-      return;
+    if (activeHighlightColumnId === hoveredColumn.id) return;
+    highlight(hoveredColumn.id);
+    if (activeHighlightColumnId !== hoveredColumn.id) {
+      stableHighlight(hoveredColumn.id);
     }
-highlight(hoveredColumn.id);
-stableHighlight(hoveredColumn.id);
   }
 });
+
 
