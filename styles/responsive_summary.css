@@ -1,4 +1,3 @@
-
 @media (max-width: 1000px) {
   .summary-card {
     border: solid white !important;
@@ -109,7 +108,7 @@
 }
 
 @media (max-width: 398px) {
-  .header-wrapper-responsive{
+  .header-wrapper-responsive {
     position: sticky;
     top: 0;
   }
@@ -121,7 +120,6 @@
     width: 100%;
   }
 }
-
 
 @media (max-width: 1100px) {
   .urgent-task-card-summary {
@@ -211,56 +209,6 @@
   }
 }
 
-
-@media (max-width: 1000px) {
-  .urgent-task-card-summary,
-  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
-    grid-template-columns: 60px min-content 1px 1fr;
-    align-items: center;
-    column-gap: 16px;
-    grid-column: 1 / -1 !important;
-  }
-  .urgent-task-card-summary .img-summary,
-  .summary-cards-low-section .img-summary {
-    grid-column: 1;
-    width: 60px;
-    height: 60px;
-    justify-self: start;
-  }
-  .urgent-task-card-summary .h2-font-summray,
-  .summary-cards-low-section .h2-font-summray {
-    grid-column: 2;
-    margin: 0;
-  }
-  .urgent-task-card-summary .seperator-summary,
-  .summary-cards-low-section .seperator-summary {
-    grid-column: 3;
-    width: 1px;
-    height: 56px;
-    background: currentColor;
-    justify-self: center;
-  }
-  .urgent-task-card-summary .seperator-summary {
-    background: #fff;
-  }
-  .summary-cards-low-section .seperator-summary {
-    background: #9db7ff;
-  }
-  .urgent-task-card-summary .card-font-a-summary,
-  .urgent-task-card-summary .card-font-a-urgent-task-summary,
-  .summary-cards-low-section .card-font-a-summary {
-    grid-column: 4;
-    align-self: center;
-    width: fit-content;
-    padding-left: 10px;
-  }
-  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
-    display: flex;
-    flex-direction: row;
-    max-width: none !important;
-  }
-}
-
 @media (max-width: 398px) {
   .summary-card:not(.urgent-task-card-summary) {
     flex: 1 1 calc(50% - 16px);
@@ -268,7 +216,6 @@
     min-width: 0;
   }
 }
-
 
 @media (max-width: 1000px) {
   .summary-content-container {
