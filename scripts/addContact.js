@@ -1,5 +1,13 @@
 let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
 let colorCode;
+if (typeof isAllowedEmailProvider !== "function") {
+    const fallbackAllowedProviders = ["gmail", "outlook", "hotmail", "live", "gmx", "web", "yahoo", "icloud", "protonmail"];
+    window.isAllowedEmailProvider = (email) => {
+        const match = email.toLowerCase().match(/^[^\s@]+@([^\.\s@]+)\.(com|de)$/);
+        if (!match) return false;
+        return fallbackAllowedProviders.includes(match[1]);
+    };
+}
 
 /**
  * Opens the Add Contact form by removing the hidden class.
@@ -38,16 +46,14 @@ function addNewContact() {
     const usermailRef = document.getElementById("add-contact-mailID").value;
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
     const nameRegex = /^(?=.*[A-Za-zÄÖÜäöüß])[A-Za-zÄÖÜäöüß\s'-]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|de)$/i;
      const phoneRegex = /^(?:\+49|01)\d+$/;
 
     if (!nameRegex.test(usernameRef)) {
         showContactToast("Please enter a valid name containing letters and no numbers", { variant: "error" });
         return false;
     }
-
-    if (!emailRegex.test(usermailRef)) {
-       showContactToast("Please enter a valid email with @ and ending in .com or .de", { variant: "error" });
+        if (!isAllowedEmailProvider(email)) {
+        showContactToast("Please use a real provider (e.g. gmail, outlook) with .com or .de", { variant: "error" });
         return false;
     }
     if (!phoneRegex.test(phonenumberRef)) {

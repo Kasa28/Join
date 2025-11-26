@@ -5,7 +5,14 @@
 const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
-
+if (typeof isAllowedEmailProvider !== "function") {
+  const fallbackAllowedProviders = ["gmail", "outlook", "hotmail", "live", "gmx", "web", "yahoo", "icloud", "protonmail"];
+  window.isAllowedEmailProvider = (email) => {
+    const match = email.toLowerCase().match(/^[^\s@]+@([^\.\s@]+)\.(com|de)$/);
+    if (!match) return false;
+    return fallbackAllowedProviders.includes(match[1]);
+  };
+}
  /**
  * @typedef {Object} User
  * @property {string} name
@@ -57,10 +64,9 @@ function onclickFunction(event) {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
+   if (!isAllowedEmailProvider(email)) {
     const errorEl = document.getElementById("error_message");
-    errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
+    errorEl.textContent = "Bitte eine gültige E-Mail mit echtem Anbieter (.com/.de) eingeben!";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
     return;
@@ -131,10 +137,10 @@ function checkPolicyandAnswers() {
   const checkbox = document.getElementById("accept_terms");
   const button = document.querySelector(".primary_button");
   const passwordSame = password == confirmPassword;
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const emailValid = isAllowedEmailProvider(email);
   const errorEl = document.getElementById("error_message");
   if (!emailValid && email.length > 0) {
-    errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
+    errorEl.textContent = "Bitte eine gültige E-Mail mit echtem Anbieter (.com/.de) eingeben!";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
   }
