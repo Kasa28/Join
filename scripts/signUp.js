@@ -13,13 +13,27 @@ if (typeof isAllowedEmailProvider !== "function") {
     return fallbackAllowedProviders.includes(match[1]);
   };
 }
- /**
+
+/**
+ * Checks if a name is valid: at least 3 chars, only letters, spaces and hyphens.
+ * @param {string} name
+ * @returns {boolean}
+ */
+function isValidName(name) {
+  const trimmed = name.trim();
+  if (trimmed.length < 3) {
+    return false;
+  }
+  // Erlaubt Buchstaben (auch Umlaute), ß, Leerzeichen und Bindestrich
+  return /^[A-Za-zÄÖÜäöüß\s-]+$/.test(trimmed);
+}
+
+/**
  * @typedef {Object} User
  * @property {string} name
  * @property {string} password
  * @property {string} email
  */
-
 
 /**
  * Fetches JSON data from Firebase for a given path.
@@ -31,7 +45,6 @@ async function getAllUsers(path) {
   let response = await fetch(BASE_URL + path + ".json");
   return (responseToJson = await response.json());
 }
-
 
 /**
  * Saves/overwrites data to Firebase at path/id (PUT).
@@ -52,7 +65,6 @@ async function postDataWithID(path = "", id = "", data = {}) {
   return await response.json();
 }
 
-
 /**
  * Handles signup form submit:
  * validates inputs, creates user, shows toast, and redirects to login.
@@ -64,28 +76,39 @@ function onclickFunction(event) {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-   if (!isAllowedEmailProvider(email)) {
+
+  if (!isAllowedEmailProvider(email)) {
     const errorEl = document.getElementById("error_message");
     errorEl.textContent = "Bitte eine gültige E-Mail mit echtem Anbieter (.com/.de) eingeben!";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
     return;
   }
-  if (!name || !password) {
-    const errorEl = document.getElementById("error_message");
-    errorEl.textContent = "Bitte alle Felder korrekt ausfüllen!";
-    errorEl.classList.remove("visually-hidden");
-    errorEl.style.color = "red";
-    return;
+
+ /**
+ * Checks if a name is valid: at least 3 chars, only letters and hyphens (no spaces, no numbers).
+ * @param {string} name
+ * @returns {boolean}
+ */
+function isValidName(name) {
+  const trimmed = name.trim();
+  if (trimmed.length < 3) {
+    return false;
   }
+  return /^[A-Za-zÄÖÜäöüß-]+$/.test(trimmed);
+}
+
+
   const errorEl = document.getElementById("error_message");
+  errorEl.textContent = "";
+  errorEl.classList.add("visually-hidden");
+
   createUser(name, password, email);
   showToast("You signed up successfully", { duration: 1000, dim: true });
   setTimeout(() => {
     jumpToLogin();
   }, 1200);
 }
-
 
 /**
  * Redirects to login page.
@@ -95,7 +118,6 @@ function jumpToLogin() {
   window.location.href = "./index.html";
 }
 
-
 /**
  * Shows the white-screen overlay.
  * @returns {void}
@@ -104,7 +126,6 @@ function getWhiteScreen() {
   const contentRef = document.getElementById("white-screen");
   contentRef.classList.remove("d_none");
 }
-
 
 /**
  * Creates a new user entry in Firebase.
@@ -117,10 +138,9 @@ function getWhiteScreen() {
 async function createUser(inputName, inputPassword, inputMail) {
   let userResponse = await getAllUsers("users");
   let UserKeysArray = Object.keys(userResponse);
-  const user = { name: inputName, password: inputPassword, email: inputMail};
+  const user = { name: inputName, password: inputPassword, email: inputMail };
   postDataWithID("users", UserKeysArray.length, user);
 }
-
 
 /**
  * Validates form fields + policy checkbox and enables/disables submit button.
@@ -138,15 +158,18 @@ function checkPolicyandAnswers() {
   const button = document.querySelector(".primary_button");
   const passwordSame = password == confirmPassword;
   const emailValid = isAllowedEmailProvider(email);
+  const nameValid = isValidName(name);
   const errorEl = document.getElementById("error_message");
+
   if (!emailValid && email.length > 0) {
     errorEl.textContent = "Bitte eine gültige E-Mail mit echtem Anbieter (.com/.de) eingeben!";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
   }
-  // Name too short
-  else if (name.length > 0 && name.length < 3) {
-    errorEl.textContent = "Der Name muss mindestens 3 Zeichen lang sein!";
+  // Name zu kurz oder enthält unerlaubte Zeichen
+  else if (name.length > 0 && !nameValid) {
+    errorEl.textContent =
+      "Der Name darf keine Zahlen enthalten und muss mindestens 3 Buchstaben lang sein!";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
   }
@@ -161,9 +184,10 @@ function checkPolicyandAnswers() {
     errorEl.textContent = "";
     errorEl.classList.add("visually-hidden");
   }
+
   const allFilled =
     name && email && password && confirmPassword && checkbox.checked;
-    button.disabled = !allFilled || !passwordSame || !emailValid;
+  button.disabled = !allFilled || !passwordSame || !emailValid || !nameValid;
 }
 
 /**
@@ -172,14 +196,12 @@ function checkPolicyandAnswers() {
  * @property {boolean} [dim=true]
  */
 
-
 /**
  * Shows a toast message. Optionally dims background while visible.
  * @param {string} text
  * @param {ToastOptions} [options]
  * @returns {void}
  */
-
 
 /* === Toast Notification Utility === */
 function showToast(text, { duration = 3000, dim = true } = {}) {
