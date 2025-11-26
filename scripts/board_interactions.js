@@ -71,6 +71,22 @@ function matchesSearch(t) {
 let longPressTimer = null;
 let longPressActive = false;
 
+let hoverStabilityTimeout = null;
+let lastStableHoverId = null;
+
+function stableHighlight(columnId) {
+  if (!columnId) return;
+  if (columnId === lastStableHoverId) return;
+
+  clearTimeout(hoverStabilityTimeout);
+
+  hoverStabilityTimeout = setTimeout(() => {
+    lastStableHoverId = columnId;
+    highlight(columnId);
+  }, 80); // small delay to avoid flicker
+}
+
+
 /**
  * Handles long‑press detection on mobile to initiate drag mode for a task card.
  */
@@ -367,20 +383,7 @@ function findColumnByPointer(clientX, clientY) {
 document.addEventListener("dragover", (event) => {
   if (!currentDragCardEl) return;
   const { clientX, clientY } = event;
-  if (typeof clientX === "number") {
-    if (lastDragPointerX == null) {
-      lastDragPointerX = clientX;
-    } else {
-      const deltaX = clientX - lastDragPointerX;
-      if (Math.abs(deltaX) >= 2) {
-        currentDragCardEl.classList.remove("tilt-left", "tilt-right");
-        currentDragCardEl.classList.add(
-          deltaX > 0 ? "tilt-right" : "tilt-left"
-        );
-        lastDragPointerX = clientX;
-      }
-    }
-  }
+  
   if (typeof clientX !== "number" || typeof clientY !== "number") return;
   let hoveredColumn = event.target?.closest?.(".drag-area") || null;
   if (!hoveredColumn) {
@@ -391,28 +394,11 @@ document.addEventListener("dragover", (event) => {
     hoveredColumn = findColumnByPointer(clientX, clientY);
   }
   if (hoveredColumn?.id) {
-    highlight(hoveredColumn.id);
-  } else if (activeHighlightColumnId) {
-    removeHighlight(activeHighlightColumnId);
+    if (activeHighlightColumnId === hoveredColumn.id) {
+      return;
+    }
+highlight(hoveredColumn.id);
+stableHighlight(hoveredColumn.id);
   }
 });
 
-
-/* === Drag Tilt Animation Handling === */
-/**
- * Updates drag tilt animation based on horizontal pointer movement.
- */
-document.addEventListener("dragover", (event) => {
-  if (!currentDragCardEl) return;
-  const { clientX } = event;
-  if (typeof clientX !== "number") return;
-  if (lastDragPointerX == null) {
-    lastDragPointerX = clientX;
-    return;
-  }
-  const deltaX = clientX - lastDragPointerX;
-  if (Math.abs(deltaX) < 2) return;
-  currentDragCardEl.classList.remove("tilt-left", "tilt-right");
-  currentDragCardEl.classList.add(deltaX > 0 ? "tilt-right" : "tilt-left");
-  lastDragPointerX = clientX;
-});

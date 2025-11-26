@@ -103,7 +103,7 @@
               onclick="openAddTaskWithStatus('todo')">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-todo" ondrop="moveTo('todo')"
-            ondragover="allowDrop(event); highlight('drag-area-todo')" ondragleave="removeHighlight('drag-area-todo')">
+          ondragover="allowDrop(event)">
             <div class="empty-pill">No tasks To do</div>
           </div>
         </section>
@@ -115,8 +115,7 @@
               onclick="openAddTaskWithStatus('in-progress')">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-in-progress" ondrop="moveTo('in-progress')"
-            ondragover="allowDrop(event); highlight('drag-area-in-progress')"
-            ondragleave="removeHighlight('drag-area-in-progress')">
+          ondragover="allowDrop(event)">
             <div class="empty-pill">No tasks In progress</div>
           </div>
         </section>
@@ -128,8 +127,7 @@
               onclick="openAddTaskWithStatus('await-feedback')">+</button>
           </div>
           <div class="column-body drag-area" id="drag-area-await-feedback" ondrop="moveTo('await-feedback')"
-            ondragover="allowDrop(event); highlight('drag-area-await-feedback')"
-            ondragleave="removeHighlight('drag-area-await-feedback')">
+          ondragover="allowDrop(event)">
             <div class="empty-pill">No tasks Await feedback</div>
           </div>
         </section>
@@ -139,7 +137,7 @@
             <h2 id="done-title">Done</h2>
           </div>
           <div class="column-body drag-area" id="drag-area-done" ondrop="moveTo('done')"
-            ondragover="allowDrop(event); highlight('drag-area-done')" ondragleave="removeHighlight('drag-area-done')">
+          ondragover="allowDrop(event)">
             <div class="empty-pill">No tasks Done</div>
           </div>
         </section>
