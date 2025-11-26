@@ -97,3 +97,46 @@ body.preload header,
 body.preload .side-menu {
   visibility: hidden;
 }
+.page {
+  position: relative;
+}
+
+.privacy-back-link {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  body.guest-mode .side-menu {
+    display: none;
+  }
+
+  body.guest-mode .page {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 16px 80px;
+  }
+
+  body.guest-mode .privacy-back-link {
+    display: flex;
+    position: absolute;
+    top: 24px;        
+    right: 16px;      
+    align-items: center;
+  }
+
+  body.guest-mode .privacy-back-link img {
+    width: 40px;
+    height: 40px;
+  }
+}
+.page {
+  position: relative;
+}
+
+.privacy-back-link {
+  display: none;
+}
+.privacy-policy {
+  position: relative;
+}
