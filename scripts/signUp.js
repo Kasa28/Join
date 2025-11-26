@@ -5,33 +5,6 @@
 const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
-const ALLOWED_EMAIL_PROVIDERS = [
-  "gmail",
-  "outlook",
-  "hotmail",
-  "live",
-  "gmx",
-  "web",
-  "yahoo",
-  "icloud",
-  "protonmail"
-];
-
-/**
- * Returns true if email has allowed provider and ends with .com or .de.
- * @param {string} email
- * @returns {boolean}
- */
-function isAllowedEmailProvider(email) {
-  const lower = email.toLowerCase();
-  const match = lower.match(/^[^\s@]+@([^\.\s@]+)\.(com|de)$/);
-  if (!match) {
-    return false;
-  }
-  const provider = match[1];
-  return ALLOWED_EMAIL_PROVIDERS.includes(provider);
-}
-
 /**
  * Checks if a name is valid:
  * at least 3 chars, only letters and hyphens (no spaces, no numbers).
@@ -53,13 +26,13 @@ function isAllowedEmailProvider(email) {
  */
 function isValidName(name) {
   const trimmed = name.trim();
-  if (trimmed.length < 3) {
-    return false;
-  }
-  const pattern = /^[A-Za-zÄÖÜäöüß-]+( [A-Za-zÄÖÜäöüß-]+)*$/;
-  return pattern.test(trimmed);
+  return trimmed.length >= 2 && /^[\p{L}\p{M}\s'.-]+$/u.test(trimmed);
 }
 
+
+function isValidEmail(email) {
+  return /^[A-Za-z0-9](\.?[A-Za-z0-9_\-+])*@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+$/.test(email.trim());
+}
 
 
 /**
@@ -98,7 +71,7 @@ async function postDataWithID(path = "", id = "", data = {}) {
   const options = {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   };
   const response = await fetch(url, options);
   const result = await response.json();
@@ -118,26 +91,24 @@ function onclickFunction(event) {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-<<<<<<< HEAD
 
-  if (!isAllowedEmailProvider(email)) {
+  if (isValidEmail(email)) {
     const errorEl = document.getElementById("error_message");
-    errorEl.textContent = "Please use a real provider (e.g. gmail, outlook) with .com or .de";
+    errorEl.textContent =
+      "Please use a real provider (e.g. gmail, outlook) with .com or .de";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
-=======
-  const errorEl = document.getElementById("error_message");
-  if (!validateEmailOnSubmit(email, errorEl)) {
->>>>>>> 3141961fd9dd6d6a0639d2d52ad9ccecd5988579
-    return;
+    if (!validateEmailOnSubmit(email, errorEl)) {
+      return;
+    }
+    if (!validateNameAndPasswordOnSubmit(name, password, errorEl)) {
+      return;
+    }
+    resetError(errorEl);
+    createUser(name, password, email);
+    showToast("You signed up successfully", { duration: 1000, dim: true });
+    setTimeout(jumpToLogin, 1200);
   }
-  if (!validateNameAndPasswordOnSubmit(name, password, errorEl)) {
-    return;
-  }
-  resetError(errorEl);
-  createUser(name, password, email);
-  showToast("You signed up successfully", { duration: 1000, dim: true });
-  setTimeout(jumpToLogin, 1200);
 }
 
 /**
@@ -147,12 +118,12 @@ function onclickFunction(event) {
  * @returns {boolean}
  */
 function validateEmailOnSubmit(email, errorEl) {
-  if (isAllowedEmailProvider(email)) {
+  if (isValidEmail(email)) {
     return true;
   }
   showError(
     errorEl,
-    "Bitte eine gültige E-Mail mit echtem Anbieter (.com/.de) eingeben!"
+    "Bitte eine gültige E-Mail eingeben!"
   );
   return false;
 }
@@ -206,7 +177,7 @@ async function createUser(inputName, inputPassword, inputMail) {
   const user = {
     name: inputName,
     password: inputPassword,
-    email: inputMail
+    email: inputMail,
   };
   postDataWithID("users", userKeysArray.length, user);
 }
@@ -231,8 +202,9 @@ function getSignupValues() {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const confirmPassword =
-    document.getElementById("confirm_password").value.trim();
+  const confirmPassword = document
+    .getElementById("confirm_password")
+    .value.trim();
   const checkbox = document.getElementById("accept_terms");
   const button = document.querySelector(".primary_button");
   const errorEl = document.getElementById("error_message");
@@ -246,7 +218,7 @@ function getSignupValues() {
  */
 function getValidationState(values) {
   const passwordSame = values.password === values.confirmPassword;
-  const emailValid = isAllowedEmailProvider(values.email);
+  const emailValid = isValidEmail(values.email);
   const nameValid = isValidName(values.name);
   return { passwordSame, emailValid, nameValid };
 }
@@ -262,7 +234,7 @@ function updateErrorForSignup(values, state) {
   if (!state.emailValid && values.email.length > 0) {
     showError(
       errorEl,
-      "Bitte eine gültige E-Mail mit echtem Anbieter (.com/.de) eingeben!"
+      "Bitte eine gültige E-Mail eingeben!"
     );
   } else if (values.name.length > 0 && !state.nameValid) {
     showError(
@@ -294,10 +266,7 @@ function updateButtonState(values, state) {
     values.confirmPassword &&
     values.checkbox.checked;
   const enabled =
-    allFilled &&
-    state.passwordSame &&
-    state.emailValid &&
-    state.nameValid;
+    allFilled && state.passwordSame && state.emailValid && state.nameValid;
   values.button.disabled = !enabled;
 }
 
