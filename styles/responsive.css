@@ -99,6 +99,9 @@
   .wrapper-main-task-btn-addTask_page {
     padding-right: 60%;
   }
+  .privacy-policy{
+    max-width: 70%;
+  }
 }
 
 @media (max-width: 1300px) {
