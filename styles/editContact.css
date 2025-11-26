@@ -171,6 +171,8 @@
 .edit-contact-inputfield {
   width: 422px;
   height: 48px;
+  padding-left: 4px;
+  padding-top: 34px;
 
   border-style: none;
   border-bottom: solid 2px grey;
@@ -191,7 +193,8 @@
   padding-right: 36px; 
   box-sizing: border-box;
   outline: none;
-  padding: 12px 21px 12px 21px;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 
 .input-icon-edit-contact {

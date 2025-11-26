@@ -338,6 +338,8 @@
 
   .edit-contact-inputfield {
     width: 100%;
+    padding-left: 4px;
+    padding-top: 34px;
   }
 
   .close-icon-edit-contact {
@@ -494,10 +496,6 @@ body::-webkit-scrollbar,
 
   .button-edit-contact-grey {
     display: none !important;
-  }
-
-  .edit-contact-inputfield {
-    padding: 23px 5px 0px 0px;
   }
 }
 
