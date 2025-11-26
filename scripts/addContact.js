@@ -52,7 +52,7 @@ function addNewContact() {
         showContactToast("Please enter a valid name containing letters and no numbers", { variant: "error" });
         return false;
     }
-        if (!isAllowedEmailProvider(email)) {
+         if (!isAllowedEmailProvider(usermailRef)) {
         showContactToast("Please use a real provider (e.g. gmail, outlook) with .com or .de", { variant: "error" });
         return false;
     }
