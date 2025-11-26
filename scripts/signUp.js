@@ -79,7 +79,7 @@ function onclickFunction(event) {
 
   if (!isAllowedEmailProvider(email)) {
     const errorEl = document.getElementById("error_message");
-    errorEl.textContent = "Bitte eine gültige E-Mail mit echtem Anbieter (.com/.de) eingeben!";
+    errorEl.textContent = "Please use a real provider (e.g. gmail, outlook) with .com or .de";
     errorEl.classList.remove("visually-hidden");
     errorEl.style.color = "red";
     return;
