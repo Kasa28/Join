@@ -297,3 +297,20 @@
   width: 24px;
   height: 24px;
 }
+.name-letter-ball-font-position-technical-task {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  width: auto;
+  height: auto;
+  display: block;
+}
+.name-letter-ball-technical-task {
+  width: 42px;
+  height: 42px;
+  border-radius: 40px;
+
+  position: relative;  
+  overflow: hidden;     
+}
