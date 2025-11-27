@@ -1,12 +1,4 @@
 let remindIndex = null;
-if (typeof isAllowedEmailProvider !== "function") {
-    const fallbackAllowedProviders = ["gmail", "outlook", "hotmail", "live", "gmx", "web", "yahoo", "icloud", "protonmail"];
-    window.isAllowedEmailProvider = (email) => {
-        const match = email.toLowerCase().match(/^[^\s@]+@([^\.\s@]+)\.(com|de)$/);
-        if (!match) return false;
-        return fallbackAllowedProviders.includes(match[1]);
-    };
-}
 
 /**
  * Opens the Edit Contact form by removing the hidden class.
@@ -67,8 +59,8 @@ async function editContact() {
         showContactToast("Please enter a valid name containing letters and no numbers", { variant: "error" });
         return false;
     }
-    if (!isAllowedEmailProvider(email)) {
-        showContactToast("Please use a real provider (e.g. gmail, outlook) with .com or .de", { variant: "error" });
+    if (!validateEmailOnSubmit(email, null)) {
+        showContactToast("Bitte eine gültige E-Mail eingeben!", { variant: "error" });
         return false;
     }
     if (!phoneRegex.test(phoneNumber)) {
