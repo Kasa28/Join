@@ -37,8 +37,8 @@ function addNewContact() {
     const usernameRef = document.getElementById("add-contact-usernameID").value.trim();
     const usermailRef = document.getElementById("add-contact-mailID").value;
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
-    const nameRegex = /^(?=.*[A-Za-zÄÖÜäöüß])[A-Za-zÄÖÜäöüß\s'-]+$/;
-     const phoneRegex = /^(?:\+49|01)\d+$/;
+    const nameRegex = /^[\p{L}\p{M}][\p{L}\p{M}\s'.-]{1,}$/u;
+    const phoneRegex = /^(\+49|0)[1-9]\d{6,14}$/;
 
     if (!nameRegex.test(usernameRef)) {
         showContactToast("Please enter a valid name containing letters and no numbers", { variant: "error" });

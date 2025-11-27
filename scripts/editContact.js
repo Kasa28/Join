@@ -52,8 +52,8 @@ async function editContact() {
     const username = document.getElementById("edit-contact-usernameID").value.trim();;
     const email = document.getElementById("edit-contact-mailID").value;
     const phoneNumber = document.getElementById("edit-contact-phone-numberID").value;
-    const nameRegex = /^(?=.*[A-Za-zÄÖÜäöüß])[A-Za-zÄÖÜäöüß\s'-]+$/;
-    const phoneRegex = /^(?:\+49|01)\d+$/;
+    const nameRegex = /^[\p{L}\p{M}][\p{L}\p{M}\s'.-]{1,}$/u;
+    const phoneRegex = /^(\+49|0)[1-9]\d{6,14}$/;
 
     if (!nameRegex.test(username)) {
         showContactToast("Please enter a valid name containing letters and no numbers", { variant: "error" });

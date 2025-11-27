@@ -1,9 +1,7 @@
 if (!window.blockedEmailProviders) {
   window.blockedEmailProviders = [];
 }
-/* -------------------------------------------------------------------------- */
-/* 2. Provider-Validierung (.com / .de + echter Anbieter)                     */
-/* -------------------------------------------------------------------------- */
+
 if (!window.isAllowedEmailProvider) {
   /**
    * Prüft, ob eine Mail einen bekannten Provider hat + richtige Endung (.com / .de)
@@ -26,9 +24,7 @@ if (!window.isAllowedEmailProvider) {
   };
 }
 
-/* -------------------------------------------------------------------------- */
-/* 3. Vollständige Syntaxprüfung einer E-Mail                                 */
-/* -------------------------------------------------------------------------- */
+
 function isValidEmail(email) {
   if (!email) return false;
 
@@ -36,33 +32,26 @@ function isValidEmail(email) {
     .test(email.trim());
 }
 
-/* -------------------------------------------------------------------------- */
-/* 4. Formularvalidierung (Syntax + Provider + Fehlermeldung)                 */
-/* -------------------------------------------------------------------------- */
+
 function validateEmailOnSubmit(email, errorEl) {
   if (!isValidEmail(email)) {
     if (errorEl) showError(errorEl, "Bitte eine gültige E-Mail eingeben!");
-    return false; // ← ganz wichtig!
+    return false; 
   }
   if (!window.isAllowedEmailProvider(email)) {
     if (errorEl) showError(errorEl, "Bitte eine gültige E-Mail eingeben!");
-    return false; // ← ganz wichtig!
+    return false; 
   }
   if (errorEl) resetError(errorEl);
   return true;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 5. Live-Formularvalidierung (nur Syntaxcheck)                              */
-/* -------------------------------------------------------------------------- */
+
 function validateEmailInForm(email) {
   return isValidEmail(email);
 }
 
 
-/* -------------------------------------------------------------------------- */
-/* 6. Fehleranzeige                                                           */
-/* -------------------------------------------------------------------------- */
 function showError(errorEl, text) {
   if (!errorEl) return;
 
@@ -72,9 +61,6 @@ function showError(errorEl, text) {
 }
 
 
-/* -------------------------------------------------------------------------- */
-/* 7. Fehler zurücksetzen                                                     */
-/* -------------------------------------------------------------------------- */
 function resetError(errorEl) {
   if (!errorEl) return;
   errorEl.textContent = "";
