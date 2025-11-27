@@ -24,15 +24,6 @@
     z-index: 100;
     background-color: transparent;
   }
-  .privacy-policy {
-    max-width: 70%;
-  }
-  .page {
-    max-width: 67%;
-  }
-  .what_is_join {
-    max-width: 67%;
-  }
   #greetID {
     margin-left: 60px;
   }
@@ -59,12 +50,6 @@
   .wrapper-main-task-btn-addTask_page {
     padding-right: 40%;
   }
-  .page {
-    max-width: 51%;
-  }
-  .what_is_join {
-    max-width: 48%;
-  }
 }
 
 @media (min-width: 3000px) {
@@ -73,15 +58,6 @@
   }
   .wrapper-main-task-btn-addTask_page {
     padding-right: 50%;
-  }
-  .privacy-policy {
-    max-width: 40%;
-  }
-  .page {
-    max-width: 41%;
-  }
-  .what_is_join {
-    max-width: 41%;
   }
 }
 
@@ -94,10 +70,7 @@
   }
   .wrapper-main-task-btn-addTask_page {
     padding-right: 60%;
-  }
-  .privacy-policy .legal-notice .help {
-    max-width: 30%;
-  }
+}
 }
 
 @media (max-width: 1300px) {
@@ -526,4 +499,60 @@ header {
 
 .header-wrapper-responsive {
   z-index: 1000;
+}
+/* ab 2000px – gleiche Breakpoints wie dein Header */
+@media (min-width: 2000px) {
+  /* Header bleibt wie bei dir */
+  header {
+    top: 0;
+    width: calc(100% - 25.5rem);
+    z-index: 100;
+    background-color: transparent;
+  }
+
+  .header-wrapper-responsive {
+    background-color: #4589ff;
+    width: 100%;
+  }
+
+  /* HIER: Textbreite so berechnet, dass er beim Button endet */
+  .privacy-policy,
+  .legal-page .page {
+    max-width: calc(100% - 25.5rem - 232px - 39px);
+  }
+}
+
+@media (min-width: 2500px) {
+  header {
+    width: 60%;
+  }
+
+  .privacy-policy,
+  .legal-page .page {
+    max-width: calc(60% - 232px - 39px);
+  }
+}
+
+@media (min-width: 3000px) {
+  header {
+    width: 50%;
+  }
+
+  .privacy-policy,
+  .legal-page .page,
+  .what_is_join {
+    max-width: calc(50% - 232px - 39px);
+  }
+}
+
+@media (min-width: 4000px) {
+  header {
+    width: 40%;
+  }
+
+  .privacy-policy,
+  .legal-page .page,
+  .what_is_join {
+    max-width: calc(40% - 232px - 39px);
+  }
 }
