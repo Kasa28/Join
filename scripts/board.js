@@ -56,7 +56,10 @@ async function loadTasksFromFirebase() {
       "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
     );
     const data = await response.json();
-    const firebaseTasks = data ? Object.values(data) : [];
+    const firebaseTasks = data
+  ? Object.values(data).filter((t) => t && typeof t.status === "string")
+  : [];
+
     if (firebaseTasks.length === 0) {
       const demoObject = demoTasks.reduce(
         (acc, t) => ({ ...acc, [t.id]: t }),
