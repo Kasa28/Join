@@ -98,5 +98,7 @@ async function addContactToLocalStorageAndAPI(inputContacts) {
     localStorage.setItem("userData", JSON.stringify(getUserData));
 
     const userID = await getUserID(getUserData.name);
-    await updateUserFriendslist(userID, updatedContacts);
+    if (userID) {
+        await updateUserFriendslist(userID, updatedContacts);
+    }
 }

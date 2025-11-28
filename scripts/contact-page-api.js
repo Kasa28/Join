@@ -38,7 +38,7 @@ async function getUserID(inputUsername) {
   let userID = null;
   for (const userIDKey in responseAllUser) {
     const user = responseAllUser[userIDKey];
-    if (user.name === inputUsername) {
+    if (!inputUsername) return null; {
       userID = userIDKey; 
       break;
     }
