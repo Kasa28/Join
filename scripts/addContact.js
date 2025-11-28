@@ -1,4 +1,4 @@
-let colors = ["red", "blue", "green", "yellow", "purple", "turquoise", "orange", "lime", "pink"];
+let colors = ["red", "blue", "green", "brown", "purple", "turquoise", "orange", "black", "pink"];
 let colorCode;
 
 /**
