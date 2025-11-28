@@ -517,7 +517,8 @@ header {
 
   /* HIER: Textbreite so berechnet, dass er beim Button endet */
   .privacy-policy,
-  .legal-page .page {
+  .legal-page .page,
+  .what_is_join {
     max-width: calc(100% - 25.5rem - 232px - 39px);
   }
 }
@@ -528,7 +529,8 @@ header {
   }
 
   .privacy-policy,
-  .legal-page .page {
+  .legal-page .page,
+  .what_is_join {
     max-width: calc(60% - 232px - 39px);
   }
 }
