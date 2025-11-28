@@ -10,10 +10,6 @@
     background-color: green;
 }
 
-.yellow{
-    background-color: brown;
-}
-
 .purple{
     background-color: purple;
 }
@@ -26,10 +22,15 @@
     background-color: orange;
 }
 
-.lime{
-    background-color: black;
-}
-
 .pink{
     background-color: hotpink;
+}
+
+
+.brown{
+    background-color: brown;
+}
+
+.black{
+    background-color: black;
 }

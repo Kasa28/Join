@@ -62,7 +62,6 @@ function renderContactsInDropdown(){
   if(!login){
     demoContactTemplate();
   }
-  document.getElementById("contacts-containerID").innerHTML = "";
   for (let index = 0; index < userContacts.length; index++) {
     singleContactTemplate(userContacts[index]);
   }
