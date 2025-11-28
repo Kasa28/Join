@@ -50,7 +50,7 @@ function bigCardHtml(t) {
     <main class="main_content_user_story">
         <div class="date-input-wrapper_user-story">
             <p class="section-heading_user-story"><strong>Due date:</strong></p>
-            <p class="task-date-display_user-story">10/05/2023</p>
+            <p class="task-date-display_user-story">31/12/2025</p>
         </div>
 
         <section class="task-input_user-story">
@@ -233,7 +233,7 @@ function getTechnicalTaskTemplate(t) {
 
         <div class="date-container-technical-task">
             <a class="status-font-technical-task">Due Date:</a>
-                <a lass="date-container-technical-task">02/09/2023</a>
+                <a lass="date-container-technical-task">30/12/2025</a>
         </div>
 
         <div class="priority-container-technical-task">
