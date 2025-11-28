@@ -76,7 +76,7 @@ async function loadTasksFromFirebase() {
       window.tasks = demoTasks.map((t) => ({ ...t }));
     } else {
       window.tasks = firebaseTasks;
-    }
+    } 
     render();
   } catch (error) {
     console.error("Fehler beim Laden der Tasks aus Firebase:", error);

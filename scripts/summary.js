@@ -52,17 +52,7 @@ async function loadTasks() {
         t.priority = t.priority.toLowerCase();
       }
     });
-    return firebaseTasks.length
-      ? firebaseTasks
-      : [
-          {
-            id: 1,
-            title: "Demo Task",
-            status: "todo",
-            priority: "urgent",
-            dueDate: "02/09/2023",
-          },
-        ];
+    return firebaseTasks;
   } catch (error) {
     console.error("Fehler beim Laden der Tasks aus Firebase:", error);
     return [];
@@ -112,20 +102,45 @@ function getTaskCounts(tasks) {
  * @returns {Date|null}
  */
 function getNextDeadline(tasks) {
-  const urgentTasks = tasks
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const urgentFutureDates = tasks
     .filter(
-      (t) => String(t.priority || "").toLowerCase() === "urgent" && t.dueDate
+      (t) =>
+        String(t.priority || "").toLowerCase() === "urgent" &&
+        t.dueDate
     )
-    .map((t) => {
-      const [day, month, year] = t.dueDate.split("/");
-      return new Date(`${year}-${month}-${day}`);
-    })
-    .filter((d) => !isNaN(d.getTime()));
-  if (!urgentTasks.length) return null;
-  urgentTasks.sort((a, b) => a - b);
-  return urgentTasks[0];
+    .map((t) => parseDueDate(t.dueDate))
+    .filter((d) => !isNaN(d.getTime()) && d >= today);   // Nur zukünftige Deadlines
+
+  if (!urgentFutureDates.length) return null;
+
+  urgentFutureDates.sort((a, b) => a - b);  // frühestes Datum zuerst
+  return urgentFutureDates[0];
 }
 
+
+/**
+ * Parses supported due date formats into a Date instance.
+ * Supports "dd/mm/yyyy" and "yyyy-mm-dd" (HTML date input default).
+ * Returns an invalid Date for unsupported formats.
+ * @param {string} dueDate
+ * @returns {Date}
+ */
+function parseDueDate(dueDate) {
+  if (dueDate == null) return new Date(NaN);
+  const trimmed = String(dueDate).trim();
+  if (!trimmed) return new Date(NaN);
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(trimmed)) {
+    const [day, month, year] = trimmed.split("/");
+    return new Date(`${year}-${month}-${day}`);
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+    return new Date(trimmed);
+  }
+  return new Date(NaN);
+}
 
 /**
  * Sets textContent for a selector if element exists.

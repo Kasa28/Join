@@ -356,7 +356,7 @@ async function createTask() {
     alert("Bitte wähle eine Kategorie aus.");
     return;
   }
-  const priority = (window.currentPriority || "medium").toLowerCase();
+  const priority = (window.currentPrio || "medium").toLowerCase();
   const activeBtn = document.querySelector(
     `.priority-btn-${priority}-addTask_page`
   );
