@@ -221,8 +221,6 @@
 
 .subtasks-task-container-technical-task {
   align-items: center;
-
-  padding: 6px 16px 6px 16px;
   gap: 16px;
 }
 
@@ -313,4 +311,9 @@
 
   position: relative;  
   overflow: hidden;     
+}
+.label-font-technical-task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
