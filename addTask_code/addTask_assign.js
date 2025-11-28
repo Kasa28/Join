@@ -85,7 +85,7 @@ function singleContactTemplate(inputContact){
       <span class="assign-name-addTask_page assign-name-addTask_template">
         ${inputContact.username}
       </span>
-      <input type="checkbox" class="assign-check-addTask_page assign-check-addTask_template">
+    <input type="checkbox" name="assigned[]" class="assign-check-addTask_page assign-check-addTask_template">
     </div>`;
 }
 
@@ -100,19 +100,19 @@ function demoContactTemplate(){
             <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker', event)">
               <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
               <span class="assign-name-addTask_page">Nils Becker</span>
-              <input type="checkbox" class="assign-check-addTask_page">
+            <input type="checkbox" name="assigned[]" class="assign-check-addTask_page">
             </div>
 
             <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König', event)">
               <span class="assign-avatar-addTask_page" style="background-color: #ff7eb6;">LK</span>
               <span class="assign-name-addTask_page">Lara König</span>
-              <input type="checkbox" class="assign-check-addTask_page">
+            <input type="checkbox" name="assigned[]" class="assign-check-addTask_page">
             </div>
 
             <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said', event)">
               <span class="assign-avatar-addTask_page" style="background-color: #00bfa5;">OS</span>
               <span class="assign-name-addTask_page">Omar Said</span>
-              <input type="checkbox" class="assign-check-addTask_page">
+            <input type="checkbox" name="assigned[]" class="assign-check-addTask_page">
             </div>`
 }
 

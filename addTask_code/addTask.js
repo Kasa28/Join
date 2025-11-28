@@ -1,7 +1,6 @@
 window.selectedUsers = window.selectedUsers || [];
 window.isDropdownOpen = window.isDropdownOpen || false;
 
-
 // === Title Validation ===
 document.addEventListener("DOMContentLoaded", () => {
   const titleInput = document.getElementById("title");
@@ -22,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
   titleInput.addEventListener("input", validateTitle);
 });
 
-
 // === Due Date Validation & Input Formatting ===
 /**
  * Validates whether a string matches the date format dd/mm/yyyy.
@@ -33,7 +31,6 @@ function isValidDateFormat(dateString) {
   const regex = /^\d{2}\/\d{2}\/\d{4}$/;
   return regex.test(dateString);
 }
-
 
 /**
  * Sanitizes and formats the due date input into dd/mm/yyyy as the user types.
@@ -49,7 +46,6 @@ function sanitizeDueDateInput(e) {
   }
   e.target.value = v;
 }
-
 
 /**
  * Validates the due date input field for format and real date values.
@@ -82,7 +78,6 @@ function validateDueDate() {
   return true;
 }
 
-
 // === Event-Handling ===
 const dueDateInput = document.getElementById("due-date");
 if (dueDateInput) {
@@ -92,7 +87,6 @@ if (dueDateInput) {
   });
   dueDateInput.addEventListener("blur", validateDueDate);
 }
-
 
 /**
  * Checks whether a date string represents a real calendar date.
@@ -108,7 +102,6 @@ function isRealDate(dateString) {
     date.getDate() === day
   );
 }
-
 
 // === Priority Selection ===
 /**
@@ -150,7 +143,6 @@ function setPriorityAddTask(priority) {
   window.currentPrio = priority;
 }
 
-
 // === Subtask Delete ===
 /**
  * Handles deleting the current subtask input when clicking the delete icon.
@@ -163,7 +155,6 @@ document.addEventListener("click", (e) => {
     }
   }
 });
-
 
 // === Subtask Add ===
 /**
@@ -194,7 +185,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 // === Subtask Remove ===
 /**
  * Handles removing an existing subtask from the list.
@@ -206,7 +196,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 // === Subtask Edit (Beginner-friendly, in-place editing) ===
 /**
  * Enables in-place editing of a subtask item.
@@ -214,18 +203,16 @@ document.addEventListener("click", (e) => {
  */
 function enableSubtaskEditing(e) {
   if (!e.target.classList.contains("subtask-edit-addTask_page")) return;
-
   const li = e.target.closest("li");
   if (!li) return;
-
   const oldText = li.firstChild.textContent;
   li.innerHTML = "";
-
   const input = document.createElement("input");
   input.type = "text";
   input.value = oldText.trim();
   input.classList.add("task-subtask-addTask_page");
-
+  input.name = "subtask-edit";
+  input.setAttribute("aria-label", "Edit subtask");
   const actions = document.createElement("div");
   actions.classList.add("subtask-actions-addTask_page");
   actions.innerHTML = `
@@ -239,7 +226,6 @@ function enableSubtaskEditing(e) {
 }
 
 document.addEventListener("click", enableSubtaskEditing);
-
 
 // === Subtask Save ===
 /**
@@ -271,9 +257,7 @@ function saveEditedSubtask(e) {
   li.appendChild(actions);
 }
 
-
 document.addEventListener("click", saveEditedSubtask);
-
 
 // === Form Reset ===
 /**
@@ -312,7 +296,6 @@ function clearForm() {
   document.querySelectorAll(".error-text").forEach((e) => (e.textContent = ""));
 }
 
-
 // === Toast (GLOBAL) ===
 /**
  * Displays a temporary toast notification on the screen.
@@ -341,9 +324,7 @@ function showToast(text, { variant = "ok", duration = 1000 } = {}) {
   }, duration);
 }
 
-
 window.showToast = showToast;
-
 
 /**
  * Displays a temporary toast notification on the screen.
@@ -420,7 +401,7 @@ async function createTask() {
     assignedTo,
   };
   try {
-    await saveTask(task.id, task); 
+    await saveTask(task.id, task);
     showToast("Task added to board", { duration: 1600 });
     setTimeout(() => {
       window.location.href = "../board_code/board.html";
