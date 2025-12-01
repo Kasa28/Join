@@ -42,10 +42,21 @@ document.addEventListener("DOMContentLoaded", function () {
      * Syncs mobile contact container from legacy desktop container.
      * @returns {void}
      */
+    let lastSyncedHtml = "";
+    let syncScheduled = false;
     function syncFromLegacy() {
-      if (window.innerWidth <= 1000) {
-        content.innerHTML = legacy.innerHTML;
-      }
+            if (window.innerWidth > 1000) return;
+
+      if (syncScheduled) return;
+      syncScheduled = true;
+
+      requestAnimationFrame(() => {
+        syncScheduled = false;
+        const nextHtml = legacy.innerHTML;
+        if (nextHtml === lastSyncedHtml) return;
+        lastSyncedHtml = nextHtml;
+        content.innerHTML = nextHtml;
+      });
     }
  /**
      * Applies responsive layout rules for contact detail containers.
