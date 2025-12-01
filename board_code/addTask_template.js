@@ -49,6 +49,7 @@ function initAddTaskTemplateHandlers() {
     });
     dueDateInput.addEventListener("blur", validateDueDate);
   }
+  setPriorityAddTask("medium");
 }
 
 function openPickerTemplate() {
