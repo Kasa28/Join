@@ -21,6 +21,19 @@ document.addEventListener("DOMContentLoaded", () => {
   titleInput.addEventListener("input", validateTitle);
 });
 
+
+// === Hidden Date Picker (Reusable) ===
+let hiddenDatePicker = document.createElement("input");
+hiddenDatePicker.type = "date";
+hiddenDatePicker.id = "hidden-date-picker";
+hiddenDatePicker.name = "hidden-date-picker";
+hiddenDatePicker.style.position = "absolute";
+hiddenDatePicker.style.opacity = "0";
+hiddenDatePicker.style.pointerEvents = "none";
+hiddenDatePicker.style.height = "0";
+hiddenDatePicker.style.width = "0";
+document.body.appendChild(hiddenDatePicker);
+
 // === Due Date Validation & Input Formatting ===
 /**
  * Validates whether a string matches the date format dd/mm/yyyy.
@@ -80,28 +93,19 @@ function validateDueDate() {
 
 
 function openPickerSimple() {
-  const input = document.getElementById("due-date");
-
-  // Temporäres unsichtbares Date-Input erzeugen und in den DOM einfügen
-  const temp = document.createElement("input");
-  temp.type = "date";
-  temp.style.position = "absolute";
-  temp.style.opacity = "0";
-  temp.style.pointerEvents = "none";
-  document.body.appendChild(temp);
-
-  // Wenn ein Datum gewählt wurde, formatiert übernehmen
-  temp.onchange = () => {
-    if (temp.value) {
-      const [year, month, day] = temp.value.split("-");
-      input.value = `${day}/${month}/${year}`;
+  const dueInput = document.getElementById("due-date");
+  if (!dueInput) return;
+  hiddenDatePicker.value = "";
+  
+  hiddenDatePicker.onchange = () => {
+    if (hiddenDatePicker.value) {
+      const [year, month, day] = hiddenDatePicker.value.split("-");
+      dueInput.value = `${day}/${month}/${year}`;
+      validateDueDate();
     }
-    document.body.removeChild(temp); // wieder entfernen
   };
-
-  // Picker öffnen
-  temp.showPicker?.() || temp.click();
-}
+    hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
+  }
 
 
 // === Event-Handling ===
@@ -113,6 +117,7 @@ if (dueDateInput) {
   });
   dueDateInput.addEventListener("blur", validateDueDate);
 }
+
 
 /**
  * Checks whether a date string represents a real calendar date.
