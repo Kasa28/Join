@@ -83,10 +83,16 @@
         <div class="date-input-wrapper-addTask_page">
           <p class="section-heading-addTask_page"><strong>Due date</strong></p>
           <div class="date-field-addTask_page">
-            <input type="text" id="due-date" class="task-date-addTask_page" name="due-date" placeholder="dd/mm/yyyy">
-            <img src="./icons_addTask/separatedAddTaskIcons/event.svg">
-          </div>
-          <p id="due-date-error" class="error-text"></p>
+            <input
+                type="text"
+                id="due-date"
+                class="task-date-addTask_page"
+                placeholder="dd/mm/yyyy"/>
+            <img
+                src="./icons_addTask/separatedAddTaskIcons/event.svg"
+                alt="Open date picker"
+                class="event-icon-addTask_page"
+                onclick="openPickerSimple()"/>
         </div>
 
         <section class="task-input-addTask_page">

@@ -78,6 +78,32 @@ function validateDueDate() {
   return true;
 }
 
+
+function openPickerSimple() {
+  const input = document.getElementById("due-date");
+
+  // Temporäres unsichtbares Date-Input erzeugen und in den DOM einfügen
+  const temp = document.createElement("input");
+  temp.type = "date";
+  temp.style.position = "absolute";
+  temp.style.opacity = "0";
+  temp.style.pointerEvents = "none";
+  document.body.appendChild(temp);
+
+  // Wenn ein Datum gewählt wurde, formatiert übernehmen
+  temp.onchange = () => {
+    if (temp.value) {
+      const [year, month, day] = temp.value.split("-");
+      input.value = `${day}/${month}/${year}`;
+    }
+    document.body.removeChild(temp); // wieder entfernen
+  };
+
+  // Picker öffnen
+  temp.showPicker?.() || temp.click();
+}
+
+
 // === Event-Handling ===
 const dueDateInput = document.getElementById("due-date");
 if (dueDateInput) {
@@ -282,6 +308,7 @@ function clearForm() {
       const img = btn.querySelector("img");
       if (img) img.style.filter = "";
     });
+    setPriorityAddTask('medium');
 
   selectedUsers = [];
   const placeholder = document.querySelector(
