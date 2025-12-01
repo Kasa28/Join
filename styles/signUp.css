@@ -30,15 +30,16 @@ body.signUp_body .footer_info a {
 }
 
 body.signUp_body .login_icon {
-  position: fixed !important;
-  top: 16px !important;
-  left: var(--logo-left) !important;
-  width: 110px !important;
-  height: 110px !important;
-  transform: none !important;
+  position: absolute;       
+  top: 16px;
+  left: var(--logo-left);
+  width: 110px;
+  height: 110px;
+  transform: none;
   z-index: 5;
-  animation: none !important;
+  animation: none;
 }
+
 
 body.signUp_body .login_icon .logo {
   filter: brightness(0) invert(1) !important;
