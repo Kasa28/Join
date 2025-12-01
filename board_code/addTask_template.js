@@ -278,54 +278,56 @@ document.addEventListener("click", (e) => {
 function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
-  container.innerHTML = ""; 
-  const getColorFromItem = (item) => {
-    if (!item) return "";
-       const avatarEl = item.querySelector(".assign-avatar-addTask_template");
-       if (avatarEl) {
-         let c = avatarEl.style.backgroundColor;
-         if (!c) c = getComputedStyle(avatarEl).backgroundColor;
-         if (!c || c === "transparent" || c === "rgba(0, 0, 0, 0)") {
-           const varCol = getComputedStyle(avatarEl).getPropertyValue("--avatar-color").trim();
-           if (varCol) c = varCol;
-         }
-         if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
-       }
-    const colorEl =
-    item.querySelector('[class*="color"]') ||
-    item.querySelector('[class*="avatar"]') ||
-    item;
-  if (colorEl) {
-    let c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
-    if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
-  }
-  const dataColor = item.getAttribute("data-color");
-  if (dataColor) return dataColor;
-  return "#4589ff";
-};
-(window.selectedUsers || []).forEach((name) => {
-  const item = [...document.querySelectorAll(".assign-item-addTask_template")].find(
-    (el) =>
-      el.querySelector(".assign-name-addTask_template")?.textContent.trim() === name
-  );
+  container.innerHTML = "";
+
+  const maxVisible = 3;
+  const users = window.selectedUsers || [];
+
+  // --- 1) Nur die ersten 3 Avatare anzeigen ---
+  const visible = users.slice(0, maxVisible);
+
+  visible.forEach((name) => {
+    // Passenden Kontakt im Dropdown finden
+    const item = [...document.querySelectorAll(".assign-item-addTask_template")].find(
+      (el) =>
+        el.querySelector(".assign-name-addTask_template")?.textContent.trim() === name
+    );
+
+    // Farbe holen
     let color = window.selectedUserColors?.[name];
-  if (!color) {
-    color = getColorFromItem(item) || "#4589ff";
-    if (window.selectedUserColors) window.selectedUserColors[name] = color;
-  }
+    if (!color) {
+      color = getColorFromItem(item) || "#4589ff";
+      if (window.selectedUserColors) window.selectedUserColors[name] = color;
+    }
+
+    // Initialen bilden
     const initials = name
       .split(" ")
       .map((n) => n[0]?.toUpperCase())
       .join("");
-      const avatar = document.createElement("div");
-      avatar.textContent = initials;
-      avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
-      avatar.style.backgroundColor = color;
-      avatar.dataset.fullName = name;
-      avatar.dataset.color = color;
-      avatar.title = name;
-      container.appendChild(avatar);
+
+    // Avatar erzeugen
+    const avatar = document.createElement("div");
+    avatar.textContent = initials;
+    avatar.classList.add("assign-avatar-addTask_template");
+    avatar.style.backgroundColor = color;
+    avatar.title = name;
+
+    container.appendChild(avatar);
   });
+
+  // --- 2) +X Bubble anzeigen wenn mehr als 3 ---
+  if (users.length > maxVisible) {
+    const extra = users.length - maxVisible;
+    const bubble = document.createElement("div");
+    bubble.classList.add("assign-avatar-addTask_template");
+    bubble.style.backgroundColor = "#d1d1d1";
+    bubble.style.color = "black";
+    bubble.style.fontWeight = "bold";
+    bubble.textContent = `+${extra}`;
+
+    container.appendChild(bubble);
+  }
 }
 
 
