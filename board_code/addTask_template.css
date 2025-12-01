@@ -319,3 +319,9 @@ addtask_template.css * {
   font-size: 14px;
   font-family: "Open Sans";
 }
+
+/* === Toast Error (AddTask Template) === */
+.toast--error {
+  background: #ff3d00 !important;
+  color: #ffffff !important;
+}

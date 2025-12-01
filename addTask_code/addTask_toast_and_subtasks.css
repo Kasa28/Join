@@ -230,6 +230,11 @@
   animation: toast-down 0.25s ease-in forwards;
 }
 
+.toast--error {
+  background: #ff3d00 !important;
+  color: #fff !important;
+}
+
 @keyframes toast-up {
   from {
     opacity: 0;
