@@ -125,4 +125,5 @@ body:not(.guest-mode) .login-link {
 
 body.guest-mode .login-link {
   display: inline-flex !important;
+  padding-top:30px;
 }
