@@ -7,6 +7,18 @@ window.setPriority = function(p) {
   return setPriorityAddTask(p);
 };
 
+// === Hidden Date Picker for AddTask Template ===
+let hiddenDatePickerTemplate = document.createElement("input");
+hiddenDatePickerTemplate.type = "date";
+hiddenDatePickerTemplate.id = "hidden-date-picker-template";
+hiddenDatePickerTemplate.name = "hidden-date-picker-template";
+hiddenDatePickerTemplate.style.position = "absolute";
+hiddenDatePickerTemplate.style.opacity = "0";
+hiddenDatePickerTemplate.style.pointerEvents = "none";
+hiddenDatePickerTemplate.style.height = "0";
+hiddenDatePickerTemplate.style.width = "0";
+document.body.appendChild(hiddenDatePickerTemplate);
+
 
 // === Initialization and Field Validation ===
 /**
@@ -38,6 +50,41 @@ function initAddTaskTemplateHandlers() {
     });
     dueDateInput.addEventListener("blur", validateDueDate);
   }
+}
+
+
+function openPickerTemplate() {
+  const dueInput = document.getElementById("due-date");
+  const icon = document.querySelector(".event-icon-addTask_template");
+  if (!dueInput || !icon) {
+    return;
+  }
+  const rect = icon.getBoundingClientRect();
+  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  hiddenDatePickerTemplate.style.left = rect.right + scrollLeft + 10 + "px";
+  hiddenDatePickerTemplate.style.top = rect.top + scrollTop + "px";
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  hiddenDatePickerTemplate.min = `${yyyy}-${mm}-${dd}`;
+  hiddenDatePickerTemplate.value = "";
+  hiddenDatePickerTemplate.onchange = () => {
+    if (!hiddenDatePickerTemplate.value) {
+      return;
+    }
+    const [year, month, day] = hiddenDatePickerTemplate.value.split("-");
+    dueInput.value = `${day}/${month}/${year}`;
+    validateDueDate();
+  };
+  setTimeout(() => {
+    if (hiddenDatePickerTemplate.showPicker) {
+      hiddenDatePickerTemplate.showPicker();
+    } else {
+      hiddenDatePickerTemplate.click();
+    }
+  }, 0);
 }
 
 
