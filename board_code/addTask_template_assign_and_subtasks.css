@@ -73,6 +73,11 @@
   font-family: "open sans";
 }
 
+.assigned-avatars-addTask_template {
+  display: flex;
+  gap: 8px; 
+}
+
 .assign-check-addTask_template {
   appearance: none;
   -webkit-appearance: none;
