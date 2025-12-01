@@ -122,10 +122,11 @@ function renderCard(t) {
       if (!task) return;
       const assBox = card.querySelector(".assignees");
       if (assBox) {
-        assBox.innerHTML = (task.assignedTo || [])
+        const people = task.assignedTo || [];
+        const maxVisible = 3;
+        const visible = people.slice(0, maxVisible);
+        assBox.innerHTML = visible
           .map((p) => {
-            if (p.img)
-              return `<img src="${p.img}" class="assigned-to-picture" alt="${p.name}">`;
             const initials = p.name
               .split(/\s+/)
               .filter(Boolean)
@@ -136,6 +137,15 @@ function renderCard(t) {
             return `<span class="assigned-to-initials" title="${p.name}" style="${bg}">${initials}</span>`;
           })
           .join("");
+        if (people.length > maxVisible) {
+          const extra = people.length - maxVisible;
+          assBox.innerHTML += `<span class="assigned-to-initials"
+              style="
+                background-color: #d1d1d1;
+                color: black;
+                font-weight: 600;
+              ">+${extra}</span>`;
+        }
       }
       const pill = card.querySelector(".priority-pill");
       if (pill) {
