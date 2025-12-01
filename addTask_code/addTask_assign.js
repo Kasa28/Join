@@ -124,7 +124,6 @@ function demoContactTemplate(){
  * @param {Event} event - The triggering event.
  */
 function selectAssignUser(name, event) {
-  if (event && event.stopPropagation) event.stopPropagation();
   let item = null;
   if (event && event.target) {
     item = event.target.closest(".assign-item-addTask_page");
@@ -136,18 +135,15 @@ function selectAssignUser(name, event) {
       if (!item && label === name) item = el;
     });
   }
-
   if (!item) return;
-
   const checkbox = item.querySelector(".assign-check-addTask_page");
+  checkbox.checked = !checkbox.checked;
   item.classList.toggle("selected", checkbox.checked);
-
   if (checkbox.checked) {
     if (!selectedUsers.includes(name)) selectedUsers.push(name);
   } else {
     selectedUsers = selectedUsers.filter((user) => user !== name);
   }
-
   updateAssignPlaceholder();
 }
 
@@ -337,30 +333,39 @@ function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
   container.innerHTML = "";
-  selectedUsers.forEach((name) => {
-    const sourceAvatar = [
-      ...document.querySelectorAll(".assign-item-addTask_page"),
-    ]
-      .find(
-        (item) =>
-          item.querySelector(".assign-name-addTask_page").textContent.trim() ===
-          name
-      )
+
+  // Zeige nur die ersten 3 ausgewählten
+  const visibleUsers = selectedUsers.slice(0, 3);
+
+  visibleUsers.forEach((name) => {
+    // Avatar finden (aus der Dropdown-Liste)
+    const sourceAvatar = [...document.querySelectorAll(".assign-item-addTask_page")]
+      .find(item => item.querySelector(".assign-name-addTask_page").textContent.trim() === name)
       ?.querySelector(".assign-avatar-addTask_page");
+
     const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
-    const initials = name
-      .split(" ")
-      .map((n) => n[0].toUpperCase())
-      .join("");
-      const avatar = document.createElement("div");
-      avatar.textContent = initials;
-      avatar.classList.add(
-        "assign-avatar-addTask_page",
-        "assign-avatar-addTask_template"
-      );
-      avatar.style.backgroundColor = color;
-      container.appendChild(avatar);
+    const initials = name.split(" ").map(n => n[0].toUpperCase()).join("");
+
+    const avatar = document.createElement("div");
+    avatar.classList.add("assign-avatar-addTask_page");
+    avatar.textContent = initials;
+    avatar.style.backgroundColor = color;
+
+    container.appendChild(avatar);
   });
+
+  // Wenn mehr als 3 → +X Bubble anzeigen
+  if (selectedUsers.length > 3) {
+    const rest = selectedUsers.length - 3;
+    const bubble = document.createElement("div");
+    bubble.classList.add("assign-avatar-addTask_page");
+    bubble.style.backgroundColor = "#d1d1d1";
+    bubble.style.color = "black";
+    bubble.style.fontWeight = "bold";
+    bubble.textContent = `+${rest}`;
+
+    container.appendChild(bubble);
+  }
 }
 
 
@@ -370,7 +375,6 @@ function renderAssignedAvatars() {
  */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("assign-check-addTask_page")) {
-    e.stopPropagation();
     const item = e.target.closest(".assign-item-addTask_page");
     const name = item
       .querySelector(".assign-name-addTask_page")

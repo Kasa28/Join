@@ -21,6 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
   titleInput.addEventListener("input", validateTitle);
 });
 
+// === Hidden Date Picker (Reusable) ===
+let hiddenDatePicker = document.createElement("input");
+hiddenDatePicker.type = "date";
+hiddenDatePicker.id = "hidden-date-picker";
+hiddenDatePicker.name = "hidden-date-picker";
+hiddenDatePicker.style.position = "absolute";
+hiddenDatePicker.style.opacity = "0";
+hiddenDatePicker.style.pointerEvents = "none";
+hiddenDatePicker.style.height = "0";
+hiddenDatePicker.style.width = "0";
+document.body.appendChild(hiddenDatePicker);
+
 // === Due Date Validation & Input Formatting ===
 /**
  * Validates whether a string matches the date format dd/mm/yyyy.
@@ -78,31 +90,36 @@ function validateDueDate() {
   return true;
 }
 
-
 function openPickerSimple() {
-  const input = document.getElementById("due-date");
-
-  // Temporäres unsichtbares Date-Input erzeugen und in den DOM einfügen
-  const temp = document.createElement("input");
-  temp.type = "date";
-  temp.style.position = "absolute";
-  temp.style.opacity = "0";
-  temp.style.pointerEvents = "none";
-  document.body.appendChild(temp);
-
-  // Wenn ein Datum gewählt wurde, formatiert übernehmen
-  temp.onchange = () => {
-    if (temp.value) {
-      const [year, month, day] = temp.value.split("-");
-      input.value = `${day}/${month}/${year}`;
+  const dueInput = document.getElementById("due-date");
+  const icon = document.querySelector(".event-icon-addTask_page");
+  if (!dueInput || !icon) return;
+  const rect = icon.getBoundingClientRect();
+  const scrollLeft = window.pageXOffset;
+  const scrollTop = window.pageYOffset;
+  hiddenDatePicker.style.left = rect.right + scrollLeft + 10 + "px";
+  hiddenDatePicker.style.top = rect.top + scrollTop + "px";
+  setTimeout(() => {
+    hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
+  }, 0);
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  hiddenDatePicker.min = `${yyyy}-${mm}-${dd}`;
+  hiddenDatePicker.removeAttribute("value");
+  hiddenDatePicker.value = "";
+  hiddenDatePicker.onchange = () => {
+    if (!hiddenDatePicker.value) {
+      dueInput.value = "";
+      validateDueDate();
+      return;
     }
-    document.body.removeChild(temp); // wieder entfernen
+    const [year, month, day] = hiddenDatePicker.value.split("-");
+    dueInput.value = `${day}/${month}/${year}`;
+    validateDueDate();
   };
-
-  // Picker öffnen
-  temp.showPicker?.() || temp.click();
 }
-
 
 // === Event-Handling ===
 const dueDateInput = document.getElementById("due-date");
@@ -308,7 +325,7 @@ function clearForm() {
       const img = btn.querySelector("img");
       if (img) img.style.filter = "";
     });
-    setPriorityAddTask('medium');
+  setPriorityAddTask("medium");
 
   selectedUsers = [];
   const placeholder = document.querySelector(
