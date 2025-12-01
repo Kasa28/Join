@@ -380,26 +380,26 @@ window.showToast = showToast;
 async function createTask() {
   const title = (document.getElementById("title")?.value || "").trim();
   if (!title) {
-    alert("Please enter a title");
+    showToast("Please enter a title", { variant: "error", duration: 1600 });
     return;
   }
   const dueDate = (document.getElementById("due-date")?.value || "").trim();
   if (!dueDate) {
-    alert("Please enter a due date");
+    showToast("Please enter a due date", { variant: "error", duration: 1600 });
     return;
-  }
-  if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) {
-    alert("Please enter a valid date in format dd/mm/yyyy");
-    return;
-  }
+}
+if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) {
+  showToast("Please enter a valid date in format dd/mm/yyyy", { variant: "error", duration: 1600 });
+  return;
+}
   const description = (
     document.getElementById("description")?.value || ""
   ).trim();
   const category = (document.getElementById("category")?.value || "").trim();
   if (!category) {
-    alert("Bitte wähle eine Kategorie aus.");
+    showToast("Please select a category.", { variant: "error", duration: 1600 });
     return;
-  }
+}
   const priority = (window.currentPrio || "medium").toLowerCase();
   const activeBtn = document.querySelector(
     `.priority-btn-${priority}-addTask_page`

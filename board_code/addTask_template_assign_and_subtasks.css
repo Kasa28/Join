@@ -73,6 +73,11 @@
   font-family: "open sans";
 }
 
+.assigned-avatars-addTask_template {
+  display: flex;
+  gap: 8px; 
+}
+
 .assign-check-addTask_template {
   appearance: none;
   -webkit-appearance: none;
@@ -172,6 +177,12 @@
   text-overflow: ellipsis;
   padding-right: 75px;
 }
+
+.task-subtask-addTask_template:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 
 .task-subtask-addTask_template:not(:placeholder-shown)
   + .subtask-icons-addTask_template {

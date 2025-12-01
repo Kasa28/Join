@@ -3,7 +3,7 @@ window.selectedUsers = window.selectedUsers || [];
 window.isDropdownOpen = window.isDropdownOpen || false;
 window.selectedUserColors = window.selectedUserColors || {};
 
-window.setPriority = function(p) {
+window.setPriority = function (p) {
   return setPriorityAddTask(p);
 };
 
@@ -18,7 +18,6 @@ hiddenDatePickerTemplate.style.pointerEvents = "none";
 hiddenDatePickerTemplate.style.height = "0";
 hiddenDatePickerTemplate.style.width = "0";
 document.body.appendChild(hiddenDatePickerTemplate);
-
 
 // === Initialization and Field Validation ===
 /**
@@ -50,8 +49,8 @@ function initAddTaskTemplateHandlers() {
     });
     dueDateInput.addEventListener("blur", validateDueDate);
   }
+  setPriorityAddTask("medium");
 }
-
 
 function openPickerTemplate() {
   const dueInput = document.getElementById("due-date");
@@ -87,7 +86,6 @@ function openPickerTemplate() {
   }, 0);
 }
 
-
 // === Assign Dropdown Handling ===
 /**
  * Toggles the assign dropdown open or closed and updates placeholder and arrow UI.
@@ -96,7 +94,9 @@ function openPickerTemplate() {
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
-  const placeholder = document.querySelector(".assign-placeholder-addTask_template");
+  const placeholder = document.querySelector(
+    ".assign-placeholder-addTask_template"
+  );
   const arrow = document.querySelector(".assign-arrow-addTask_template");
   if (!dropdown || !placeholder || !arrow) return;
   isDropdownOpen = dropdown.style.display !== "block";
@@ -106,14 +106,14 @@ function toggleAssignDropdown(event) {
     placeholder.textContent = "";
     placeholder.classList.add("typing");
     placeholder.focus();
-    arrow.style.transform = "rotate(180deg)"; 
+    arrow.style.transform = "rotate(180deg)";
     const items = document.querySelectorAll(".assign-item-addTask_template");
     items.forEach((item) => (item.style.display = "flex"));
   } else {
     placeholder.contentEditable = false;
     placeholder.classList.remove("typing");
     placeholder.blur();
-    arrow.style.transform = "rotate(0deg)"; 
+    arrow.style.transform = "rotate(0deg)";
     placeholder.textContent = "Select contact to assign";
     placeholder.style.color = "black";
   }
@@ -121,7 +121,6 @@ function toggleAssignDropdown(event) {
     renderAssignedAvatars();
   }
 }
-
 
 // === Shared helper: Extract avatar/user color ===
 /**
@@ -149,14 +148,15 @@ function getColorFromItem(item) {
     item.querySelector('[class*="avatar"]') ||
     item;
   if (colorEl) {
-    let c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
+    let c =
+      colorEl.style.backgroundColor ||
+      getComputedStyle(colorEl).backgroundColor;
     if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
   }
   const dataColor = item.getAttribute("data-color");
   if (dataColor) return dataColor;
   return "#4589ff";
 }
-
 
 // === Assign User Selection ===
 /**
@@ -166,10 +166,13 @@ function getColorFromItem(item) {
  * @param {Event} event - The click event that triggered the selection.
  */
 function selectAssignUser(name, event) {
-  if (event && event.stopPropagation) event.stopPropagation();
-  let item = event && event.currentTarget ? event.currentTarget : null;
+  // Stelle sicher, dass immer das übergeordnete Item gefunden wird
+  let item =
+    event?.currentTarget?.closest(".assign-item-addTask_template") || null;
   if (!item) {
-    const candidates = document.querySelectorAll(".assign-item-addTask_template");
+    const candidates = document.querySelectorAll(
+      ".assign-item-addTask_template"
+    );
     candidates.forEach((el) => {
       const label = el
         .querySelector(".assign-name-addTask_template")
@@ -178,28 +181,37 @@ function selectAssignUser(name, event) {
     });
   }
   if (!item) return;
+
   const checkbox = item.querySelector(".assign-check-addTask_template");
-  item.classList.toggle("selected", checkbox.checked);
+
+  // Wenn der Klick direkt auf die Checkbox kam, nicht doppelt toggeln
+  if (event.target === checkbox) {
+    item.classList.toggle("selected", checkbox.checked);
+  } else {
+    checkbox.checked = !checkbox.checked;
+    item.classList.toggle("selected", checkbox.checked);
+  }
   if (checkbox.checked) {
     if (!selectedUsers.includes(name)) selectedUsers.push(name);
-        if (window.selectedUserColors) {
+    if (window.selectedUserColors) {
       const color = getColorFromItem(item) || "#4589ff";
       window.selectedUserColors[name] = color;
     }
   } else {
     selectedUsers = selectedUsers.filter((user) => user !== name);
-        if (window.selectedUserColors) delete window.selectedUserColors[name];
+    if (window.selectedUserColors) delete window.selectedUserColors[name];
   }
   updateAssignPlaceholder();
 }
-
 
 // === Assign Input Filtering ===
 /**
  * Updates the assign placeholder text depending on whether users are selected.
  */
 function updateAssignPlaceholder() {
-  const placeholder = document.querySelector(".assign-placeholder-addTask_template");
+  const placeholder = document.querySelector(
+    ".assign-placeholder-addTask_template"
+  );
   if (selectedUsers.length === 0) {
     placeholder.textContent = "Select contact to assign";
     placeholder.style.color = "black";
@@ -207,7 +219,6 @@ function updateAssignPlaceholder() {
     placeholder.textContent = "";
   }
 }
-
 
 /**
  * Handles live filtering of assign dropdown items based on user input.
@@ -222,7 +233,9 @@ document.addEventListener("input", (e) => {
     }
     let anyMatch = false;
     items.forEach((item) => {
-      const name = item.querySelector(".assign-name-addTask_template").textContent.toLowerCase();
+      const name = item
+        .querySelector(".assign-name-addTask_template")
+        .textContent.toLowerCase();
       if (name.includes(searchValue)) {
         item.style.display = "flex";
         anyMatch = true;
@@ -242,7 +255,6 @@ document.addEventListener("input", (e) => {
   }
 });
 
-
 // === Assign Dropdown Close Handling ===
 /**
  * Detects clicks outside the assign dropdown to close it and reset UI state.
@@ -250,7 +262,9 @@ document.addEventListener("input", (e) => {
 document.addEventListener("click", (e) => {
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
   const assignSelect = document.getElementById("assign-select");
-  const placeholder = document.querySelector(".assign-placeholder-addTask_template");
+  const placeholder = document.querySelector(
+    ".assign-placeholder-addTask_template"
+  );
   const arrow = document.querySelector(".assign-arrow-addTask_template");
   if (!dropdown || !assignSelect) return;
   if (!assignSelect.contains(e.target) && !dropdown.contains(e.target)) {
@@ -262,7 +276,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 // === Assigned Avatars Rendering ===
 /**
  * Renders avatars for all currently selected users, including initials and colors.
@@ -270,56 +283,46 @@ document.addEventListener("click", (e) => {
 function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
-  container.innerHTML = ""; 
-  const getColorFromItem = (item) => {
-    if (!item) return "";
-       const avatarEl = item.querySelector(".assign-avatar-addTask_template");
-       if (avatarEl) {
-         let c = avatarEl.style.backgroundColor;
-         if (!c) c = getComputedStyle(avatarEl).backgroundColor;
-         if (!c || c === "transparent" || c === "rgba(0, 0, 0, 0)") {
-           const varCol = getComputedStyle(avatarEl).getPropertyValue("--avatar-color").trim();
-           if (varCol) c = varCol;
-         }
-         if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
-       }
-    const colorEl =
-    item.querySelector('[class*="color"]') ||
-    item.querySelector('[class*="avatar"]') ||
-    item;
-  if (colorEl) {
-    let c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
-    if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
-  }
-  const dataColor = item.getAttribute("data-color");
-  if (dataColor) return dataColor;
-  return "#4589ff";
-};
-(window.selectedUsers || []).forEach((name) => {
-  const item = [...document.querySelectorAll(".assign-item-addTask_template")].find(
-    (el) =>
-      el.querySelector(".assign-name-addTask_template")?.textContent.trim() === name
-  );
+  container.innerHTML = "";
+  const maxVisible = 3;
+  const users = window.selectedUsers || [];
+  const visible = users.slice(0, maxVisible);
+  visible.forEach((name) => {
+    const item = [
+      ...document.querySelectorAll(".assign-item-addTask_template"),
+    ].find(
+      (el) =>
+        el
+          .querySelector(".assign-name-addTask_template")
+          ?.textContent.trim() === name
+    );
     let color = window.selectedUserColors?.[name];
-  if (!color) {
-    color = getColorFromItem(item) || "#4589ff";
-    if (window.selectedUserColors) window.selectedUserColors[name] = color;
-  }
+    if (!color) {
+      color = getColorFromItem(item) || "#4589ff";
+      if (window.selectedUserColors) window.selectedUserColors[name] = color;
+    }
     const initials = name
       .split(" ")
       .map((n) => n[0]?.toUpperCase())
       .join("");
-      const avatar = document.createElement("div");
-      avatar.textContent = initials;
-      avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
-      avatar.style.backgroundColor = color;
-      avatar.dataset.fullName = name;
-      avatar.dataset.color = color;
-      avatar.title = name;
-      container.appendChild(avatar);
+    const avatar = document.createElement("div");
+    avatar.textContent = initials;
+    avatar.classList.add("assign-avatar-addTask_template");
+    avatar.style.backgroundColor = color;
+    avatar.title = name;
+    container.appendChild(avatar);
   });
+  if (users.length > maxVisible) {
+    const extra = users.length - maxVisible;
+    const bubble = document.createElement("div");
+    bubble.classList.add("assign-avatar-addTask_template");
+    bubble.style.backgroundColor = "#d1d1d1";
+    bubble.style.color = "black";
+    bubble.style.fontWeight = "bold";
+    bubble.textContent = `+${extra}`;
+    container.appendChild(bubble);
+  }
 }
-
 
 // === Priority Handling ===
 /**
@@ -327,8 +330,12 @@ function renderAssignedAvatars() {
  * @param {string} priority - One of "urgent", "medium", or "low".
  */
 function setPriorityAddTask(priority) {
-  const urgentBtn = document.querySelector(".priority-btn-urgent-addTask_template");
-  const mediumBtn = document.querySelector(".priority-btn-medium-addTask_template");
+  const urgentBtn = document.querySelector(
+    ".priority-btn-urgent-addTask_template"
+  );
+  const mediumBtn = document.querySelector(
+    ".priority-btn-medium-addTask_template"
+  );
   const lowBtn = document.querySelector(".priority-btn-low-addTask_template");
   urgentBtn.style.backgroundColor = "white";
   mediumBtn.style.backgroundColor = "white";
@@ -356,7 +363,6 @@ function setPriorityAddTask(priority) {
   window.currentPriority = priority;
   window.currentPrio = priority;
 }
-
 
 // === Subtask Management (Add, Edit, Remove, Save) ===
 /**
@@ -395,12 +401,12 @@ document.addEventListener("click", (e) => {
     if (!li) return;
     const oldText = li.firstChild.textContent;
     li.innerHTML = "";
-
     const input = document.createElement("input");
     input.type = "text";
     input.value = oldText.trim();
     input.classList.add("task-subtask-addTask_template");
-
+    input.id = "subtask-edit-" + Date.now();
+    input.name = "subtask-edit-" + Date.now();
     const actions = document.createElement("div");
     actions.classList.add("subtask-actions-addTask_template");
     actions.innerHTML = `
@@ -430,7 +436,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 // === Due Date Validation and Formatting ===
 /**
  * Sanitizes date input to allow only digits and slashes, enforcing max length.
@@ -441,7 +446,6 @@ function sanitizeDueDateInput(e) {
   input.value = input.value.replace(/[^0-9/]/g, "").slice(0, 10);
 }
 
-
 /**
  * Checks if a date string matches the dd/mm/yyyy format.
  * @param {string} dateString - The date string to validate.
@@ -450,7 +454,6 @@ function sanitizeDueDateInput(e) {
 function isValidDateFormat(dateString) {
   return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString);
 }
-
 
 /**
  * Determines whether the given date string represents a real valid calendar date.
@@ -467,7 +470,6 @@ function isRealDate(dateString) {
     date.getFullYear() === y
   );
 }
-
 
 /**
  * Validates the due date input field for presence, format, and correctness.

@@ -86,6 +86,11 @@ addtask_template.css * {
   margin-bottom: 4px;
 }
 
+.task-title-addTask_template:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .section-heading-addTask_template {
   color: #42526e;
   font-family: "Open Sans", sans-serif;
@@ -182,6 +187,11 @@ addtask_template.css * {
   font-size: 19px;
   line-height: 120%;
   margin-bottom: 24px;
+}
+
+.task-select-addTask_template:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 /* === Priority Buttons === */
@@ -308,4 +318,10 @@ addtask_template.css * {
   color: red;
   font-size: 14px;
   font-family: "Open Sans";
+}
+
+/* === Toast Error (AddTask Template) === */
+.toast--error {
+  background: #ff3d00 !important;
+  color: #ffffff !important;
 }
