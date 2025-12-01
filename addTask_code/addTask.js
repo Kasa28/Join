@@ -282,6 +282,7 @@ function clearForm() {
       const img = btn.querySelector("img");
       if (img) img.style.filter = "";
     });
+    setPriorityAddTask('medium');
 
   selectedUsers = [];
   const placeholder = document.querySelector(
