@@ -124,7 +124,6 @@ function demoContactTemplate(){
  * @param {Event} event - The triggering event.
  */
 function selectAssignUser(name, event) {
-  if (event && event.stopPropagation) event.stopPropagation();
   let item = null;
   if (event && event.target) {
     item = event.target.closest(".assign-item-addTask_page");
@@ -140,6 +139,7 @@ function selectAssignUser(name, event) {
   if (!item) return;
 
   const checkbox = item.querySelector(".assign-check-addTask_page");
+  checkbox.checked = !checkbox.checked;
   item.classList.toggle("selected", checkbox.checked);
 
   if (checkbox.checked) {
@@ -370,7 +370,6 @@ function renderAssignedAvatars() {
  */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("assign-check-addTask_page")) {
-    e.stopPropagation();
     const item = e.target.closest(".assign-item-addTask_page");
     const name = item
       .querySelector(".assign-name-addTask_page")
