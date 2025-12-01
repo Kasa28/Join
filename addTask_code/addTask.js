@@ -97,26 +97,29 @@ function openPickerSimple() {
   const rect = icon.getBoundingClientRect();
   const scrollLeft = window.pageXOffset;
   const scrollTop = window.pageYOffset;
-hiddenDatePicker.style.left = rect.right + scrollLeft + 10 + "px";
-hiddenDatePicker.style.top = rect.top + scrollTop + "px";
-setTimeout(() => {
-  hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
-}, 0);
-const today = new Date();
-const yyyy = today.getFullYear();
-const mm = String(today.getMonth() + 1).padStart(2, "0");
-const dd = String(today.getDate()).padStart(2, "0");
-hiddenDatePicker.min = `${yyyy}-${mm}-${dd}`;
-hiddenDatePicker.value = "";
-hiddenDatePicker.onchange = () => {
-  if (hiddenDatePicker.value) {
+  hiddenDatePicker.style.left = rect.right + scrollLeft + 10 + "px";
+  hiddenDatePicker.style.top = rect.top + scrollTop + "px";
+  setTimeout(() => {
+    hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
+  }, 0);
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  hiddenDatePicker.min = `${yyyy}-${mm}-${dd}`;
+  hiddenDatePicker.removeAttribute("value");
+  hiddenDatePicker.value = "";
+  hiddenDatePicker.onchange = () => {
+    if (!hiddenDatePicker.value) {
+      dueInput.value = "";
+      validateDueDate();
+      return;
+    }
     const [year, month, day] = hiddenDatePicker.value.split("-");
     dueInput.value = `${day}/${month}/${year}`;
     validateDueDate();
-  }
-};
+  };
 }
-
 
 // === Event-Handling ===
 const dueDateInput = document.getElementById("due-date");
