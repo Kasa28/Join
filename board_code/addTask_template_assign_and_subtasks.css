@@ -178,6 +178,12 @@
   padding-right: 75px;
 }
 
+.task-subtask-addTask_template:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+
 .task-subtask-addTask_template:not(:placeholder-shown)
   + .subtask-icons-addTask_template {
   display: flex;
