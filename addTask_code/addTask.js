@@ -94,22 +94,20 @@ function openPickerSimple() {
   const dueInput = document.getElementById("due-date");
   const icon = document.querySelector(".event-icon-addTask_page");
   if (!dueInput || !icon) return;
-
-  // Startposition ermitteln
   const rect = icon.getBoundingClientRect();
   const scrollLeft = window.pageXOffset;
   const scrollTop = window.pageYOffset;
-
-// Hidden Picker an gewünschte Position setzen
 hiddenDatePicker.style.left = rect.right + scrollLeft + 10 + "px";
 hiddenDatePicker.style.top = rect.top + scrollTop + "px";
-
 setTimeout(() => {
   hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
 }, 0);
-
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, "0");
+const dd = String(today.getDate()).padStart(2, "0");
+hiddenDatePicker.min = `${yyyy}-${mm}-${dd}`;
 hiddenDatePicker.value = "";
-
 hiddenDatePicker.onchange = () => {
   if (hiddenDatePicker.value) {
     const [year, month, day] = hiddenDatePicker.value.split("-");
