@@ -139,7 +139,11 @@ function getAddTaskTemplate() {
       <div class="date-field-addTask_template">
         <input type="text" id="due-date" class="task-date-addTask_template" name="due-date" placeholder="dd/mm/yyyy"
           pattern="\\d{2}/\\d{2}/\\d{4}" inputmode="numeric">
-        <img src="/addTask_code/icons_addTask/separatedAddTaskIcons/event.svg" alt="Event Icon" class="event-icon-addTask_template">
+       <img 
+  src="/addTask_code/icons_addTask/separatedAddTaskIcons/event.svg" 
+  alt="Event Icon" 
+  class="event-icon-addTask_template"
+  onclick="openPickerTemplate()">
       </div>
       <small id="due-date-error" class="error-text"></small>
     </div>
