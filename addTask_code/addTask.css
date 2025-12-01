@@ -71,6 +71,11 @@
   font-size: 32px;
 }
 
+.task-title-addTask_page:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .section-heading-addTask_page {
   font-size: 18px;
   margin-bottom: 8px;
@@ -193,6 +198,11 @@
   outline: none;
   box-shadow: none;
   background-color: white;
+}
+
+.task-select-addTask_page:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .priority-group-addTask_page {
@@ -356,4 +366,9 @@
   display: flex;
   gap: 8px;
   margin-top: 8px;
+}
+
+.task-subtask-addTask_page:focus {
+  outline: none;
+  box-shadow: none;
 }
