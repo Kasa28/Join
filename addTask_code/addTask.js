@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
   titleInput.addEventListener("input", validateTitle);
 });
 
-
 // === Hidden Date Picker (Reusable) ===
 let hiddenDatePicker = document.createElement("input");
 hiddenDatePicker.type = "date";
@@ -91,21 +90,34 @@ function validateDueDate() {
   return true;
 }
 
-
 function openPickerSimple() {
   const dueInput = document.getElementById("due-date");
-  if (!dueInput) return;
-  hiddenDatePicker.value = "";
-  
-  hiddenDatePicker.onchange = () => {
-    if (hiddenDatePicker.value) {
-      const [year, month, day] = hiddenDatePicker.value.split("-");
-      dueInput.value = `${day}/${month}/${year}`;
-      validateDueDate();
-    }
-  };
-    hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
+  const icon = document.querySelector(".event-icon-addTask_page");
+  if (!dueInput || !icon) return;
+
+  // Startposition ermitteln
+  const rect = icon.getBoundingClientRect();
+  const scrollLeft = window.pageXOffset;
+  const scrollTop = window.pageYOffset;
+
+// Hidden Picker an gewünschte Position setzen
+hiddenDatePicker.style.left = rect.right + scrollLeft + 10 + "px";
+hiddenDatePicker.style.top = rect.top + scrollTop + "px";
+
+setTimeout(() => {
+  hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
+}, 0);
+
+hiddenDatePicker.value = "";
+
+hiddenDatePicker.onchange = () => {
+  if (hiddenDatePicker.value) {
+    const [year, month, day] = hiddenDatePicker.value.split("-");
+    dueInput.value = `${day}/${month}/${year}`;
+    validateDueDate();
   }
+};
+}
 
 
 // === Event-Handling ===
@@ -117,7 +129,6 @@ if (dueDateInput) {
   });
   dueDateInput.addEventListener("blur", validateDueDate);
 }
-
 
 /**
  * Checks whether a date string represents a real calendar date.
@@ -313,7 +324,7 @@ function clearForm() {
       const img = btn.querySelector("img");
       if (img) img.style.filter = "";
     });
-    setPriorityAddTask('medium');
+  setPriorityAddTask("medium");
 
   selectedUsers = [];
   const placeholder = document.querySelector(
