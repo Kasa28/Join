@@ -279,44 +279,30 @@ function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
   container.innerHTML = "";
-
   const maxVisible = 3;
   const users = window.selectedUsers || [];
-
-  // --- 1) Nur die ersten 3 Avatare anzeigen ---
   const visible = users.slice(0, maxVisible);
-
   visible.forEach((name) => {
-    // Passenden Kontakt im Dropdown finden
     const item = [...document.querySelectorAll(".assign-item-addTask_template")].find(
       (el) =>
         el.querySelector(".assign-name-addTask_template")?.textContent.trim() === name
     );
-
-    // Farbe holen
     let color = window.selectedUserColors?.[name];
     if (!color) {
       color = getColorFromItem(item) || "#4589ff";
       if (window.selectedUserColors) window.selectedUserColors[name] = color;
     }
-
-    // Initialen bilden
     const initials = name
       .split(" ")
       .map((n) => n[0]?.toUpperCase())
       .join("");
-
-    // Avatar erzeugen
     const avatar = document.createElement("div");
     avatar.textContent = initials;
     avatar.classList.add("assign-avatar-addTask_template");
     avatar.style.backgroundColor = color;
     avatar.title = name;
-
     container.appendChild(avatar);
   });
-
-  // --- 2) +X Bubble anzeigen wenn mehr als 3 ---
   if (users.length > maxVisible) {
     const extra = users.length - maxVisible;
     const bubble = document.createElement("div");
@@ -325,7 +311,6 @@ function renderAssignedAvatars() {
     bubble.style.color = "black";
     bubble.style.fontWeight = "bold";
     bubble.textContent = `+${extra}`;
-
     container.appendChild(bubble);
   }
 }
