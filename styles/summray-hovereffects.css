@@ -10,22 +10,6 @@
   background-color: #0038ff;
 }
 
-.urgent-task-card-summary:hover .date-font-summary {
-  font-size: 42px;
-}
-
-.urgent-task-card-summary:hover .h2-font-summray {
-  font-size: 52px;
-}
-
-.urgent-task-card-summary:hover .card-font-a-urgent-task-summary {
-  font-size: 24px;
-}
-
-.urgent-task-card-summary:hover .img-summary {
-  width: 82px;
-  height: 82px;
-}
 
 .tasks-on-board-card-summary:hover {
   height: 108%;
@@ -36,19 +20,6 @@
   border-top-left-radius: 0;
 }
 
-.tasks-on-board-card-summary:hover .h2-font-summray {
-  font-size: 52px;
-}
-
-.tasks-on-board-card-summary:hover .card-font-a-summary {
-  font-size: 24px;
-  color: white;
-}
-
-.tasks-on-board-card-summary:hover .img-summary {
-  width: 82px;
-  height: 82px;
-}
 
 .backgroundcolor-blue-light:hover {
   width: 290px;
@@ -60,21 +31,6 @@
   background-color: white;
 }
 
-.backgroundcolor-blue-light:hover .h2-font-summray {
-  font-size: 52px;
-  color: #0038ff;
-}
-
-.backgroundcolor-blue-light:hover .card-font-a-summary {
-  font-size: 24px;
-  color: #0038ff;
-}
-
-.backgroundcolor-blue-light:hover .img-summary {
-  width: 82px;
-  height: 82px;
-}
-
 .summary-card-the-last-three:hover {
   width: 240px;
   height: 259px;
@@ -82,18 +38,4 @@
   color: white;
   border-top-left-radius: 0;
   cursor: pointer;
-}
-
-.summary-card-the-last-three:hover .h2-font-summray {
-  font-size: 52px;
-}
-
-.summary-card-the-last-three:hover .card-font-a-summary {
-  font-size: 24px;
-  color: white;
-}
-
-.summary-card-the-last-three:hover .img-summary {
-  width: 82px;
-  height: 82px;
 }
