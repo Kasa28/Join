@@ -1,41 +1,73 @@
+/* Icon + Zahl: fester Abstand */
+.img-count-container-summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+/* Basis: sanfte Übergänge für alle Karten */
+.urgent-task-card-summary,
+.tasks-on-board-card-summary,
+.backgroundcolor-blue-light,
+.summary-card-the-last-three {
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+              background-color 0.2s ease, color 0.2s ease;
+  position: relative;
+  z-index: 0;
+}
+
+/* rechte Karte: von RECHTS aus skalieren, damit sie dort stehen bleibt */
+.tasks-on-board-card-summary {
+  transform-origin: right center;
+}
+
+/* === Obere linke große Karte === */
 .urgent-task-card-summary:hover {
   cursor: pointer;
   background-color: #5c9cff;
-  color: white;
+  color: #ffffff;
   box-shadow: 0 10px 30px -18px #2a3647;
-  transform: translateY(-2px);
+  transform: translateY(-2px);   /* nur leicht hoch */
+  z-index: 2;
 }
 
 .urgent-task-card-summary:hover .seperator-summary {
   background-color: #0038ff;
 }
 
-
+/* === Obere rechte Karte – bleibt rechts stehen, wächst nur nach links === */
 .tasks-on-board-card-summary:hover {
-  height: 108%;
-  width: 288px;
   cursor: pointer;
   background-color: #0038ff;
-  color: white;
+  color: #ffffff;
   border-top-left-radius: 0;
+  box-shadow: 0 10px 30px -18px #2a3647;
+
+  /* keine translateX mehr! nur hoch + größer nach links */
+  transform: translateY(-2px) scaleX(1.155) scaleY(1.04);
+  /* 1.155 ≈ so viel, dass die Karte nach links bis an die linke ran reicht */
+  z-index: 2;
 }
 
-
+/* === Untere linke Karte – beim Hover WEISS === */
 .backgroundcolor-blue-light:hover {
-  width: 290px;
-  border-top-left-radius: 0;
   cursor: pointer;
+  background-color: #ffffff;     /* wird nur beim Hover weiß */
+  color: #4589ff;
+  border-top-left-radius: 0;
+  box-shadow: 0 10px 30px -18px #2a3647;
+  transform: translateY(-2px) scale(1.04);
+  z-index: 2;
 }
 
-.backgroundcolor-blue-light:hover {
-  background-color: white;
-}
-
+/* === Untere restliche Karten === */
 .summary-card-the-last-three:hover {
-  width: 240px;
-  height: 259px;
-  background-color: #0038ff;
-  color: white;
-  border-top-left-radius: 0;
   cursor: pointer;
+  background-color: #0038ff;
+  color: #ffffff;
+  border-top-left-radius: 0;
+  box-shadow: 0 10px 30px -18px #2a3647;
+  transform: translateY(-2px) scale(1.04);
+  z-index: 2;
 }
