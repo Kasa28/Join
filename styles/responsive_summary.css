@@ -1,3 +1,6 @@
+/* ========== SUMMARY RESPONSIVE ========== */
+
+/* 1) Layout bis 1000px – oben 2 große Karten, unten 4 kleine */
 @media (max-width: 1000px) {
   .summary-card {
     border: solid white !important;
@@ -43,61 +46,76 @@
     height: auto;
   }
 
-  .urgent-task-card-summary {
-    order: 0;
+  /* Reihenfolge der Karten */
+  .summary-content-container .urgent-task-card-summary { order: 0;gap: 26px; }
+  .summary-content-container .summary-cards-low-section { order: 1; }
+  .summary-content-container .tasks-on-board-card-summary { order: 2; }
+  .summary-content-container .progress-section { order: 3; }
+  .summary-content-container .feedback { order: 4; }
+  .summary-content-container .done { order: 5; }
+
+  /* === OBERE 2 KARTEN: Urgent + To-Do (blau-hell) groß & gleich aufgebaut === */
+  .urgent-task-card-summary,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light {
     flex: 1 1 100%;
     width: 100%;
     max-width: 440px;
     padding: 24px;
     gap: 5px;
+    display: grid;
+    grid-template-columns: 60px min-content 1px 1fr;
+    align-items: center;
+    column-gap: 16px;
   }
 
-  .summary-content-container todo {
-    order: 1;
+  .urgent-task-card-summary .img-summary,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light .img-summary {
+    grid-column: 1;
+    width: 60px;
+    height: 60px;
+    justify-self: start;
   }
 
-  todo.summary-card {
-    width: auto;
+  .urgent-task-card-summary .h2-font-summray,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light .h2-font-summray {
+    grid-column: 2;
+    margin: 0;
   }
 
-  .tasks-on-board-card-summary {
-    order: 2;
+  .urgent-task-card-summary .seperator-summary,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light .seperator-summary {
+    grid-column: 3;
+    width: 1px;
+    height: 56px;
+    justify-self: center;
   }
 
-  .summary-content-container progress-section {
-    order: 3;
+  .urgent-task-card-summary .seperator-summary {
+    background: #fff;
   }
 
-  .summary-content-container feedback {
-    order: 4;
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light .seperator-summary {
+    background: #9db7ff;
   }
 
-  .summary-content-container done {
-    order: 5;
+  .urgent-task-card-summary .card-font-a-summary,
+  .urgent-task-card-summary .card-font-a-urgent-task-summary,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light .card-font-a-summary {
+    grid-column: 4;
+    align-self: center;
+    padding-left: 10px;
+    width: fit-content;
   }
 
-  .summary-card:not(.urgent-task-card-summary) {
+  /* === UNTERE 4 KARTEN: alle gleich, 2 Spalten === */
+  .summary-card:not(.urgent-task-card-summary):not(.backgroundcolor-blue-light) {
     flex: 1 1 calc(50% - 16px);
     max-width: 208px;
-  }
-
-  .summary-cards-low-section {
+    min-width: 0;
     padding: 24px;
   }
 
-  .tasks-on-board-card-summary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    gap: 12px;
-  }
-
-  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
-    padding-right: 115px;
-    max-width: 442px;
-  }
-
+  /* Optik: gemeinsame Anpassungen */
   .img-summary {
     width: 60px;
     height: 60px;
@@ -113,21 +131,23 @@
 
   .card-font-a-summary,
   .card-font-a-urgent-task-summary {
-    font-size: 17px;
-  }
-
-  .summary-card-content-up-right {
-    gap: 6px;
+    font-size: 16px;
   }
 
   .summary-card-content-up-right {
     width: 122px !important;
     height: 84px !important;
+    gap: 6px;
   }
 
   .img-count-container-summary {
-    gap: 22px;
     justify-content: flex-start;
+  }
+  .tasks-on-board-card-summary .card-font-a-summary {
+    display: block;
+    margin: 0 auto;
+    white-space: normal;
+    line-height: 1.2;
   }
 }
 
@@ -141,162 +161,9 @@
     max-width: 300px;
   }
 
-  .summary-card:not(.urgent-task-card-summary) {
-    min-width: 100%;
-    width: 100%;
-  }
-}
-
-@media (max-width: 398px) {
-  .summary-card:not(.urgent-task-card-summary) {
-    flex: 1 1 calc(50% - 16px);
-    max-width: 208px;
-    min-width: 0;
-  }
-}
-
-@media (max-width: 1000px) {
-  .summary-content-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-  }
-
-  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
+  .summary-card {
     flex: 1 1 100%;
-    max-width: 440px;
-    padding-right: 0;
-    display: grid;
-    grid-template-columns: 60px min-content 1px 1fr;
-    align-items: center;
-    column-gap: 16px;
-  }
-
-  .summary-card:not(.urgent-task-card-summary):not(.summary-cards-low-section) {
-    flex: 1 1 calc(50% - 16px);
-    max-width: 208px;
-    min-width: 0;
-  }
-
-  .urgent-task-card-summary {
-    flex: 1 1 100%;
-    max-width: 440px;
-    grid-template-columns: 60px min-content 1px 1fr;
-    align-items: center;
-    column-gap: 16px;
-  }
-
-  .urgent-task-card-summary .seperator-summary {
-    background: #fff;
-  }
-
-  .summary-cards-low-section .seperator-summary {
-    background: #9db7ff;
-  }
-
-  .summary-content-container .urgent-task-card-summary {
-    order: 0;
-  }
-
-  .summary-content-container .summary-cards-low-section {
-    order: 1;
-  }
-
-  .summary-content-container .tasks-on-board-card-summary {
-    order: 2;
-  }
-
-  .summary-content-container .progress-section {
-    order: 3;
-  }
-
-  .summary-content-container .feedback {
-    order: 4;
-  }
-
-  .summary-content-container .done {
-    order: 5;
-  }
-}
-
-@media (max-width: 1000px) {
-  .urgent-task-card-summary,
-  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
-    grid-template-columns: 60px min-content 1px 1fr;
-    align-items: center;
-    column-gap: 16px;
-    grid-column: 1 / -1 !important;
-  }
-
-  .urgent-task-card-summary .img-summary,
-  .summary-cards-low-section .img-summary {
-    grid-column: 1;
-    width: 60px;
-    height: 60px;
-    justify-self: start;
-  }
-
-  .urgent-task-card-summary .h2-font-summray,
-  .summary-cards-low-section .h2-font-summray {
-    grid-column: 2;
-    margin: 0;
-  }
-
-  .urgent-task-card-summary .seperator-summary,
-  .summary-cards-low-section .seperator-summary {
-    grid-column: 3;
-    width: 1px;
-    height: 56px;
-    background: currentColor;
-    justify-self: center;
-  }
-
-  .urgent-task-card-summary .seperator-summary {
-    background: #fff;
-  }
-
-  .summary-cards-low-section .seperator-summary {
-    background: #9db7ff;
-  }
-
-  .urgent-task-card-summary .card-font-a-summary,
-  .urgent-task-card-summary .card-font-a-urgent-task-summary,
-  .summary-cards-low-section .card-font-a-summary {
-    grid-column: 4;
-    align-self: center;
-    width: fit-content;
-    padding-left: 10px;
-  }
-
-  .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
-    flex-direction: row;
-    max-width: none !important;
-  }
-}
-
-@media (max-width: 1000px) {
-  .summary-content-container .tasks-on-board-card-summary {
-    display: grid !important;
-    grid-template-columns: 60px 1fr;
-    align-items: center;
-    column-gap: 16px;
-    justify-content: initial !important;
-    padding: 24px;
-  }
-
-  .tasks-on-board-card-summary .img-summary {
-    width: 60px;
-    height: 60px;
-    grid-column: 1;
-    justify-self: start;
-    margin: 0;
-  }
-
-  .tasks-on-board-card-summary .h2-font-summray,
-  .tasks-on-board-card-summary .card-font-a-summary {
-    grid-column: 2;
-    margin: 0;
+    max-width: 100%;
   }
 }
 
@@ -334,75 +201,6 @@
     box-shadow: none !important;
     transform: none !important;
     border-radius: inherit !important;
-  }
-}
-
-@media (max-width: 1000px) {
-  .tasks-on-board-card-summary .card-font-a-summary {
-    display: block;
-    max-width: 90px;
-    margin: 0 auto;
-    text-align: center;
-    white-space: normal;
-    line-height: 1.2;
-  }
-}
-
-@media (max-width: 1100px) {
-  .summary-card,
-  .summary-cards-low-section,
-  .urgent-task-card-summary,
-  .tasks-on-board-card-summary,
-  .backgroundcolor-blue-light,
-  .summary-card-the-last-three {
-    transition: none !important;
-  }
-
-  .urgent-task-card-summary:hover,
-  .urgent-task-card-summary:focus,
-  .urgent-task-card-summary:active {
-    cursor: default !important;
-    background-color: #4589ff !important; 
-    color: #ffffff !important;
-    box-shadow: none !important;
-    transform: none !important;
-    border-radius: 30px !important;
-    z-index: 0 !important;
-  }
-
-  .backgroundcolor-blue-light:hover,
-  .backgroundcolor-blue-light:focus,
-  .backgroundcolor-blue-light:active {
-    cursor: default !important;
-    background-color: #d2e3ff !important; 
-    color: #4589ff !important;
-    box-shadow: none !important;
-    transform: none !important;
-    border-radius: 30px !important;
-    z-index: 0 !important;
-  }
-
-  .summary-cards-low-section:hover,
-  .summary-cards-low-section:focus,
-  .summary-cards-low-section:active,
-  .summary-card-the-last-three:hover,
-  .summary-card-the-last-three:focus,
-  .summary-card-the-last-three:active,
-  .tasks-on-board-card-summary:hover,
-  .tasks-on-board-card-summary:focus,
-  .tasks-on-board-card-summary:active {
-    cursor: default !important;
-    background-color: #ffffff !important;
-    color: #2a3647 !important;
-    box-shadow: none !important;
-    transform: none !important;
-    border-radius: 30px !important;
-    z-index: 0 !important;
-  }
-}
-
-@media (max-width: 1000px) {
-  .tasks-on-board-card-summary .img-summary {
-    margin-top: -4px; 
+    z-index: auto !important;
   }
 }
