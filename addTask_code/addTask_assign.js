@@ -374,14 +374,12 @@ function renderAssignedAvatars() {
  * Handles checkbox click events inside the assign dropdown to ensure correct selection logic.
  */
 document.addEventListener("click", (e) => {
-  if (
-    e.target.classList.contains("assign-check-addTask_page") &&
-    !e.target.classList.contains("assign-check-addTask_template")
-  ) {
-    const item = e.target.closest(".assign-item-addTask_page");
-    const name = item
-      .querySelector(".assign-name-addTask_page")
-      .textContent.trim();
-    selectAssignUser(name, e);
-  }
+  if (!e.target.classList.contains("assign-check-addTask_page")) return;
+  e.stopPropagation();
+
+  const item = e.target.closest(".assign-item-addTask_page");
+  if (!item) return;
+
+  const name = item.querySelector(".assign-name-addTask_page").textContent.trim();
+  selectAssignUser(name, e);
 });
