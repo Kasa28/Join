@@ -369,29 +369,11 @@
   .urgent-task-card-summary:hover,
   .urgent-task-card-summary:focus,
   .urgent-task-card-summary:active {
-    background-color: #4589ff !important;
-    height: auto !important;
-    width: 100% !important;
-    max-width: 440px !important;
-    padding: 24px !important;
-    border-top-left-radius: 20px !important;
+        background-color: inherit !important;
+    color: inherit !important;
+    transform: none !important;
+    border-radius: inherit !important;
     cursor: default;
-  }
-  .urgent-task-card-summary:hover .seperator-summary {
-    background-color: white !important;
-  }
-  .urgent-task-card-summary:hover .date-font-summary {
-    font-size: 18px !important;
-  }
-  .urgent-task-card-summary:hover .h2-font-summray {
-    font-size: 32px !important;
-  }
-  .urgent-task-card-summary:hover .card-font-a-urgent-task-summary {
-    font-size: 17px !important;
-  }
-  .urgent-task-card-summary:hover .img-summary {
-    width: 60px !important;
-    height: 60px !important;
   }
 }
 
@@ -500,9 +482,7 @@ header {
 .header-wrapper-responsive {
   z-index: 1000;
 }
-/* ab 2000px – gleiche Breakpoints wie dein Header */
 @media (min-width: 2000px) {
-  /* Header bleibt wie bei dir */
   header {
     top: 0;
     width: calc(100% - 25.5rem);
@@ -515,7 +495,6 @@ header {
     width: 100%;
   }
 
-  /* HIER: Textbreite so berechnet, dass er beim Button endet */
   .privacy-policy,
   .legal-page .page,
   .what_is_join {

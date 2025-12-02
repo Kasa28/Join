@@ -37,8 +37,10 @@ body {
 }
 
 .summary-content-container {
-  width: 912px;
+   width: 100%;
+  max-width: 912px;
   height: 442px;
+  margin: 0 auto;
 }
 
 .h1-container-summary {
@@ -99,7 +101,7 @@ body {
 }
 
 .margin-big {
-  margin: 48px;
+  margin: 48px auto;
 }
 
 .backgroundcolor-blue {
@@ -131,11 +133,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 912px;
+    width: 100%;
+  max-width: 912px;
   height: 591px;
   top: 265px;
   left: 380px;
   gap: 72px;
+  margin: 0 auto;
 }
 
 .summary-card {

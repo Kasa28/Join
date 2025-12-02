@@ -2,6 +2,7 @@
   .summary-card {
     border: solid white !important;
   }
+
   .main-content {
     width: 100%;
     max-width: 100%;
@@ -9,6 +10,7 @@
     padding: 24px 16px 120px;
     gap: 32px;
   }
+
   .summary-content-container {
     width: 100%;
     max-width: 440px;
@@ -19,13 +21,16 @@
     justify-content: center;
     gap: 16px;
   }
+
   .margin-big {
     margin: 24px auto;
   }
+
   .summary-section-1-order,
   .summary-section-2-order {
     display: contents;
   }
+
   .summary-card,
   .summary-cards-low-section,
   .urgent-task-card-summary,
@@ -33,9 +38,11 @@
     margin: 0;
     height: auto;
   }
+
   .summary-card-high-section-summary {
     height: auto;
   }
+
   .urgent-task-card-summary {
     order: 0;
     flex: 1 1 100%;
@@ -44,31 +51,40 @@
     padding: 24px;
     gap: 5px;
   }
+
   .summary-content-container todo {
     order: 1;
   }
+
   todo.summary-card {
     width: auto;
   }
+
   .tasks-on-board-card-summary {
     order: 2;
   }
+
   .summary-content-container progress-section {
     order: 3;
   }
+
   .summary-content-container feedback {
     order: 4;
   }
+
   .summary-content-container done {
     order: 5;
   }
+
   .summary-card:not(.urgent-task-card-summary) {
     flex: 1 1 calc(50% - 16px);
     max-width: 208px;
   }
+
   .summary-cards-low-section {
     padding: 24px;
   }
+
   .tasks-on-board-card-summary {
     display: flex;
     align-items: center;
@@ -76,31 +92,39 @@
     padding: 24px;
     gap: 12px;
   }
+
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
     padding-right: 115px;
     max-width: 442px;
   }
+
   .img-summary {
     width: 60px;
     height: 60px;
   }
+
   .h2-font-summray {
     font-size: 32px;
   }
+
   .date-font-summary {
     font-size: 18px;
   }
+
   .card-font-a-summary,
   .card-font-a-urgent-task-summary {
     font-size: 17px;
   }
+
   .summary-card-content-up-right {
     gap: 6px;
   }
+
   .summary-card-content-up-right {
     width: 122px !important;
     height: 84px !important;
   }
+
   .img-count-container-summary {
     gap: 22px;
     justify-content: flex-start;
@@ -112,100 +136,14 @@
     position: sticky;
     top: 0;
   }
+
   .summary-content-container {
     max-width: 300px;
   }
+
   .summary-card:not(.urgent-task-card-summary) {
     min-width: 100%;
     width: 100%;
-  }
-}
-
-@media (max-width: 1100px) {
-  .urgent-task-card-summary {
-    transition: none;
-  }
-  .urgent-task-card-summary:hover {
-    cursor: default;
-    background-color: #4589ff;
-    color: white;
-    padding: 20px;
-    width: 100%;
-    max-width: 440px;
-    height: auto;
-    border-top-left-radius: 20px;
-  }
-  .urgent-task-card-summary:hover .seperator-summary {
-    background-color: white;
-  }
-  .urgent-task-card-summary:hover .date-font-summary {
-    font-size: 17px;
-  }
-  .urgent-task-card-summary:hover .h2-font-summray {
-    font-size: 32px;
-  }
-  .urgent-task-card-summary:hover .card-font-a-urgent-task-summary {
-    font-size: 18px;
-  }
-  .urgent-task-card-summary:hover .img-summary {
-    width: 60px;
-    height: 60px;
-  }
-  .tasks-on-board-card-summary:hover {
-    cursor: default;
-    height: auto;
-    width: auto;
-    background-color: white;
-    color: inherit;
-    border-top-left-radius: 20px;
-  }
-  .tasks-on-board-card-summary:hover .h2-font-summray {
-    font-size: 32px;
-  }
-  .tasks-on-board-card-summary:hover .card-font-a-summary {
-    font-size: 18px;
-    color: #4589ff;
-  }
-  .tasks-on-board-card-summary:hover .img-summary {
-    width: 60px;
-    height: 60px;
-  }
-  .backgroundcolor-blue-light:hover {
-    width: auto;
-    border-top-left-radius: 20px;
-    cursor: default;
-    background-color: #d2e3ff;
-  }
-  .backgroundcolor-blue-light:hover .h2-font-summray {
-    font-size: 32px;
-    color: inherit;
-  }
-  .backgroundcolor-blue-light:hover .card-font-a-summary {
-    font-size: 18px;
-    color: #4589ff;
-  }
-  .backgroundcolor-blue-light:hover .img-summary {
-    width: 60px;
-    height: 60px;
-  }
-  .summary-card-the-last-three:hover {
-    width: auto;
-    height: auto;
-    background-color: white;
-    color: #2a3647;
-    border-top-left-radius: 20px;
-    cursor: default;
-  }
-  .summary-card-the-last-three:hover .h2-font-summray {
-    font-size: 32px;
-  }
-  .summary-card-the-last-three:hover .card-font-a-summary {
-    font-size: 18px;
-    color: #4589ff;
-  }
-  .summary-card-the-last-three:hover .img-summary {
-    width: 60px;
-    height: 60px;
   }
 }
 
@@ -224,6 +162,7 @@
     justify-content: center;
     gap: 16px;
   }
+
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
     flex: 1 1 100%;
     max-width: 440px;
@@ -233,11 +172,13 @@
     align-items: center;
     column-gap: 16px;
   }
+
   .summary-card:not(.urgent-task-card-summary):not(.summary-cards-low-section) {
     flex: 1 1 calc(50% - 16px);
     max-width: 208px;
     min-width: 0;
   }
+
   .urgent-task-card-summary {
     flex: 1 1 100%;
     max-width: 440px;
@@ -245,27 +186,35 @@
     align-items: center;
     column-gap: 16px;
   }
+
   .urgent-task-card-summary .seperator-summary {
     background: #fff;
   }
+
   .summary-cards-low-section .seperator-summary {
     background: #9db7ff;
   }
+
   .summary-content-container .urgent-task-card-summary {
     order: 0;
   }
+
   .summary-content-container .summary-cards-low-section {
     order: 1;
   }
+
   .summary-content-container .tasks-on-board-card-summary {
     order: 2;
   }
+
   .summary-content-container .progress-section {
     order: 3;
   }
+
   .summary-content-container .feedback {
     order: 4;
   }
+
   .summary-content-container .done {
     order: 5;
   }
@@ -279,6 +228,7 @@
     column-gap: 16px;
     grid-column: 1 / -1 !important;
   }
+
   .urgent-task-card-summary .img-summary,
   .summary-cards-low-section .img-summary {
     grid-column: 1;
@@ -286,11 +236,13 @@
     height: 60px;
     justify-self: start;
   }
+
   .urgent-task-card-summary .h2-font-summray,
   .summary-cards-low-section .h2-font-summray {
     grid-column: 2;
     margin: 0;
   }
+
   .urgent-task-card-summary .seperator-summary,
   .summary-cards-low-section .seperator-summary {
     grid-column: 3;
@@ -299,12 +251,15 @@
     background: currentColor;
     justify-self: center;
   }
+
   .urgent-task-card-summary .seperator-summary {
     background: #fff;
   }
+
   .summary-cards-low-section .seperator-summary {
     background: #9db7ff;
   }
+
   .urgent-task-card-summary .card-font-a-summary,
   .urgent-task-card-summary .card-font-a-urgent-task-summary,
   .summary-cards-low-section .card-font-a-summary {
@@ -313,6 +268,7 @@
     width: fit-content;
     padding-left: 10px;
   }
+
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light.transition-08s {
     flex-direction: row;
     max-width: none !important;
@@ -328,6 +284,7 @@
     justify-content: initial !important;
     padding: 24px;
   }
+
   .tasks-on-board-card-summary .img-summary {
     width: 60px;
     height: 60px;
@@ -335,9 +292,117 @@
     justify-self: start;
     margin: 0;
   }
+
   .tasks-on-board-card-summary .h2-font-summray,
   .tasks-on-board-card-summary .card-font-a-summary {
     grid-column: 2;
     margin: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .summary-card,
+  .summary-cards-low-section,
+  .urgent-task-card-summary,
+  .tasks-on-board-card-summary,
+  .backgroundcolor-blue-light,
+  .summary-card-the-last-three {
+    transition: none !important;
+  }
+
+  .summary-card:hover,
+  .summary-card:focus,
+  .summary-card:active,
+  .summary-cards-low-section:hover,
+  .summary-cards-low-section:focus,
+  .summary-cards-low-section:active,
+  .urgent-task-card-summary:hover,
+  .urgent-task-card-summary:focus,
+  .urgent-task-card-summary:active,
+  .tasks-on-board-card-summary:hover,
+  .tasks-on-board-card-summary:focus,
+  .tasks-on-board-card-summary:active,
+  .backgroundcolor-blue-light:hover,
+  .backgroundcolor-blue-light:focus,
+  .backgroundcolor-blue-light:active,
+  .summary-card-the-last-three:hover,
+  .summary-card-the-last-three:focus,
+  .summary-card-the-last-three:active {
+    cursor: default !important;
+    background-color: inherit !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    transform: none !important;
+    border-radius: inherit !important;
+  }
+}
+
+@media (max-width: 1000px) {
+  .tasks-on-board-card-summary .card-font-a-summary {
+    display: block;
+    max-width: 90px;
+    margin: 0 auto;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 1100px) {
+  .summary-card,
+  .summary-cards-low-section,
+  .urgent-task-card-summary,
+  .tasks-on-board-card-summary,
+  .backgroundcolor-blue-light,
+  .summary-card-the-last-three {
+    transition: none !important;
+  }
+
+  .urgent-task-card-summary:hover,
+  .urgent-task-card-summary:focus,
+  .urgent-task-card-summary:active {
+    cursor: default !important;
+    background-color: #4589ff !important; 
+    color: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+    border-radius: 30px !important;
+    z-index: 0 !important;
+  }
+
+  .backgroundcolor-blue-light:hover,
+  .backgroundcolor-blue-light:focus,
+  .backgroundcolor-blue-light:active {
+    cursor: default !important;
+    background-color: #d2e3ff !important; 
+    color: #4589ff !important;
+    box-shadow: none !important;
+    transform: none !important;
+    border-radius: 30px !important;
+    z-index: 0 !important;
+  }
+
+  .summary-cards-low-section:hover,
+  .summary-cards-low-section:focus,
+  .summary-cards-low-section:active,
+  .summary-card-the-last-three:hover,
+  .summary-card-the-last-three:focus,
+  .summary-card-the-last-three:active,
+  .tasks-on-board-card-summary:hover,
+  .tasks-on-board-card-summary:focus,
+  .tasks-on-board-card-summary:active {
+    cursor: default !important;
+    background-color: #ffffff !important;
+    color: #2a3647 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    border-radius: 30px !important;
+    z-index: 0 !important;
+  }
+}
+
+@media (max-width: 1000px) {
+  .tasks-on-board-card-summary .img-summary {
+    margin-top: -4px; 
   }
 }
