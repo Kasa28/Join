@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const titleInput = document.getElementById("title");
   if (!titleInput) return;
   const errorMsg = document.getElementById("title-error");
+
   function validateTitle() {
     const value = titleInput.value.trim();
     if (value === "") {
@@ -26,11 +27,12 @@ let hiddenDatePicker = document.createElement("input");
 hiddenDatePicker.type = "date";
 hiddenDatePicker.id = "hidden-date-picker";
 hiddenDatePicker.name = "hidden-date-picker";
-hiddenDatePicker.style.position = "absolute";
+hiddenDatePicker.style.position = "fixed"; // an Feld-Position kleben
 hiddenDatePicker.style.opacity = "0";
 hiddenDatePicker.style.pointerEvents = "none";
 hiddenDatePicker.style.height = "0";
 hiddenDatePicker.style.width = "0";
+hiddenDatePicker.style.zIndex = "1100";
 document.body.appendChild(hiddenDatePicker);
 
 // === Due Date Validation & Input Formatting ===
@@ -90,26 +92,37 @@ function validateDueDate() {
   return true;
 }
 
+/**
+ * Opens the hidden native date picker and syncs the result
+ * back into the visible due-date input as dd/mm/yyyy.
+ * Der Picker „hängt“ an der Position des Due-Date-Feldes
+ * (gelbe Linie).
+ */
 function openPickerSimple() {
   const dueInput = document.getElementById("due-date");
-  const icon = document.querySelector(".event-icon-addTask_page");
-  if (!dueInput || !icon) return;
-  const rect = icon.getBoundingClientRect();
-  const scrollLeft = window.pageXOffset;
-  const scrollTop = window.pageYOffset;
-  hiddenDatePicker.style.left = rect.right + scrollLeft + 10 + "px";
-  hiddenDatePicker.style.top = rect.top + scrollTop + "px";
-  setTimeout(() => {
-    hiddenDatePicker.showPicker?.() || hiddenDatePicker.click();
-  }, 0);
+  if (!dueInput) return;
+
+  const dateField =
+  dueInput.closest(".date-field-addTask_page") || dueInput;
+  const rect = dateField.getBoundingClientRect();
+  hiddenDatePicker.style.pointerEvents = "auto";
+  hiddenDatePicker.style.width = rect.width + "px";
+  hiddenDatePicker.style.height = rect.height + "px";
+  hiddenDatePicker.style.left = rect.left + "px";
+  hiddenDatePicker.style.top = rect.top + "px";
+
+
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
   hiddenDatePicker.min = `${yyyy}-${mm}-${dd}`;
+
   hiddenDatePicker.removeAttribute("value");
   hiddenDatePicker.value = "";
+
   hiddenDatePicker.onchange = () => {
+    hiddenDatePicker.style.pointerEvents = "none";
     if (!hiddenDatePicker.value) {
       dueInput.value = "";
       validateDueDate();
@@ -119,7 +132,22 @@ function openPickerSimple() {
     dueInput.value = `${day}/${month}/${year}`;
     validateDueDate();
   };
+
+  hiddenDatePicker.focus();
+  setTimeout(() => {
+    if (hiddenDatePicker.showPicker) {
+      hiddenDatePicker.showPicker();
+    } else {
+      hiddenDatePicker.click();
+    }
+  }, 0);
 }
+
+window.openPickerSimple = openPickerSimple;
+
+hiddenDatePicker.addEventListener("blur", () => {
+  hiddenDatePicker.style.pointerEvents = "none";
+});
 
 // === Event-Handling ===
 const dueDateInput = document.getElementById("due-date");
@@ -187,9 +215,6 @@ function setPriorityAddTask(priority) {
 }
 
 // === Subtask Delete ===
-/**
- * Handles deleting the current subtask input when clicking the delete icon.
- */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-delete-addTask_page")) {
     const subtaskInput = document.getElementById("subtask");
@@ -200,9 +225,6 @@ document.addEventListener("click", (e) => {
 });
 
 // === Subtask Add ===
-/**
- * Handles adding a new subtask to the list when clicking the check icon.
- */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-check-addTask_page")) {
     const subtaskInput = document.getElementById("subtask");
@@ -229,9 +251,6 @@ document.addEventListener("click", (e) => {
 });
 
 // === Subtask Remove ===
-/**
- * Handles removing an existing subtask from the list.
- */
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-remove-addTask_page")) {
     const li = e.target.closest("li");
@@ -240,10 +259,6 @@ document.addEventListener("click", (e) => {
 });
 
 // === Subtask Edit (Beginner-friendly, in-place editing) ===
-/**
- * Enables in-place editing of a subtask item.
- * @param {MouseEvent} e - The click event that initiates editing.
- */
 function enableSubtaskEditing(e) {
   if (!e.target.classList.contains("subtask-edit-addTask_page")) return;
   const li = e.target.closest("li");
@@ -271,10 +286,6 @@ function enableSubtaskEditing(e) {
 document.addEventListener("click", enableSubtaskEditing);
 
 // === Subtask Save ===
-/**
- * Saves changes to an edited subtask item.
- * @param {MouseEvent} e - The click event that triggers the save action.
- */
 function saveEditedSubtask(e) {
   if (!e.target.classList.contains("subtask-save-addTask_page")) return;
 
@@ -303,9 +314,6 @@ function saveEditedSubtask(e) {
 document.addEventListener("click", saveEditedSubtask);
 
 // === Form Reset ===
-/**
- * Resets all form fields in the Add Task page to default state.
- */
 function clearForm() {
   document.getElementById("title").value = "";
   document.getElementById("description").value = "";
@@ -341,13 +349,6 @@ function clearForm() {
 }
 
 // === Toast (GLOBAL) ===
-/**
- * Displays a temporary toast notification on the screen.
- * @param {string} text - The message to display.
- * @param {Object} [options] - Additional display settings.
- * @param {string} [options.variant="ok"] - "ok" or "error".
- * @param {number} [options.duration=1000] - Display duration in milliseconds.
- */
 function showToast(text, { variant = "ok", duration = 1000 } = {}) {
   let root = document.getElementById("toast-root");
   if (!root) {
@@ -370,13 +371,7 @@ function showToast(text, { variant = "ok", duration = 1000 } = {}) {
 
 window.showToast = showToast;
 
-/**
- * Displays a temporary toast notification on the screen.
- * @param {string} text - The message to display.
- * @param {Object} [options] - Additional display settings.
- * @param {string} [options.variant="ok"] - "ok" or "error".
- * @param {number} [options.duration=1000] - Display duration in milliseconds.
- */
+// === Create Task ===
 async function createTask() {
   const title = (document.getElementById("title")?.value || "").trim();
   if (!title) {
@@ -387,32 +382,35 @@ async function createTask() {
   if (!dueDate) {
     showToast("Please enter a due date", { variant: "error", duration: 1600 });
     return;
-}
-if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) {
-  showToast("Please enter a valid date in format dd/mm/yyyy", { variant: "error", duration: 1600 });
-  return;
-}
-  const description = (
-    document.getElementById("description")?.value || ""
-  ).trim();
+  }
+  if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) {
+    showToast("Please enter a valid date in format dd/mm/yyyy", {
+      variant: "error",
+      duration: 1600,
+    });
+    return;
+  }
+  const description =
+    (document.getElementById("description")?.value || "").trim();
   const category = (document.getElementById("category")?.value || "").trim();
   if (!category) {
-    showToast("Please select a category.", { variant: "error", duration: 1600 });
+    showToast("Please select a category.", {
+      variant: "error",
+      duration: 1600,
+    });
     return;
-}
+  }
   const priority = (window.currentPrio || "medium").toLowerCase();
-  const activeBtn = document.querySelector(
-    `.priority-btn-${priority}-addTask_page`
-  );
-  const iconImg = activeBtn ? activeBtn.querySelector("img") : null;
 
   const priorityIcons = {
     urgent:
       "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
-    medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
+    medium:
+      "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
     low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
   };
   let priorityIcon = priorityIcons[priority] || priorityIcons.low;
+
   const assignedTo = (window.selectedUsers || []).map((name) => {
     const sourceAvatar = [
       ...document.querySelectorAll(".assign-item-addTask_page"),
