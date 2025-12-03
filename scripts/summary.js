@@ -213,9 +213,17 @@ let lastDataString = "";
  */
 async function pollSummary() {
   try {
-    const res = await fetch(
-      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
-    );
+     if (window.authReady) {
+      await window.authReady;
+    }
+
+    const token = await window.auth?.currentUser?.getIdToken?.();
+    const base =
+      window.BASE_URL ||
+      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+    const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
+
+    const res = await fetch(`${base}tasks.json${authQuery}`);
     const data = await res.json();
     const json = JSON.stringify(data);
     if (json !== lastDataString) {
@@ -224,6 +232,34 @@ async function pollSummary() {
     }
   } catch (err) {
   }
+}
+
+
+/**
+ * Ensures authentication has run (anonymous if needed) and returns
+ * the configured Firebase base URL plus auth query string.
+ * @returns {Promise<{base: string, authQuery: string}>}
+ */
+async function getSummaryFetchConfig() {
+  if (window.authReady) {
+    await window.authReady;
+  }
+
+  if (!window.auth?.currentUser && typeof window.signInAnonymously === "function") {
+    try {
+      await window.signInAnonymously();
+    } catch (err) {
+      console.warn("Anonymous sign-in for summary failed", err);
+    }
+  }
+
+  const token = await window.auth?.currentUser?.getIdToken?.();
+  const base =
+    window.BASE_URL ||
+    "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+  const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
+
+  return { base, authQuery };
 }
 
 
