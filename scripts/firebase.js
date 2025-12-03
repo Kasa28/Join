@@ -1,7 +1,6 @@
-/* === firebase.js | Handles Firebase Realtime Database communication === */
-
 /* === Base URL Configuration === */
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+
 
 /* === Fetch All Tasks === */
 async function getAllTasks() {
@@ -31,7 +30,11 @@ async function deleteTask(taskId) {
  * @returns {string}
  */
 function getCurrentUidOrThrow() {
-  if (typeof auth === "undefined" || !auth.currentUser || !auth.currentUser.uid) {
+  if (
+    typeof auth === "undefined" ||
+    !auth.currentUser ||
+    !auth.currentUser.uid
+  ) {
     throw new Error("No authenticated user (uid missing)");
   }
   return auth.currentUser.uid;
@@ -48,7 +51,8 @@ async function getUserFriendslistByUid(uid) {
   const response = await fetch(`${BASE_URL}users/${uid}/friends.json`);
   const data = (await response.json()) || null;
   if (Array.isArray(data)) return data.filter(Boolean);
-  if (data && typeof data === "object") return Object.values(data).filter(Boolean);
+  if (data && typeof data === "object")
+    return Object.values(data).filter(Boolean);
   return [];
 }
 
@@ -57,6 +61,7 @@ async function getUserFriendslistByUid(uid) {
  * @returns {Promise<Array<Object>>}
  */
 async function getFriendsForCurrentUser() {
+  if (window.authReady) await window.authReady;
   const uid = getCurrentUidOrThrow();
   return await getUserFriendslistByUid(uid);
 }

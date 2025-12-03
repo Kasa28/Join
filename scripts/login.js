@@ -1,5 +1,8 @@
 /* === login.js | Handles user authentication, login guard and login logic === */
 
+import { signInWithEmailAndPassword } 
+  from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
 let exampleContacts = [
    {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563", "color": "pink"},
    {"username": "Karsten", "email": "karsten-stahl@gmail.de", "PhoneNumber": "+49151478632475", "color": "orange"},
@@ -12,42 +15,6 @@ let exampleContacts = [
    {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354", "color": "red"}
 ];
 
-/* === Firebase Configuration === */
-const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
-users = [];
-
-
-/* === Fetch Users from Firebase === */
-/**
- * Fetches all user records from Firebase at the specified path.
- * @param {string} path - The database path to query.
- * @returns {Promise<Object>} The JSON response containing all users.
- */
-async function getAllUsers(path){
-  let response = await fetch(BASE_URL + path + ".json");
-  return responseToJson = await response.json();
-}
-
-
-/* === Initialize Users Array === */
-/**
- * Fills the global users array with all users from Firebase,
- * mapping each entry to an object containing its ID and data.
- * @returns {Promise<void>}
- */
-async function fillArray(){
-   let userResponse = await getAllUsers("users");
-   let UserKeysArray = Object.keys(userResponse);
-   for (let index = 0; index < UserKeysArray.length; index++) {
-      users.push(
-         {
-               id : UserKeysArray[index], 
-               user : userResponse[UserKeysArray[index]],
-         }
-      ) 
-   }
-}
-
 
 /* === Login Handling === */
 /**
@@ -55,94 +22,41 @@ async function fillArray(){
  * displays error messages, and redirects on success.
  * @param {Event} event - The form submit event.
  */
-function login(event){
-   if (event) event.preventDefault(); 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      const errorEl = document.getElementById("error_message");
-      errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
-      errorEl.classList.remove("visually-hidden");
-      errorEl.style.color = "red";
-      return;
-    }
-    const loginSuccessful = checkUsernamePassword(email, password);
-    checkUsernamePassword(email, password);
-   if(loginSuccessful){
-      window.location.href = "./summaryAll.html";  
-   } else {
-      const errorEl = document.getElementById("error_message");
-      errorEl.textContent = "E-Mail oder Passwort ist ungültig!";
-      errorEl.classList.remove("visually-hidden");
-      errorEl.style.color = "red";  
-   }
+
+async function login(event) {
+  if (event) event.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const errorEl = document.getElementById("error_message");
+
+  try {
+    if (window.authReady) await window.authReady;
+    await signInWithEmailAndPassword(window.auth, email, password);
+    window.location.href = "./summaryAll.html";
+  } catch (err) {
+    errorEl.textContent = "Invalid email or password!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
+  }
 }
 
 
-/**
- * Logs the user in as a guest, stores guest data locally,
- * and redirects to the summary page.
- */
-function loginAsGuest() {
-   const guest = {
-      id: "guest",
-      name: "Guest",
-      email: "guest@guest.com",
-      friends: (typeof exampleContacts !== "undefined" ? exampleContacts : [])
-   };
-   localStorage.setItem("userData", JSON.stringify(guest));
-   window.location.href = "./summaryAll.html";
+async function loginAsGuest() {
+  if (window.authReady) await window.authReady;
+  await window.signInAnonymously();
+  window.location.href = "./summaryAll.html";
 }
 
 
-/* === Credential Verification === */
-/**
- * Validates the user's email and password against the Firebase-loaded users array.
- * @param {string} inputMail - The email entered by the user.
- * @param {string} inputPassword - The password entered by the user.
- * @returns {boolean} True if credentials match, otherwise false.
- */
-function checkUsernamePassword(inputMail, inputPassword){
-   for (let index = 0; index < users.length; index++) {
-      let actualName = users[index].user.name;
-      let actualMail = users[index].user.email;
-      let actualPassword = users[index].user.password;
-      let actualID = users[index].id;
-      let actualFriendlist = users[index].user.friends || [];
-      let actualJson = {"id" : actualID, "name" : actualName, "email" : actualMail, "friends" : actualFriendlist}
-   if(actualMail === inputMail && actualPassword === inputPassword){   
-            putUserDataIntoLocalStorage(actualJson);
-            return true;
-      }
-   }
-   return false;
+async function checkIfLogedIn() {
+  if (window.authReady) await window.authReady;
+  if (!window.currentUser) {
+  window.location.href = "./index.html";
+  return;
+}
+  document.body.style.visibility = "visible";
 }
 
-
-/* === Local Storage Handling === */
-/**
- * Stores logged-in user data in localStorage.
- * @param {Object} inputJson - The user data object to store.
- */
-function putUserDataIntoLocalStorage(inputJson){
-   localStorage.setItem("userData", JSON.stringify(inputJson));
-}
-
-
-/* === Login Guard === */
-/**
- * Guards protected pages by checking login state.
- * Redirects to the login page if no user is found in localStorage.
- */
-function checkIfLogedIn() {
-   const user = localStorage.getItem("userData");
-   if (!user) {
-      window.location.href = "./index.html";
-      return;
-   }
-   document.body.style.visibility = "visible";
-}
 
 /* === Form Validation === */
 /**
@@ -171,17 +85,7 @@ function checkLogin() {
  });
 
 
- document.getElementById("password").addEventListener("blur", () => {
-   const email = document.getElementById("email").value.trim();
-   const password = document.getElementById("password").value.trim();
-   const errorEl = document.getElementById("error_message");
- 
-   if (email && password && !checkUsernamePassword(email, password)) {
-     errorEl.textContent = "E-Mail oder Passwort ist ungültig!";
-     errorEl.classList.remove("visually-hidden");
-   } else if (email && password && checkUsernamePassword(email, password)) {
-     errorEl.textContent = "";
-     errorEl.classList.add("visually-hidden");
-   }
- });
-
+window.login = login;
+window.loginAsGuest = loginAsGuest;
+window.checkLogin = checkLogin;
+window.checkIfLogedIn = checkIfLogedIn;
