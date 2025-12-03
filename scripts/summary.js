@@ -38,9 +38,17 @@ window.addEventListener("DOMContentLoaded", () => {
  */
 async function loadTasks() {
   try {
-    const response = await fetch(
-      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
-    );
+        if (window.authReady) {
+      await window.authReady;
+    }
+
+    const token = await window.auth?.currentUser?.getIdToken?.();
+    const base =
+      window.BASE_URL ||
+      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+    const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
+
+    const response = await fetch(`${base}tasks.json${authQuery}`);
     const data = await response.json();
     const firebaseTasks = Array.isArray(data)
       ? data.filter(Boolean)
