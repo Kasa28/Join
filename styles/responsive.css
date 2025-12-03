@@ -535,3 +535,11 @@ header {
 .board-search-input{
   color: #d1d1d1;
 }
+
+@media (max-width: 600px) {
+  .header-wrapper-responsive {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+}
