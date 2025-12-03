@@ -122,7 +122,7 @@
 
   .card-font-a-summary,
   .card-font-a-urgent-task-summary {
-    font-size: 18px;
+    font-size: 20px;
   }
 
 
@@ -219,4 +219,28 @@
     flex: 1 1 100%;
     max-width: 100%;
   }
+}
+
+progress-section .card-font-a-summary,
+feedback .card-font-a-summary,
+done .card-font-a-summary,
+tasks-on-board .card-font-a-summary {
+  display: block;
+  max-width: 110px;   
+  margin: 0 auto;
+  text-align: center;
+  white-space: normal;
+}
+
+.card-font-multiline {
+  display: block;
+  max-width: 110px;    
+  margin: 0 auto;
+  text-align: center;
+  white-space: normal;   
+}
+
+todo .card-font-multiline {
+  max-width: none;       
+  white-space: nowrap;       
 }
