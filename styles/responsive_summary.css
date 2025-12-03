@@ -142,22 +142,6 @@
   }
 }
 
-@media (max-width: 398px) {
-  .header-wrapper-responsive {
-    position: sticky;
-    top: 0;
-  }
-
-  .summary-content-container {
-    max-width: 300px;
-  }
-
-  .summary-card {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-}
-
 @media (max-width: 1100px) {
   .summary-card,
   .summary-cards-low-section,
@@ -193,8 +177,6 @@
     transform: none !important;
     z-index: auto !important;
   }
-}
-@media (max-width: 1100px) {
   .summary-card,
   .summary-cards-low-section,
   .urgent-task-card-summary,
@@ -203,33 +185,6 @@
   .summary-card-the-last-three {
     transition: none !important;
   }
-
-  .summary-card:hover,
-  .summary-card:focus,
-  .summary-card:active,
-  .summary-cards-low-section:hover,
-  .summary-cards-low-section:focus,
-  .summary-cards-low-section:active,
-  .urgent-task-card-summary:hover,
-  .urgent-task-card-summary:focus,
-  .urgent-task-card-summary:active,
-  .tasks-on-board-card-summary:hover,
-  .tasks-on-board-card-summary:focus,
-  .tasks-on-board-card-summary:active,
-  .backgroundcolor-blue-light:hover,
-  .backgroundcolor-blue-light:focus,
-  .backgroundcolor-blue-light:active,
-  .summary-card-the-last-three:hover,
-  .summary-card-the-last-three:focus,
-  .summary-card-the-last-three:active {
-    cursor: default !important;
-    background-color: inherit !important;
-    color: inherit !important;
-    box-shadow: none !important;
-    transform: none !important;
-    z-index: auto !important;
-  }
-
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light,
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light:hover,
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light:focus,
@@ -248,5 +203,26 @@
   .summary-card-the-last-three:active {
     border-radius: 20px !important;
     border-top-left-radius: 20px !important;
+  }
+  .urgent-task-card-summary:hover,
+  .urgent-task-card-summary:focus,
+  .urgent-task-card-summary:active {
+    background-color: #4589ff !important; 
+    color: #ffffff !important;            
+  }
+}
+@media (max-width: 398px) {
+  .header-wrapper-responsive {
+    position: sticky;
+    top: 0;
+  }
+
+  .summary-content-container {
+    max-width: 300px;
+  }
+
+  .summary-card {
+    flex: 1 1 100%;
+    max-width: 100%;
   }
 }
