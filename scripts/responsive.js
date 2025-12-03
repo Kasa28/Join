@@ -12,24 +12,18 @@
  * @param {ToastOptions} [options]
  * @returns {void}
  */
-function showToast(text, { variant = "ok", duration = 1000 } = {}) {
+function showToast(text, variant = "ok", duration = 1000) {
   let root = document.getElementById("toast-root");
   if (!root) {
     root = document.createElement("div");
     root.id = "toast-root";
     document.body.appendChild(root);
   }
-  const el = document.createElement("div");
-  el.className =
-    "toast toast--show" + (variant === "error" ? " toast--error" : "");
-  el.innerHTML = `<span>${text}</span><span class="toast-icon" aria-hidden="true"></span>`;
-  root.appendChild(el);
-
-  setTimeout(() => {
-    el.classList.remove("toast--show");
-    el.classList.add("toast--hide");
-    el.addEventListener("animationend", () => el.remove(), { once: true });
-  }, duration);
+  const box = document.createElement("div");
+  box.className = variant === "error" ? "toast toast--show toast--error" : "toast toast--show";
+  box.innerHTML = "<span>" + text + "</span><span class=\"toast-icon\" aria-hidden=\"true\"></span>";
+  root.appendChild(box);
+  setTimeout(function () { box.remove(); }, duration);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
