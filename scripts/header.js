@@ -55,6 +55,7 @@ function userMenuTemplate() {
  */
 function renderUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
+    if (!contentRef) return;
     contentRef.innerHTML = userMenuTemplate();
 }
 
@@ -65,8 +66,9 @@ function renderUserMenuePopupMenu(){
  */
 function toggleUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
+    if (!contentRef) return;
     contentRef.classList.toggle("d_none");
-     if (!contentRef.classList.contains("d_none")) {
+    if (!contentRef.classList.contains("d_none")) {
         updateUserMenuPosition();
     }
 }
@@ -160,7 +162,8 @@ async function onloadFunctionHeader(){
  */
 async function setLetterInUserBall(isLoggedIn, profile){
     let contentRef = document.getElementById("user-ball-ID");
-        if(!isLoggedIn){
+    if (!contentRef) return;
+    if(!isLoggedIn){
         contentRef.innerHTML = "G";
     }   else{
         const displayName = profile?.name || window.currentUser?.displayName || window.currentUser?.email || "";
