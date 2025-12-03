@@ -166,9 +166,11 @@ function getColorFromItem(item) {
  * @param {Event} event - The click event that triggered the selection.
  */
 function selectAssignUser(name, event) {
-  // Stelle sicher, dass immer das übergeordnete Item gefunden wird
-  let item =
-    event?.currentTarget?.closest(".assign-item-addTask_template") || null;
+const t = event?.target;
+const el = t && t.nodeType === Node.TEXT_NODE ? t.parentElement : t;
+let item =
+  (el && typeof el.closest === "function" && el.closest(".assign-item-addTask_template")) ||
+  null;
   if (!item) {
     const candidates = document.querySelectorAll(
       ".assign-item-addTask_template"
@@ -183,9 +185,7 @@ function selectAssignUser(name, event) {
   if (!item) return;
 
   const checkbox = item.querySelector(".assign-check-addTask_template");
-
-  // Wenn der Klick direkt auf die Checkbox kam, nicht doppelt toggeln
-  if (event.target === checkbox) {
+  if (event?.target === checkbox) {
     item.classList.toggle("selected", checkbox.checked);
   } else {
     checkbox.checked = !checkbox.checked;
