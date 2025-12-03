@@ -532,3 +532,6 @@ header {
     max-width: calc(40% - 232px - 39px);
   }
 }
+.board-search-input{
+  color: #d1d1d1;
+}

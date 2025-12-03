@@ -373,3 +373,8 @@ body.no-scroll {
   background: #ffffff;
   cursor: pointer;
 }
+
+.board-search-input::placeholder {
+  color: #c6c3c3;
+  opacity: 1;      
+}
