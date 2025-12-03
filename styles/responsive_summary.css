@@ -122,14 +122,9 @@
 
   .card-font-a-summary,
   .card-font-a-urgent-task-summary {
-    font-size: 16px;
+    font-size: 18px;
   }
 
-  .summary-card-content-up-right {
-    width: 122px !important;
-    height: 84px !important;
-    gap: 6px;
-  }
 
   .img-count-container-summary {
     justify-content: flex-start;
@@ -138,7 +133,6 @@
     display: block;
     margin: 0 auto;
     white-space: normal;
-    line-height: 1.2;
   }
 }
 
