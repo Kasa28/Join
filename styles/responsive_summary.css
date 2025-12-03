@@ -244,3 +244,7 @@ todo .card-font-multiline {
   max-width: none;       
   white-space: nowrap;       
 }
+done .card-font-a-summary {
+  max-width: 70px;      
+  white-space: normal;  
+}
