@@ -44,6 +44,46 @@ const demoTasks = [
   },
 ];
 
+/**
+ * Ensures there is an authenticated Firebase user (anonymous fallback).
+ * @returns {Promise<import("https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js").User|null>}
+ */
+async function ensureBoardAuth() {
+  if (window.authReady) await window.authReady;
+  if (!window.currentUser && typeof window.signInAnonymously === "function") {
+    await window.signInAnonymously();
+    if (window.authReady) await window.authReady;
+  }
+  return window.currentUser || null;
+}
+
+/**
+ * Returns an auth query param for Realtime DB requests if available.
+ * @returns {Promise<string>}
+ */
+async function getBoardAuthQuery() {
+  await ensureBoardAuth();
+  const token = await window.auth?.currentUser?.getIdToken?.();
+  return token ? `?auth=${encodeURIComponent(token)}` : "";
+}
+
+/**
+ * Wrapper for auth-protected task requests.
+ * @param {string} pathSuffix - e.g. "", "/123"
+ * @param {RequestInit} [options]
+ * @returns {Promise<Response>}
+ */
+async function fetchBoardTasks(pathSuffix, options) {
+  const base =
+    window.BASE_URL ||
+    "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+  const authQuery = await getBoardAuthQuery();
+  const url = authQuery
+    ? `${base}tasks${pathSuffix}.json${authQuery}`
+    : `${base}tasks${pathSuffix}.json`;
+  return fetch(url, options);
+}
+
 
 /* === Firebase: Tasks laden === */
 /**
@@ -52,9 +92,8 @@ const demoTasks = [
  */
 async function loadTasksFromFirebase() {
   try {
-    const response = await fetch(
-      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
-    );
+    const response = await fetchBoardTasks("");
+    if (!response.ok) throw new Error(`Firebase responded ${response.status}`);
     const data = await response.json();
     const firebaseTasks = data
   ? Object.values(data).filter((t) => t && typeof t.status === "string")
@@ -65,14 +104,11 @@ async function loadTasksFromFirebase() {
         (acc, t) => ({ ...acc, [t.id]: t }),
         {}
       );
-      await fetch(
-        "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(demoObject),
-        }
-      );
+        await fetchBoardTasks("", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(demoObject),
+      });
       window.tasks = demoTasks.map((t) => ({ ...t }));
     } else {
       window.tasks = firebaseTasks;
@@ -231,14 +267,11 @@ window.selectedUserColors = window.selectedUserColors || {};
 async function persistTasks() {
   try {
     for (const t of window.tasks) {
-      await fetch(
-        `https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks/${t.id}.json`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(t),
-        }
-      );
+        await fetchBoardTasks(`/${t.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(t),
+      });
     }
     if (typeof updateSummary === "function") {
       await updateSummary();
@@ -275,7 +308,7 @@ window.updateSubtasks = (id, el) => {
   if (task) {
     task.subtasksDone = done;
     task.subtasksTotal = total;
-    fetch(`https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks/${id}.json`, {
+    fetchBoardTasks(`/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
