@@ -53,15 +53,13 @@ function getInitials(inputFullName){
 // === Contacts are rendered when the page are been open ===
 /**
  * Renders all contacts into the assign dropdown.
- * Loads user data from localStorage and falls back to demo data if not logged in.
+ * Loads contacts from the API or guest demo storage.
  */
-function renderContactsInDropdown(){
-  let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
-  const userContacts = getUserData.friends;
-  const login = checkIfLogedIn();
-  if(!login){
-    demoContactTemplate();
-  }
+async function renderContactsInDropdown(){
+  if (window.authReady) await window.authReady;
+  const userContacts = window.currentUser ? await loadContactsForActiveUser() : GUEST_EXAMPLE_CONTACTS;
+
+  if (!userContacts || !userContacts.length) return;
   for (let index = 0; index < userContacts.length; index++) {
     singleContactTemplate(userContacts[index]);
   }
@@ -87,33 +85,6 @@ function singleContactTemplate(inputContact){
       </span>
     <input type="checkbox" name="assigned[]" class="assign-check-addTask_page assign-check-addTask_template">
     </div>`;
-}
-
-
-/**
- * Renders fallback demo contacts when no user is logged in.
- */
-function demoContactTemplate(){
-   let contentRef = document.getElementById("contacts-containerID");
-
-   contentRef.innerHTML += `         
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Nils Becker', event)">
-              <span class="assign-avatar-addTask_page" style="background-color: #4589ff;">NB</span>
-              <span class="assign-name-addTask_page">Nils Becker</span>
-            <input type="checkbox" name="assigned[]" class="assign-check-addTask_page">
-            </div>
-
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Lara König', event)">
-              <span class="assign-avatar-addTask_page" style="background-color: #ff7eb6;">LK</span>
-              <span class="assign-name-addTask_page">Lara König</span>
-            <input type="checkbox" name="assigned[]" class="assign-check-addTask_page">
-            </div>
-
-            <div class="assign-item-addTask_page" onclick="selectAssignUser('Omar Said', event)">
-              <span class="assign-avatar-addTask_page" style="background-color: #00bfa5;">OS</span>
-              <span class="assign-name-addTask_page">Omar Said</span>
-            <input type="checkbox" name="assigned[]" class="assign-check-addTask_page">
-            </div>`
 }
 
 

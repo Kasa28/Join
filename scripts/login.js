@@ -48,7 +48,7 @@ async function loginAsGuest() {
 }
 
 
-async function checkIfLogedIn() {
+async function checkIfLogedInOnProtectedPage() {
   if (window.authReady) await window.authReady;
   if (!window.currentUser) {
   window.location.href = "./index.html";
@@ -88,4 +88,4 @@ function checkLogin() {
 window.login = login;
 window.loginAsGuest = loginAsGuest;
 window.checkLogin = checkLogin;
-window.checkIfLogedIn = checkIfLogedIn;
+window.checkIfLogedInOnProtectedPage = checkIfLogedInOnProtectedPage;

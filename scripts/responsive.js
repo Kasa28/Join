@@ -243,25 +243,19 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("click", function (event) {
     const item = event.target.closest(".contact-fab-item");
     if (!item) return;
-
     const label = item.textContent.toLowerCase();
     const isEdit = label.includes("edit");
     const isDelete = label.includes("delete");
     if (!isEdit && !isDelete) return;
-
-    const data = JSON.parse(localStorage.getItem("userData")) || {};
-    const contacts = Array.isArray(data.friends) ? data.friends : [];
+    const contacts = flattenContactBlockToArray() || [];
     if (!contacts.length) return;
-
     const displayedName = getCurrentContactName();
     if (!displayedName) return;
-
     const targetName = displayedName.trim().toLowerCase();
     const idx = contacts.findIndex(
       (c) => (c.username || "").trim().toLowerCase() === targetName
     );
     if (idx === -1) return;
-
     if (isEdit) {
       if (typeof setUserDataValue === "function") {
         setUserDataValue(idx);

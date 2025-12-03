@@ -102,8 +102,7 @@ function closeWhiteScreen(){
  * @returns {string|undefined}
  */
 function getContactColorType(inputIndex){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
-    const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
+    const contacts = flattenContactBlockToArray();
     const contact = contacts[inputIndex];
     return contact.color;
 }
@@ -133,15 +132,15 @@ function getInitials(inputFullName){
 }
 
 /**
- * Updates the friends list inside localStorage userData.
+ * Persists the current contacts for the active user (API or guest localStorage)
  * @param {Contact[]} updatedFriends
  * @returns {void}
  */
-function updateFriendsInLocalStorage(updatedFriends){
-    let userData = JSON.parse(localStorage.getItem("userData") || {});
-    userData.friends = updatedFriends;
-    localStorage.setItem("userData", JSON.stringify(userData));
+async function persistContacts(updatedFriends){
+    await persistContactsForActiveUser(updatedFriends);
+    setContactsIntoContactblock(updatedFriends);
 }
+
 
 /**
  * Sorts contacts in-place by username (case-insensitive).

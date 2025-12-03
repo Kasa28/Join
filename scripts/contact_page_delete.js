@@ -9,19 +9,9 @@
  */
 async function deleteContact(inputString){
     let contacts = flattenContactBlockToArray() || [];
-    const login = checkIfLogedIn();
     const rightIndex = findIndexFromUsername(contacts, inputString);
-    
-
     contacts.splice(rightIndex, 1);
-    
-    if(login){
-        let getUserData = JSON.parse(localStorage.getItem("userData"))|| [];
-        updateFriendsInLocalStorage(contacts);
-        const userID = await getUserID(getUserData.name);
-        await updateUserFriendslist(userID, contacts);
-    } 
-
+    await persistContacts(contacts);
     let showContact = document.getElementById("singleContactID");
     showContact.innerHTML = "";
     renderContactList();
@@ -32,7 +22,7 @@ async function deleteContact(inputString){
 /**
  * Deletes a contact from within the edit-contact window.
  * Reads the username from the edit form, removes it from contacts,
- * syncs to backend/localStorage depending on login state,
+ * syncs to backend or guest storage depending on login state,
  * clears UI, closes edit form, and re-renders the list.
  *
  * @async
@@ -40,24 +30,11 @@ async function deleteContact(inputString){
  */
 async function deleteContactinEditContactWindow(){
     let contacts = flattenContactBlockToArray() || [];
-    const login = checkIfLogedIn();
-
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
-
     let usernameRef = document.getElementById("edit-contact-usernameID").value;
     let showContact =  document.getElementById("singleContactID");
     const rightIndex = findIndexFromUsername(contacts, usernameRef);
-
     contacts.splice(rightIndex, 1);
-
-    if(login){
-        updateFriendsInLocalStorage(contacts);
-        const userID = await getUserID(getUserData.name);
-        await updateUserFriendslist(userID, contacts);
-    }else {
-        setContactsIntoContactblock(contacts);
-    }
-    
+    await persistContacts(contacts);
     showContact.innerHTML = "";
     hideEditContactFormular();
     renderContactList();
