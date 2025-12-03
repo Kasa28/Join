@@ -104,6 +104,7 @@
     max-width: 208px;
     min-width: 0;
     padding: 24px;
+    border-radius: 20px;
   }
 
   .img-summary {
