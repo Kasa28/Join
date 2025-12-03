@@ -26,8 +26,15 @@
  * @property {number} done
  */
 window.addEventListener("DOMContentLoaded", () => {
-  updateSummary();
+  initSummaryPage();
 });
+
+
+async function initSummaryPage() {
+  await waitForAuthGlobals();
+  await updateSummary();
+  startSummaryPolling();
+}
 
 
 /**
@@ -38,16 +45,7 @@ window.addEventListener("DOMContentLoaded", () => {
  */
 async function loadTasks() {
   try {
-        if (window.authReady) {
-      await window.authReady;
-    }
-
-    const token = await window.auth?.currentUser?.getIdToken?.();
-    const base =
-      window.BASE_URL ||
-      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
-    const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
-
+    const { base, authQuery } = await getSummaryFetchConfig(); 
     const response = await fetch(`${base}tasks.json${authQuery}`);
     const data = await response.json();
     const firebaseTasks = Array.isArray(data)
@@ -213,15 +211,7 @@ let lastDataString = "";
  */
 async function pollSummary() {
   try {
-     if (window.authReady) {
-      await window.authReady;
-    }
-
-    const token = await window.auth?.currentUser?.getIdToken?.();
-    const base =
-      window.BASE_URL ||
-      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
-    const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
+    const { base, authQuery } = await getSummaryFetchConfig(); 
 
     const res = await fetch(`${base}tasks.json${authQuery}`);
     const data = await res.json();
@@ -241,6 +231,7 @@ async function pollSummary() {
  * @returns {Promise<{base: string, authQuery: string}>}
  */
 async function getSummaryFetchConfig() {
+   await waitForAuthGlobals();
   if (window.authReady) {
     await window.authReady;
   }
@@ -263,5 +254,27 @@ async function getSummaryFetchConfig() {
 }
 
 
-pollSummary();
-setInterval(pollSummary, 3000);
+let authGlobalsPromise;
+
+
+function waitForAuthGlobals() {
+  if (!authGlobalsPromise) {
+    authGlobalsPromise = new Promise((resolve) => {
+      if (window.authReady || window.signInAnonymously) {
+        resolve();
+        return;
+      }
+
+      const deadline = Date.now() + 3000;
+      const interval = setInterval(() => {
+        if (window.authReady || window.signInAnonymously || Date.now() > deadline) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 50);
+    });
+  }
+
+  return authGlobalsPromise;
+}
+
