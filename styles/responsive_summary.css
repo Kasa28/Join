@@ -1,10 +1,5 @@
-/* ========== SUMMARY RESPONSIVE ========== */
 
-/* 1) Layout bis 1000px – oben 2 große Karten, unten 4 kleine */
 @media (max-width: 1000px) {
-  .summary-card {
-    border: solid white !important;
-  }
 
   .main-content {
     width: 100%;
@@ -46,7 +41,6 @@
     height: auto;
   }
 
-  /* Reihenfolge der Karten */
   .summary-content-container .urgent-task-card-summary { order: 0;gap: 26px; }
   .summary-content-container .summary-cards-low-section { order: 1; }
   .summary-content-container .tasks-on-board-card-summary { order: 2; }
@@ -54,14 +48,12 @@
   .summary-content-container .feedback { order: 4; }
   .summary-content-container .done { order: 5; }
 
-  /* === OBERE 2 KARTEN: Urgent + To-Do (blau-hell) groß & gleich aufgebaut === */
   .urgent-task-card-summary,
   .summary-card.summary-cards-low-section.backgroundcolor-blue-light {
     flex: 1 1 100%;
     width: 100%;
     max-width: 440px;
     padding: 24px;
-    gap: 5px;
     display: grid;
     grid-template-columns: 60px min-content 1px 1fr;
     align-items: center;
@@ -107,7 +99,6 @@
     width: fit-content;
   }
 
-  /* === UNTERE 4 KARTEN: alle gleich, 2 Spalten === */
   .summary-card:not(.urgent-task-card-summary):not(.backgroundcolor-blue-light) {
     flex: 1 1 calc(50% - 16px);
     max-width: 208px;
@@ -115,7 +106,6 @@
     padding: 24px;
   }
 
-  /* Optik: gemeinsame Anpassungen */
   .img-summary {
     width: 60px;
     height: 60px;
@@ -200,7 +190,62 @@
     color: inherit !important;
     box-shadow: none !important;
     transform: none !important;
-    border-radius: inherit !important;
     z-index: auto !important;
+  }
+}
+@media (max-width: 1100px) {
+  .summary-card,
+  .summary-cards-low-section,
+  .urgent-task-card-summary,
+  .tasks-on-board-card-summary,
+  .backgroundcolor-blue-light,
+  .summary-card-the-last-three {
+    transition: none !important;
+  }
+
+  .summary-card:hover,
+  .summary-card:focus,
+  .summary-card:active,
+  .summary-cards-low-section:hover,
+  .summary-cards-low-section:focus,
+  .summary-cards-low-section:active,
+  .urgent-task-card-summary:hover,
+  .urgent-task-card-summary:focus,
+  .urgent-task-card-summary:active,
+  .tasks-on-board-card-summary:hover,
+  .tasks-on-board-card-summary:focus,
+  .tasks-on-board-card-summary:active,
+  .backgroundcolor-blue-light:hover,
+  .backgroundcolor-blue-light:focus,
+  .backgroundcolor-blue-light:active,
+  .summary-card-the-last-three:hover,
+  .summary-card-the-last-three:focus,
+  .summary-card-the-last-three:active {
+    cursor: default !important;
+    background-color: inherit !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    transform: none !important;
+    z-index: auto !important;
+  }
+
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light:hover,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light:focus,
+  .summary-card.summary-cards-low-section.backgroundcolor-blue-light:active {
+    background-color: #d2e3ff !important; 
+    color: #2a3647 !important;            
+    border-radius: 20px !important;       
+  }
+  .summary-cards-low-section,
+  .summary-cards-low-section:hover,
+  .summary-cards-low-section:focus,
+  .summary-cards-low-section:active,
+  .summary-card-the-last-three,
+  .summary-card-the-last-three:hover,
+  .summary-card-the-last-three:focus,
+  .summary-card-the-last-three:active {
+    border-radius: 20px !important;
+    border-top-left-radius: 20px !important;
   }
 }

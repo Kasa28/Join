@@ -366,15 +366,7 @@
   .tasks-on-board-card-summary {
     transition: none !important;
   }
-  .urgent-task-card-summary:hover,
-  .urgent-task-card-summary:focus,
-  .urgent-task-card-summary:active {
-        background-color: inherit !important;
-    color: inherit !important;
-    transform: none !important;
-    border-radius: inherit !important;
-    cursor: default;
-  }
+
 }
 
 @keyframes hideSummaryGreeting {
@@ -537,3 +529,13 @@ header {
     max-width: calc(40% - 232px - 39px);
   }
 }
+
+@media (max-width: 1100px) {
+  .urgent-task-card-summary:hover,
+  .urgent-task-card-summary:focus,
+  .urgent-task-card-summary:active {
+    background-color: #4589ff !important; 
+    color: #ffffff !important;            
+  }
+}
+
