@@ -1,3 +1,15 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  overflow-y: auto;        
+  -ms-overflow-style: none;   
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
 .button_help {
   display: none;
 }
@@ -520,5 +532,3 @@ header {
     max-width: calc(40% - 232px - 39px);
   }
 }
-
-
