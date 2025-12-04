@@ -282,18 +282,25 @@ document.addEventListener("click", (e) => {
     ".assign-placeholder-addTask_page"
   );
   const arrow = document.querySelector(".assign-arrow-addTask_page");
-
+  const panel = document.getElementById("addtask-content");
   if (!dropdown || !assignSelect) return;
+    const clickedInsidePanel = panel?.contains(e.target);
+  if (clickedInsidePanel &&
+    !assignSelect.contains(e.target) &&
+    !dropdown.contains(e.target)) {
+    return;
+  }
 
   if (!assignSelect.contains(e.target) && !dropdown.contains(e.target)) {
     dropdown.style.display = "none";
+    window.isDropdownOpen = false;
     if (placeholder) {
       placeholder.contentEditable = false;
       placeholder.classList.remove("typing");
   }
-  if (arrow) {
-    arrow.style.transform = "rotate(0deg)";
-  }
+    if (arrow) {
+      arrow.style.transform = "rotate(0deg)";
+    }
     renderAssignedAvatars();
   }
 });
