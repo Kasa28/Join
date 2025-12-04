@@ -1,6 +1,9 @@
 /* === Base URL Configuration === */
 const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
+// Expose for non-module scripts that rely on global variables
+window.BASE_URL = BASE_URL;
+
 const GUEST_CONTACTS_KEY = "guestContacts";
 const GUEST_EXAMPLE_CONTACTS = [
   {"username": "Peter", "email": "peter-lustig@hotmail.de", "PhoneNumber": "+491517866563", "color": "pink"},
@@ -13,6 +16,11 @@ const GUEST_EXAMPLE_CONTACTS = [
   {"username": "Günther", "email": "günther-jauch@gmail.de", "PhoneNumber": "+4915157652244", "color": "blue"},
   {"username": "Simon", "email": "simon-krätschmer@gmail.de", "PhoneNumber": "+491504621354", "color": "red"}
 ];
+
+
+// Make guest demo contacts available globally for legacy scripts
+window.GUEST_EXAMPLE_CONTACTS = GUEST_EXAMPLE_CONTACTS;
+
 
 /* === Fetch All Tasks === */
 async function getAllTasks() {
@@ -42,11 +50,8 @@ async function deleteTask(taskId) {
  * @returns {string}
  */
 function getCurrentUidOrThrow() {
-  if (
-    typeof auth === "undefined" ||
-    !auth.currentUser ||
-    !auth.currentUser.uid
-  ) {
+   const auth = window.auth;
+  if (!auth || !auth.currentUser || !auth.currentUser.uid) {
     throw new Error("No authenticated user (uid missing)");
   }
   return auth.currentUser.uid;
@@ -161,19 +166,21 @@ async function seedDemoFriendsIfEmpty(exampleContacts) {
 }
 
 
-/* === Expose API globally (no import tooling) === */
-window.BASE_URL = BASE_URL;
-window.saveTask = saveTask;
-window.getAllTasks = getAllTasks;
-window.deleteTask = deleteTask;
-window.getFriendsForCurrentUser = getFriendsForCurrentUser;
-window.updateFriendsForCurrentUser = updateFriendsForCurrentUser;
-window.seedDemoFriendsIfEmpty = seedDemoFriendsIfEmpty;
-window.getGuestContactsFromStorage = getGuestContactsFromStorage;
-window.loadContactsForActiveUser = loadContactsForActiveUser;
-window.persistContactsForActiveUser = persistContactsForActiveUser;
-window.GUEST_EXAMPLE_CONTACTS = GUEST_EXAMPLE_CONTACTS;
-window.GUEST_CONTACTS_KEY = GUEST_CONTACTS_KEY;
-window.loadCurrentUserProfile = loadCurrentUserProfile;
-window.isGuestUser = () => Boolean(window.currentUser?.isAnonymous);
-window.isRegisteredUser = () => Boolean(window.currentUser && !window.currentUser.isAnonymous);
+// Expose frequently used helpers for legacy (non-module) scripts
+Object.assign(window, {
+  getAllTasks,
+  saveTask,
+  deleteTask,
+  getUserFriendslistByUid,
+  getFriendsForCurrentUser,
+  updateUserFriendslistByUid,
+  updateFriendsForCurrentUser,
+  loadContactsForActiveUser,
+  persistContactsForActiveUser,
+  loadCurrentUserProfile,
+  seedDemoFriendsIfEmpty,
+  GUEST_CONTACTS_KEY,
+  isGuestUser: () => Boolean(window.currentUser?.isAnonymous),
+  isRegisteredUser: () =>
+    Boolean(window.currentUser && !window.currentUser.isAnonymous),
+});
