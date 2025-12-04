@@ -211,8 +211,7 @@ let lastDataString = "";
  */
 async function pollSummary() {
   try {
-    const { base, authQuery } = await getSummaryFetchConfig(); 
-
+const { base, authQuery } = await getSummaryFetchConfig();
     const res = await fetch(`${base}tasks.json${authQuery}`);
     const data = await res.json();
     const json = JSON.stringify(data);
@@ -222,6 +221,18 @@ async function pollSummary() {
     }
   } catch (err) {
   }
+}
+
+
+let pollIntervalId;
+/**
+ * Starts a polling interval for summary updates if not already running.
+ * Uses a 5 second interval to keep the dashboard in sync with backend changes.
+ * @returns {void}
+ */
+function startSummaryPolling() {
+  if (pollIntervalId) return;
+  pollIntervalId = setInterval(pollSummary, 5000);
 }
 
 
