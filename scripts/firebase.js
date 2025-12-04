@@ -21,16 +21,33 @@ const GUEST_EXAMPLE_CONTACTS = [
 // Make guest demo contacts available globally for legacy scripts
 window.GUEST_EXAMPLE_CONTACTS = GUEST_EXAMPLE_CONTACTS;
 
+function sanitizeBaseUrl(url) {
+  return url.endsWith("/") ? url.slice(0, -1) : url;
+}
+
+async function getTaskAuthQuery() {
+  if (window.authReady) await window.authReady;
+  const token = await window.auth?.currentUser?.getIdToken?.();
+  return token ? `?auth=${encodeURIComponent(token)}` : "";
+}
+
+async function fetchTasksApi(path, options) {
+  const base = sanitizeBaseUrl(window.BASE_URL || BASE_URL);
+  const authQuery = await getTaskAuthQuery();
+  const url = `${base}/${path}.json${authQuery}`;
+  return fetch(url, options);
+}
+
 
 /* === Fetch All Tasks === */
 async function getAllTasks() {
-  const response = await fetch(`${BASE_URL}tasks.json`);
+ const response = await fetchTasksApi("tasks");
   return (await response.json()) || {};
 }
 
 /* === Save Task by ID (PUT Request) === */
 async function saveTask(taskId, taskData) {
-  const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
+ const response = await fetchTasksApi(`tasks/${taskId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(taskData),
@@ -40,9 +57,8 @@ async function saveTask(taskId, taskData) {
 
 /* === Delete Task by ID === */
 async function deleteTask(taskId) {
-  await fetch(`${BASE_URL}tasks/${taskId}.json`, { method: "DELETE" });
+ await fetchTasksApi(`tasks/${taskId}`, { method: "DELETE" });
 }
-
 /* === Auth-aware Friends (Contacts) API === */
 
 /**
