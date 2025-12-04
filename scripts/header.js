@@ -165,11 +165,19 @@ async function setLetterInUserBall(isLoggedIn, profile){
     if (!contentRef) return;
     if(!isLoggedIn){
         contentRef.innerHTML = "G";
-    }   else{
-        const displayName = profile?.name || window.currentUser?.displayName || window.currentUser?.email || "";
-        const userLetter = displayName.charAt(0).toUpperCase();
-        contentRef.innerHTML = userLetter || "?";
-    }    
+      return;
+    }
+    const displayName = profile?.name || window.currentUser?.displayName || window.currentUser?.email || "";
+    const userLetter = displayName.charAt(0).toUpperCase();
+    if (userLetter) {
+        contentRef.innerHTML = userLetter;
+        return;
+    }
+    if (window.currentUser?.isAnonymous) {
+        contentRef.innerHTML = "G";
+        return;
+    }
+    contentRef.innerHTML = "?";
 }
 
 /* === Greeting Message Rendering === */

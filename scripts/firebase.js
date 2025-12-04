@@ -195,6 +195,7 @@ Object.assign(window, {
   persistContactsForActiveUser,
   loadCurrentUserProfile,
   seedDemoFriendsIfEmpty,
+  getGuestContactsFromStorage,
   GUEST_CONTACTS_KEY,
   isGuestUser: () => Boolean(window.currentUser?.isAnonymous),
   isRegisteredUser: () =>
