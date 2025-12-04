@@ -60,6 +60,9 @@ async function renderContactsInDropdown(){
   const userContacts = window.currentUser ? await loadContactsForActiveUser() : GUEST_EXAMPLE_CONTACTS;
 
   if (!userContacts || !userContacts.length) return;
+   const contentRef = document.getElementById("contacts-containerID");
+  if (!contentRef) return;
+  contentRef.innerHTML = "";
   for (let index = 0; index < userContacts.length; index++) {
     singleContactTemplate(userContacts[index]);
   }
