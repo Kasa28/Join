@@ -53,10 +53,10 @@ function getInitials(inputFullName){
 // === Contacts are rendered when the page are been open ===
 /**
  * Renders all contacts into the assign dropdown.
- * Loads user data from localStorage and falls back to demo data if not logged in.
+  * Loads user data from the current session and falls back to demo data if not logged in.
  */
 function renderContactsInDropdown(){
-  let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: [] };
+  let getUserData = window.getSessionSnapshot() || { friends: [] };
   const userContacts = getUserData.friends;
   const login = checkIfLogedIn();
   if(!login){

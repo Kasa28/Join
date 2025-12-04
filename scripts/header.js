@@ -97,10 +97,10 @@ function updateUserMenuPosition() {
 
 /* === Logout Functionality === */
 /**
- * Removes stored user data from localStorage, effectively logging the user out.
+ * Logs the user out by clearing the Firebase-backed session profile.
  */
 function deleteIdFromLocalStorage(){
-    localStorage.removeItem('userData');
+window.clearSessionUser();
 }
 
 
@@ -121,15 +121,18 @@ function isPublicPage() {
 }
 
 function checkIfLogedIn() {
-    const loggedIn = Boolean(localStorage.getItem("userData"));
+       window.sessionReady.then((session) => {
+        const loggedIn = Boolean(session || window.currentUser);
 
-    if (!loggedIn && !isPublicPage()) {
-        const loginPath = "/index.html";
-        window.location.href = loginPath;
-        return false;
-    }
- 
-    return loggedIn;
+        if (!loggedIn && !isPublicPage()) {
+            const loginPath = "/index.html";
+            window.location.href = loginPath;
+            return false;
+        }
+        return loggedIn;
+    });
+
+    return Boolean(window.sessionUser || window.currentUser);
 }
 
 
@@ -156,8 +159,8 @@ function setLetterInUserBall(isLoggedIn){
         if(!isLoggedIn){
         contentRef.innerHTML = "G";
     }   else{
-        let userJson = JSON.parse(localStorage.getItem("userData"));
-        userLetter = userJson.name.charAt(0).toUpperCase();
+        let userJson = window.getSessionSnapshot();
+        userLetter = (userJson.name || "G").charAt(0).toUpperCase();
         contentRef.innerHTML = userLetter;
     }        
 }
@@ -191,8 +194,8 @@ function greetUserName() {
     if (!checkIfLogedIn()) {
         contentRef.innerHTML = `<h1 class="summary-h1-font-guest">${greeting}</h1>`;
     } else {
-        let userJson = JSON.parse(localStorage.getItem("userData"));
-        let userName = makeFirstLetterBig(userJson.name);
+        let userJson = window.getSessionSnapshot();
+        let userName = makeFirstLetterBig(userJson.name || "Guest");
         contentRef.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2>
                                 <h1 class="summary-h1-font-user">${userName}</h1>`;
     }

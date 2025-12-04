@@ -3,7 +3,7 @@
 /**
  * @type {Record<string, boolean[]>}
  */
-window.saved = JSON.parse(localStorage.getItem("checks") || "{}");
+window.saved = window.saved || {};
 const saved = window.saved;
 
 /**
@@ -270,7 +270,6 @@ window.updateSubtasks = (id, el) => {
     if (st) st.textContent = `${done}/${total} Subtasks`;
   }
   saved[id] = subtaskListe.map((x) => x.checked);
-  localStorage.setItem("checks", JSON.stringify(saved));
   const task = window.tasks.find(t => t.id == id);
   if (task) {
     task.subtasksDone = done;

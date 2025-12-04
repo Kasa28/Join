@@ -102,7 +102,7 @@ function closeWhiteScreen(){
  * @returns {string|undefined}
  */
 function getContactColorType(inputIndex){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || {};
+    let getUserData = window.getSessionSnapshot();
     const contacts = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     const contact = contacts[inputIndex];
     return contact.color;
@@ -133,14 +133,15 @@ function getInitials(inputFullName){
 }
 
 /**
- * Updates the friends list inside localStorage userData.
+* Updates the friends list inside the session-backed user data.
  * @param {Contact[]} updatedFriends
  * @returns {void}
  */
-function updateFriendsInLocalStorage(updatedFriends){
-    let userData = JSON.parse(localStorage.getItem("userData") || {});
+async function updateFriendsInLocalStorage(updatedFriends){
+    await window.sessionReady;
+    let userData = window.getSessionSnapshot();
     userData.friends = updatedFriends;
-    localStorage.setItem("userData", JSON.stringify(userData));
+    await window.saveSessionUser(userData);
 }
 
 /**

@@ -13,7 +13,7 @@ let exampleContacts = [
 ];
 
 /* === Firebase Configuration === */
-const BASE_URL = "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = window.FIREBASE_DB_URL;
 users = [];
 
 
@@ -55,8 +55,8 @@ async function fillArray(){
  * displays error messages, and redirects on success.
  * @param {Event} event - The form submit event.
  */
-function login(event){
-   if (event) event.preventDefault(); 
+async function login(event){
+   if (event) event.preventDefault();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -67,10 +67,11 @@ function login(event){
       errorEl.style.color = "red";
       return;
     }
-    const loginSuccessful = checkUsernamePassword(email, password);
-    checkUsernamePassword(email, password);
-   if(loginSuccessful){
-      window.location.href = "./summaryAll.html";  
+    const profile = checkUsernamePassword(email, password);
+   if(profile){
+      await window.signInAnonymously();
+      await window.saveSessionUser(profile);
+      window.location.href = "./summaryAll.html";
    } else {
       const errorEl = document.getElementById("error_message");
       errorEl.textContent = "E-Mail oder Passwort ist ungültig!";
@@ -84,14 +85,15 @@ function login(event){
  * Logs the user in as a guest, stores guest data locally,
  * and redirects to the summary page.
  */
-function loginAsGuest() {
+async function loginAsGuest() {
    const guest = {
       id: "guest",
       name: "Guest",
       email: "guest@guest.com",
       friends: (typeof exampleContacts !== "undefined" ? exampleContacts : [])
    };
-   localStorage.setItem("userData", JSON.stringify(guest));
+   await window.signInAnonymously();
+   await window.saveSessionUser(guest);
    window.location.href = "./summaryAll.html";
 }
 
@@ -111,37 +113,29 @@ function checkUsernamePassword(inputMail, inputPassword){
       let actualID = users[index].id;
       let actualFriendlist = users[index].user.friends || [];
       let actualJson = {"id" : actualID, "name" : actualName, "email" : actualMail, "friends" : actualFriendlist}
-   if(actualMail === inputMail && actualPassword === inputPassword){   
-            putUserDataIntoLocalStorage(actualJson);
-            return true;
+   if(actualMail === inputMail && actualPassword === inputPassword){
+            return actualJson;
       }
    }
-   return false;
-}
-
-
-/* === Local Storage Handling === */
-/**
- * Stores logged-in user data in localStorage.
- * @param {Object} inputJson - The user data object to store.
- */
-function putUserDataIntoLocalStorage(inputJson){
-   localStorage.setItem("userData", JSON.stringify(inputJson));
+   return null;
 }
 
 
 /* === Login Guard === */
 /**
  * Guards protected pages by checking login state.
- * Redirects to the login page if no user is found in localStorage.
+* Redirects to the login page if no authenticated user is available.
  */
 function checkIfLogedIn() {
-   const user = localStorage.getItem("userData");
-   if (!user) {
-      window.location.href = "./index.html";
-      return;
-   }
-   document.body.style.visibility = "visible";
+   window.sessionReady.then((session)=>{
+      const loggedIn = Boolean(session || window.currentUser);
+      if (!loggedIn) {
+         window.location.href = "./index.html";
+         return;
+      }
+      document.body.style.visibility = "visible";
+   });
+   return Boolean(window.sessionUser || window.currentUser);
 }
 
 /* === Form Validation === */

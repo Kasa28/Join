@@ -135,12 +135,12 @@ function getCurrentContactName() {
 }
 
 /**
- * Loads the contacts array from localStorage (userData.friends).
+ * Loads the contacts array from the current session profile (userData.friends).
  *
  * @returns {Object[]} Array of contact objects, or empty array.
  */
 function getContactsFromStorage() {
-  const data = JSON.parse(localStorage.getItem("userData")) || {};
+   const data = window.getSessionSnapshot() || {};
   if (!Array.isArray(data.friends)) return [];
   return data.friends;
 }

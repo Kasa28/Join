@@ -86,16 +86,17 @@ function handleAddContact() {
 }
 
 /**
- * Saves updated contacts to localStorage and synchronizes them with the API.
+ * Saves updated contacts to the session profile and synchronizes them with the API.
  * @param {Array<Object>} inputContacts - The list of contacts to store.
  * @returns {Promise<void>}
  */
 async function addContactToLocalStorageAndAPI(inputContacts) {
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };
+    await window.sessionReady;
+    let getUserData = window.getSessionSnapshot();
     let updatedContacts = inputContacts;
 
     getUserData.friends = updatedContacts;
-    localStorage.setItem("userData", JSON.stringify(getUserData));
+    await window.saveSessionUser(getUserData);
 
     const userID = await getUserID(getUserData.name);
     if (userID) {

@@ -61,7 +61,8 @@ let contactBlock = {
  * @returns {Promise<Contact[]>} Updated friends list.
  */
 async function putUsernameInContactList(){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || [];
+    await window.sessionReady;
+    let getUserData = window.getSessionSnapshot();
     let getUserFriends = Array.isArray(getUserData.friends) ? getUserData.friends : [];
 
     const nameExists = getUserFriends.some(contact =>
@@ -98,12 +99,12 @@ async function putUsernameInContactList(){
 async function renderContactList(){
     const login = checkIfLogedIn();
     if (login) await putUsernameInContactList();
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || [];
+    let getUserData = window.getSessionSnapshot();
     let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
     if (!login) {
-        pushExampleContactsOneTimeInLocalStorage(exampleContacts);
+       setContactsIntoContactblock(exampleContacts);
     } else {
         setContactsIntoContactblock(getContactsFromUser);
     }

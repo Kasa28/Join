@@ -214,7 +214,7 @@ function buildCheckboxArray(prev, total) {
 
 function saveCheckboxState() {
   try {
-    localStorage.setItem("checks", JSON.stringify(window.saved));
+     window.saved = window.saved || {};
   } catch (e) {
   }
 }

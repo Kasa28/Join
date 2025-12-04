@@ -81,7 +81,7 @@ async function editContact() {
 
     if (login) {
         updateFriendsInLocalStorage(contacts);
-        const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
+        const getUserData = window.getSessionSnapshot() || [];
         const userID = await getUserID(getUserData.name);
         await updateUserFriendslist(userID, contacts);
     } else {
@@ -106,7 +106,7 @@ async function deleteContactinEditContactWindow() {
     contacts.splice(remindIndex, 1);
     if (login) {
         updateFriendsInLocalStorage(contacts);
-        const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
+        const getUserData = window.getSessionSnapshot() || [];
         const userID = await getUserID(getUserData.name);
         await updateUserFriendslist(userID, contacts);
     } else {
