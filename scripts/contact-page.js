@@ -97,9 +97,8 @@ async function renderContactList(){
     const login = Boolean(window.currentUser);
     let getContactsFromUser = [];
     if (login) {
-        if (isGuestUser && isGuestUser()) {
-            getContactsFromUser = getGuestContactsFromStorage();
-        } else {
+        getContactsFromUser = await loadContactsForActiveUser();
+        if (!(window.currentUser?.isAnonymous)) {
             getContactsFromUser = await putUsernameInContactList();
         }
     } 

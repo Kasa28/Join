@@ -137,10 +137,9 @@ function getInitials(inputFullName){
  * @returns {void}
  */
 async function persistContacts(updatedFriends){
-    await persistContactsForActiveUser(updatedFriends);
+    await window.persistContactsForActiveUser(updatedFriends);
     setContactsIntoContactblock(updatedFriends);
 }
-
 
 /**
  * Sorts contacts in-place by username (case-insensitive).
