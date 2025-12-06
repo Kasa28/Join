@@ -49,10 +49,10 @@ async function loadTasks() {
     const response = await fetch(`${base}tasks.json${authQuery}`);
     const data = await response.json();
     const firebaseTasks = Array.isArray(data)
-      ? data.filter(Boolean)
-      : data
-      ? Object.values(data)
-      : [];
+  ? data.filter(Boolean)
+  : data && typeof data === "object"
+  ? Object.values(data).filter((t) => t && typeof t === "object" && "status" in t)
+  : [];
     firebaseTasks.forEach((t) => {
       if (t && typeof t.priority === "string") {
         t.priority = t.priority.toLowerCase();

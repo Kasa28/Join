@@ -95,8 +95,8 @@ async function loadTasksFromFirebase() {
     const response = await fetchBoardTasks("");
     if (!response.ok) throw new Error(`Firebase responded ${response.status}`);
     const data = await response.json();
-    const firebaseTasks = data
-  ? Object.values(data).filter((t) => t && typeof t.status === "string")
+   const firebaseTasks = data && typeof data === "object"
+  ? Object.values(data).filter((t) => t && typeof t === "object" && "status" in t)
   : [];
 
     if (firebaseTasks.length === 0) {
