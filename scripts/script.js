@@ -100,6 +100,35 @@ function mapCategoryToType(value) {
 function assignedToDataExtractSafe() {
   if (typeof assignedToDataExtract === "function")
     return assignedToDataExtract();
+  const names = Array.isArray(window.selectedUsers)
+    ? window.selectedUsers.slice()
+    : [];
+  const colors = window.selectedUserColors || {};
+  if (names.length) {
+    return names.map((fullName) => {
+      let color = colors[fullName];
+      if (!color) {
+        const items = document.querySelectorAll(
+          ".assign-item-addTask_page"
+        );
+        items.forEach((item) => {
+          const label = item
+            .querySelector(".assign-name-addTask_page")
+            ?.textContent.trim();
+          if (label === fullName) {
+            const avatar = item.querySelector(".assign-avatar-addTask_page");
+            if (avatar?.style?.backgroundColor) {
+              color = avatar.style.backgroundColor;
+            }
+          }
+        });
+      }
+      if (!color) {
+        color = "#4589ff";
+      }
+      return { name: fullName, color };
+    });
+  }
   const assigned = [];
   const avatars = document.querySelectorAll(
     "#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page"

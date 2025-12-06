@@ -11,23 +11,26 @@
   <link rel="stylesheet" href="styles/sidemenue.css">
   <link rel="icon" type="image/png" href="assets/img/Capa2.png">
   <link rel="stylesheet" href="styles/responsive.css">
+
+  <script type="module" src="./scripts/auth.js"></script>
+  <script type="module" src="./scripts/firebase.js"></script>
 </head>
 
 <body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()">
   <div class="header-wrapper-responsive">
-  <header>
-    <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
-    <div class="header-right-part">
-      <a class="header-font"> Kanban Project Management Tool</a>
-      <a href="./help.html">
-        <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
-      </a>
-      <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-        <a class="g-unit" id="user-ball-ID">G</a>
+    <header>
+      <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
+      <div class="header-right-part">
+        <a class="header-font"> Kanban Project Management Tool</a>
+        <a href="./help.html">
+          <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
+        </a>
+        <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+          <a class="g-unit" id="user-ball-ID">G</a>
+        </div>
       </div>
-    </div>
-  </header>
-</div>
+    </header>
+  </div>
 
   <div class="d_none" id="user-menue-header">
   </div>
@@ -150,8 +153,7 @@
     </section>
   </nav-main-container>
 
-  <script src="./scripts/header.js"></script>
-  <script type="module" src="./scripts/firebase.js"></script>
+  <script defer src="./scripts/header.js"></script>
 </body>
 
 </html>

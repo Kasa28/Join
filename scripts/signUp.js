@@ -1,3 +1,9 @@
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
 /**
  * Firebase Realtime Database base URL.
  * @type {string}
@@ -29,53 +35,21 @@ function isValidName(name) {
   return trimmed.length >= 2 && /^[\p{L}\p{M}\s'.-]+$/u.test(trimmed);
 }
 
-
 function isValidEmail(email) {
-  return /^[A-Za-z0-9](\.?[A-Za-z0-9_\-+])*@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+$/.test(email.trim());
+  return /^[A-Za-z0-9](\.?[A-Za-z0-9_\-+])*@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+$/.test(
+    email.trim()
+  );
 }
 
-
-/**
- * @typedef {Object} User
- * @property {string} name
- * @property {string} password
- * @property {string} email
- */
-
-/**
- * Fetches JSON data from Firebase for a given path.
- * @async
- * @param {string} path - Firebase collection/path (without .json).
- * @returns {Promise<any>} Parsed JSON response.
- */
-async function getAllUsers(path) {
-  const url = BASE_URL + path + ".json";
-  const response = await fetch(url);
-  const data = await response.json();
-  // wie im Original: globale Hilfe-Variable
-  // eslint-disable-next-line no-undef
-  responseToJson = data;
-  return data;
-}
-
-/**
- * Saves/overwrites data to Firebase at path/id (PUT).
- * @async
- * @param {string} [path=""] - Firebase collection/path.
- * @param {string|number} [id=""] - Firebase node id/key.
- * @param {Object} [data={}] - Payload to store.
- * @returns {Promise<any>} Firebase response JSON.
- */
-async function postDataWithID(path = "", id = "", data = {}) {
-  const url = BASE_URL + path + "/" + id + ".json";
-  const options = {
+async function writeUserProfile(uid, name, email, idToken) {
+  const url = `${BASE_URL}users/${uid}/profile.json?auth=${encodeURIComponent(
+    idToken
+  )}`;
+  const res = await fetch(url, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  };
-  const response = await fetch(url, options);
-  const result = await response.json();
-  return result;
+    body: JSON.stringify({ name, email, createdAt: Date.now() }),
+  });
 }
 
 /**
@@ -84,7 +58,7 @@ async function postDataWithID(path = "", id = "", data = {}) {
  * @param {Event} [event]
  * @returns {void}
  */
-function onclickFunction(event) {
+async function onclickFunction(event) {
   if (event) {
     event.preventDefault();
   }
@@ -92,22 +66,38 @@ function onclickFunction(event) {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  if (isValidEmail(email)) {
-    const errorEl = document.getElementById("error_message");
-    errorEl.textContent =
-      "Please use a real provider (e.g. gmail, outlook) with .com or .de";
-    errorEl.classList.remove("visually-hidden");
-    errorEl.style.color = "red";
-    if (!validateEmailOnSubmit(email, errorEl)) {
-      return;
-    }
-    if (!validateNameAndPasswordOnSubmit(name, password, errorEl)) {
-      return;
-    }
-    resetError(errorEl);
-    createUser(name, password, email);
+  const errorEl = document.getElementById("error_message");
+
+  // Validate first
+  if (!validateEmailOnSubmit(email, errorEl)) return;
+  if (!validateNameAndPasswordOnSubmit(name, password, errorEl)) return;
+  resetError(errorEl);
+
+  // Create user using Firebase Auth (Email/Password)
+  try {
+    // Ensure auth.js has initialized Firebase Auth
+    if (window.authReady) await window.authReady;
+
+    const cred = await createUserWithEmailAndPassword(
+      window.auth,
+      email,
+      password
+    );
+
+    // Optional: set display name (used for UI initials, greeting, etc.)
+    await updateProfile(cred.user, { displayName: name });
+
+    // Save minimal profile in RTDB (NO password)
+    const idToken = await cred.user.getIdToken();
+    await writeUserProfile(cred.user.uid, name, email, idToken);
+    await signOut(window.auth);
+
+    // Keep your existing toast UX
+
     showToast("You signed up successfully", { duration: 1000, dim: true });
     setTimeout(jumpToLogin, 1200);
+  } catch (err) {
+    showError(errorEl, mapAuthError(err));
   }
 }
 
@@ -121,10 +111,7 @@ function validateEmailOnSubmit(email, errorEl) {
   if (isValidEmail(email)) {
     return true;
   }
-  showError(
-    errorEl,
-    "Bitte eine gültige E-Mail eingeben!"
-  );
+  showError(errorEl, "Please enter a valid email address!");
   return false;
 }
 
@@ -139,10 +126,7 @@ function validateNameAndPasswordOnSubmit(name, password, errorEl) {
   if (isValidName(name) && password) {
     return true;
   }
-  showError(
-    errorEl,
-    "Bitte einen gültigen Namen ohne Zahlen oder Leerzeichen eingeben (mind. 3 Buchstaben)!"
-  );
+  showError(errorEl, "Please enter a valid name.");
   return false;
 }
 
@@ -161,25 +145,6 @@ function jumpToLogin() {
 function getWhiteScreen() {
   const contentRef = document.getElementById("white-screen");
   contentRef.classList.remove("d_none");
-}
-
-/**
- * Creates a new user entry in Firebase.
- * @async
- * @param {string} inputName
- * @param {string} inputPassword
- * @param {string} inputMail
- * @returns {Promise<void>}
- */
-async function createUser(inputName, inputPassword, inputMail) {
-  const userResponse = await getAllUsers("users");
-  const userKeysArray = Object.keys(userResponse);
-  const user = {
-    name: inputName,
-    password: inputPassword,
-    email: inputMail,
-  };
-  postDataWithID("users", userKeysArray.length, user);
 }
 
 /**
@@ -232,10 +197,7 @@ function getValidationState(values) {
 function updateErrorForSignup(values, state) {
   const errorEl = values.errorEl;
   if (!state.emailValid && values.email.length > 0) {
-    showError(
-      errorEl,
-      "Bitte eine gültige E-Mail eingeben!"
-    );
+    showError(errorEl, "Bitte eine gültige E-Mail eingeben!");
   } else if (values.name.length > 0 && !state.nameValid) {
     showError(
       errorEl,
@@ -364,3 +326,19 @@ function hideToastLater(el, dimEl, dim, duration) {
  * @type {(text: string, options?: ToastOptions) => void}
  */
 window.showToast = showToast;
+
+function mapAuthError(err) {
+  const code = err?.code || "";
+  if (code.includes("auth/email-already-in-use"))
+    return "This email is already registered.";
+  if (code.includes("auth/invalid-email"))
+    return "Please enter a valid email address!";
+  if (code.includes("auth/weak-password"))
+    return "Password is too weak (at least 6 characters).";
+  if (code.includes("auth/operation-not-allowed"))
+    return "Email/password sign-in is not enabled in Firebase.";
+  return "Signup failed. Please try again.";
+}
+
+window.onclickFunction = onclickFunction;
+window.checkPolicyandAnswers = checkPolicyandAnswers;

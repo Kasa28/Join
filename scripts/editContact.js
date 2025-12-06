@@ -43,7 +43,6 @@ function setUserDataValue(inputIndex) {
  * @returns {Promise<void>}
  */
 async function editContact() {
-    const login = checkIfLogedIn();
     let contacts = flattenContactBlockToArray() || [];
     if (remindIndex === null || !contacts[remindIndex]) {
         showContactToast("No contact selected to edit", { variant: "error" });
@@ -74,19 +73,10 @@ async function editContact() {
         email,
         PhoneNumber: phoneNumber,
     };
-
     contacts[remindIndex] = updatedContact;
     sortUserToAlphabeticalOrder(contacts);
     setContactsIntoContactblock(contacts);
-
-    if (login) {
-        updateFriendsInLocalStorage(contacts);
-        const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
-        const userID = await getUserID(getUserData.name);
-        await updateUserFriendslist(userID, contacts);
-    } else {
-
-    }
+    await persistContacts(contacts);
     renderSingleContact(updatedContact.username);
     renderContactList();
     closeWhiteScreen();
@@ -102,16 +92,8 @@ async function editContact() {
  */
 async function deleteContactinEditContactWindow() {
     let contacts = flattenContactBlockToArray() || [];
-    const login = checkIfLogedIn();
     contacts.splice(remindIndex, 1);
-    if (login) {
-        updateFriendsInLocalStorage(contacts);
-        const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
-        const userID = await getUserID(getUserData.name);
-        await updateUserFriendslist(userID, contacts);
-    } else {
-        setContactsIntoContactblock(contacts);
-    }
+    await persistContacts(contacts);
     hideEditContactFormular();
     closeWhiteScreen();
     renderContactList();

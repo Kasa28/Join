@@ -32,8 +32,9 @@ function emptyTheAddContactFormular() {
  * stores the contact locally or via API depending on login status,
  * updates the UI, and shows success or error messages.
  */
-function addNewContact() {
-    let contacts = flattenContactBlockToArray() || [];
+async function addNewContact() {
+    if (window.authReady) await window.authReady;
+    let contacts = await loadContactsForActiveUser();
     const usernameRef = document.getElementById("add-contact-usernameID").value.trim();
     const usermailRef = document.getElementById("add-contact-mailID").value;
     const phonenumberRef = document.getElementById("add-contact-phone-numberID").value;
@@ -52,7 +53,6 @@ function addNewContact() {
         showContactToast("Phone number must start with +49 or 01 and contain only numbers", { variant: "error" });
         return false;
     }
-    const login = checkIfLogedIn();
     colorCode = getRandomInt(colors.length);
     const contactJson = {
         "username": usernameRef,
@@ -62,11 +62,7 @@ function addNewContact() {
     };
     contacts.push(contactJson);
     sortUserToAlphabeticalOrder(contacts);
-    if (login) {
-        addContactToLocalStorageAndAPI(contacts);
-    } else {
-        setContactsIntoContactblock(contacts);
-    }
+    await persistContacts(contacts);
     emptyTheAddContactFormular();
     hideAddContactFormular();
     renderContactList();
@@ -78,27 +74,9 @@ function addNewContact() {
  * Handles the Add Contact button click and only closes overlays when the
  * contact was created successfully.
  */
-function handleAddContact() {
-    const contactCreated = addNewContact();
+async function handleAddContact() {
+    const contactCreated = await addNewContact();
     if (contactCreated) {
         closeWhiteScreen();
-    }
-}
-
-/**
- * Saves updated contacts to localStorage and synchronizes them with the API.
- * @param {Array<Object>} inputContacts - The list of contacts to store.
- * @returns {Promise<void>}
- */
-async function addContactToLocalStorageAndAPI(inputContacts) {
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || { friends: {} };
-    let updatedContacts = inputContacts;
-
-    getUserData.friends = updatedContacts;
-    localStorage.setItem("userData", JSON.stringify(getUserData));
-
-    const userID = await getUserID(getUserData.name);
-    if (userID) {
-        await updateUserFriendslist(userID, updatedContacts);
     }
 }

@@ -171,6 +171,14 @@ const el = t && t.nodeType === Node.TEXT_NODE ? t.parentElement : t;
 let item =
   (el && typeof el.closest === "function" && el.closest(".assign-item-addTask_template")) ||
   null;
+  // Stelle sicher, dass immer das übergeordnete Item gefunden wird
+   let item = null;
+  if (event) {
+    item =
+      event.target?.closest?.(".assign-item-addTask_template") ||
+      event.currentTarget?.closest?.(".assign-item-addTask_template") ||
+      null;
+  }
   if (!item) {
     const candidates = document.querySelectorAll(
       ".assign-item-addTask_template"

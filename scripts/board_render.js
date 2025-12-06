@@ -93,15 +93,16 @@ function renderCard(t) {
    * @returns {void}
    */
   function render() {
-    Object.values(nameOfTheCard).forEach(({ id }) =>
-      document.getElementById(id)?.replaceChildren()
-    );
-    for (const t of window.tasks) {
-      if (!matchesSearch(t)) continue;
-      const host = document.getElementById(nameOfTheCard[t.status]?.id);
-      if (host) host.appendChild(renderCard(t));
-    }
-    for (const { id, empty } of Object.values(nameOfTheCard)) {
+  const tasks = Array.isArray(window.tasks) ? window.tasks : [];
+  Object.values(nameOfTheCard).forEach(({ id }) =>
+    document.getElementById(id)?.replaceChildren()
+  );
+  for (const t of tasks) {
+    if (!matchesSearch(t)) continue;
+    const host = document.getElementById(nameOfTheCard[t.status]?.id);
+    if (host) host.appendChild(renderCard(t));
+  }
+  for (const { id, empty } of Object.values(nameOfTheCard)) {
       const col = document.getElementById(id);
       if (col && !col.children.length) {
         col.innerHTML = `<div class="empty-pill">${empty}</div>`;
@@ -116,10 +117,11 @@ function renderCard(t) {
    * Post-render pass to inject assignee avatars/initials and priority icons.
    * @returns {void}
    */
-  function afterRender() {
-    document.querySelectorAll(".task-card").forEach((card) => {
-      const task = window.tasks.find((t) => t.id == card.id.replace("card-", ""));
-      if (!task) return;
+ function afterRender() {
+  const tasks = Array.isArray(window.tasks) ? window.tasks : [];
+  document.querySelectorAll(".task-card").forEach((card) => {
+    const task = tasks.find((t) => t.id == card.id.replace("card-", ""));
+    if (!task) return;
       const assBox = card.querySelector(".assignees");
       if (assBox) {
         const people = task.assignedTo || [];
