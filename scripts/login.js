@@ -31,7 +31,10 @@ async function login(event) {
 
   try {
     if (window.authReady) await window.authReady;
-    await signInWithEmailAndPassword(window.auth, email, password);
+    const cred = await signInWithEmailAndPassword(window.auth, email, password);
+    // Get a fresh ID token and make it available for RTDB REST calls
+    const idToken = await cred.user.getIdToken();
+    window.idToken = idToken;
     window.location.href = "./summaryAll.html";
   } catch (err) {
     errorEl.textContent = "Invalid email or password!";
@@ -43,7 +46,9 @@ async function login(event) {
 
 async function loginAsGuest() {
   if (window.authReady) await window.authReady;
-  await window.signInAnonymously();
+  const cred = await window.signInAnonymously();
+  const idToken = await cred.user.getIdToken();
+  window.idToken = idToken;
   window.location.href = "./summaryAll.html";
 }
 
