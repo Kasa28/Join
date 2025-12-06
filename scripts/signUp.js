@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   updateProfile,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
 /**
@@ -89,6 +90,7 @@ async function onclickFunction(event) {
     // Save minimal profile in RTDB (NO password)
     const idToken = await cred.user.getIdToken();
     await writeUserProfile(cred.user.uid, name, email, idToken);
+    await signOut(window.auth);
 
     // Keep your existing toast UX
 
