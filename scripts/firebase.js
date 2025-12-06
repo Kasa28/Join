@@ -38,6 +38,18 @@ async function fetchTasksApi(path, options) {
   return fetch(url, options);
 }
 
+async function getAuthQuery() {
+  if (window.authReady) await window.authReady;
+  const token = await window.auth?.currentUser?.getIdToken?.();
+  return token ? `?auth=${encodeURIComponent(token)}` : "";
+}
+
+async function fetchRtdbApi(path, options) {
+  const base = sanitizeBaseUrl(window.BASE_URL || BASE_URL);
+  const authQuery = await getAuthQuery();
+  const url = `${base}/${path}.json${authQuery}`;
+  return fetch(url, options);
+}
 
 /* === Fetch All Tasks === */
 async function getAllTasks() {
@@ -81,7 +93,7 @@ function getCurrentUidOrThrow() {
  * @returns {Promise<Array<Object>>}
  */
 async function getUserFriendslistByUid(uid) {
-  const response = await fetch(`${BASE_URL}users/${uid}/friends.json`);
+  const response = await fetchRtdbApi(`users/${uid}/friends`);
   const data = (await response.json()) || null;
   if (Array.isArray(data)) return data.filter(Boolean);
   if (data && typeof data === "object")
@@ -107,7 +119,7 @@ async function getFriendsForCurrentUser() {
  * @returns {Promise<void>}
  */
 async function updateUserFriendslistByUid(uid, friends) {
-  await fetch(`${BASE_URL}users/${uid}/friends.json`, {
+ await fetchRtdbApi(`users/${uid}/friends`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(Array.isArray(friends) ? friends : []),
@@ -159,9 +171,9 @@ async function loadCurrentUserProfile() {
   if (window.authReady) await window.authReady;
   const user = window.currentUser;
   if (!user || user.isAnonymous) return null;
-
-  const response = await fetch(`${BASE_URL}users/${user.uid}/profile.json`);
-  return (await response.json()) || null;
+  const response = await fetchRtdbApi(`users/${user.uid}/profile`);
+  const data = (await response.json()) || null;
+  return data;
 }
 
 
