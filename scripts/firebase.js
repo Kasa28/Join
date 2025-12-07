@@ -199,8 +199,17 @@ async function persistContactsForActiveUser(contacts) {
   if (window.authReady) await window.authReady;
   if (!window.currentUser) return;
   if (window.currentUser.isAnonymous) {
-  await updateUserFriendslistByUid(window.currentUser.uid, contacts);
-  return;
+      const sorted = (Array.isArray(contacts) ? contacts : [])
+      .filter(Boolean)
+      .slice()
+      .sort((a, b) => {
+        const aKey = (a?.username || a?.name || a?.email || "").toString();
+        const bKey = (b?.username || b?.name || b?.email || "").toString();
+        return aKey.localeCompare(bKey, "de", { sensitivity: "base" });
+      });
+
+    await updateUserFriendslistByUid(window.currentUser.uid, sorted);
+    return;
   }
   await updateFriendsForCurrentUser(contacts);
 }
