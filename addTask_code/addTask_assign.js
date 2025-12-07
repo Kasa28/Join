@@ -66,6 +66,7 @@ async function renderContactsInDropdown(){
   for (let index = 0; index < userContacts.length; index++) {
     singleContactTemplate(userContacts[index]);
   }
+    updateAssignPlaceholder();
 }
 
 
@@ -78,15 +79,18 @@ async function renderContactsInDropdown(){
  */
 function singleContactTemplate(inputContact){
   let contentRef = document.getElementById("contacts-containerID");
-  contentRef.innerHTML += `         
-    <div class="assign-item-addTask_page assign-item-addTask_template" onclick="selectAssignUser('${inputContact.username}', event)">
+    const isSelected = Array.isArray(window.selectedUsers) &&
+    window.selectedUsers.includes(inputContact.username);
+
+  contentRef.innerHTML += `
+    <div class="assign-item-addTask_page assign-item-addTask_template ${isSelected ? "selected" : ""}" onclick="selectAssignUser('${inputContact.username}', event)">
       <span class="assign-avatar-addTask_page assign-avatar-addTask_template" style="background-color: ${inputContact.color};">
         ${getInitials(inputContact.username)}
       </span>
       <span class="assign-name-addTask_page assign-name-addTask_template">
         ${inputContact.username}
       </span>
-    <input type="checkbox" name="assigned[]" class="assign-check-addTask_page assign-check-addTask_template">
+    <input type="checkbox" name="assigned[]" class="assign-check-addTask_page assign-check-addTask_template" ${isSelected ? "checked" : ""}>
     </div>`;
 }
 

@@ -420,6 +420,7 @@ function startEditTask(id) {
   if (!task || !checkDemoTask(task)) {
     return;
   }
+  prepareAssignedUsers(task);
   prepareEditState(task);
   openEditOverlay(task);
 }
