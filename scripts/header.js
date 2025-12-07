@@ -55,6 +55,7 @@ function userMenuTemplate() {
  */
 function renderUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
+    if (!contentRef) return;
     contentRef.innerHTML = userMenuTemplate();
 }
 
@@ -65,8 +66,9 @@ function renderUserMenuePopupMenu(){
  */
 function toggleUserMenuePopupMenu(){
     const contentRef = document.getElementById("user-menue-header");
+    if (!contentRef) return;
     contentRef.classList.toggle("d_none");
-     if (!contentRef.classList.contains("d_none")) {
+    if (!contentRef.classList.contains("d_none")) {
         updateUserMenuPosition();
     }
 }
@@ -97,12 +99,14 @@ function updateUserMenuPosition() {
 
 /* === Logout Functionality === */
 /**
- * Removes stored user data from localStorage, effectively logging the user out.
+ * Signs out the current user and clears guest contacts from localStorage.
  */
-function deleteIdFromLocalStorage(){
-    localStorage.removeItem('userData');
+async function deleteIdFromLocalStorage(){
+    localStorage.removeItem(GUEST_CONTACTS_KEY);
+    if (typeof window.signOut === "function") {
+        await window.signOut();
+    }
 }
-
 
 /* === Login State Check === */
 /**
@@ -121,14 +125,16 @@ function isPublicPage() {
 }
 
 function checkIfLogedIn() {
-    const loggedIn = Boolean(localStorage.getItem("userData"));
+       const loggedIn = Boolean(window.currentUser);
 
-    if (!loggedIn && !isPublicPage()) {
-        const loginPath = "/index.html";
-        window.location.href = loginPath;
-        return false;
+    if (!loggedIn && !isPublicPage() && window.authReady) {
+        window.authReady.then((user) => {
+            if (!user) {
+                const loginPath = "/index.html";
+                window.location.href = loginPath;
+            }
+        });
     }
- 
     return loggedIn;
 }
 
@@ -138,9 +144,12 @@ function checkIfLogedIn() {
  * Initializes the header on page load by setting the user ball letter,
  * activating sidebar button behaviors, and highlighting the current page.
  */
-function onloadFunctionHeader(){
+async function onloadFunctionHeader(){
+    if (window.authReady) await window.authReady;
     const isLoggedIn = checkIfLogedIn();
-    setLetterInUserBall(isLoggedIn);
+    toggleNavigationForGuest(isLoggedIn);
+    const profile = isLoggedIn ? await loadCurrentUserProfile() : null;
+    await setLetterInUserBall(isLoggedIn, profile);
     toggleNavigationForGuest(isLoggedIn);
     addActiveClassToSidebarButtons();
     setActiveSidebarByURL();
@@ -151,15 +160,24 @@ function onloadFunctionHeader(){
 /**
  * Sets the displayed initial in the user avatar circle based on login state.
  */
-function setLetterInUserBall(isLoggedIn){
+async function setLetterInUserBall(isLoggedIn, profile){
     let contentRef = document.getElementById("user-ball-ID");
-        if(!isLoggedIn){
+    if (!contentRef) return;
+    if(!isLoggedIn){
         contentRef.innerHTML = "G";
-    }   else{
-        let userJson = JSON.parse(localStorage.getItem("userData"));
-        userLetter = userJson.name.charAt(0).toUpperCase();
+      return;
+    }
+    const displayName = profile?.name || window.currentUser?.displayName || window.currentUser?.email || "";
+    const userLetter = displayName.charAt(0).toUpperCase();
+    if (userLetter) {
         contentRef.innerHTML = userLetter;
-    }        
+        return;
+    }
+    if (window.currentUser?.isAnonymous) {
+        contentRef.innerHTML = "G";
+        return;
+    }
+    contentRef.innerHTML = "?";
 }
 
 /* === Greeting Message Rendering === */
@@ -176,7 +194,8 @@ function makeFirstLetterBig(inputString){
 /**
  * Renders a greeting message in the header, personalized when the user is logged in.
  */
-function greetUserName() {
+async function greetUserName() {
+    if (window.authReady) await window.authReady;
     let contentRef = document.getElementById("greetID");
     const now = new Date();
     const hour = now.getHours();
@@ -191,10 +210,11 @@ function greetUserName() {
     if (!checkIfLogedIn()) {
         contentRef.innerHTML = `<h1 class="summary-h1-font-guest">${greeting}</h1>`;
     } else {
-        let userJson = JSON.parse(localStorage.getItem("userData"));
-        let userName = makeFirstLetterBig(userJson.name);
-        contentRef.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2>
-                                <h1 class="summary-h1-font-user">${userName}</h1>`;
+    const profile = await loadCurrentUserProfile();
+    const baseName = profile?.name || window.currentUser?.displayName || window.currentUser?.email || "User";
+    let userName = makeFirstLetterBig(baseName);  
+    contentRef.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2>
+                            <h1 class="summary-h1-font-user">${userName}</h1>`;
     }
 }
 

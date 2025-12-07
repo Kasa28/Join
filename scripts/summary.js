@@ -26,8 +26,15 @@
  * @property {number} done
  */
 window.addEventListener("DOMContentLoaded", () => {
-  updateSummary();
+  initSummaryPage();
 });
+
+
+async function initSummaryPage() {
+  await waitForAuthGlobals();
+  await updateSummary();
+  startSummaryPolling();
+}
 
 
 /**
@@ -38,15 +45,14 @@ window.addEventListener("DOMContentLoaded", () => {
  */
 async function loadTasks() {
   try {
-    const response = await fetch(
-      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
-    );
+    const { base, authQuery } = await getSummaryFetchConfig(); 
+    const response = await fetch(`${base}tasks.json${authQuery}`);
     const data = await response.json();
     const firebaseTasks = Array.isArray(data)
-      ? data.filter(Boolean)
-      : data
-      ? Object.values(data)
-      : [];
+  ? data.filter(Boolean)
+  : data && typeof data === "object"
+  ? Object.values(data).filter((t) => t && typeof t === "object" && "status" in t)
+  : [];
     firebaseTasks.forEach((t) => {
       if (t && typeof t.priority === "string") {
         t.priority = t.priority.toLowerCase();
@@ -205,9 +211,8 @@ let lastDataString = "";
  */
 async function pollSummary() {
   try {
-    const res = await fetch(
-      "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
-    );
+const { base, authQuery } = await getSummaryFetchConfig();
+    const res = await fetch(`${base}tasks.json${authQuery}`);
     const data = await res.json();
     const json = JSON.stringify(data);
     if (json !== lastDataString) {
@@ -219,5 +224,68 @@ async function pollSummary() {
 }
 
 
-pollSummary();
-setInterval(pollSummary, 3000);
+let pollIntervalId;
+/**
+ * Starts a polling interval for summary updates if not already running.
+ * Uses a 5 second interval to keep the dashboard in sync with backend changes.
+ * @returns {void}
+ */
+function startSummaryPolling() {
+  if (pollIntervalId) return;
+  pollIntervalId = setInterval(pollSummary, 5000);
+}
+
+
+/**
+ * Ensures authentication has run (anonymous if needed) and returns
+ * the configured Firebase base URL plus auth query string.
+ * @returns {Promise<{base: string, authQuery: string}>}
+ */
+async function getSummaryFetchConfig() {
+   await waitForAuthGlobals();
+  if (window.authReady) {
+    await window.authReady;
+  }
+
+  if (!window.auth?.currentUser && typeof window.signInAnonymously === "function") {
+    try {
+      await window.signInAnonymously();
+    } catch (err) {
+      console.warn("Anonymous sign-in for summary failed", err);
+    }
+  }
+
+  const token = await window.auth?.currentUser?.getIdToken?.();
+  const base =
+    window.BASE_URL ||
+    "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+  const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
+
+  return { base, authQuery };
+}
+
+
+let authGlobalsPromise;
+
+
+function waitForAuthGlobals() {
+  if (!authGlobalsPromise) {
+    authGlobalsPromise = new Promise((resolve) => {
+      if (window.authReady || window.signInAnonymously) {
+        resolve();
+        return;
+      }
+
+      const deadline = Date.now() + 3000;
+      const interval = setInterval(() => {
+        if (window.authReady || window.signInAnonymously || Date.now() > deadline) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 50);
+    });
+  }
+
+  return authGlobalsPromise;
+}
+

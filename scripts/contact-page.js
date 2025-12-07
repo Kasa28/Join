@@ -61,25 +61,22 @@ let contactBlock = {
  * @returns {Promise<Contact[]>} Updated friends list.
  */
 async function putUsernameInContactList(){
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || [];
-    let getUserFriends = Array.isArray(getUserData.friends) ? getUserData.friends : [];
-
+    const profile = await loadCurrentUserProfile();
+    let getUserFriends = await loadContactsForActiveUser(); 
     const nameExists = getUserFriends.some(contact =>
-        contact && (contact.username === getUserData.name)
+    contact && profile && (contact.username === profile.name)
     );
-    if (nameExists) return getUserFriends;
+    if (nameExists || !profile) return getUserFriends;
     let colorIndex = getRandomInt(9);
     let userJson = {
-        "username": getUserData.name,
-        "email": getUserData.email,
+        "username": profile.name,
+        "email": profile.email,
         "PhoneNumber": "4915135468484",
         "color": colors[colorIndex]
     };
     getUserFriends.push(userJson);
     sortUserToAlphabeticalOrder(getUserFriends);
-    if (typeof addContactToLocalStorageAndAPI === "function") {
-        await addContactToLocalStorageAndAPI(getUserFriends);
-    }
+     await persistContacts(getUserFriends);
     return getUserFriends;
 }
 
@@ -96,17 +93,18 @@ async function putUsernameInContactList(){
  * @returns {Promise<void>}
  */
 async function renderContactList(){
-    const login = checkIfLogedIn();
-    if (login) await putUsernameInContactList();
-    let getUserData = JSON.parse(localStorage.getItem("userData")) || [];
-    let getContactsFromUser = Array.isArray(getUserData.friends) ? getUserData.friends : [];
+      if (window.authReady) await window.authReady;
+    const login = Boolean(window.currentUser);
+    let getContactsFromUser = [];
+    if (login) {
+        getContactsFromUser = await loadContactsForActiveUser();
+        if (!(window.currentUser?.isAnonymous)) {
+            getContactsFromUser = await putUsernameInContactList();
+        }
+    } 
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
-    if (!login) {
-        pushExampleContactsOneTimeInLocalStorage(exampleContacts);
-    } else {
-        setContactsIntoContactblock(getContactsFromUser);
-    }
+    setContactsIntoContactblock(getContactsFromUser);
     Object.keys(contactBlock).forEach((key) => {
         let block = contactBlock[key];
         if (!checkIfBlockIsFilled(block)) return;

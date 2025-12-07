@@ -161,13 +161,8 @@ function requestBoardRender() {
  * @returns {Promise<void>}
  */
 async function deleteTaskOnServer(task) {
-  let url =
-    "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/tasks/" +
-    task.id +
-    ".json";
-
-  await fetch(url, {
-    method: "DELETE"
+   await fetchBoardTasks(`/${task.id}`, {
+    method: "DELETE",
   });
 }
 

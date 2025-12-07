@@ -166,11 +166,17 @@ function getColorFromItem(item) {
  * @param {Event} event - The click event that triggered the selection.
  */
 function selectAssignUser(name, event) {
-const t = event?.target;
-const el = t && t.nodeType === Node.TEXT_NODE ? t.parentElement : t;
-let item =
-  (el && typeof el.closest === "function" && el.closest(".assign-item-addTask_template")) ||
-  null;
+  const t = event?.target;
+  const el = t && t.nodeType === Node.TEXT_NODE ? t.parentElement : t;
+
+  let item =
+    (el &&
+      typeof el.closest === "function" &&
+      el.closest(".assign-item-addTask_template")) ||
+    (event?.currentTarget &&
+      typeof event.currentTarget.closest === "function" &&
+      event.currentTarget.closest(".assign-item-addTask_template")) ||
+    null;
   if (!item) {
     const candidates = document.querySelectorAll(
       ".assign-item-addTask_template"

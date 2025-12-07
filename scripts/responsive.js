@@ -140,25 +140,79 @@ function getCurrentContactName() {
  * @returns {Object[]} Array of contact objects, or empty array.
  */
 function getContactsFromStorage() {
-  const data = JSON.parse(localStorage.getItem("userData")) || {};
-  if (!Array.isArray(data.friends)) return [];
-  return data.friends;
+   // API/in-memory sources (must be set by the API fetch flow elsewhere)
+  if (Array.isArray(window.contacts)) return window.contacts;
+  if (Array.isArray(window.userData?.friends)) return window.userData.friends;
+  return [];
 }
 
-/**
- * Finds the index of a contact by its username.
- *
- * @param {Object[]} contacts - List of contact objects.
- * @param {string} name - Displayed contact name to match.
- * @returns {number} Index of the contact or -1 if not found.
- */
-function findContactIndex(contacts, name) {
-  const target = name.trim().toLowerCase();
-  return contacts.findIndex(function (c) {
-    const user = (c.username || "").trim().toLowerCase();
-    return user === target;
+  syncAddFab();
+  initOverlayObserver();
+  window.addEventListener("resize", syncAddFab);
+  document.addEventListener("click", function (event) {
+}); 
+
+  /**
+   * Gets the currently displayed contact name from mobile or desktop detail view.
+   * @returns {string|null}
+   */
+  function getCurrentContactName() {
+    const hMobile = document.querySelector("#singleContactContent h2");
+    if (hMobile && hMobile.textContent.trim()) {
+      return hMobile.textContent.trim();
+    }
+    const hDesktop = document.querySelector("#singleContactID h2");
+    if (hDesktop) {
+      return hDesktop.textContent.trim();
+    }
+    return null;
+  }
+  /**
+   * Handles FAB action clicks (edit/delete) for the currently displayed contact.
+   * @param {MouseEvent} event
+   * @returns {void}
+   */
+  document.addEventListener("click", function (event) {
+    const item = event.target.closest(".contact-fab-item");
+    if (!item) return;
+    const label = item.textContent.toLowerCase();
+    const isEdit = label.includes("edit");
+    const isDelete = label.includes("delete");
+    if (!isEdit && !isDelete) return;
+    const contacts = flattenContactBlockToArray() || [];
+    if (!contacts.length) return;
+    const displayedName = getCurrentContactName();
+    if (!displayedName) return;
+    const targetName = displayedName.trim().toLowerCase();
+    const idx = contacts.findIndex(
+      (c) => (c.username || "").trim().toLowerCase() === targetName
+    );
+    if (idx === -1) return;
+    if (isEdit) {
+      if (typeof setUserDataValue === "function") {
+        setUserDataValue(idx);
+      }
+      if (typeof showEditContactFormular === "function") {
+        showEditContactFormular();
+      }
+      if (typeof callWhiteScreen === "function") {
+        callWhiteScreen();
+      }
+      hideMenu();
+      event.preventDefault();
+      return;
+    }
+
+    if (isDelete) {
+      const username = contacts[idx].username;
+      if (typeof deleteContact === "function") {
+        deleteContact(username);
+      }
+      hideMenu();
+      event.preventDefault();
+    }
   });
-}
+
 
 /**
  * Handles starting the edit flow for a contact.
@@ -243,19 +297,40 @@ function handleFabAction(event) {
 function initContactsPage() {
   updateContactLayout();
   syncAddFab();
-  document.onclick = function (event) {
-    handleMenuClick(event);
-    handleFabAction(event);
-    syncAddFab();
-  };
-  window.onresize = function () {
-    updateContactLayout();
-    syncAddFab();
-  };
+    if (!window.__contactsClickHandlerInstalled) {
+    document.addEventListener("click", function (event) {
+      handleMenuClick(event);
+      handleFabAction(event);
+      syncAddFab();
+    });
+    window.__contactsClickHandlerInstalled = true;
+  }
+  if (!window.__contactsResizeHandlerInstalled) {
+    window.addEventListener("resize", function () {
+      updateContactLayout();
+      syncAddFab();
+    });
+    window.__contactsResizeHandlerInstalled = true;
+  }
 }
 
 /**
  * Entry point for the contacts page.
  * Runs after the window has finished loading.
  */
-window.onload = initContactsPage;
+function isContactsPage() {
+  return Boolean(
+    document.getElementById("singleContactID") ||
+      document.getElementById("singleContactContent") ||
+      document.querySelector(".contact-actions-mobile")
+  );
+}
+
+function safeInitContactsPage() {
+  if (!isContactsPage()) return;
+  initContactsPage();
+}
+
+window.addEventListener("load", safeInitContactsPage);
+document.addEventListener("DOMContentLoaded", safeInitContactsPage);
+
