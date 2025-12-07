@@ -57,14 +57,27 @@ function getInitials(inputFullName){
  */
 async function renderContactsInDropdown(){
   if (window.authReady) await window.authReady;
-  const userContacts = window.currentUser ? await loadContactsForActiveUser() : GUEST_EXAMPLE_CONTACTS;
+  const baseContacts = window.currentUser
+    ? await loadContactsForActiveUser()
+    : GUEST_EXAMPLE_CONTACTS;
+  const mergedContacts = Array.isArray(baseContacts) ? [...baseContacts] : [];
+  const selected = Array.isArray(window.selectedUsers) ? window.selectedUsers : [];
+  const colors = window.selectedUserColors || {};
 
-  if (!userContacts || !userContacts.length) return;
-   const contentRef = document.getElementById("contacts-containerID");
+  selected.forEach((name) => {
+    const exists = mergedContacts.some(
+      (contact) => contact && contact.username === name
+    );
+    if (!exists) {
+      mergedContacts.push({ username: name, color: colors[name] || "#4589ff" });
+    }
+  });
+if (!mergedContacts.length) return;
+  const contentRef = document.getElementById("contacts-containerID");
   if (!contentRef) return;
   contentRef.innerHTML = "";
-  for (let index = 0; index < userContacts.length; index++) {
-    singleContactTemplate(userContacts[index]);
+    for (let index = 0; index < mergedContacts.length; index++) {
+    singleContactTemplate(mergedContacts[index]);
   }
     updateAssignPlaceholder();
 }
