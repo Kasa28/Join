@@ -138,7 +138,7 @@ function getAddTaskTemplate() {
       <p class="section-heading-addTask_template"><strong>Due date</strong></p>
       <div class="date-field-addTask_template">
         <input type="text" id="due-date" class="task-date-addTask_template" name="due-date" placeholder="dd/mm/yyyy"
-          pattern="\\d{2}/\\d{2}/\\d{4}" inputmode="numeric">
+          pattern="\\d{2}/\\d{2}/\\d{4}" inputmode="numeric" readonly>
        <img 
   src="/addTask_code/icons_addTask/separatedAddTaskIcons/event.svg" 
   alt="Event Icon" 

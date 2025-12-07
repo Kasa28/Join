@@ -43,6 +43,8 @@ function initAddTaskTemplateHandlers() {
   }
   const dueDateInput = document.getElementById("due-date");
   if (dueDateInput) {
+    dueDateInput.readOnly = true;
+    dueDateInput.addEventListener("click", openPickerTemplate);
     dueDateInput.addEventListener("input", (e) => {
       sanitizeDueDateInput(e);
       validateDueDate();
