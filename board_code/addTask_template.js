@@ -18,7 +18,23 @@ hiddenDatePickerTemplate.style.pointerEvents = "none";
 hiddenDatePickerTemplate.style.height = "0";
 hiddenDatePickerTemplate.style.width = "0";
 document.body.appendChild(hiddenDatePickerTemplate);
+function syncTemplateDueDateFromHidden() {
+  const dueInput = document.getElementById("due-date");
+  if (!dueInput) return;
 
+  if (!hiddenDatePickerTemplate.value) {
+    dueInput.value = "";
+    validateDueDate();
+    return;
+  }
+
+  const [year, month, day] = hiddenDatePickerTemplate.value.split("-");
+  dueInput.value = `${day}/${month}/${year}`;
+  validateDueDate();
+}
+
+hiddenDatePickerTemplate.addEventListener("change", syncTemplateDueDateFromHidden);
+hiddenDatePickerTemplate.addEventListener("input", syncTemplateDueDateFromHidden);
 // === Initialization and Field Validation ===
 /**
  * Initializes event handlers for the Add Task template, including title validation
@@ -70,15 +86,13 @@ function openPickerTemplate() {
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
   hiddenDatePickerTemplate.min = `${yyyy}-${mm}-${dd}`;
-  hiddenDatePickerTemplate.value = "";
-  hiddenDatePickerTemplate.onchange = () => {
-    if (!hiddenDatePickerTemplate.value) {
-      return;
-    }
-    const [year, month, day] = hiddenDatePickerTemplate.value.split("-");
-    dueInput.value = `${day}/${month}/${year}`;
-    validateDueDate();
-  };
+   const existingValue = dueInput.value.trim();
+  if (isValidDateFormat(existingValue)) {
+    const [day, month, year] = existingValue.split("/");
+    hiddenDatePickerTemplate.value = `${year}-${month}-${day}`;
+  } else {
+    hiddenDatePickerTemplate.value = "";
+  }
   setTimeout(() => {
     if (hiddenDatePickerTemplate.showPicker) {
       hiddenDatePickerTemplate.showPicker();
