@@ -197,11 +197,14 @@ function setContactsIntoContactblock(inputContacts){
         }
         const firstLetter = contact.username.charAt(0).toUpperCase();
         if(contactBlock[firstLetter]){
-            contactBlock[firstLetter].unshift(contact);
+         contactBlock[firstLetter].push(contact);
         } else {
-            contactBlock.other.unshift(contact);
+        contactBlock.other.push(contact);
         }
      });
+      Object.keys(contactBlock).forEach((key) => {
+        sortUserToAlphabeticalOrder(contactBlock[key]);
+    });
 }
 
 function flattenContactBlockToArray() {
