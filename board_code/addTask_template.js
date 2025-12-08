@@ -72,27 +72,27 @@ function initAddTaskTemplateHandlers() {
 
 function openPickerTemplate() {
   const dueInput = document.getElementById("due-date");
-  const icon = document.querySelector(".event-icon-addTask_template");
-  if (!dueInput || !icon) {
-    return;
-  }
-  const rect = icon.getBoundingClientRect();
+  if (!dueInput) return;
+  const rect = dueInput.getBoundingClientRect();
   const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  hiddenDatePickerTemplate.style.left = rect.right + scrollLeft + 10 + "px";
-  hiddenDatePickerTemplate.style.top = rect.top + scrollTop + "px";
+  hiddenDatePickerTemplate.style.left = rect.left + scrollLeft + "px";
+  hiddenDatePickerTemplate.style.top = rect.bottom + scrollTop + -3 + "px";
+
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
   hiddenDatePickerTemplate.min = `${yyyy}-${mm}-${dd}`;
-   const existingValue = dueInput.value.trim();
+
+  const existingValue = dueInput.value.trim();
   if (isValidDateFormat(existingValue)) {
     const [day, month, year] = existingValue.split("/");
     hiddenDatePickerTemplate.value = `${year}-${month}-${day}`;
   } else {
     hiddenDatePickerTemplate.value = "";
   }
+
   setTimeout(() => {
     if (hiddenDatePickerTemplate.showPicker) {
       hiddenDatePickerTemplate.showPicker();
@@ -101,6 +101,7 @@ function openPickerTemplate() {
     }
   }, 0);
 }
+
 
 // === Assign Dropdown Handling ===
 /**
