@@ -108,7 +108,7 @@ if (emailInput) {
     const errorEl = document.getElementById("error_message");
 
     if (email && !emailValid) {
-      errorEl.textContent = "Bitte eine gültige E-Mail eingeben!";
+      errorEl.textContent = "Please enter a valid email address!";
       errorEl.classList.remove("visually-hidden");
     } else {
       errorEl.textContent = "";

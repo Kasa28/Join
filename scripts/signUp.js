@@ -12,21 +12,9 @@ const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
- * Checks if a name is valid:
- * at least 3 chars, only letters and hyphens (no spaces, no numbers).
- * @param {string} name
- * @returns {boolean}
- */
-/**
- * Name muss Vorname + Nachname mit Leerzeichen haben,
- * nur Buchstaben (optional Bindestrich im Nachnamen), mind. 3 Zeichen.
- * @param {string} name
- * @returns {boolean}
- */
-/**
  * Name: nur Buchstaben/Bindestriche,
  * Leerzeichen erlaubt, aber nicht Pflicht.
- * Mindestens 3 Zeichen.
+ * Mindestens 2 Zeichen.
  * @param {string} name
  * @returns {boolean}
  */
@@ -36,10 +24,58 @@ function isValidName(name) {
 }
 
 function isValidEmail(email) {
-  return /^[A-Za-z0-9](\.?[A-Za-z0-9_\-+])*@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+$/.test(
-    email.trim()
-  );
+  const trimmed = email.trim();
+  if (!trimmed) return false;
+
+  const parts = trimmed.split("@");
+  if (parts.length !== 2) return false;
+
+  const [local, domain] = parts;
+  if (!local || !domain) return false;
+
+  // local part: no leading/trailing dot, no ".."
+  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) {
+    return false;
+  }
+
+  // allowed chars in local part
+  if (!/^[A-Za-z0-9._%+-]+$/.test(local)) {
+    return false;
+  }
+
+  // NEW: local part must contain at least one letter
+  if (!/[A-Za-z]/.test(local)) {
+    return false;
+  }
+
+  // domain: only letters/digits/dot/hyphen
+  if (!/^[A-Za-z0-9.-]+$/.test(domain)) {
+    return false;
+  }
+
+  const domainParts = domain.split(".");
+  if (domainParts.length < 2) return false;
+
+  // segments non-empty, not starting/ending with "-"
+  if (domainParts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))) {
+    return false;
+  }
+
+  // TLD: only letters, at least 2 chars
+  const tld = domainParts[domainParts.length - 1];
+  if (!/^[A-Za-z]{2,}$/.test(tld)) {
+    return false;
+  }
+
+  // NEW: main domain (provider) must contain at least one letter
+  const mainDomain = domainParts[domainParts.length - 2];
+  if (!/[A-Za-z]/.test(mainDomain)) {
+    return false;
+  }
+
+  return true;
 }
+
 
 async function writeUserProfile(uid, name, email, idToken) {
   const url = `${BASE_URL}users/${uid}/profile.json?auth=${encodeURIComponent(
@@ -75,7 +111,6 @@ async function onclickFunction(event) {
 
   // Create user using Firebase Auth (Email/Password)
   try {
-    // Ensure auth.js has initialized Firebase Auth
     if (window.authReady) await window.authReady;
 
     const cred = await createUserWithEmailAndPassword(
@@ -84,15 +119,11 @@ async function onclickFunction(event) {
       password
     );
 
-    // Optional: set display name (used for UI initials, greeting, etc.)
     await updateProfile(cred.user, { displayName: name });
 
-    // Save minimal profile in RTDB (NO password)
     const idToken = await cred.user.getIdToken();
     await writeUserProfile(cred.user.uid, name, email, idToken);
     await signOut(window.auth);
-
-    // Keep your existing toast UX
 
     showToast("You signed up successfully", { duration: 1000, dim: true });
     setTimeout(jumpToLogin, 1200);
@@ -197,18 +228,15 @@ function getValidationState(values) {
 function updateErrorForSignup(values, state) {
   const errorEl = values.errorEl;
   if (!state.emailValid && values.email.length > 0) {
-    showError(errorEl, "Bitte eine gültige E-Mail eingeben!");
+    showError(errorEl, "Please enter a valid email address!");
   } else if (values.name.length > 0 && !state.nameValid) {
-    showError(
-      errorEl,
-      "Bitte einen korrekten Namen mit mind. 3 Buchstaben eingeben!"
-    );
+    showError(errorEl, "Please enter a valid name with at least 3 letters!");
   } else if (
     values.password.length > 0 &&
     values.confirmPassword.length > 0 &&
     !state.passwordSame
   ) {
-    showError(errorEl, "Die Passwörter stimmen nicht überein!");
+    showError(errorEl, "The passwords do not match!");
   } else {
     resetError(errorEl);
   }

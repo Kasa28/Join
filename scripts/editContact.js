@@ -13,9 +13,40 @@ function isValidName(name) {
 }
 
 function isValidEmail(email) {
-  return /^[A-Za-z0-9](\.?[A-Za-z0-9_\-+])*@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+$/
-    .test(email.trim());
+  const trimmed = email.trim();
+  if (!trimmed) return false;
+  const parts = trimmed.split("@");
+  if (parts.length !== 2) return false;
+  const [local, domain] = parts;
+  if (!local || !domain) return false;
+  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) {
+    return false;
+  }
+  if (!/^[A-Za-z0-9._%+-]+$/.test(local)) {
+    return false;
+  }
+  if (!/[A-Za-z]/.test(local)) {
+    return false;
+  }
+  if (!/^[A-Za-z0-9.-]+$/.test(domain)) {
+    return false;
+  }
+  const domainParts = domain.split(".");
+  if (domainParts.length < 2) return false;
+  if (domainParts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))) {
+    return false;
+  }
+  const tld = domainParts[domainParts.length - 1];
+  if (!/^[A-Za-z]{2,}$/.test(tld)) {
+    return false;
+  }
+  const mainDomain = domainParts[domainParts.length - 2];
+  if (!/[A-Za-z]/.test(mainDomain)) {
+    return false;
+  }
+  return true;
 }
+
 function isValidPhoneNumber(phone) {
   const trimmed = phone.trim();
   if (!trimmed) return false;
