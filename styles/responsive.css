@@ -499,7 +499,7 @@ header {
   .privacy-policy,
   .legal-page .page,
   .what_is_join {
-    max-width: calc(100% - 25.5rem - 232px - 39px);
+    max-width: calc(92% - 25.5rem - 232px - 39px);
   }
 }
 
@@ -521,7 +521,7 @@ header {
   .privacy-policy,
   .legal-page .page,
   .what_is_join {
-    max-width: calc(50% - 232px - 39px);
+    max-width: calc(45% - 232px - 39px);
   }
 }
 
@@ -532,7 +532,7 @@ header {
   .privacy-policy,
   .legal-page .page,
   .what_is_join {
-    max-width: calc(40% - 232px - 39px);
+    max-width: calc(37% - 232px - 39px);
   }
 }
 .board-search-input{

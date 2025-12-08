@@ -140,7 +140,7 @@ body.preload .side-menu {
 
   body.guest-mode .login-link {
     position: static;
-    font-size: 14px;
+    font-size: 16px;
     gap: 4px;
   }
 
