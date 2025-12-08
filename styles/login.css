@@ -72,6 +72,7 @@ header {
   cursor: pointer;
   transition: 0.2s;
   text-decoration: none;
+  font-size: 16px;
 }
 
 .clear-button:hover {
@@ -256,6 +257,7 @@ footer {
   color: #777;
   cursor: not-allowed;
   box-shadow: none;
+  font-size: 16px;
 }
 
 .span_login{
