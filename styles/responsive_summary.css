@@ -248,3 +248,10 @@ done .card-font-a-summary {
   max-width: 70px;      
   white-space: normal;  
 }
+@media (min-width: 2000px) {
+  .main-content {
+    margin-left: 200px;
+    margin-right: 0; 
+  }
+}
+
