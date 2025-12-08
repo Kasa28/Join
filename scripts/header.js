@@ -40,7 +40,7 @@ function userMenuTemplate() {
                         </a>
                     </div>
                     <div>
-                        <a onclick="deleteIdFromLocalStorage()" class="button-sidebar padding-up-down-small" href="${base}/index.html">
+                        <a onclick="deleteIdFromLocalStorage(), logout()" class="button-sidebar padding-up-down-small" href="${base}/index.html">
                             <span class="sidebar-font">Logout</span>
                         </a>
                     </div>

@@ -43,7 +43,6 @@ async function login(event) {
   try {
     if (window.authReady) await window.authReady;
     const cred = await signInWithEmailAndPassword(window.auth, email, password);
-    // Get a fresh ID token and make it available for RTDB REST calls
     const idToken = await cred.user.getIdToken();
     window.idToken = idToken;
     window.location.href = "./summaryAll.html";
@@ -62,14 +61,9 @@ async function loginAsGuest() {
   window.location.href = "./summaryAll.html";
 }
 
-/**
- * Guard für geschützte Seiten (Summary, Board, etc.)
- * Leitet auf index.html um, wenn kein User eingeloggt ist.
- */
+
 async function checkIfLogedInOnProtectedPage() {
   if (window.authReady) await window.authReady;
-  console.log("currentUser im Guard:", window.currentUser);
-
   if (!window.currentUser) {
     window.location.href = "./index.html";
     return;
@@ -77,14 +71,13 @@ async function checkIfLogedInOnProtectedPage() {
   document.body.style.visibility = "visible";
 }
 
-/* === Logout === */
-/**
- * Meldet den aktuellen User ab und leitet zurück zur Login-Seite.
- */
 async function logout() {
   try {
-    if (window.auth) {
-      await signOut(window.auth);
+    if (window.authReady) {
+      await window.authReady;
+    }
+    if (window.signOut) {
+      await window.signOut();
     }
   } catch (err) {
     console.error("Logout failed:", err);
@@ -94,6 +87,7 @@ async function logout() {
     window.location.href = "./index.html";
   }
 }
+
 
 /* === Form Validation === */
 /**
