@@ -1,12 +1,8 @@
-// Optional: Liste von geblockten Providern, z.B. ["trashmail", "10minutemail"]
 if (!window.blockedEmailProviders) {
   window.blockedEmailProviders = [];
 }
 if (!window.isAllowedEmailProvider) {
   /**
-   * Checks if the email provider is NOT blocked.
-   * Everything is allowed unless explicitly listed in window.blockedEmailProviders.
-   * Example: window.blockedEmailProviders = ["trashmail", "10minutemail"]
    * @param {string} email
    * @returns {boolean}
    */
