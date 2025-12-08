@@ -1,140 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
     <link rel="stylesheet" href="styles/privacy.css">
     <link rel="stylesheet" href="styles/headbar.css">
     <link rel="stylesheet" href="styles/sidemenue.css">
-     <link rel="stylesheet" href="./styles/responsive.css">
-     <link rel="icon" type="image/png" href="assets/img/Capa2.png">
+    <link rel="stylesheet" href="./styles/responsive.css">
+    <link rel="icon" type="image/png" href="assets/img/Capa2.png">
 </head>
 
 <body class="preload" onload="renderUserMenuePopupMenu(),checkIfLogedIn(),onloadFunctionHeader()">
     <div class="header-wrapper-responsive">
-    <header>
-        <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
-        <div class="header-right-part">
-            <a class="header-font"> Kanban Project Management Tool</a>
-            <a href="./help.html" id="header-help-link">
-                <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
-            </a>
-            <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
-                <a class="g-unit" id="user-ball-ID">G</a>
+        <header>
+            <img class="join-logo-header-img" src="./assets/img/Capa 2.svg" alt="joing.svg">
+            <div class="header-right-part">
+                <a class="header-font"> Kanban Project Management Tool</a>
+                <a href="./help.html" id="header-help-link">
+                    <img class="img-headbar" src="./assets/img/help.svg" alt="?-Logo">
+                </a>
+                <div onclick="toggleUserMenuePopupMenu()" class="guest-logo-header">
+                    <a class="g-unit" id="user-ball-ID"></a>
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
     </div>
     <div class="d_none" id="user-menue-header">
     </div>
-        <nav-main-container style="display: flex;">
-                <nav class="side-menu">
-                    <a href="./index.html" id="guest-login-link" class="login-link">
-                        <img class="login-link-icon" src="./assets/img/Menu_Icons.svg" alt="Login icon">
-                        <span>Log In</span>
+    <nav-main-container style="display: flex;">
+        <nav class="side-menu">
+            <a href="./index.html" id="guest-login-link" class="login-link">
+                <img class="login-link-icon" src="./assets/img/Menu_Icons.svg" alt="Login icon">
+                <span>Log In</span>
+            </a>
+            <div class="sidebar-high-section-container">
+
+                <a href="./summaryAll.html" class="button-sidebar ">
+                    <img class="img-size-sidebar" src="./assets/img/Vector.svg" alt="Board icon">
+                    <span class="sidebar-font">Summary</span>
+                </a>
+
+                <a href="./addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="./assets/img/edit_square.svg" alt="Brett icon">
+                    <span class="sidebar-font">Add Task</span>
+                </a>
+
+                <a href="./board_code/board.html" class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="./assets/img/Board.svg" alt="Board-2 icon">
+                    <span class="sidebar-font">Board</span>
+                </a>
+
+                <a href="./contactsUser.html" class="button-sidebar display-flex-center-y">
+                    <img class="img-size-sidebar" src="./assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
+                    <span class="sidebar-font">Contacts</span>
+                </a>
+            </div>
+
+            <div class="sidebar-low-section-container">
+                <div class="padding-up-down-small">
+                    <a class="button-sidebar padding-up-down-small" href="./privacy.html">
+                        <span class="sidebar-font">Privacy Policy</span>
                     </a>
-                    <div class="sidebar-high-section-container">
-                        
-                            <a href="./summaryAll.html" class="button-sidebar ">
-                                <img class="img-size-sidebar" src="./assets/img/Vector.svg" alt="Board icon">
-                                <span class="sidebar-font">Summary</span>
-                            </a>
-                        
-                            <a href="./addTask_code/addTask.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="./assets/img/edit_square.svg" alt="Brett icon">
-                                <span class="sidebar-font">Add Task</span>
-                            </a>
-                        
-                            <a href="./board_code/board.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="./assets/img/Board.svg" alt="Board-2 icon">
-                                <span class="sidebar-font">Board</span>
-                            </a>
+                </div>
+                <div class="padding-up-down-small">
+                    <a class="button-sidebar padding-up-down-small" href="./legal.html">
+                        <span class="sidebar-font">Legal Notice</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
 
-                            <a href="./contactsUser.html" class="button-sidebar display-flex-center-y">
-                                <img class="img-size-sidebar" src="./assets/img/perm_contact_calendar.svg" alt="Kontakt icon">
-                                <span class="sidebar-font">Contacts</span>
-                            </a>
-                    </div>
+        <section class="privacy-policy">
+            <h1 class="h1_privacy_policy">Privacy Policy</h1>
+            <a href="./index.html" class="privacy-back-link" aria-label="Back to login">
+                <img src="./assets/img/arrow-left-line.svg" alt="Back">
+            </a>
 
-                    <div class="sidebar-low-section-container">
-                        <div class="padding-up-down-small">
-                            <a class="button-sidebar padding-up-down-small" href="./privacy.html">
-                                <span  class="sidebar-font">Privacy Policy</span>
-                            </a>
-                        </div>
-                        <div class="padding-up-down-small">
-                            <a class="button-sidebar padding-up-down-small" href="./legal.html">
-                                <span  class="sidebar-font">Legal Notice</span>
-                            </a>
-                        </div>
-                    </div>
-                </nav>
- 
-            <section class="privacy-policy">
-              <h1 class="h1_privacy_policy">Privacy Policy</h1>
-                  <a href="./index.html" class="privacy-back-link" aria-label="Back to login">
-                   <img src="./assets/img/arrow-left-line.svg" alt="Back">
-                  </a>
+            <p class="p_privacy_policy">Your privacy is important to us. This Privacy Policy explains how we collect,
+                use, and protect your personal data when you use our Join application or website.</p>
 
-              <p class="p_privacy_policy">Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal data when you use our Join application or website.</p>
-
-              <h2 class="h2_privacy_policy">1. Responsible Party</h2>
-              <p class="p_privacy_policy">
+            <h2 class="h2_privacy_policy">1. Responsible Party</h2>
+            <p class="p_privacy_policy">
                 Legal-won-straße 23<br>
                 Germany<br>
                 Email: <a class="a_email_privacy" href="mailto:[your@email.com]">info@join.de</a>
-              </p>
+            </p>
 
-              <h2 class="h2_privacy_policy">2. Hosting</h2>
-              <p class="p_privacy_policy">This website is hosted by <strong>Hetzner</strong> (Germany). A Data Processing Agreement (DPA) in accordance with Article 28 GDPR has been concluded with the hosting provider.</p>
+            <h2 class="h2_privacy_policy">2. Hosting</h2>
+            <p class="p_privacy_policy">This website is hosted by <strong>Hetzner</strong> (Germany). A Data Processing
+                Agreement (DPA) in accordance with Article 28 GDPR has been concluded with the hosting provider.</p>
 
-              <h2 class="h2_privacy_policy">3. Types of Data Collected</h2>
-              <ul class="ul_privacy_policy">
+            <h2 class="h2_privacy_policy">3. Types of Data Collected</h2>
+            <ul class="ul_privacy_policy">
                 <li class="li_privacy_policy">Account data (e.g., name, email address, password hash)</li>
                 <li class="li_privacy_policy">Usage data (e.g., pages visited, time, IP address, browser type)</li>
-                <li class="li_privacy_policy">Contact information provided voluntarily (e.g., when using a contact form)</li>
-              </ul>
+                <li class="li_privacy_policy">Contact information provided voluntarily (e.g., when using a contact form)
+                </li>
+            </ul>
 
-              <h2 class="h2_privacy_policy">4. Purpose and Legal Basis</h2>
-              <ul class="ul_privacy_policy">
-                <li class="li_privacy_policy"><strong>Providing the service / ensuring IT security</strong> (Art. 6 (1)(f) GDPR)</li>
+            <h2 class="h2_privacy_policy">4. Purpose and Legal Basis</h2>
+            <ul class="ul_privacy_policy">
+                <li class="li_privacy_policy"><strong>Providing the service / ensuring IT security</strong> (Art. 6
+                    (1)(f) GDPR)</li>
                 <li class="li_privacy_policy"><strong>Registration and login</strong> (Art. 6 (1)(b) GDPR)</li>
-                <li class="li_privacy_policy"><strong>Contact and support requests</strong> (Art. 6 (1)(b) or (f) GDPR)</li>
+                <li class="li_privacy_policy"><strong>Contact and support requests</strong> (Art. 6 (1)(b) or (f) GDPR)
+                </li>
                 <li class="li_privacy_policy"><strong>Consent</strong>, where required (Art. 6 (1)(a) GDPR)</li>
-              </ul>
+            </ul>
 
-              <h2 class="h2_privacy_policy">5. Cookies</h2>
-              <p class="p_privacy_policy">We only use technically necessary cookies (for example, session cookies used for login). These cookies are required for the proper functioning of the website and are automatically deleted after your session ends.</p>
+            <h2 class="h2_privacy_policy">5. Cookies</h2>
+            <p class="p_privacy_policy">We only use technically necessary cookies (for example, session cookies used for
+                login). These cookies are required for the proper functioning of the website and are automatically
+                deleted after your session ends.</p>
 
-              <h2 class="h2_privacy_policy">6. Server Log Files</h2>
-              <p class="p_privacy_policy">The hosting provider automatically collects and stores information in server log files, which your browser automatically transmits to us. This includes IP address, date/time, URL accessed, referrer URL, and user agent. This data is used for security and stability of the website (Art. 6 (1)(f) GDPR) and deleted after <strong>[e.g., 14 / 30 / 90 days]</strong>.</p>
+            <h2 class="h2_privacy_policy">6. Server Log Files</h2>
+            <p class="p_privacy_policy">The hosting provider automatically collects and stores information in server log
+                files, which your browser automatically transmits to us. This includes IP address, date/time, URL
+                accessed, referrer URL, and user agent. This data is used for security and stability of the website
+                (Art. 6 (1)(f) GDPR) and deleted after <strong>[e.g., 14 / 30 / 90 days]</strong>.</p>
 
-              <h2 class="h2_privacy_policy">7. Registration and Login</h2>
-              <p class="p_privacy_policy">When registering or logging in, we process the data you provide (such as email). Passwords are stored only as encrypted hashes. Processing is necessary to fulfill our contractual obligations (Art. 6 (1)(b) GDPR).</p>
+            <h2 class="h2_privacy_policy">7. Registration and Login</h2>
+            <p class="p_privacy_policy">When registering or logging in, we process the data you provide (such as email).
+                Passwords are stored only as encrypted hashes. Processing is necessary to fulfill our contractual
+                obligations (Art. 6 (1)(b) GDPR).</p>
 
-              <h2 class="h2_privacy_policy">8. Data Retention</h2>
-              <p class="p_privacy_policy">We retain personal data only as long as necessary for the stated purposes. Account data is deleted when your account is removed unless legal obligations require longer retention.</p>
+            <h2 class="h2_privacy_policy">8. Data Retention</h2>
+            <p class="p_privacy_policy">We retain personal data only as long as necessary for the stated purposes.
+                Account data is deleted when your account is removed unless legal obligations require longer retention.
+            </p>
 
-              <h2 class="h2_privacy_policy">9. Data Recipients</h2>
-              <p class="p_privacy_policy">Data is transmitted only to our hosting provider (<strong>[Hosting Provider]</strong>) and only for the purpose of providing and maintaining this service. No data is shared with third parties unless required by law or with your consent.</p>
+            <h2 class="h2_privacy_policy">9. Data Recipients</h2>
+            <p class="p_privacy_policy">Data is transmitted only to our hosting provider (<strong>[Hosting
+                    Provider]</strong>) and only for the purpose of providing and maintaining this service. No data is
+                shared with third parties unless required by law or with your consent.</p>
 
-              <h2 class="h2_privacy_policy">10. Data Transfers</h2>
-              <p class="p_privacy_policy">No data is transferred outside the European Union. Should this become necessary, it will only occur under GDPR-compliant safeguards (e.g., EU Standard Contractual Clauses).</p>
+            <h2 class="h2_privacy_policy">10. Data Transfers</h2>
+            <p class="p_privacy_policy">No data is transferred outside the European Union. Should this become necessary,
+                it will only occur under GDPR-compliant safeguards (e.g., EU Standard Contractual Clauses).</p>
 
-              <h2 class="h2_privacy_policy">11. Your Rights</h2>
-              <p class="p_privacy_policy">You have the right to request access to your personal data (Art. 15 GDPR), correction (Art. 16), deletion (Art. 17), restriction of processing (Art. 18), and data portability (Art. 20). You also have the right to object to processing (Art. 21) and to withdraw your consent at any time (Art. 7 (3)).</p>
+            <h2 class="h2_privacy_policy">11. Your Rights</h2>
+            <p class="p_privacy_policy">You have the right to request access to your personal data (Art. 15 GDPR),
+                correction (Art. 16), deletion (Art. 17), restriction of processing (Art. 18), and data portability
+                (Art. 20). You also have the right to object to processing (Art. 21) and to withdraw your consent at any
+                time (Art. 7 (3)).</p>
 
-              <h2 class="h2_privacy_policy">12. Changes to this Policy</h2>
-              <p class="p_privacy_policy">We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated “Last updated” date.</p>
+            <h2 class="h2_privacy_policy">12. Changes to this Policy</h2>
+            <p class="p_privacy_policy">We may update this Privacy Policy from time to time. Any changes will be posted
+                on this page with an updated “Last updated” date.</p>
 
-              <h2 class="h2_privacy_policy">Contact</h2>
-              <p class="p_privacy_policy">If you have any questions regarding data protection, please contact us at <a class="a_email_privacy" href="mailto:[your@email.com]">[info@join.de]</a>.</p>
-            </section>
-        </nav-main-container>
+            <h2 class="h2_privacy_policy">Contact</h2>
+            <p class="p_privacy_policy">If you have any questions regarding data protection, please contact us at <a
+                    class="a_email_privacy" href="mailto:[your@email.com]">[info@join.de]</a>.</p>
+        </section>
+    </nav-main-container>
 
     <script src="./scripts/header.js"></script>
     <script type="module" src="./scripts/auth.js"></script>
     <script type="module" src="./scripts/firebase.js"></script>
 </body>
+
 </html>

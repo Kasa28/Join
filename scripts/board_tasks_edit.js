@@ -296,7 +296,7 @@ function checkDemoTask(task) {
     return false;
   }
   if (typeof isDemoTask === "function" && isDemoTask(task)) {
-    alert("Demo tasks can only be moved.");
+   showToast("Demo tasks can only be moved.", { variant: "error", duration: 1600 });
     return false;
   }
   return true;
@@ -420,6 +420,7 @@ function startEditTask(id) {
   if (!task || !checkDemoTask(task)) {
     return;
   }
+  prepareAssignedUsers(task);
   prepareEditState(task);
   openEditOverlay(task);
 }

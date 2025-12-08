@@ -18,7 +18,23 @@ hiddenDatePickerTemplate.style.pointerEvents = "none";
 hiddenDatePickerTemplate.style.height = "0";
 hiddenDatePickerTemplate.style.width = "0";
 document.body.appendChild(hiddenDatePickerTemplate);
+function syncTemplateDueDateFromHidden() {
+  const dueInput = document.getElementById("due-date");
+  if (!dueInput) return;
 
+  if (!hiddenDatePickerTemplate.value) {
+    dueInput.value = "";
+    validateDueDate();
+    return;
+  }
+
+  const [year, month, day] = hiddenDatePickerTemplate.value.split("-");
+  dueInput.value = `${day}/${month}/${year}`;
+  validateDueDate();
+}
+
+hiddenDatePickerTemplate.addEventListener("change", syncTemplateDueDateFromHidden);
+hiddenDatePickerTemplate.addEventListener("input", syncTemplateDueDateFromHidden);
 // === Initialization and Field Validation ===
 /**
  * Initializes event handlers for the Add Task template, including title validation
@@ -43,6 +59,8 @@ function initAddTaskTemplateHandlers() {
   }
   const dueDateInput = document.getElementById("due-date");
   if (dueDateInput) {
+    dueDateInput.readOnly = true;
+    dueDateInput.addEventListener("click", openPickerTemplate);
     dueDateInput.addEventListener("input", (e) => {
       sanitizeDueDateInput(e);
       validateDueDate();
@@ -68,15 +86,13 @@ function openPickerTemplate() {
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
   hiddenDatePickerTemplate.min = `${yyyy}-${mm}-${dd}`;
-  hiddenDatePickerTemplate.value = "";
-  hiddenDatePickerTemplate.onchange = () => {
-    if (!hiddenDatePickerTemplate.value) {
-      return;
-    }
-    const [year, month, day] = hiddenDatePickerTemplate.value.split("-");
-    dueInput.value = `${day}/${month}/${year}`;
-    validateDueDate();
-  };
+   const existingValue = dueInput.value.trim();
+  if (isValidDateFormat(existingValue)) {
+    const [day, month, year] = existingValue.split("/");
+    hiddenDatePickerTemplate.value = `${year}-${month}-${day}`;
+  } else {
+    hiddenDatePickerTemplate.value = "";
+  }
   setTimeout(() => {
     if (hiddenDatePickerTemplate.showPicker) {
       hiddenDatePickerTemplate.showPicker();
@@ -166,14 +182,17 @@ function getColorFromItem(item) {
  * @param {Event} event - The click event that triggered the selection.
  */
 function selectAssignUser(name, event) {
-  // Stelle sicher, dass immer das übergeordnete Item gefunden wird
-   let item = null;
-  if (event) {
-    item =
-      event.target?.closest?.(".assign-item-addTask_template") ||
-      event.currentTarget?.closest?.(".assign-item-addTask_template") ||
-      null;
-  }
+  const t = event?.target;
+  const el = t && t.nodeType === Node.TEXT_NODE ? t.parentElement : t;
+
+  let item =
+    (el &&
+      typeof el.closest === "function" &&
+      el.closest(".assign-item-addTask_template")) ||
+    (event?.currentTarget &&
+      typeof event.currentTarget.closest === "function" &&
+      event.currentTarget.closest(".assign-item-addTask_template")) ||
+    null;
   if (!item) {
     const candidates = document.querySelectorAll(
       ".assign-item-addTask_template"

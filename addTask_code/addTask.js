@@ -152,6 +152,8 @@ hiddenDatePicker.addEventListener("blur", () => {
 // === Event-Handling ===
 const dueDateInput = document.getElementById("due-date");
 if (dueDateInput) {
+  dueDateInput.readOnly = true;
+  dueDateInput.addEventListener("click", openPickerSimple);
   dueDateInput.addEventListener("input", (e) => {
     sanitizeDueDateInput(e);
     validateDueDate();

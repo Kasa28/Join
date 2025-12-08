@@ -114,7 +114,7 @@ function getTaskForDelete(id) {
  */
 function canDeleteTask(task) {
   if (typeof isDemoTask === "function" && isDemoTask(task)) {
-    alert("Demo tasks can only be moved.");
+  showToast("Demo tasks can only be moved.", { variant: "error", duration: 1600 });
     return false;
   }
   return true;
