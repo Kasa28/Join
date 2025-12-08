@@ -88,8 +88,6 @@ async function logout() {
   }
 }
 
-
-/* === Form Validation === */
 /**
  * Enables or disables the login button based on email and password input fields.
  */
