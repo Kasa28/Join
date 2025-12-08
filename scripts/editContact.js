@@ -86,7 +86,7 @@ async function editContact() {
   }
 
   if (!isValidEmail(email)) {
-    showContactToast("Bitte eine gültige E-Mail eingeben!", {
+    showContactToast("Please enter a valid email address!", {
       variant: "error",
     });
     return false;
