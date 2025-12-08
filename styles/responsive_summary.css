@@ -255,3 +255,12 @@ done .card-font-a-summary {
   }
 }
 
+@media (min-width: 600px) and (max-width: 999px) {
+  /* z.B. sicherstellen, dass Greeting normal ist */
+  #greetID {
+    position: static;
+    background: transparent;
+    height: auto;
+    animation: none;
+  }
+}

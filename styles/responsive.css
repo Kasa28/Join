@@ -481,6 +481,9 @@ header {
 
 .header-wrapper-responsive {
   z-index: 1000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 @media (min-width: 2000px) {
   header {
