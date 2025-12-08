@@ -24,55 +24,16 @@ function isValidName(name) {
 }
 
 function isValidEmail(email) {
-  const trimmed = email.trim();
-  if (!trimmed) return false;
-
-  const parts = trimmed.split("@");
-  if (parts.length !== 2) return false;
-
-  const [local, domain] = parts;
+  if (!email) return false;
+  const [local, domain] = String(email).trim().split("@");
   if (!local || !domain) return false;
-
-  // local part: no leading/trailing dot, no ".."
-  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) {
-    return false;
-  }
-
-  // allowed chars in local part
-  if (!/^[A-Za-z0-9._%+-]+$/.test(local)) {
-    return false;
-  }
-
-  // NEW: local part must contain at least one letter
-  if (!/[A-Za-z]/.test(local)) {
-    return false;
-  }
-
-  // domain: only letters/digits/dot/hyphen
-  if (!/^[A-Za-z0-9.-]+$/.test(domain)) {
-    return false;
-  }
-
-  const domainParts = domain.split(".");
-  if (domainParts.length < 2) return false;
-
-  // segments non-empty, not starting/ending with "-"
-  if (domainParts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))) {
-    return false;
-  }
-
-  // TLD: only letters, at least 2 chars
-  const tld = domainParts[domainParts.length - 1];
-  if (!/^[A-Za-z]{2,}$/.test(tld)) {
-    return false;
-  }
-
-  // NEW: main domain (provider) must contain at least one letter
-  const mainDomain = domainParts[domainParts.length - 2];
-  if (!/[A-Za-z]/.test(mainDomain)) {
-    return false;
-  }
-
+  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) return false;
+  if (!/^[A-Za-z0-9._%+-]+$/.test(local) || !/[A-Za-z]/.test(local)) return false;
+  if (!/^[A-Za-z0-9.-]+$/.test(domain)) return false;
+  const parts = domain.split(".");
+  if (parts.length < 2 || parts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))) return false;
+  const tld = parts[parts.length - 1], mainDomain = parts[parts.length - 2];
+  if (!/^[A-Za-z]{2,}$/.test(tld) || !/[A-Za-z]/.test(mainDomain)) return false;
   return true;
 }
 
