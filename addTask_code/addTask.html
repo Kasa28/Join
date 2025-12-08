@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" href="../assets/img/Capa2.png">
 </head>
 
-<body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactsInDropdown()">
+<body onload="checkIfLogedInOnProtectedPage(), renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactsInDropdown()" class="guard-site">
 <div class="header-wrapper-responsive">
   <header>
     <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
@@ -169,6 +169,7 @@
   <script src="./addTask_assign.js" defer></script>
   <script src="addTask.js" defer></script>
   <script src="../scripts/header.js" defer></script>
+  <script type="module" src="../scripts/login.js"></script>
 </body>
 
 </html>

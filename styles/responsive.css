@@ -543,3 +543,6 @@ header {
     z-index: 1000;
   }
 }
+.guard-site {
+  visibility: hidden;
+}

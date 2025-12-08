@@ -17,7 +17,7 @@
   <link rel="icon" type="image/png" href="../assets/img/Capa2.png">
 </head>
 
-<body onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()" class="guard-site">
+<body onload="checkIfLogedInOnProtectedPage(), renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader()" class="guard-site">
   <div class="header-wrapper-responsive">
     <header>
       <img class="join-logo-header-img" src="../assets/img/Capa 2.svg" alt="joing.svg">
@@ -172,6 +172,7 @@
   <div id="toast-dim"></div>
   <script type="module" src="../scripts/auth.js"></script>
   <script type="module" src="../scripts/firebase.js"></script>
+   <script type="module" src="../scripts/login.js"></script>
   <script src="../scripts/script.js"></script>
   <script src="../scripts/board.js"></script>
   <script src="../scripts/board_interactions.js"></script>

@@ -27,11 +27,12 @@
     <script defer src="./scripts/responsive.js"></script>
     <script defer src="./scripts/contact_page_delete.js"></script>
     <script defer src="./scripts/contact_page_templates.js"></script>
+    <script type="module" src="./scripts/login.js"></script>
 
 </head>
 
-<body class="position-relative-overflow-x"
-    onload="renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactList(), renderAddContact(), renderEditContact()">
+<body class="position-relative-overflow-x guard-site"
+    onload="checkIfLogedInOnProtectedPage(), renderUserMenuePopupMenu(), checkIfLogedIn(), onloadFunctionHeader(), renderContactList(), renderAddContact(), renderEditContact()">
 
     <white-screen onclick="closeWhiteScreen()" class="white-screen d_none" id="white-screen"></white-screen>
 
