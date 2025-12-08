@@ -12,9 +12,6 @@ const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
- * Name: nur Buchstaben/Bindestriche,
- * Leerzeichen erlaubt, aber nicht Pflicht.
- * Mindestens 2 Zeichen.
  * @param {string} name
  * @returns {boolean}
  */
@@ -62,15 +59,10 @@ async function onclickFunction(event) {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-
   const errorEl = document.getElementById("error_message");
-
-  // Validate first
   if (!validateEmailOnSubmit(email, errorEl)) return;
   if (!validateNameAndPasswordOnSubmit(name, password, errorEl)) return;
   resetError(errorEl);
-
-  // Create user using Firebase Auth (Email/Password)
   try {
     if (window.authReady) await window.authReady;
 
