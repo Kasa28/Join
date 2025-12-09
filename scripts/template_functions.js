@@ -172,7 +172,7 @@ function buildSubtasksTechnicalHTML(t) {
     html += '<label class="label-font-technical-task">' +
       '<input type="checkbox" class="checkbox-technical-task border-blue-technical-task" ' +
       'onchange="updateSubtasks(' + t.id + ', this)" ' + checked + ">" +
-      sub + "</label><br>";
+      sub + "</label>";
   }
   return html;
 }

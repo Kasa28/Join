@@ -305,6 +305,7 @@ function getTechnicalTaskTemplate(t) {
  */
 function getBigCardDynamicHtml(t) {
   return `
+    <div class="task-modal-scroll">
       <headline class="header-wrapper_user-story">
         <span class="label_user_story">${t.type}</span>
         <button class="close-btn_user-story" onclick="closeTaskModal()">x</button>
@@ -324,9 +325,7 @@ function getBigCardDynamicHtml(t) {
             <p class="section-heading_user-story"><strong>Priority:</strong></p>
             <button type="button" class="priority-btn-${t.priority}_user-story">
               ${t.priority.charAt(0).toUpperCase() + t.priority.slice(1)}
-              <img class="addTask-icons_user-story" src="${
-                t.priorityIcon
-              }" alt="${t.priority} icon">
+              <img class="addTask-icons_user-story" src="${t.priorityIcon}" alt="${t.priority} icon">
             </button>
           </div>
         </section>
@@ -340,24 +339,27 @@ function getBigCardDynamicHtml(t) {
   
         <section class="task-input_user-story">
           <p class="section-heading_user-story"><strong>Subtasks</strong></p>
-          <div class="subtask-list">${t.subtasksHTML}</div>
+          <div class="subtask-list">
+            ${t.subtasksHTML}
+          </div>
         </section>
-  
-        <div class="action-buttons_user-story">
-          <div class="action-btn_user-story" onclick="deleteDynamicTask(${
-            t.id
-          })">
-            <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user_story">
-            <span>Delete</span>
-          </div>
-          <div class="divider_user-story"></div>
-          <div class="action-btn_user-story" onclick="startEditTask(${t.id})">
-            <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user_story">
-            <span>Edit</span>
-          </div>
-        </div>
-      </main>`;
+      </main>
+    </div>
+
+    <div class="action-buttons_user-story">
+      <div class="action-btn_user-story" onclick="deleteDynamicTask(${t.id})">
+        <img src="../assets/img/delete.svg" alt="Delete" class="action-icon_user_story">
+        <span>Delete</span>
+      </div>
+      <div class="divider_user-story"></div>
+      <div class="action-btn_user-story" onclick="startEditTask(${t.id})">
+        <img src="../assets/img/edit.svg" alt="Edit" class="action-icon_user_story">
+        <span>Edit</span>
+      </div>
+    </div>
+  `;
 }
+
 /**
  * Returns dynamic big card HTML specifically styled for technical tasks.
  * Uses t.assignedHTML, t.subtasksHTML, and t.priorityText if provided.
@@ -367,58 +369,62 @@ function getBigCardDynamicHtml(t) {
 
 function getBigCardDynamicTechnicalHtml(t) {
   return `
-    <main class="main-container-technical-task">
-      <div class="head-bar-technical-task">
-        <div class="head-sign-technical-task">
-          <a class="a-font-style-technical-task">Technical Task</a>
-        </div>
-        <button class="close-button-technical-task" onclick="closeTaskModal()">x</button>
-      </div>
-
-      <div class="headline-container-technical-task">
-        <h1 class="h1-technical-task">${t.title}</h1>
-      </div>
-
-      <div class="describtion-conatainer-technical-task">
-        <p class="description-font-technical-task">${t.description}</p>
-      </div>
-
-      <div class="date-container-technical-task">
-        <a class="status-font-technical-task">Due Date:</a>
-        <a class="date-font-technical-task">${t.dueDate}</a>
-      </div>
-
-      <div class="priority-container-technical-task">
-        <a class="status-font-technical-task">Priority:</a>
-        <div class="actual-priority-container-technical-task">
-          <a>${t.priorityText}</a>
-          <img src="${t.priorityIcon}" alt="${t.priority} priority">
-        </div>
-      </div>
-
-      <div class="assigned-to-container-technical-task">
-        <a class="status-font-technical-task">Assigned To:</a>
-        <div>
-          ${t.assignedHTML}
-        </div>
-      </div>
-
-      <div class="subtasks-container-technical-task">
-        <a class="status-font-technical-task">Subtasks:</a>
-        <div class="subtasks-task-container-technical-task subtask-list">
-          ${t.subtasksHTML}
-        </div>
-        <div class="delete-edit-section-technical-task">
-          <div class="delete-edit-container-technical-task" onclick="deleteDynamicTask(${t.id})">
-            <img src="../assets/img/delete.svg" alt="Delete" class="delete-edit-icon-technical-task">
-            <span>Delete</span>
+    <div class="task-modal-scroll">
+      <main class="main-container-technical-task">
+        <div class="head-bar-technical-task">
+          <div class="head-sign-technical-task">
+            <a class="a-font-style-technical-task">Technical Task</a>
           </div>
-          <div class="separator-technical-task"></div>
-          <div class="delete-edit-container-technical-task" onclick="startEditTask(${t.id})">
-            <img src="../assets/img/edit.svg" alt="Edit" class="delete-edit-icon-technical-task">
-            <span>Edit</span>
+          <button class="close-button-technical-task" onclick="closeTaskModal()">x</button>
+        </div>
+
+        <div class="headline-container-technical-task">
+          <h1 class="h1-technical-task">${t.title}</h1>
+        </div>
+
+        <div class="describtion-conatainer-technical-task">
+          <p class="description-font-technical-task">${t.description}</p>
+        </div>
+
+        <div class="date-container-technical-task">
+          <a class="status-font-technical-task">Due Date:</a>
+          <a class="date-font-technical-task">${t.dueDate}</a>
+        </div>
+
+        <div class="priority-container-technical-task">
+          <a class="status-font-technical-task">Priority:</a>
+          <div class="actual-priority-container-technical-task">
+            <a>${t.priorityText}</a>
+            <img src="${t.priorityIcon}" alt="${t.priority} priority">
           </div>
         </div>
+
+        <div class="assigned-to-container-technical-task">
+          <a class="status-font-technical-task">Assigned To:</a>
+          <div>
+            ${t.assignedHTML}
+          </div>
+        </div>
+
+        <div class="subtasks-container-technical-task">
+          <a class="status-font-technical-task">Subtasks:</a>
+          <div class="subtasks-task-container-technical-task">
+            ${t.subtasksHTML}
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="delete-edit-section-technical-task">
+      <div class="delete-edit-container-technical-task" onclick="deleteDynamicTask(${t.id})">
+        <img src="../assets/img/delete.svg" alt="Delete" class="delete-edit-icon-technical-task">
+        <span>Delete</span>
       </div>
-    </main>`;
+      <div class="separator-technical-task"></div>
+      <div class="delete-edit-container-technical-task" onclick="startEditTask(${t.id})">
+        <img src="../assets/img/edit.svg" alt="Edit" class="delete-edit-icon-technical-task">
+        <span>Edit</span>
+      </div>
+    </div>
+  `;
 }

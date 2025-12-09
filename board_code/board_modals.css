@@ -149,27 +149,47 @@
     }
   }
   
-  .task-card-description {
-   overflow: hidden; 
-   text-overflow: ellipsis;
-    display: -webkit-box; -webkit-line-clamp: 3; 
-    -webkit-box-orient: vertical; 
-    white-space: normal;
-   }
-.task-card {
-   overflow: hidden;
-   }
+  /* =========================================================
+   Board-Karte: Vorschau-Text begrenzen
+   ========================================================= */
+.task-card-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
 
-.main-container-technical-task {
-  width: min(528px, 100vw - 48px);   
-  max-height: 90vh;               
+.task-card {
+  overflow: hidden;
+}
+
+/* =========================================================
+   Gemeinsames Modal-Layout (User Story + Technical Task)
+   ========================================================= */
+
+/* Äußere Box im Overlay (id/class bei dir z.B. task-modal-content) */
+.task-modal-content {
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;            
-  overflow-x: hidden;             
   box-sizing: border-box;
 }
 
+/* Der eigentliche Inhalt, der scrollen darf */
+.task-modal-content > .main_content_user_story,
+.task-modal-content > .main-container-technical-task {
+  flex: 1;
+  overflow-y: auto;      /* nur dieser Bereich scrollt */
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-bottom: 16px;  /* etwas Platz über dem Footer */
+}
+
+/* Lange Texte dürfen umbrechen */
+.title_user-story,
+.h3_user-story,
 .h1-technical-task,
 .description-font-technical-task,
 .status-font-technical-task {
@@ -178,241 +198,325 @@
   hyphens: auto;
 }
 
-.main-container-technical-task .assigned-to-container-technical-task {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  height: auto;
-  min-height: 60px;
-  max-height: 220px;      
-  overflow-y: auto;         
-  overflow-x: hidden;
-  padding-right: 8px;
-  box-sizing: border-box;
-}
+/* =========================================================
+   USER STORY: Assigned + Subtasks scrollen
+   ========================================================= */
 
-.main-container-technical-task .user-container-technical-task {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 100%;
-  position: static;
-  float: none;
-  flex-shrink: 0;
-}
-
-.subtasks-container-technical-task {
-  max-width: 100%;
-}
-
-.subtasks-task-container-technical-task {
-  max-height: 220px;          
+/* eigener Scrollbereich für Kontakte */
+.assigned-users_user-story {
+  max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 8px;
+  padding-right: 8px;    /* Platz für Scrollbar */
   box-sizing: border-box;
 }
 
-
-.subtasks-task-container-technical-task label {
-  word-break: break-word;
-  hyphens: auto;
-}
-
-.main-container-technical-task {
-  width: min(528px, 100vw - 48px);
-  max-height: 90vh;         
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;        
-  overflow-x: hidden;
-  box-sizing: border-box;
-}
-
-.h1-technical-task,
-.title_user-story
-.description-font-technical-task,
-.status-font-technical-task,
-.subtasks-task-container-technical-task label {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-}
-
-.main-container-technical-task .assigned-to-container-technical-task {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px;
-  min-height: 140px;     
-  max-height: 220px;   
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  padding-right: 8px;
-  box-sizing: border-box;
-}
-
-.main-container-technical-task .assigned-to-container-technical-task > * {
-  position: static !important;
-  float: none !important;
-  flex-shrink: 0;
-}
-
-.main-container-technical-task .user-container-technical-task {
-  display: flex !important;
-  align-items: center;
-  gap: 12px;
-  max-width: 100%;
-}
-
-.main-container-technical-task .subtasks-task-container-technical-task {
-  max-height: 220px;    
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 8px;
-  box-sizing: border-box;
-}
-
-
-main.main_content_user_story {
-  width: min(528px, 100vw - 48px);
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;     
-  overflow-x: hidden;
-  box-sizing: border-box;
-}
-
-main.main_content_user_story .title_user-story,
-main.main_content_user_story .h3_user-story {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-}
-
-main.main_content_user_story .assigned-users_user-story {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 220px;     
-  overflow-y: auto;     
-  overflow-x: hidden;
-  padding-right: 8px;    
-  box-sizing: border-box;
-}
-
-main.main_content_user_story .assigned-users_user-story > * {
-  position: static !important;
-  float: none !important;
-  flex-shrink: 0;
-}
-
-main.main_content_user_story .subtask-list_user-story {
-  max-height: 220px;    
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 8px;
-  box-sizing: border-box;
-}
-
-main.main_content_user_story .subtask-list_user-story label {
-  word-break: break-word;
-  hyphens: auto;
-}
-
-.main-container-technical-task .subtasks-task-container-technical-task,
-.main_content_user_story .subtasks-task-container-user-story {
+/* eigener Scrollbereich für Subtasks */
+.subtask-list {
   max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 8px;
   box-sizing: border-box;
 }
-#task-modal-content .title_user-story {
-  white-space: normal !important;
+
+/* Subtask-Zeilen ordentlich umbrechen */
+.subtask-list label {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* Delete / Edit unten „ankleben“ */
+.action-buttons_user-story {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding: 12px 0;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   TECHNICAL TASK: Assigned + Subtasks scrollen
+   ========================================================= */
+
+/* der innere Block mit den Usern (das <div> in assigned-to-container) */
+.assigned-to-container-technical-task > div {
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+/* eigener Scrollbereich für Subtasks */
+.subtasks-task-container-technical-task {
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.subtasks-task-container-technical-task label {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* Delete / Edit unten fix */
+.delete-edit-section-technical-task {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding: 12px 0;
+  box-sizing: border-box;
+}
+
+
+
+/* ===== ÄUSSERE MODAL-BOX ================================== */
+/* Dein Wrapper: <div id="task-modal-content"> ... </div>     */
+
+#task-modal-content {
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Der Teil, der scrollen soll: User Story + Technical Task   */
+#task-modal-content > .main_content_user_story,
+#task-modal-content > .main-container-technical-task {
+  flex: 1;
+  overflow-y: auto;       /* nur der Mittelteil scrollt */
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-bottom: 16px;
+}
+/* User Story – Assigned + Subtasks jeweils eigener Scrollbereich */
+.assigned-users_user-story {
+  max-height: 140px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.subtask-list {
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+/* Delete / Edit bei User Story unten „ankleben“ */
+.action-buttons_user-story {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding: 12px 0;
+  box-sizing: border-box;
+}
+
+/* einzelne Subtask-Zeilen schön umbrechen */
+#task-modal-content .task-input_user-story .subtask-list label {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+#task-modal-content .task-input_user-story .subtask-list {
+  max-height: 92px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 8px;
+  box-sizing: border-box;
+  /* zum Testen: */
+  /* border: 1px solid red; */
+}
+
+/* === TECHNICAL TASK: Beschreibung mit Scroll === */
+#task-modal-content .description-font-technical-task {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+
+/* Abstand zwischen den Subtasks – TECHNICAL TASK */
+.subtasks-task-container-technical-task .label-font-technical-task {
+  display: flex;          /* Checkbox + Text nebeneinander */
+  align-items: center;
+  gap: 8px;               /* Abstand zwischen Checkbox und Text */
+  margin-bottom: 10px;    /* Abstand zum nächsten Subtask */
+}
+
+.subtasks-task-container-technical-task .label-font-technical-task:last-child {
+  margin-bottom: 0;       /* unten kein extra Abstand */
+}
+
+/* (Optional) das Gleiche für User Story */
+.subtask-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.subtask-list label:last-child {
+  margin-bottom: 0;
+}
+
+.description-font-technical-task {
+  white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
   hyphens: auto;
 }
 
 #task-modal-content .main_content_user_story {
-  max-height: 90vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: none;
+  overflow: visible;      
+}
+#task-modal-content .action-buttons_user-story {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding-top: 12px;
+  padding-bottom: 12px;
   box-sizing: border-box;
 }
 
-#task-modal-content .assigned-users_user-story {
+#task-modal-content .action-buttons_user-story::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: 8px;
+  background: #e5e5e5;
+}
+
+#task-modal-content .title_user-story,
+#task-modal-content .h3_user-story {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+
+#task-modal-content,
+.task-modal-content {
+  max-height: 90vh;
+  width: min(528px, 100vw - 48px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 60px;
-  max-height: 220px;          
-  overflow-y: auto;
+  overflow-y: auto;      
   overflow-x: hidden;
-  padding-right: 8px;
   box-sizing: border-box;
 }
 
-#task-modal-content .assigned-users_user-story > *,
-#task-modal-content .assigned-users_user-story .user-container-technical-task {
-  position: static !important;
-  float: none !important;
-  flex-shrink: 0;
+#task-modal-content .main_content_user_story,
+#task-modal-content .main-container-technical-task {
+  max-height: none;
+  overflow: visible;    
+}
+
+
+#task-modal-content .action-buttons_user-story,
+#task-modal-content .delete-edit-section-technical-task {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+  font-family: 'Open Sans';
+}
+
+#task-modal-content .action-buttons_user-story::before,
+#task-modal-content .delete-edit-section-technical-task::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: 8px;
+  background: #e5e5e5;
+}
+
+
+#task-modal-content {
+  max-height: 90vh;
+  width: min(528px, 100vw - 48px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;          
+  box-sizing: border-box;
+  border-radius: 24px;
+}
+
+.task-modal-scroll {
+  flex: 1;
+  overflow-y: auto;         
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.title_user-story,
+.h3_user-story,
+.h1-technical-task,
+.description-font-technical-task {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.action-buttons_user-story,
+.delete-edit-section-technical-task {
+  padding: 12px clamp(20px, 6vw, 40px) 16px;
+  background: #ffffff;
+  box-sizing: border-box;
+  border-top: 1px solid #e5e5e5;
 }
 
 #task-modal-content .task-input_user-story .subtask-list {
-  max-height: 220px;          
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: 120px !important;  
+  overflow-x: hidden !important;  
   padding-right: 8px;
   box-sizing: border-box;
 }
 
 #task-modal-content .task-input_user-story .subtask-list label {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-}
-
-.main_content_user_story {
-  width: min(528px, 100vw - 48px);
-  max-height: 90vh;
   display: flex;
-  flex-direction: column;
-  overflow-y: auto;      
-  overflow-x: hidden;    
-  box-sizing: border-box;
-}
-
-.title_user-story,
-.h3_user-story {
-  white-space: normal !important;   
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
   word-break: break-word;
   overflow-wrap: anywhere;
   hyphens: auto;
 }
 
-.main_content_user_story .task-input_user-story {
-  max-width: 100%;
+#task-modal-content .task-input_user-story .subtask-list label:last-child {
+  margin-bottom: 0;
 }
-.main_content_user_story .subtask-list_user-story {
-  max-height: 220px;      
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 8px;
-  box-sizing: border-box;
-}
-.main_content_user_story .subtask-list_user-story .label_user-story {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-}
-.main_content_user_story .task-input_user-story .subtask-list {
-  max-height: 150px;      
-  overflow-y: auto;       
-  overflow-x: hidden;      
+
+#task-modal-content .subtasks-task-container-technical-task {
+  max-height: 120px !important;      
+  overflow-y: auto !important;    
+  overflow-x: hidden !important;    
   padding-right: 8px;
   box-sizing: border-box;
 }
 
+#task-modal-content .subtasks-task-container-technical-task label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+#task-modal-content .subtasks-task-container-technical-task label:last-child {
+  margin-bottom: 0;
+}
