@@ -289,8 +289,12 @@ async function persistTasks() {
  * @returns {void}
  */
 window.updateSubtasks = (id, el) => {
+   const list = el?.closest?.(".subtask-list, .subtasks-task-container-technical-task");
+  if (!list) {
+    return;
+  }
   const subtaskListe = [
-    ...el.closest(".subtask-list").querySelectorAll('input[type="checkbox"]'),
+        ...list.querySelectorAll('input[type="checkbox"]'),
   ];
   const done = subtaskListe.filter((x) => x.checked).length;
   const total = subtaskListe.length;
