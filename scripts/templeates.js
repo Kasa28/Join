@@ -394,8 +394,8 @@ function getBigCardDynamicTechnicalHtml(t) {
         <div class="priority-container-technical-task">
           <a class="status-font-technical-task">Priority:</a>
           <div class="actual-priority-container-technical-task">
-            <a>${t.priorityText}</a>
-            <img src="${t.priorityIcon}" alt="${t.priority} priority">
+          <a>${t.priorityText}</a>
+          <img src="${t.priorityIcon}" alt="${t.priorityText}">
           </div>
         </div>
 
