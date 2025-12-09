@@ -315,3 +315,6 @@
   align-items: center;
   gap: 8px;
 }
+.subtasks-task-container-technical-task br {
+  display: none;
+}
