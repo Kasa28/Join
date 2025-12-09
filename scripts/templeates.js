@@ -243,8 +243,8 @@ function getTechnicalTaskTemplate(t) {
         <div class="priority-container-technical-task">
             <a class="status-font-technical-task">Priority:</a>
             <div class="actual-priority-container-technical-task">
-                <a>Urgent</a>
-                <img src="../assets/img/Prio baja-urgent-red.svg" alt="baja">
+                <a>Medium</a>
+                <img src="../assets/img/for_demo.svg" alt="baja">
             </div>
         </div>
 

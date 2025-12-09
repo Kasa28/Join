@@ -34,7 +34,7 @@ const demoTasks = [
     type: "Technical Task",
     status: "await-feedback",
     dueDate: "02/09/2023",
-    priority: "urgent",
+    priority: "medium",
     subtasksDone: 2,
     subtasksTotal: 2,
     assignedTo: [
