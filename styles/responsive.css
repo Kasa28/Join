@@ -122,7 +122,7 @@ body::-webkit-scrollbar {
     right: 0;
     width: 100%;
     height: auto;
-    padding: 16px 24px;
+    padding: 16px 5px;
     box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.18);
     background: #ffffff;
     flex-direction: row;
@@ -137,14 +137,14 @@ body::-webkit-scrollbar {
     justify-content: space-between;
     width: 100%;
     height: 45px;
-    gap: 12px;
+    gap: 5px;
   }
   .sidebar-low-section-container {
     display: none;
   }
   .button-sidebar {
     width: auto;
-    padding: 6px 12px;
+    padding: 5px;
     text-align: center;
     flex-direction: column;
     justify-content: center;
@@ -542,4 +542,33 @@ header {
 }
 .guard-site {
   visibility: hidden;
+}@media (max-width: 1099px) {
+  .wrapper-main-task-btn-summaryAll_page,
+  .wrapper-main-task-btn-addTask_page,
+  .wrapper-main-task-btn-board_page,
+  .wrapper-main-task-btn-contacts_page {
+    height: 80px;       
+  }
+
+  .wrapper-main-task-btn-summaryAll_page .button-sidebar,
+  .wrapper-main-task-btn-addTask_page .button-sidebar,
+  .wrapper-main-task-btn-board_page .button-sidebar,
+  .wrapper-main-task-btn-contacts_page .button-sidebar {
+    display: flex;
+    flex-direction: column;   
+    align-items: center;
+    justify-content: center;
+    gap: 4px;                  
+    padding: 4px 6px;         
+    width: auto;
+    text-align: center;
+  }
+  .wrapper-main-task-btn-summaryAll_page .sidebar-font,
+  .wrapper-main-task-btn-addTask_page .sidebar-font,
+  .wrapper-main-task-btn-board_page .sidebar-font,
+  .wrapper-main-task-btn-contacts_page .sidebar-font {
+    font-size: 16px;
+    line-height: 1.1;         
+    white-space: nowrap;     
+  }
 }
