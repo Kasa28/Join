@@ -448,9 +448,6 @@ body::-webkit-scrollbar {
   .h1-technical-task {
     font-size: clamp(28px, 6vw, 48px) !important;
   }
-  .description-font-technical-task {
-   font-size: clamp(11px, 0.5vw, 13px) !important;
-  }
   .status-font-technical-task {
     font-size: clamp(17px, 5vw, 21px) !important;
   }
