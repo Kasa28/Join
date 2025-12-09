@@ -152,9 +152,6 @@ body::-webkit-scrollbar {
   .button-sidebar:hover {
     background: rgba(210, 227, 255, 0.6);
   }
-  .sidebar-font {
-    font-size: 12px;
-  }
   .header-font,
   .img-headbar {
     display: none;
