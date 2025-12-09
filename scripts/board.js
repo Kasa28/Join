@@ -297,10 +297,16 @@ window.updateSubtasks = (id, el) => {
   const percent = total ? Math.round((done / total) * 100) : 0;
   const cardElement = document.getElementById("card-" + id);
   if (cardElement) {
+      const track = cardElement.querySelector(".progress-track");
     const fill = cardElement.querySelector(".progress-fill");
     const st = cardElement.querySelector(".subtasks");
-    if (fill) fill.style.width = percent + "%";
-    if (st) st.textContent = `${done}/${total} Subtasks`;
+    const hasSubtasks = total > 0;
+    if (track) track.style.display = hasSubtasks ? "" : "none";
+    if (fill) fill.style.width = (hasSubtasks ? percent : 0) + "%";
+    if (st) {
+      st.style.display = hasSubtasks ? "" : "none";
+      st.textContent = hasSubtasks ? `${done}/${total} Subtasks` : "";
+    }
   }
   saved[id] = subtaskListe.map((x) => x.checked);
   localStorage.setItem("checks", JSON.stringify(saved));

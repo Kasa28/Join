@@ -32,7 +32,6 @@
  * @returns {DocumentFragment}
  */
 
-/* === Task Card Rendering === */
 function renderCard(t) {
     const tpl = document.getElementById("tmpl-card").content.cloneNode(true);
     const card = tpl.querySelector(".task-card");
@@ -54,12 +53,21 @@ function renderCard(t) {
     const p = tpl.querySelector("p");
     if (p) p.textContent = t.description;
     const fill = tpl.querySelector(".progress-fill");
+    const track = tpl.querySelector(".progress-track");
     const st = tpl.querySelector(".subtasks");
-    const pct = t.subtasksTotal
-      ? Math.round((t.subtasksDone / t.subtasksTotal) * 100)
+    const total = Number(t.subtasksTotal) || 0;
+    const hasSubtasks = total > 0;
+    const pct = hasSubtasks
+      ? Math.round((t.subtasksDone / total) * 100)
       : 0;
+    if (track) track.style.display = hasSubtasks ? "" : "none";
     if (fill) fill.style.width = pct + "%";
-    if (st) st.textContent = `${t.subtasksDone}/${t.subtasksTotal} Subtasks`;
+    if (st) {
+      st.style.display = hasSubtasks ? "" : "none";
+      st.textContent = hasSubtasks
+        ? `${t.subtasksDone}/${total} Subtasks`
+        : "";
+    }
     return tpl;
   }
 
