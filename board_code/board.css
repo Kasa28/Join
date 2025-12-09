@@ -117,7 +117,7 @@
   color: #fff;
   border: 0;
   border-radius: 12px;
-  padding: 18px 32px;
+  padding: 18px 20px;
   font-weight: 700;
   cursor: pointer;
   font-family: "open sans";
@@ -378,4 +378,8 @@ body.no-scroll {
 .board-search-input::placeholder {
   color: #c6c3c3;
   opacity: 1;      
+}
+.add-task-btn img {
+  margin-left: 8px;       
+  display: inline-block;
 }
