@@ -336,3 +336,61 @@ document.addEventListener("dragover", (event) => {
 });
 
 
+/* === Mobile Move Menu Logic === */
+
+window.openMoveMenu = function(event, taskId) {
+    event.stopPropagation();
+    window.moveMenuTaskId = taskId;
+    buildMoveMenuOptions(taskId);
+    const overlay = document.getElementById("move-menu-overlay");
+    if (overlay) overlay.classList.add("open");
+};
+
+window.closeMoveMenu = function(event) {
+    const overlay = document.getElementById("move-menu-overlay");
+    if (!overlay) return;
+    if (event && event.currentTarget && event.currentTarget.classList.contains("move-menu-close-btn")) {
+        overlay.classList.remove("open");
+        return;
+    }
+    if (!event || event.target.id === "move-menu-overlay") {
+        overlay.classList.remove("open");
+    }
+};
+
+window.confirmMoveMenu = function() {
+    if (!window.selectedMoveStatus) return;
+    whichCardActuellDrop = window.moveMenuTaskId;
+    moveTo(window.selectedMoveStatus);
+    closeMoveMenu();
+};
+
+
+/**
+ * Builds the list of move targets inside the bottom sheet menu.
+ */
+window.buildMoveMenuOptions = function(taskId) {
+    const optBox = document.getElementById("move-menu-options");
+    if (!optBox) return;
+    optBox.innerHTML = "";
+    window.selectedMoveStatus = null;
+    Object.entries(statusByColumnId).forEach(([columnId, status]) => {
+        const colHeader = document
+            .querySelector(`#${columnId}`)
+            ?.closest("section")
+            ?.querySelector("h2");
+        const label = colHeader ? colHeader.textContent.trim() : status;
+        const btn = document.createElement("div");
+        btn.classList.add("move-menu-option");
+        btn.textContent = label;
+        btn.onclick = () => {
+            window.selectedMoveStatus = status;
+            document
+                .querySelectorAll(".move-menu-option")
+                .forEach(x => x.classList.remove("selected"));
+            btn.classList.add("selected");
+        };
+        optBox.appendChild(btn);
+    });
+};
+

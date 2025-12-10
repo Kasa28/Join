@@ -168,8 +168,21 @@
       </aside>
     </div>
   </div>
+  
+<div id="move-menu-overlay" class="move-menu-overlay" onclick="closeMoveMenu(event)">
+  <div class="move-menu" onclick="event.stopPropagation()">
+      <h3 class="move-menu-title">Move task</h3>
+      <button class="move-menu-close-btn" onclick="closeMoveMenu(event)">✕</button>
+      <div id="move-menu-options" class="move-menu-options"></div>
+      <button class="move-menu-confirm-btn" onclick="confirmMoveMenu()">OK</button>
+
+  </div>
+</div>
+
+</div>
   <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
   <div id="toast-dim"></div>
+
   <script type="module" src="../scripts/auth.js"></script>
   <script type="module" src="../scripts/firebase.js"></script>
    <script type="module" src="../scripts/login.js"></script>

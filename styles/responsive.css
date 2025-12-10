@@ -4,8 +4,8 @@ body {
 }
 
 body {
-  overflow-y: auto;        
-  -ms-overflow-style: none;   
+  overflow-y: auto;
+  -ms-overflow-style: none;
 }
 
 body::-webkit-scrollbar {
@@ -93,7 +93,7 @@ body::-webkit-scrollbar {
 
   .wrapper-main-task-btn-addTask_page {
     padding-right: 60%;
-}
+  }
 }
 
 @media (max-width: 1300px) {
@@ -428,7 +428,6 @@ body::-webkit-scrollbar {
   .tasks-on-board-card-summary {
     transition: none !important;
   }
-
 }
 
 @keyframes hideSummaryGreeting {
@@ -605,7 +604,7 @@ header {
   }
 }
 
-.board-search-input{
+.board-search-input {
   color: #d1d1d1;
 }
 
@@ -627,21 +626,144 @@ header {
   .wrapper-main-task-btn-board_page .button-sidebar,
   .wrapper-main-task-btn-contacts_page .button-sidebar {
     display: flex;
-    flex-direction: column;   
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;                  
-    padding: 4px 6px;         
+    gap: 4px;
+    padding: 4px 6px;
     width: auto;
     text-align: center;
   }
-  
+
   .wrapper-main-task-btn-summaryAll_page .sidebar-font,
   .wrapper-main-task-btn-addTask_page .sidebar-font,
   .wrapper-main-task-btn-board_page .sidebar-font,
   .wrapper-main-task-btn-contacts_page .sidebar-font {
     font-size: 16px;
-    line-height: 1.1;         
-    white-space: nowrap;     
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .mobile-move-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #ffffff;
+    border: 2px solid #4589ff;
+    color: #4589ff;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 24px;
+    display: grid;
+    place-items: center;
+    z-index: 50;
+  }
+
+  .task-card {
+    position: relative;
+  }
+
+  #move-menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    display: none;
+    justify-content: flex-end;
+    z-index: 9999;
+  }
+
+  #move-menu-overlay.open {
+    display: flex;
+    align-items: center;
+  }
+
+  .move-menu {
+    position: relative;
+    width: 100%;
+    max-height: 500px;
+    background: #ffffff;
+    border-radius: 20px 20px 20px 20px;
+    padding: 24px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    animation: moveSheetUp 0.25s ease-out;
+  }
+
+  @keyframes moveSheetUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .move-menu-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: #4589ff;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .move-menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-family: "Open Sans", sans-serif;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .move-menu-option {
+    padding: 12px 16px;
+    background: #f6f7fa;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .move-menu-option.selected {
+    border-color: #4589ff;
+    background: rgba(63, 120, 255, 0.12);
+  }
+
+  .move-menu-confirm-btn {
+    width: 100%;
+    padding: 14px;
+    background: #4589ff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .move-menu-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: #4589ff;
+    cursor: pointer;
+  }
+
+  .move-menu-option:hover {
+    background: rgba(63, 120, 255, 0.12);
+    border-color: #4589ff;
   }
 }
