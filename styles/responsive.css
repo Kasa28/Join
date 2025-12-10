@@ -68,6 +68,7 @@ body::-webkit-scrollbar {
   .main-content {
     flex: unset;
     display: block;
+    margin-bottom: 400px;
   }
 
   .edit-contact-headcard {
