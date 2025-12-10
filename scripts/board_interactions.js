@@ -255,8 +255,8 @@ window.moveTo = function (newStatus) {
 };
 
 /**
- * Retrieves the task object currently being dragged.
- * @returns {Object|null} The dragged task or null.
+ * Looks up the task currently being dragged based on stored id.
+ * @returns {Task|null}
  */
 function getDraggedTask() {
   if (whichCardActuellDrop == null || !Array.isArray(window.tasks)) return null;
@@ -267,7 +267,7 @@ function getDraggedTask() {
 /**
  * Applies a status update to the dragged task and triggers re-rendering.
  * @param {string} newStatus - The new status to apply.
- * @param {Object} options - Optional configuration.
+  * @param {{keepDraggingState?: boolean}} [options={}] - Drag styling configuration.
  * @returns {boolean} True if the status changed.
  */
 function applyStatusChangeForDraggedTask(
