@@ -2,6 +2,7 @@ html,
 body {
   height: 100%;
 }
+
 body {
   overflow-y: auto;        
   -ms-overflow-style: none;   
@@ -10,18 +11,22 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
 .button_help {
   display: none;
 }
+
 .side-overlay.open .side-panel {
   height: auto !important;
 }
+
 .user-menu-container-header {
   position: fixed;
   top: 96px;
   right: 24px;
   z-index: 1500;
 }
+
 .task-card {
   cursor: pointer;
 }
@@ -33,20 +38,25 @@ body::-webkit-scrollbar {
     z-index: 100;
     background-color: transparent;
   }
+
   #greetID {
     margin-left: 60px;
   }
+
   .header-wrapper-responsive {
     background-color: #4589ff;
     width: 100%;
   }
+
   .main-content {
     flex: unset;
     display: block;
   }
+
   .edit-contact-headcard {
     z-index: 2000;
   }
+
   .wrapper-main-task-btn-addTask_page {
     padding-right: 20%;
   }
@@ -56,6 +66,7 @@ body::-webkit-scrollbar {
   header {
     width: 60%;
   }
+
   .wrapper-main-task-btn-addTask_page {
     padding-right: 40%;
   }
@@ -65,6 +76,7 @@ body::-webkit-scrollbar {
   header {
     width: 50%;
   }
+
   .wrapper-main-task-btn-addTask_page {
     padding-right: 50%;
   }
@@ -74,9 +86,11 @@ body::-webkit-scrollbar {
   header {
     width: 40%;
   }
+
   #greetID {
     margin-left: 58px;
   }
+
   .wrapper-main-task-btn-addTask_page {
     padding-right: 60%;
 }
@@ -87,21 +101,26 @@ body::-webkit-scrollbar {
     min-width: 252px;
     max-width: 252px;
   }
+
   .main-content-board .column-body {
     flex-direction: row;
     overflow-x: auto;
   }
+
   .column-body {
     padding-bottom: 100px;
   }
+
   .main-content-board .board {
     width: 100%;
     padding-right: 30px;
   }
+
   .main-content-board {
     padding-left: 28px;
     padding-top: 50px;
   }
+
   .main-content-board .column-body::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -115,6 +134,7 @@ body::-webkit-scrollbar {
     flex-direction: column;
     align-items: stretch;
   }
+
   .side-menu {
     position: fixed;
     bottom: 0;
@@ -131,6 +151,7 @@ body::-webkit-scrollbar {
     gap: 0;
     z-index: 2000;
   }
+
   .sidebar-high-section-container {
     flex-direction: row;
     align-items: center;
@@ -139,9 +160,11 @@ body::-webkit-scrollbar {
     height: 45px;
     gap: 5px;
   }
+
   .sidebar-low-section-container {
     display: none;
   }
+
   .button-sidebar {
     width: auto;
     padding: 5px;
@@ -149,19 +172,24 @@ body::-webkit-scrollbar {
     flex-direction: column;
     justify-content: center;
   }
+
   .button-sidebar:hover {
     background: rgba(210, 227, 255, 0.6);
   }
+
   .header-font,
   .img-headbar {
     display: none;
   }
+
   .button_help {
     display: block;
   }
+
   .btn-primary {
     display: none;
   }
+
   .main-addTask_page {
     width: 100%;
     max-width: 420px;
@@ -172,6 +200,7 @@ body::-webkit-scrollbar {
     overflow-y: auto;
     height: calc(95vh - 161px);
   }
+
   .btn-clear-addTask_page,
   .btn-done-addTask_page {
     margin-bottom: 60px;
@@ -200,43 +229,53 @@ body::-webkit-scrollbar {
   .layout-container-addTask_page {
     flex-direction: column;
   }
+
   .wrapper-main-task-btn-addTask_page {
     flex-direction: column;
     align-items: center;
     gap: 12px;
   }
+
   .task-title-addTask_page {
     font-size: 18px;
   }
+
   .task-title-addTask_page::placeholder {
     font-size: 22px;
   }
+
   .section-heading-addTask_page {
     font-size: 16px;
   }
+
   .task-input-addTask_page,
   .label-addTask_page {
     font-size: 15px;
   }
+
   .task-description-addTask_page {
     font-size: 15px;
     padding-top: 12px;
     height: 80px;
   }
+
   .task-date-addTask_page,
   .task-select-addTask_page,
   .task-subtask-addTask_page {
     font-size: 15px;
   }
+
   .priority-group-addTask_page {
     gap: 6px;
   }
+
   .priority-btn-urgent-addTask_page,
   .priority-btn-medium-addTask_page,
   .priority-btn-low-addTask_page {
     padding: 10px 8px;
     font-size: 15px;
   }
+
   .task-buttons-addTask_page {
     position: sticky;
     bottom: 70px;
@@ -252,6 +291,7 @@ body::-webkit-scrollbar {
     background: #ffffff;
     z-index: 990;
   }
+
   .btn-clear-addTask_page,
   .btn-done-addTask_page {
     width: auto;
@@ -260,22 +300,28 @@ body::-webkit-scrollbar {
     font-size: 13px;
     padding: 0 16px;
   }
+
   .btn-clear-addTask_page {
     min-width: 96px;
   }
+
   .btn-done-addTask_page {
     min-width: 132px;
   }
+
   .assign-placeholder-addTask_page {
     font-size: 15px;
   }
+
   .subtask-list-addTask_page {
     padding-bottom: 30px;
   }
+
   .searchbox {
     min-width: 274px;
     width: 193px;
   }
+
   .user-menu-content-header {
     background-color: white;
   }
@@ -293,9 +339,11 @@ body::-webkit-scrollbar {
   .h1_privacy_policy {
     font-size: 25px !important;
   }
+
   .h2_privacy_policy {
     font-size: 17px !important;
   }
+
   .h2_what_is_Join {
     font-size: 25px;
   }
@@ -305,23 +353,29 @@ body::-webkit-scrollbar {
   body {
     -ms-overflow-style: none !important;
   }
+
   body::-webkit-scrollbar {
     display: none !important;
   }
+
   .user-menu-container-header {
     z-index: 2000;
   }
+
   .h1_Help {
     font-size: 47px;
   }
+
   .page {
     padding-bottom: 90px;
   }
+
   .privacy-policy {
     padding-left: 36px;
     padding-bottom: 116px;
     width: 100%;
   }
+
   .h1-container-summary {
     position: static;
     display: block;
@@ -329,6 +383,7 @@ body::-webkit-scrollbar {
     margin: 0;
     padding: 0;
   }
+
   #greetID {
     position: fixed;
     inset: 0;
@@ -350,19 +405,23 @@ body::-webkit-scrollbar {
     animation: hideSummaryGreeting 0.4s ease forwards;
     animation-delay: 3s;
   }
+
   #greetID * {
     text-align: center;
   }
+
   .h1-container-summary .summary-h1-font-guest,
   .h1-container-summary .summary-h1-font-user,
   .h1-container-summary .summary-h2-font-user {
     display: block;
   }
+
   .main-content > :not(.h1-container-summary) {
     opacity: 0;
     animation: showSummaryContent 0.2s ease forwards;
     animation-delay: 2s;
   }
+
   .summary-card,
   .summary-cards-low-section,
   .urgent-task-card-summary,
@@ -378,6 +437,7 @@ body::-webkit-scrollbar {
     visibility: hidden;
   }
 }
+
 @keyframes showSummaryContent {
   to {
     opacity: 1;
@@ -392,40 +452,48 @@ body::-webkit-scrollbar {
     gap: 12px !important;
     flex-wrap: wrap !important;
   }
+
   .label_user_story {
     width: auto !important;
     height: auto !important;
     font-size: clamp(14px, 4vw, 20px) !important;
     padding: 4px clamp(12px, 5vw, 16px) !important;
   }
+
   .title_user-story {
     font-size: clamp(26px, 6vw, 40px) !important;
     width: min(528px, 100%) !important;
     padding-left: clamp(20px, 6vw, 40px) !important;
     padding-right: clamp(24px, 8vw, 60px) !important;
   }
+
   .h3_user-story {
     font-size: clamp(15px, 4.5vw, 18px) !important;
     width: min(528px, 100%) !important;
     padding-left: clamp(20px, 6vw, 40px) !important;
     padding-right: clamp(20px, 6vw, 40px) !important;
   }
+
   .main_content_user_story {
     width: min(528px, 100%) !important;
     padding-left: clamp(20px, 6vw, 40px) !important;
     padding-right: clamp(20px, 6vw, 40px) !important;
   }
+
   .task-title_user-story {
     font-size: clamp(18px, 5vw, 22px) !important;
   }
+
   .task-description_user-story {
     font-size: clamp(16px, 4.5vw, 19px) !important;
   }
+
   .main-container-technical-task {
     width: min(528px, 100%) !important;
     padding: clamp(24px, 5vw, 39px) clamp(20px, 6vw, 40px) !important;
     gap: clamp(16px, 4vw, 24px) !important;
   }
+
   .head-bar-technical-task,
   .headline-container-technical-task,
   .describtion-conatainer-technical-task,
@@ -435,30 +503,38 @@ body::-webkit-scrollbar {
   .subtasks-container-technical-task {
     width: min(448px, 100%) !important;
   }
+
   .head-bar-technical-task {
     flex-wrap: wrap !important;
     gap: 12px !important;
   }
+
   .h1-technical-task {
     font-size: clamp(28px, 6vw, 48px) !important;
   }
+
   .status-font-technical-task {
     font-size: clamp(17px, 5vw, 21px) !important;
   }
+
   .date-font-technical-task,
   .label-font-technical-task {
     font-size: clamp(15px, 4.5vw, 19px) !important;
   }
+
   .date-container-technical-task,
   .priority-container-technical-task {
     gap: clamp(16px, 5vw, 25px) !important;
   }
+
   .user-container-technical-task {
     padding: 7px clamp(12px, 5vw, 16px) !important;
   }
+
   .subtasks-task-container-technical-task {
     padding: 6px clamp(12px, 5vw, 16px) !important;
   }
+
   .delete-edit-section-technical-task {
     padding-right: clamp(12px, 5vw, 16px) !important;
   }
@@ -476,6 +552,7 @@ header {
   top: 0;
   z-index: 1000;
 }
+
 @media (min-width: 2000px) {
   header {
     top: 0;
@@ -483,6 +560,7 @@ header {
     z-index: 100;
     background-color: transparent;
   }
+
   .header-wrapper-responsive {
     background-color: #4589ff;
     width: 100%;
@@ -526,6 +604,7 @@ header {
     max-width: calc(37% - 232px - 39px);
   }
 }
+
 .board-search-input{
   color: #d1d1d1;
 }
@@ -537,6 +616,7 @@ header {
     z-index: 1000;
   }
 }
+
 .guard-site {
   visibility: hidden;
 }
@@ -555,6 +635,7 @@ header {
     width: auto;
     text-align: center;
   }
+  
   .wrapper-main-task-btn-summaryAll_page .sidebar-font,
   .wrapper-main-task-btn-addTask_page .sidebar-font,
   .wrapper-main-task-btn-board_page .sidebar-font,
