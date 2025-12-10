@@ -33,74 +33,73 @@
  */
 
 function renderCard(t) {
-    const tpl = document.getElementById("tmpl-card").content.cloneNode(true);
-    const card = tpl.querySelector(".task-card");
-    card.id = `card-${t.id}`;
-    card.draggable = true;
-    card.ondragstart = (e) => onCardDragStart(e, t.id);
-    card.ondragend = onCardDragEnd;
-    card.onclick = (event) => {
-      event.stopPropagation();
-      openModalById(Number(t.id));
-    };
-    const badge = tpl.querySelector(".badge");
-    if (badge) {
-      badge.textContent = t.type;
-      badge.classList.add(getBadgeClass(t.type));
-    }
-    const h3 = tpl.querySelector("h3");
-    if (h3) h3.textContent = t.title;
-    const p = tpl.querySelector("p");
-    if (p) p.textContent = t.description;
-    const fill = tpl.querySelector(".progress-fill");
-    const track = tpl.querySelector(".progress-track");
-    const st = tpl.querySelector(".subtasks");
-    const total = Number(t.subtasksTotal) || 0;
-    const hasSubtasks = total > 0;
-    const pct = hasSubtasks
-      ? Math.round((t.subtasksDone / total) * 100)
-      : 0;
-    if (track) track.style.display = hasSubtasks ? "" : "none";
-    if (fill) fill.style.width = pct + "%";
-    if (st) {
-      st.style.display = hasSubtasks ? "" : "none";
-      st.textContent = hasSubtasks
-        ? `${t.subtasksDone}/${total} Subtasks`
-        : "";
-    }
-    return tpl;
+  const tpl = document.getElementById("tmpl-card").content.cloneNode(true);
+  const card = tpl.querySelector(".task-card");
+  const menuBtn = document.createElement("button");
+  menuBtn.classList.add("mobile-move-btn");
+  menuBtn.innerHTML = "⋮";
+  menuBtn.onclick = (ev) => openMoveMenu(ev, t.id);
+  card.appendChild(menuBtn);
+  card.id = `card-${t.id}`;
+  card.draggable = true;
+  card.ondragstart = (e) => onCardDragStart(e, t.id);
+  card.ondragend = onCardDragEnd;
+  card.onclick = (event) => {
+    event.stopPropagation();
+    openModalById(Number(t.id));
+  };
+  const badge = tpl.querySelector(".badge");
+  if (badge) {
+    badge.textContent = t.type;
+    badge.classList.add(getBadgeClass(t.type));
   }
+  const h3 = tpl.querySelector("h3");
+  if (h3) h3.textContent = t.title;
+  const p = tpl.querySelector("p");
+  if (p) p.textContent = t.description;
+  const fill = tpl.querySelector(".progress-fill");
+  const track = tpl.querySelector(".progress-track");
+  const st = tpl.querySelector(".subtasks");
+  const total = Number(t.subtasksTotal) || 0;
+  const hasSubtasks = total > 0;
+  const pct = hasSubtasks ? Math.round((t.subtasksDone / total) * 100) : 0;
+  if (track) track.style.display = hasSubtasks ? "" : "none";
+  if (fill) fill.style.width = pct + "%";
+  if (st) {
+    st.style.display = hasSubtasks ? "" : "none";
+    st.textContent = hasSubtasks ? `${t.subtasksDone}/${total} Subtasks` : "";
+  }
+  return tpl;
+}
 
-
-  /* === Subtask List Item Builder === */
-    /**
-   * Builds a subtask list <li> element for edit UI.
-   * @param {string} text
-   * @returns {HTMLLIElement}
-   */
-  function buildSubtaskListItem(text) {
-    const li = document.createElement("li");
-    li.classList.add("subtask-entry-edit");
-    li.textContent = text;
-    const actions = document.createElement("div");
-    actions.classList.add("subtask-actions-addTask_template");
-    actions.innerHTML = `
+/* === Subtask List Item Builder === */
+/**
+ * Builds a subtask list <li> element for edit UI.
+ * @param {string} text
+ * @returns {HTMLLIElement}
+ */
+function buildSubtaskListItem(text) {
+  const li = document.createElement("li");
+  li.classList.add("subtask-entry-edit");
+  li.textContent = text;
+  const actions = document.createElement("div");
+  actions.classList.add("subtask-actions-addTask_template");
+  actions.innerHTML = `
           <img src="../assets/img/edit.svg"   alt="Edit subtask"   class="subtask-edit-addTask_template">
           <div class="subtask-divider-addTask_template"></div>
           <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template">
         `;
-    li.appendChild(actions);
-    return li;
-  }
+  li.appendChild(actions);
+  return li;
+}
 
-  
-  /* === Board Rendering === */
-    /**
-   * Renders all board columns and visible task cards.
-   * Respects current search filter and empty-column pills.
-   * @returns {void}
-   */
-  function render() {
+/* === Board Rendering === */
+/**
+ * Renders all board columns and visible task cards.
+ * Respects current search filter and empty-column pills.
+ * @returns {void}
+ */
+function render() {
   const tasks = Array.isArray(window.tasks) ? window.tasks : [];
   Object.values(nameOfTheCard).forEach(({ id }) =>
     document.getElementById(id)?.replaceChildren()
@@ -111,179 +110,177 @@ function renderCard(t) {
     if (host) host.appendChild(renderCard(t));
   }
   for (const { id, empty } of Object.values(nameOfTheCard)) {
-      const col = document.getElementById(id);
-      if (col && !col.children.length) {
-        col.innerHTML = `<div class="empty-pill">${empty}</div>`;
-      }
+    const col = document.getElementById(id);
+    if (col && !col.children.length) {
+      col.innerHTML = `<div class="empty-pill">${empty}</div>`;
     }
-    requestAnimationFrame(afterRender);
   }
-  
+  requestAnimationFrame(afterRender);
+}
 
 /* === Post-Render Enhancements (Avatars & Priority Icons) === */
-  /**
-   * Post-render pass to inject assignee avatars/initials and priority icons.
-   * @returns {void}
-   */
- function afterRender() {
+/**
+ * Post-render pass to inject assignee avatars/initials and priority icons.
+ * @returns {void}
+ */
+function afterRender() {
   const tasks = Array.isArray(window.tasks) ? window.tasks : [];
   document.querySelectorAll(".task-card").forEach((card) => {
     const task = tasks.find((t) => t.id == card.id.replace("card-", ""));
     if (!task) return;
-      const assBox = card.querySelector(".assignees");
-      if (assBox) {
-        const people = task.assignedTo || [];
-        const maxVisible = 3;
-        const visible = people.slice(0, maxVisible);
-        assBox.innerHTML = visible
-          .map((p) => {
-            const initials = p.name
-              .split(/\s+/)
-              .filter(Boolean)
-              .slice(0, 2)
-              .map((n) => n[0]?.toUpperCase() || "")
-              .join("");
-            const bg = p.color ? `background-color:${p.color};` : "";
-            return `<span class="assigned-to-initials" title="${p.name}" style="${bg}">${initials}</span>`;
-          })
-          .join("");
-        if (people.length > maxVisible) {
-          const extra = people.length - maxVisible;
-          assBox.innerHTML += `<span class="assigned-to-initials"
+    const assBox = card.querySelector(".assignees");
+    if (assBox) {
+      const people = task.assignedTo || [];
+      const maxVisible = 3;
+      const visible = people.slice(0, maxVisible);
+      assBox.innerHTML = visible
+        .map((p) => {
+          const initials = p.name
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map((n) => n[0]?.toUpperCase() || "")
+            .join("");
+          const bg = p.color ? `background-color:${p.color};` : "";
+          return `<span class="assigned-to-initials" title="${p.name}" style="${bg}">${initials}</span>`;
+        })
+        .join("");
+      if (people.length > maxVisible) {
+        const extra = people.length - maxVisible;
+        assBox.innerHTML += `<span class="assigned-to-initials"
               style="
                 background-color: #d1d1d1;
                 color: black;
                 font-weight: 600;
               ">+${extra}</span>`;
-        }
-      }
-      const pill = card.querySelector(".priority-pill");
-      if (pill) {
-        const pr = (task.priority || "low").toLowerCase();
-        const iconSrc =
-          task.priorityIcon || prioritätIcon[pr] || prioritätIcon.low;
-        pill.innerHTML = `<img src="${iconSrc}" alt="${pr}" class="prio-icon">`;
-      }
-    });
-  }
-  if (needsDraggingClassAfterRender && whichCardActuellDrop != null) {
-    const card = document.getElementById(`card-${whichCardActuellDrop}`);
-    if (card) {
-      currentDragCardEl = card;
-      card.classList.add("is-dragging");
-      if (pendingDragTiltClass) {
-        card.classList.add(pendingDragTiltClass);
       }
     }
-    needsDraggingClassAfterRender = false;
-    pendingDragTiltClass = null;
+    const pill = card.querySelector(".priority-pill");
+    if (pill) {
+      const pr = (task.priority || "low").toLowerCase();
+      const iconSrc =
+        task.priorityIcon || prioritätIcon[pr] || prioritätIcon.low;
+      pill.innerHTML = `<img src="${iconSrc}" alt="${pr}" class="prio-icon">`;
+    }
+  });
+}
+if (needsDraggingClassAfterRender && whichCardActuellDrop != null) {
+  const card = document.getElementById(`card-${whichCardActuellDrop}`);
+  if (card) {
+    currentDragCardEl = card;
+    card.classList.add("is-dragging");
+    if (pendingDragTiltClass) {
+      card.classList.add(pendingDragTiltClass);
+    }
   }
+  needsDraggingClassAfterRender = false;
+  pendingDragTiltClass = null;
+}
 
-
-  /* === Helper: Name Initials === */
-    /**
-   * Creates initials from a full name (max 2 letters).
-   * @param {string} name
-   * @returns {string}
-   */
-  function getInitialsFromName(name) {
-    return String(name || "")
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((part) => part[0]?.toUpperCase() || "")
-      .slice(0, 2)
-      .join("");
-  }
-
+/* === Helper: Name Initials === */
+/**
+ * Creates initials from a full name (max 2 letters).
+ * @param {string} name
+ * @returns {string}
+ */
+function getInitialsFromName(name) {
+  return String(name || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0]?.toUpperCase() || "")
+    .slice(0, 2)
+    .join("");
+}
 
 /* === Helper: Populate Assign Section === */
-  /**
-   * Hydrates the assign section in AddTask overlay based on task data.
-   * @param {Task} task
-   * @returns {void}
-   */
-  function hydrateAssignSection(task) {
-    const content = document.getElementById("addtask-content");
-    if (!content) return;
-    // Avatare
-    const container = content.querySelector("#assigned-avatars");
-    if (container) {
-      container.innerHTML = "";
-      (task.assignedTo || []).forEach((person) => {
-        const name = person?.name || "";
-        const color = person?.color || "#4589ff";
-        const initials = getInitialsFromName(name);
-        const avatar = document.createElement("div");
-        avatar.textContent = initials;
-        avatar.classList.add("assign-avatar-addTask_template", "assign-avatar-addTask_page");
-        avatar.style.backgroundColor = color;
-        avatar.dataset.fullName = name;
-        avatar.dataset.color = color;
-        avatar.title = name;
-        container.appendChild(avatar);
-      });
-    }
-    // Checkboxen synchronisieren
-    const items = content.querySelectorAll(".assign-item-addTask_template");
-    items.forEach((item) => {
-      const name = item
-        .querySelector(".assign-name-addTask_template")
-        ?.textContent.trim();
-      const checkbox = item.querySelector(".assign-check-addTask_template");
-      const selected = (window.selectedUsers || []).includes(name);
-      if (checkbox) checkbox.checked = selected;
-      item.classList.toggle("selected", selected);
+/**
+ * Hydrates the assign section in AddTask overlay based on task data.
+ * @param {Task} task
+ * @returns {void}
+ */
+function hydrateAssignSection(task) {
+  const content = document.getElementById("addtask-content");
+  if (!content) return;
+  // Avatare
+  const container = content.querySelector("#assigned-avatars");
+  if (container) {
+    container.innerHTML = "";
+    (task.assignedTo || []).forEach((person) => {
+      const name = person?.name || "";
+      const color = person?.color || "#4589ff";
+      const initials = getInitialsFromName(name);
+      const avatar = document.createElement("div");
+      avatar.textContent = initials;
+      avatar.classList.add(
+        "assign-avatar-addTask_template",
+        "assign-avatar-addTask_page"
+      );
+      avatar.style.backgroundColor = color;
+      avatar.dataset.fullName = name;
+      avatar.dataset.color = color;
+      avatar.title = name;
+      container.appendChild(avatar);
     });
-  
-    const placeholder = content.querySelector(
-      ".assign-placeholder-addTask_template"
-    );
-    if (placeholder) {
-      placeholder.textContent = (window.selectedUsers || []).length
-        ? ""
-        : "Select contact to assign";
-      placeholder.style.color = "black";
-    }
   }
-  
+  // Checkboxen synchronisieren
+  const items = content.querySelectorAll(".assign-item-addTask_template");
+  items.forEach((item) => {
+    const name = item
+      .querySelector(".assign-name-addTask_template")
+      ?.textContent.trim();
+    const checkbox = item.querySelector(".assign-check-addTask_template");
+    const selected = (window.selectedUsers || []).includes(name);
+    if (checkbox) checkbox.checked = selected;
+    item.classList.toggle("selected", selected);
+  });
+
+  const placeholder = content.querySelector(
+    ".assign-placeholder-addTask_template"
+  );
+  if (placeholder) {
+    placeholder.textContent = (window.selectedUsers || []).length
+      ? ""
+      : "Select contact to assign";
+    placeholder.style.color = "black";
+  }
+}
 
 /* === Task Type and Badge Helpers === */
-  /**
-   * Normalizes a task type string for comparisons.
-   * @param {string} type
-   * @returns {string}
-   */
-  function normalizeTaskType(type) {
-    return String(type || "")
-      .trim()
-      .toLowerCase();
-  }
+/**
+ * Normalizes a task type string for comparisons.
+ * @param {string} type
+ * @returns {string}
+ */
+function normalizeTaskType(type) {
+  return String(type || "")
+    .trim()
+    .toLowerCase();
+}
 
-  /**
-   * Checks if type represents a user story.
-   * @param {string} type
-   * @returns {boolean}
-   */
-  function isUserStoryType(type) {
-    const n = normalizeTaskType(type);
-    return n === "user story" || n === "user-story";
-  }
+/**
+ * Checks if type represents a user story.
+ * @param {string} type
+ * @returns {boolean}
+ */
+function isUserStoryType(type) {
+  const n = normalizeTaskType(type);
+  return n === "user story" || n === "user-story";
+}
 
-  /**
-   * Checks if type represents a technical task.
-   * @param {string} type
-   * @returns {boolean}
-   */
-  function isTechnicalType(type) {
-    return normalizeTaskType(type) === "technical task";
-  }
+/**
+ * Checks if type represents a technical task.
+ * @param {string} type
+ * @returns {boolean}
+ */
+function isTechnicalType(type) {
+  return normalizeTaskType(type) === "technical task";
+}
 
-  /**
-   * Returns badge CSS class based on type.
-   * @param {string} type
-   * @returns {"badge-technical"|"badge-user"}
-   */
-  function getBadgeClass(type) {
-    return isTechnicalType(type) ? "badge-technical" : "badge-user";
-  }
-  
+/**
+ * Returns badge CSS class based on type.
+ * @param {string} type
+ * @returns {"badge-technical"|"badge-user"}
+ */
+function getBadgeClass(type) {
+  return isTechnicalType(type) ? "badge-technical" : "badge-user";
+}
