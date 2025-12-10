@@ -25,6 +25,8 @@
   color: #42526e;
   font-size: 18px;
   font-family: "Open Sans", sans-serif;
+  max-height: calc(4 * 1.4em);
+  overflow-y: auto;
 }
 
 .addTask-icons-addTask_page {

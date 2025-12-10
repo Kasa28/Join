@@ -75,7 +75,7 @@
 
 .assigned-avatars-addTask_template {
   display: flex;
-  gap: 8px; 
+  gap: 8px;
 }
 
 .assign-check-addTask_template {
@@ -183,7 +183,6 @@
   box-shadow: none;
 }
 
-
 .task-subtask-addTask_template:not(:placeholder-shown)
   + .subtask-icons-addTask_template {
   display: flex;
@@ -197,6 +196,8 @@
   color: #42526e;
   font-size: 18px;
   font-family: "Open Sans", sans-serif;
+  max-height: calc(4 * 1.4em);
+  overflow-y: auto;
 }
 
 .subtask-list-addTask_template li {
@@ -260,5 +261,5 @@
 }
 
 .subtask-list-addTask_template li {
-  padding-right: 60px;   
+  padding-right: 60px;
 }
