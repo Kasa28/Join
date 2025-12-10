@@ -31,6 +31,20 @@ body::-webkit-scrollbar {
   cursor: pointer;
 }
 
+.task-card {
+  position: relative;
+}
+
+#move-menu-overlay,
+.move-menu {
+  display: none;
+}
+
+.mobile-move-btn {
+  display: none;
+}
+
+
 @media (min-width: 2000px) {
   header {
     top: 0;
@@ -662,10 +676,6 @@ header {
     display: grid;
     place-items: center;
     z-index: 50;
-  }
-
-  .task-card {
-    position: relative;
   }
 
   #move-menu-overlay {
