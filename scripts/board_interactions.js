@@ -1,9 +1,8 @@
 const isTouchDevice =
-  window.matchMedia("(pointer: coarse)").matches &&
-  ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  window.matchMedia("(pointer: coarse)").matches ||
+  navigator.maxTouchPoints > 0;
 
-// Disable drag on touch devices (iPads, phones, tablets)
-if (isTouchDevice) {
+if (isTouchDevice || window.innerWidth < 1200) {
   document.body.classList.add("touch-device");
 }
 

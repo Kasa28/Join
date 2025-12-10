@@ -43,6 +43,11 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.drag-area.drag-highlight {
+  border: 2px dotted #4589ff;
+  background-color: rgba(69, 137, 255, 0.15);
+}
+
 @media (min-width: 2000px) {
   header {
     top: 0;
@@ -621,6 +626,7 @@ header {
 }
 
 @media (max-width: 1280px) {
+  .touch-device .mobile-move-btn,
   .mobile-move-btn {
     position: absolute;
     top: 8px;
