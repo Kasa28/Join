@@ -50,6 +50,7 @@ async function writeUserProfile(uid, name, email, idToken) {
  * Handles signup form submit:
  * validates inputs, creates user, shows toast, and redirects to login.
  * @param {Event} [event]
+ * @param {Event} [event] - Optional submit event to prevent default behavior.
  * @returns {void}
  */
 async function onclickFunction(event) {
