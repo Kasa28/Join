@@ -251,8 +251,6 @@ body::-webkit-scrollbar {
     margin: 0 auto;
     height: auto;
     background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.1);
     z-index: 990;
   }
   .btn-clear-addTask_page,
@@ -542,14 +540,9 @@ header {
 }
 .guard-site {
   visibility: hidden;
-}@media (max-width: 1099px) {
-  .wrapper-main-task-btn-summaryAll_page,
-  .wrapper-main-task-btn-addTask_page,
-  .wrapper-main-task-btn-board_page,
-  .wrapper-main-task-btn-contacts_page {
-    height: 80px;       
-  }
+}
 
+@media (max-width: 1099px) {
   .wrapper-main-task-btn-summaryAll_page .button-sidebar,
   .wrapper-main-task-btn-addTask_page .button-sidebar,
   .wrapper-main-task-btn-board_page .button-sidebar,
