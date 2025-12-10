@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: responsive.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: responsive.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @typedef {Object} ToastOptions
+ * @property {"ok"|"error"} [variant="ok"]
+ * @property {number} [duration=1000]
+ */
+
+/**
+ * Shows a toast message in the UI.
+ * Creates #toast-root lazily if missing and auto-removes toast after duration.
+ *
+ * @param {string} text
+ * @param {ToastOptions} [options]
+ * @returns {void}
+ */
+function showToast(text, { variant = "ok", duration = 1000 } = {}) {
+  let root = document.getElementById("toast-root");
+  if (!root) {
+    root = document.createElement("div");
+    root.id = "toast-root";
+    document.body.appendChild(root);
+  }
+  const el = document.createElement("div");
+  el.className =
+    "toast toast--show" + (variant === "error" ? " toast--error" : "");
+  el.innerHTML = `&lt;span>${text}&lt;/span>&lt;span class="toast-icon" aria-hidden="true">&lt;/span>`;
+  root.appendChild(el);
+
+  setTimeout(() => {
+    el.classList.remove("toast--show");
+    el.classList.add("toast--hide");
+    el.addEventListener("animationend", () => el.remove(), { once: true });
+  }, duration);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const legacy = document.getElementById("singleContactID");
+  const content = document.getElementById("singleContactContent");
+
+  if (legacy &amp;&amp; content) {
+       /**
+     * Syncs mobile contact container from legacy desktop container.
+     * @returns {void}
+     */
+    let lastSyncedHtml = "";
+    let syncScheduled = false;
+    function syncFromLegacy() {
+            if (window.innerWidth > 1000) return;
+
+      if (syncScheduled) return;
+      syncScheduled = true;
+
+      requestAnimationFrame(() => {
+        syncScheduled = false;
+        const nextHtml = legacy.innerHTML;
+        if (nextHtml === lastSyncedHtml) return;
+        lastSyncedHtml = nextHtml;
+        content.innerHTML = nextHtml;
+      });
+    }
+ /**
+     * Applies responsive layout rules for contact detail containers.
+     * @returns {void}
+     */
+    function applyContactLayout() {
+      if (window.innerWidth &lt;= 1000) {
+        legacy.style.display = "none";
+        content.style.display = "";
+        syncFromLegacy();
+      } else {
+        legacy.style.display = "";
+        content.style.display = "none";
+      }
+    }
+    const contactObserver = new MutationObserver(syncFromLegacy);
+    contactObserver.observe(legacy, { childList: true, subtree: true });
+
+    window.addEventListener("resize", applyContactLayout);
+    applyContactLayout();
+  }
+  /**
+   * Returns the mobile menu wrapper element.
+   * @returns {Element|null}
+   */
+  function getMenuWrapper() {
+    return document.querySelector(".contact-actions-mobile");
+  }
+  /**
+   * Returns the checkbox toggle element for the contact menu.
+   * @returns {HTMLInputElement|null}
+   */
+  function getToggle() {
+    return document.getElementById("contact-menu-toggle");
+  }
+  /**
+   * Hides the mobile contact menu by unchecking its toggle.
+   * @returns {void}
+   */
+  function hideMenu() {
+    const toggle = getToggle();
+    if (!toggle) return;
+    toggle.checked = false;
+  }
+  /**
+   * Ensures the mobile contact menu can be shown and resets toggle state.
+   * @returns {void}
+   */
+  function showMenu() {
+    const menuWrapper = getMenuWrapper();
+    const toggle = getToggle();
+    if (!toggle) return;
+
+    if (menuWrapper &amp;&amp; menuWrapper.style.display === "none") {
+      menuWrapper.style.display = "";
+    }
+    toggle.checked = false;
+  }
+  /**
+   * Global click handler for closing menu or reacting to FAB actions.
+   * @param {MouseEvent} event
+   * @returns {void}
+   */
+  document.addEventListener("click", function (event) {
+    const menuWrapper = getMenuWrapper();
+    const toggle = getToggle();
+    if (!menuWrapper || !toggle) return;
+
+    const target = event.target;
+
+    if (!menuWrapper.contains(target)) {
+      toggle.checked = false;
+    }
+
+    const fabItem = target.closest(".contact-actions-mobile .contact-fab-item");
+    if (fabItem) {
+      hideMenu();
+    }
+
+    const closeOrSaveBtn = target.closest(
+      ".close-icon-edit-contact, .button-edit-contact, #white-screen"
+    );
+    if (closeOrSaveBtn) {
+      setTimeout(showMenu, 0);
+    }
+  });
+
+  const addFab = document.querySelector(".button-contacts-position"); 
+  const addOverlay = document.querySelector(".add-contact");
+  const editOverlay = document.querySelector(".edit-contact");
+  let overlayObserver;
+  /**
+   * Checks whether a given overlay element is currently visible.
+   * @param {Element|null} el
+   * @returns {boolean}
+   */
+  function overlayVisible(el) {
+    if (!el) return false;
+    const st = window.getComputedStyle(el);
+    if (st.display === "none" || st.visibility === "hidden") return false;
+    if (el.classList.contains("d-none")) return false;
+    if (el.classList.contains("hide-add-contact")) return false;
+    if (el.classList.contains("hide-edit-contact")) return false;
+    return true;
+  }
+  /**
+   * Returns whether any contact overlay is open.
+   * @returns {boolean}
+   */
+  function anyOverlayOpen() {
+    return overlayVisible(addOverlay) || overlayVisible(editOverlay);
+  }
+  /**
+   * Syncs Add-FAB visibility and body scroll lock to overlay + viewport state.
+   * @returns {void}
+   */
+  function syncAddFab() {
+    if (addFab) {
+      if (window.innerWidth > 1000) {
+        addFab.style.display = "";
+      } else {
+        addFab.style.display = anyOverlayOpen() ? "none" : "";
+      }
+    }
+
+    // Scroll-Lock für Body
+    if (anyOverlayOpen()) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }
+  /**
+   * Observes overlay class/style changes to keep FAB and scroll state in sync.
+   * @returns {void}
+   */
+  function initOverlayObserver() {
+    if (overlayObserver) overlayObserver.disconnect();
+    const targets = [addOverlay, editOverlay].filter(Boolean);
+    if (!targets.length) return;
+
+    overlayObserver = new MutationObserver(syncAddFab);
+    targets.forEach((el) =>
+      overlayObserver.observe(el, {
+        attributes: true,
+        attributeFilter: ["class", "style"],
+      })
+    );
+  }
+
+  syncAddFab();
+  initOverlayObserver();
+  window.addEventListener("resize", syncAddFab);
+  /**
+   * Placeholder for future contact-name resolution.
+   * @returns {void}
+   */
+  function getCurrentContactName() {
+  }
+
+  document.addEventListener("click", function (event) {
+}); 
+
+  /**
+   * Gets the currently displayed contact name from mobile or desktop detail view.
+   * @returns {string|null}
+   */
+  function getCurrentContactName() {
+    const hMobile = document.querySelector("#singleContactContent h2");
+    if (hMobile &amp;&amp; hMobile.textContent.trim()) {
+      return hMobile.textContent.trim();
+    }
+    const hDesktop = document.querySelector("#singleContactID h2");
+    if (hDesktop) {
+      return hDesktop.textContent.trim();
+    }
+    return null;
+  }
+  /**
+   * Handles FAB action clicks (edit/delete) for the currently displayed contact.
+   * @param {MouseEvent} event
+   * @returns {void}
+   */
+  document.addEventListener("click", function (event) {
+    const item = event.target.closest(".contact-fab-item");
+    if (!item) return;
+    const label = item.textContent.toLowerCase();
+    const isEdit = label.includes("edit");
+    const isDelete = label.includes("delete");
+    if (!isEdit &amp;&amp; !isDelete) return;
+    const contacts = flattenContactBlockToArray() || [];
+    if (!contacts.length) return;
+    const displayedName = getCurrentContactName();
+    if (!displayedName) return;
+    const targetName = displayedName.trim().toLowerCase();
+    const idx = contacts.findIndex(
+      (c) => (c.username || "").trim().toLowerCase() === targetName
+    );
+    if (idx === -1) return;
+    if (isEdit) {
+      if (typeof setUserDataValue === "function") {
+        setUserDataValue(idx);
+      }
+      if (typeof showEditContactFormular === "function") {
+        showEditContactFormular();
+      }
+      if (typeof callWhiteScreen === "function") {
+        callWhiteScreen();
+      }
+      hideMenu();
+      event.preventDefault();
+      return;
+    }
+
+    if (isDelete) {
+      const username = contacts[idx].username;
+      if (typeof deleteContact === "function") {
+        deleteContact(username);
+      }
+      hideMenu();
+      event.preventDefault();
+    }
+  });
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#BASE_URL">BASE_URL</a></li><li><a href="global.html#activeHighlightColumnId">activeHighlightColumnId</a></li><li><a href="global.html#addActiveClassToSidebarButtons">addActiveClassToSidebarButtons</a></li><li><a href="global.html#addNewContact">addNewContact</a></li><li><a href="global.html#afterRender">afterRender</a></li><li><a href="global.html#applyStatusChangeForDraggedTask">applyStatusChangeForDraggedTask</a></li><li><a href="global.html#assignedToDataExtractSafe">assignedToDataExtractSafe</a></li><li><a href="global.html#autoMoveTimeoutId">autoMoveTimeoutId</a></li><li><a href="global.html#bigCardDynamicHtml">bigCardDynamicHtml</a></li><li><a href="global.html#bigCardDynamicTechnicalHtml">bigCardDynamicTechnicalHtml</a></li><li><a href="global.html#bigCardHtml">bigCardHtml</a></li><li><a href="global.html#buildSubtaskListItem">buildSubtaskListItem</a></li><li><a href="global.html#callWhiteScreen">callWhiteScreen</a></li><li><a href="global.html#canDeleteTask">canDeleteTask</a></li><li><a href="global.html#cancelScheduledAutoMove">cancelScheduledAutoMove</a></li><li><a href="global.html#checkIfBlockIsFilled">checkIfBlockIsFilled</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#checkPolicyandAnswers">checkPolicyandAnswers</a></li><li><a href="global.html#clearAddTaskAfterAnimation">clearAddTaskAfterAnimation</a></li><li><a href="global.html#clearAllColumnHighlights">clearAllColumnHighlights</a></li><li><a href="global.html#closeAddTask">closeAddTask</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#closeTaskModal">closeTaskModal</a></li><li><a href="global.html#closeWhiteScreen">closeWhiteScreen</a></li><li><a href="global.html#collectTaskFromForm">collectTaskFromForm</a></li><li><a href="global.html#contactBlock">contactBlock</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#currentDragCardEl">currentDragCardEl</a></li><li><a href="global.html#currentlySelectedContact">currentlySelectedContact</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactinEditContactWindow">deleteContactinEditContactWindow</a></li><li><a href="global.html#deleteDynamicTask">deleteDynamicTask</a></li><li><a href="global.html#deleteIdFromLocalStorage">deleteIdFromLocalStorage</a></li><li><a href="global.html#deleteTaskFromArray">deleteTaskFromArray</a></li><li><a href="global.html#deleteTaskOnServer">deleteTaskOnServer</a></li><li><a href="global.html#demoTasks">demoTasks</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emptyTheAddContactFormular">emptyTheAddContactFormular</a></li><li><a href="global.html#ensureAddTaskCss">ensureAddTaskCss</a></li><li><a href="global.html#ensureBoardAuth">ensureBoardAuth</a></li><li><a href="global.html#ensureCssForLegacy">ensureCssForLegacy</a></li><li><a href="global.html#ensureTechnicalCss">ensureTechnicalCss</a></li><li><a href="global.html#ensureToastRoot">ensureToastRoot</a></li><li><a href="global.html#ensureUserStoryCss">ensureUserStoryCss</a></li><li><a href="global.html#fallbackModal">fallbackModal</a></li><li><a href="global.html#fetchBoardTasks">fetchBoardTasks</a></li><li><a href="global.html#findColumnByPointer">findColumnByPointer</a></li><li><a href="global.html#findIndexFromUsername">findIndexFromUsername</a></li><li><a href="global.html#findTaskById">findTaskById</a></li><li><a href="global.html#findTaskForModal">findTaskForModal</a></li><li><a href="global.html#generateTaskId">generateTaskId</a></li><li><a href="global.html#getAddTaskHtml">getAddTaskHtml</a></li><li><a href="global.html#getAddTaskTemplate">getAddTaskTemplate</a></li><li><a href="global.html#getBadgeClass">getBadgeClass</a></li><li><a href="global.html#getBasePath">getBasePath</a></li><li><a href="global.html#getBigCardDynamicHtml">getBigCardDynamicHtml</a></li><li><a href="global.html#getBigCardDynamicTechnicalHtml">getBigCardDynamicTechnicalHtml</a></li><li><a href="global.html#getBoardAuthQuery">getBoardAuthQuery</a></li><li><a href="global.html#getContactColorType">getContactColorType</a></li><li><a href="global.html#getCurrentUidOrThrow">getCurrentUidOrThrow</a></li><li><a href="global.html#getDraggedTask">getDraggedTask</a></li><li><a href="global.html#getFriendsForCurrentUser">getFriendsForCurrentUser</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getLegacyTaskHtml">getLegacyTaskHtml</a></li><li><a href="global.html#getNextDeadline">getNextDeadline</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getSignupValues">getSignupValues</a></li><li><a href="global.html#getSubtasksSafe">getSubtasksSafe</a></li><li><a href="global.html#getSummaryFetchConfig">getSummaryFetchConfig</a></li><li><a href="global.html#getTaskCounts">getTaskCounts</a></li><li><a href="global.html#getTaskForDelete">getTaskForDelete</a></li><li><a href="global.html#getTaskModalElements">getTaskModalElements</a></li><li><a href="global.html#getTechnicalTaskTemplate">getTechnicalTaskTemplate</a></li><li><a href="global.html#getUserFriendslistByUid">getUserFriendslistByUid</a></li><li><a href="global.html#getValidationState">getValidationState</a></li><li><a href="global.html#getWhiteScreen">getWhiteScreen</a></li><li><a href="global.html#greetUserName">greetUserName</a></li><li><a href="global.html#handleAddContact">handleAddContact</a></li><li><a href="global.html#handleContactClick">handleContactClick</a></li><li><a href="global.html#hideAddContactFormular">hideAddContactFormular</a></li><li><a href="global.html#hideEditContactFormular">hideEditContactFormular</a></li><li><a href="global.html#hideToastLater">hideToastLater</a></li><li><a href="global.html#hydrateAssignSection">hydrateAssignSection</a></li><li><a href="global.html#isDemoTask">isDemoTask</a></li><li><a href="global.html#isPublicPage">isPublicPage</a></li><li><a href="global.html#isTechnicalType">isTechnicalType</a></li><li><a href="global.html#isUserStoryType">isUserStoryType</a></li><li><a href="global.html#isValidName">isValidName</a></li><li><a href="global.html#jumpToLogin">jumpToLogin</a></li><li><a href="global.html#lastDragPointerX">lastDragPointerX</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#loadTasksFromFirebase">loadTasksFromFirebase</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#makeFirstLetterBig">makeFirstLetterBig</a></li><li><a href="global.html#mapCategoryToType">mapCategoryToType</a></li><li><a href="global.html#matchesSearch">matchesSearch</a></li><li><a href="global.html#nameOfTheCard">nameOfTheCard</a></li><li><a href="global.html#needsDraggingClassAfterRender">needsDraggingClassAfterRender</a></li><li><a href="global.html#normaliseSubtaskProgress">normaliseSubtaskProgress</a></li><li><a href="global.html#normalizeTaskType">normalizeTaskType</a></li><li><a href="global.html#onclickFunction">onclickFunction</a></li><li><a href="global.html#onloadFunctionHeader">onloadFunctionHeader</a></li><li><a href="global.html#openAddTask">openAddTask</a></li><li><a href="global.html#openDynamicTaskModal">openDynamicTaskModal</a></li><li><a href="global.html#openEditOverlay">openEditOverlay</a></li><li><a href="global.html#openLegacyTaskModal">openLegacyTaskModal</a></li><li><a href="global.html#openModalById">openModalById</a></li><li><a href="global.html#openModalDynamic">openModalDynamic</a></li><li><a href="global.html#openTaskModalWithTask">openTaskModalWithTask</a></li><li><a href="global.html#parseDueDate">parseDueDate</a></li><li><a href="global.html#pendingAutoMoveStatus">pendingAutoMoveStatus</a></li><li><a href="global.html#pendingDragTiltClass">pendingDragTiltClass</a></li><li><a href="global.html#persistContacts">persistContacts</a></li><li><a href="global.html#persistTasks">persistTasks</a></li><li><a href="global.html#pollSummary">pollSummary</a></li><li><a href="global.html#prepareEditState">prepareEditState</a></li><li><a href="global.html#prevOnload">prevOnload</a></li><li><a href="global.html#priorit%25C3%25A4tIcon">prioritätIcon</a></li><li><a href="global.html#pushExampleContactsOneTimeInLocalStorage">pushExampleContactsOneTimeInLocalStorage</a></li><li><a href="global.html#putUsernameInContactList">putUsernameInContactList</a></li><li><a href="global.html#removeContentfromAllContactBlocks">removeContentfromAllContactBlocks</a></li><li><a href="global.html#removeTaskCard">removeTaskCard</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAddContact">renderAddContact</a></li><li><a href="global.html#renderCard">renderCard</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderEditContact">renderEditContact</a></li><li><a href="global.html#renderModalContent">renderModalContent</a></li><li><a href="global.html#renderSingleContact">renderSingleContact</a></li><li><a href="global.html#renderUserMenuePopupMenu">renderUserMenuePopupMenu</a></li><li><a href="global.html#requestBoardRender">requestBoardRender</a></li><li><a href="global.html#resetAddTaskGlobals">resetAddTaskGlobals</a></li><li><a href="global.html#resetError">resetError</a></li><li><a href="global.html#restoreSubtasksState">restoreSubtasksState</a></li><li><a href="global.html#saveTaskEdits">saveTaskEdits</a></li><li><a href="global.html#scheduleAutoMoveTo">scheduleAutoMoveTo</a></li><li><a href="global.html#searchQuery">searchQuery</a></li><li><a href="global.html#seedDemoFriendsIfEmpty">seedDemoFriendsIfEmpty</a></li><li><a href="global.html#setActiveSidebarByURL">setActiveSidebarByURL</a></li><li><a href="global.html#setContactsIntoContactblock">setContactsIntoContactblock</a></li><li><a href="global.html#setLetterInUserBall">setLetterInUserBall</a></li><li><a href="global.html#setSummaryText">setSummaryText</a></li><li><a href="global.html#setUserDataValue">setUserDataValue</a></li><li><a href="global.html#setupAddTaskContent">setupAddTaskContent</a></li><li><a href="global.html#showAddContactFormular">showAddContactFormular</a></li><li><a href="global.html#showContactToast">showContactToast</a></li><li><a href="global.html#showEditContactFormular">showEditContactFormular</a></li><li><a href="global.html#showError">showError</a></li><li><a href="global.html#showTaskModal">showTaskModal</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#singleContactTemplate">singleContactTemplate</a></li><li><a href="global.html#sortUserToAlphabeticalOrder">sortUserToAlphabeticalOrder</a></li><li><a href="global.html#startEditTask">startEditTask</a></li><li><a href="global.html#startSummaryPolling">startSummaryPolling</a></li><li><a href="global.html#statusByColumnId">statusByColumnId</a></li><li><a href="global.html#toggleContactHighlight">toggleContactHighlight</a></li><li><a href="global.html#toggleUserMenuePopupMenu">toggleUserMenuePopupMenu</a></li><li><a href="global.html#updateButtonState">updateButtonState</a></li><li><a href="global.html#updateErrorForSignup">updateErrorForSignup</a></li><li><a href="global.html#updateFriendsForCurrentUser">updateFriendsForCurrentUser</a></li><li><a href="global.html#updateSearchClearButtonState">updateSearchClearButtonState</a></li><li><a href="global.html#updateSummary">updateSummary</a></li><li><a href="global.html#updateTimeout">updateTimeout</a></li><li><a href="global.html#updateUserFriendslistByUid">updateUserFriendslistByUid</a></li><li><a href="global.html#updateUserMenuPosition">updateUserMenuPosition</a></li><li><a href="global.html#userMenuTemplate">userMenuTemplate</a></li><li><a href="global.html#validateEmailInForm">validateEmailInForm</a></li><li><a href="global.html#validateEmailOnSubmit">validateEmailOnSubmit</a></li><li><a href="global.html#validateNameAndPasswordOnSubmit">validateNameAndPasswordOnSubmit</a></li><li><a href="global.html#whichCardActuellDrop">whichCardActuellDrop</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 10 2025 16:29:03 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
