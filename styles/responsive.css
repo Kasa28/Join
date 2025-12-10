@@ -227,7 +227,6 @@ body::-webkit-scrollbar {
   .task-select-addTask_page,
   .task-subtask-addTask_page {
     font-size: 15px;
-    padding: 8px 10px;
   }
   .priority-group-addTask_page {
     gap: 6px;
