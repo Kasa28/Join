@@ -1,3 +1,11 @@
+const isTouchDevice =
+  window.matchMedia("(pointer: coarse)").matches ||
+  navigator.maxTouchPoints > 0;
+
+if (isTouchDevice || window.innerWidth < 1200) {
+  document.body.classList.add("touch-device");
+}
+
 /**
  * Performs a live search on all task cards, updates the UI and result count message.
  */
@@ -142,6 +150,7 @@ function clearAllColumnHighlights() {
  * @param {number} whichTaskId - ID of the dragged task.
  */
 window.onCardDragStart = function (event, whichTaskId) {
+  if (isTouchDevice) return; 
   whichCardActuellDrop = whichTaskId;
   currentDragCardEl = event.currentTarget;
   lastDragPointerX = null;

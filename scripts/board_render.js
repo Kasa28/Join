@@ -39,6 +39,9 @@ function renderCard(t) {
   menuBtn.classList.add("mobile-move-btn");
   menuBtn.innerHTML = "⋮";
   menuBtn.onclick = (ev) => openMoveMenu(ev, t.id);
+  if (isTouchDevice) {
+    menuBtn.style.display = "grid";
+  }
   card.appendChild(menuBtn);
   card.id = `card-${t.id}`;
   card.draggable = true;

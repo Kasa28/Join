@@ -35,8 +35,7 @@ body::-webkit-scrollbar {
   position: relative;
 }
 
-#move-menu-overlay,
-.move-menu {
+#move-menu-overlay {
   display: none;
 }
 
@@ -44,6 +43,10 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.drag-area.drag-highlight {
+  border: 2px dotted #4589ff;
+  background-color: rgba(69, 137, 255, 0.15);
+}
 
 @media (min-width: 2000px) {
   header {
@@ -622,44 +625,8 @@ header {
   color: #d1d1d1;
 }
 
-@media (max-width: 600px) {
-  .header-wrapper-responsive {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-}
-
-.guard-site {
-  visibility: hidden;
-}
-
-@media (max-width: 1099px) {
-  .wrapper-main-task-btn-summaryAll_page .button-sidebar,
-  .wrapper-main-task-btn-addTask_page .button-sidebar,
-  .wrapper-main-task-btn-board_page .button-sidebar,
-  .wrapper-main-task-btn-contacts_page .button-sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 4px 6px;
-    width: auto;
-    text-align: center;
-  }
-
-  .wrapper-main-task-btn-summaryAll_page .sidebar-font,
-  .wrapper-main-task-btn-addTask_page .sidebar-font,
-  .wrapper-main-task-btn-board_page .sidebar-font,
-  .wrapper-main-task-btn-contacts_page .sidebar-font {
-    font-size: 16px;
-    line-height: 1.1;
-    white-space: nowrap;
-  }
-}
-
-@media (max-width: 600px) {
+@media (max-width: 1280px) {
+  .touch-device .mobile-move-btn,
   .mobile-move-btn {
     position: absolute;
     top: 8px;
@@ -693,15 +660,15 @@ header {
   }
 
   .move-menu {
+    display: block;
     position: relative;
-    width: 100%;
+    width: 90%;
+    max-width: 320px;
     max-height: 500px;
     background: #ffffff;
-    border-radius: 20px 20px 20px 20px;
+    border-radius: 20px;
     padding: 24px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 16px;
+    margin: 0 auto 16px;
     box-sizing: border-box;
     animation: moveSheetUp 0.25s ease-out;
   }
@@ -777,3 +744,42 @@ header {
     border-color: #4589ff;
   }
 }
+
+@media (max-width: 600px) {
+  .header-wrapper-responsive {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+}
+
+.guard-site {
+  visibility: hidden;
+}
+
+@media (max-width: 1099px) {
+  .wrapper-main-task-btn-summaryAll_page .button-sidebar,
+  .wrapper-main-task-btn-addTask_page .button-sidebar,
+  .wrapper-main-task-btn-board_page .button-sidebar,
+  .wrapper-main-task-btn-contacts_page .button-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 6px;
+    width: auto;
+    text-align: center;
+  }
+
+  .wrapper-main-task-btn-summaryAll_page .sidebar-font,
+  .wrapper-main-task-btn-addTask_page .sidebar-font,
+  .wrapper-main-task-btn-board_page .sidebar-font,
+  .wrapper-main-task-btn-contacts_page .sidebar-font {
+    font-size: 16px;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+}
+
+
