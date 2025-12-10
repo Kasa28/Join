@@ -227,7 +227,7 @@ header {
   .privacy-policy,
   .legal-page .page,
   .what_is_join {
-    max-width: calc(60% - 232px - 39px);
+     max-width: calc(55% - 232px - 39px);
   }
 }
 
