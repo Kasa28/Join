@@ -43,6 +43,9 @@ function isValidEmail(email) {
  * Full email validation for submit:
  * - structural check
  * - optional provider blocklist
+ * @param {string} email
+ * @param {HTMLElement} [errorEl]
+ * @returns {boolean}
  */
 function validateEmailOnSubmit(email, errorEl) {
   if (!isValidEmail(email)) {
@@ -61,6 +64,8 @@ function validateEmailOnSubmit(email, errorEl) {
 
 /**
  * Used e.g. in blur/inline validation – only structural check.
+ * @param {string} email
+ * @returns {boolean}
  */
 function validateEmailInForm(email) {
   return isValidEmail(email);
