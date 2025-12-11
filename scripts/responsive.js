@@ -110,10 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", updateMobileLayout);
   updateMobileLayout();
 
-  /* =========================================================
-   *  FAB menu (Edit / Delete) -> close on outside click
-   * ======================================================= */
-
   /**
    * Returns the FAB menu element.
    * @returns {HTMLElement|null}
