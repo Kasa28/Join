@@ -24,10 +24,10 @@ window.searchTasks = function () {
   const count = document.querySelectorAll(".task-card").length;
   msg.textContent =
     count === 0
-      ? "Keine Treffer."
+      ? "No results"
       : count === 1
-      ? "1 Treffer."
-      : count + " Treffer.";
+      ? "1 result."
+      : count + " results.";
   msg.className = count === 0 ? "msg-red" : "msg-green";
 };
 
