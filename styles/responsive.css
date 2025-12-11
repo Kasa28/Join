@@ -345,6 +345,14 @@ body::-webkit-scrollbar {
   }
 }
 
+@media (max-width: 600px) {
+  .header-wrapper-responsive {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+}
+
 @media (max-width: 500px) {
   .main-addTask_template {
     width: 272px !important;
@@ -366,10 +374,4 @@ body::-webkit-scrollbar {
     font-size: 25px;
   }
 }
-@media (max-width: 600px) {
-  .header-wrapper-responsive {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-}
+
