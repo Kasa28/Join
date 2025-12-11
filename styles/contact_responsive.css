@@ -58,14 +58,6 @@
     border-top-left-radius: 24px;
   }
 
-  nav-main-container:has(#singleContactID > *) contacts.maincontent {
-    display: none;
-  }
-
-  nav-main-container:has(#singleContactID > *) #singleContactWrapper {
-    display: block;
-  }
-
   #singleContactID:empty {
     display: none;
   }
