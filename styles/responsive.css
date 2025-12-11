@@ -144,6 +144,10 @@ body::-webkit-scrollbar {
     height: 0;
     background: transparent;
   }
+  .empty-pill {
+    width: 252px;
+    align-self: center;
+  }
 }
 
 @media (max-width: 1099px) {
@@ -296,12 +300,11 @@ body::-webkit-scrollbar {
 
   .task-buttons-addTask_page {
     position: sticky;
-    bottom: 70px;
+    bottom: 65px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    padding: 12px 50px;
     width: 100%;
     max-width: 420px;
     margin: 0 auto;
@@ -374,4 +377,3 @@ body::-webkit-scrollbar {
     font-size: 25px;
   }
 }
-

@@ -1,4 +1,3 @@
-
 /* === Global Reset & Fonts === */
 * {
   margin: 0;
@@ -219,7 +218,6 @@
   display: none;
 }
 
-
 @media screen and (max-width: 1330px) {
   .main-header-wrapper {
     margin-top: 20px;
@@ -228,6 +226,7 @@
   .search-add input {
     width: 100%;
   }
+
   .board {
     grid-template-columns: repeat(1, minmax(240px, 1fr));
   }
@@ -239,7 +238,7 @@
 
 /* === Badge Colors === */
 .badge-user {
-  background-color: #ff7a00; 
+  background-color: #ff7a00;
   color: white;
 }
 
@@ -249,8 +248,8 @@
 }
 
 body.no-scroll {
-  overflow: hidden;    
-  position: relative;    
+  overflow: hidden;
+  position: relative;
 }
 
 /* === Assigned User Initials === */
@@ -342,30 +341,31 @@ body.no-scroll {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #ffffff;      
+  background-color: #ffffff;
   border: 2px solid #d3cdcd;
   border-radius: 10px;
   padding: 8px 12px;
   transition: border-color 0.2s ease;
 }
-.searchbox:hover{
-  border-radius:  2px blue;
+.searchbox:hover {
+  border-radius: 2px blue;
 }
 
 .searchbox:hover {
-  border-color: #4589ff;        
+  border-color: #4589ff;
 }
 .btn-icon:hover img,
 .btn-icon:focus-visible img {
-  filter: brightness(0) saturate(100%) invert(45%) sepia(80%) saturate(900%) hue-rotate(190deg) brightness(100%);
+  filter: brightness(0) saturate(100%) invert(45%) sepia(80%) saturate(900%)
+    hue-rotate(190deg) brightness(100%);
 }
 .searchbox {
-  position: relative; 
+  position: relative;
 }
 .searchbox .btn-icon {
-  border: none;                           
-  border-left: 1px solid #d3cdcd;       
-  border-radius: 0;                     
+  border: none;
+  border-left: 1px solid #d3cdcd;
+  border-radius: 0;
   width: 40px;
   height: 34px;
   display: flex;
@@ -377,9 +377,9 @@ body.no-scroll {
 
 .board-search-input::placeholder {
   color: #c6c3c3;
-  opacity: 1;      
+  opacity: 1;
 }
 .add-task-btn img {
-  margin-left: 8px;       
+  margin-left: 8px;
   display: inline-block;
 }
