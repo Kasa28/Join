@@ -7,6 +7,20 @@ import {
   browserSessionPersistence,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
+function isValidEmail(email) {
+  if (!email) return false;
+  const [local, domain] = String(email).trim().split("@");
+  if (!local || !domain) return false;
+  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) return false;
+  if (!/^[A-Za-z0-9._%+-]+$/.test(local) || !/[A-Za-z]/.test(local)) return false;
+  if (!/^[A-Za-z0-9.-]+$/.test(domain)) return false;
+  const parts = domain.split(".");
+  if (parts.length < 2 || parts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))) return false;
+  const tld = parts[parts.length - 1], mainDomain = parts[parts.length - 2];
+  if (!/^[A-Za-z]{2,}$/.test(tld) || !/[A-Za-z]/.test(mainDomain)) return false;
+  return true;
+}
+
 /* Demo-Kontakte (werden aktuell nicht aktiv genutzt, können bleiben) */
 let exampleContacts = [
   { username: "Peter",   email: "peter-lustig@hotmail.de",       PhoneNumber: "+491517866563",     color: "pink" },
@@ -40,6 +54,22 @@ async function login(event) {
   const password = document.getElementById("password").value.trim();
   const errorEl = document.getElementById("error_message");
 
+  if (!isValidEmail(email)) {
+    errorEl.textContent = "Please enter a valid email address!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
+    return;
+  }
+  if (!password) {
+    errorEl.textContent = "Please enter a password!";
+    errorEl.classList.remove("visually-hidden");
+    errorEl.style.color = "red";
+    return;
+  }
+
+  errorEl.textContent = "";
+  errorEl.classList.add("visually-hidden");
+
   try {
     if (window.authReady) await window.authReady;
     const cred = await signInWithEmailAndPassword(window.auth, email, password);
@@ -52,6 +82,7 @@ async function login(event) {
     errorEl.style.color = "red";
   }
 }
+
 
 async function loginAsGuest() {
   if (window.authReady) await window.authReady;
@@ -95,25 +126,28 @@ function checkLogin() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
   const button = document.getElementById("login_button");
-  button.disabled = !(email && password);
+  const emailValid = isValidEmail(email);
+  button.disabled = !(emailValid && password);
 }
+
 
 const emailInput = document.getElementById("email");
 if (emailInput) {
-  emailInput.addEventListener("blur", () => {
+  emailInput.addEventListener("blur", function () {
     const email = emailInput.value.trim();
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const errorEl = document.getElementById("error_message");
-
-    if (email && !emailValid) {
+    if (email && !isValidEmail(email)) {
       errorEl.textContent = "Please enter a valid email address!";
       errorEl.classList.remove("visually-hidden");
+      errorEl.style.color = "red";
     } else {
       errorEl.textContent = "";
       errorEl.classList.add("visually-hidden");
     }
+    checkLogin();
   });
 }
+
 
 window.login = login;
 window.loginAsGuest = loginAsGuest;
