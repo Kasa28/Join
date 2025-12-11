@@ -62,6 +62,17 @@ const GUEST_EXAMPLE_CONTACTS = [
   },
 ];
 
+const CONTACT_COLORS = [
+  "red",
+  "blue",
+  "green",
+  "brown",
+  "purple",
+  "turquoise",
+  "orange",
+  "black",
+  "pink",
+];
 
 // Make guest demo contacts available globally for legacy scripts
 window.GUEST_EXAMPLE_CONTACTS = GUEST_EXAMPLE_CONTACTS;
@@ -190,9 +201,34 @@ async function updateFriendsForCurrentUser(friends) {
 
 async function loadContactsForActiveUser() {
   if (window.authReady) await window.authReady;
-  if (!window.currentUser) return [];
-  if (window.currentUser.isAnonymous) return await ensureGuestFriendsSeeded();
-  return await getFriendsForCurrentUser();
+  const user = window.currentUser;
+  if (!user) return [];
+  if (user.isAnonymous) {
+    return await ensureGuestFriendsSeeded();
+  }
+  let contacts = (await getFriendsForCurrentUser()) || [];
+  if (user.email) {
+    const email = user.email.toLowerCase();
+    const hasSelf = contacts.some(
+      (c) =>
+        typeof c?.email === "string" &&
+        c.email.toLowerCase() === email
+    );
+    if (!hasSelf) {
+      const randomColor =
+        CONTACT_COLORS[Math.floor(Math.random() * CONTACT_COLORS.length)];
+        const selfContact = {
+        username: user.displayName || user.email.split("@")[0],
+        email: user.email,
+        PhoneNumber: user.phoneNumber || "",
+        color: randomColor,
+            };
+      const updatedContacts = [...contacts, selfContact];
+      await updateFriendsForCurrentUser(updatedContacts);
+      contacts = updatedContacts;
+    }
+  }
+  return contacts;
 }
 
 async function persistContactsForActiveUser(contacts) {
