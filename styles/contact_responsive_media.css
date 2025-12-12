@@ -28,6 +28,10 @@
   .button-edit-contact {
     width: 100%;
   }
+
+  .name-property{
+    font-size: 24px;
+}
 }
 
 .main-container-edit-contact {
