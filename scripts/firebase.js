@@ -81,13 +81,11 @@ function sanitizeBaseUrl(url) {
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
-
 async function getTaskAuthQuery() {
   if (window.authReady) await window.authReady;
   const token = await window.auth?.currentUser?.getIdToken?.();
   return token ? `?auth=${encodeURIComponent(token)}` : "";
 }
-
 
 async function fetchTasksApi(path, options) {
   const base = sanitizeBaseUrl(window.BASE_URL || BASE_URL);
@@ -96,13 +94,11 @@ async function fetchTasksApi(path, options) {
   return fetch(url, options);
 }
 
-
 async function getAuthQuery() {
   if (window.authReady) await window.authReady;
   const token = await window.auth?.currentUser?.getIdToken?.();
   return token ? `?auth=${encodeURIComponent(token)}` : "";
 }
-
 
 async function fetchRtdbApi(path, options) {
   const base = sanitizeBaseUrl(window.BASE_URL || BASE_URL);
@@ -111,13 +107,11 @@ async function fetchRtdbApi(path, options) {
   return fetch(url, options);
 }
 
-
 /* === Fetch All Tasks === */
 async function getAllTasks() {
   const response = await fetchTasksApi("tasks");
   return (await response.json()) || {};
 }
-
 
 /* === Save Task by ID (PUT Request) === */
 async function saveTask(taskId, taskData) {
@@ -128,7 +122,6 @@ async function saveTask(taskId, taskData) {
   });
   return await response.json();
 }
-
 
 /* === Delete Task by ID === */
 async function deleteTask(taskId) {
@@ -207,35 +200,34 @@ async function loadContactsForActiveUser() {
     return await ensureGuestFriendsSeeded();
   }
   let contacts = (await getFriendsForCurrentUser()) || [];
+  const merged = [...GUEST_EXAMPLE_CONTACTS, ...contacts];
   if (user.email) {
     const email = user.email.toLowerCase();
-    const hasSelf = contacts.some(
-      (c) =>
-        typeof c?.email === "string" &&
-        c.email.toLowerCase() === email
+    const hasSelf = merged.some(
+      (c) => typeof c?.email === "string" && c.email.toLowerCase() === email
     );
     if (!hasSelf) {
       const randomColor =
         CONTACT_COLORS[Math.floor(Math.random() * CONTACT_COLORS.length)];
-        const selfContact = {
+      const selfContact = {
         username: user.displayName || user.email.split("@")[0],
         email: user.email,
         PhoneNumber: user.phoneNumber || "",
         color: randomColor,
-            };
+      };
       const updatedContacts = [...contacts, selfContact];
       await updateFriendsForCurrentUser(updatedContacts);
       contacts = updatedContacts;
     }
   }
-  return contacts;
+  return merged;
 }
 
 async function persistContactsForActiveUser(contacts) {
   if (window.authReady) await window.authReady;
   if (!window.currentUser) return;
   if (window.currentUser.isAnonymous) {
-      const sorted = (Array.isArray(contacts) ? contacts : [])
+    const sorted = (Array.isArray(contacts) ? contacts : [])
       .filter(Boolean)
       .slice()
       .sort((a, b) => {

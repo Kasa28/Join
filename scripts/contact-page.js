@@ -101,7 +101,9 @@ async function renderContactList(){
         if (!(window.currentUser?.isAnonymous)) {
             getContactsFromUser = await putUsernameInContactList();
         }
-    } 
+         } else {
+        getContactsFromUser = window.GUEST_EXAMPLE_CONTACTS || [];
+    }
     let contactContainerRef = document.getElementById("contactContainerID");
     contactContainerRef.innerHTML = "";
     setContactsIntoContactblock(getContactsFromUser);
