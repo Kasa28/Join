@@ -368,6 +368,11 @@ body::-webkit-scrollbar {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
+  .priority-btn-medium-addTask_template, 
+  .priority-btn-urgent-addTask_template, 
+  .priority-btn-low-addTask_template {
+    height: 65px !important;
+}
 }
 
 @media (max-width: 398px) {
