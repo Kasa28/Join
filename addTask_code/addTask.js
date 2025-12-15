@@ -102,15 +102,13 @@ function openPickerSimple() {
   const dueInput = document.getElementById("due-date");
   if (!dueInput) return;
 
-  const dateField =
-  dueInput.closest(".date-field-addTask_page") || dueInput;
+  const dateField = dueInput.closest(".date-field-addTask_page") || dueInput;
   const rect = dateField.getBoundingClientRect();
   hiddenDatePicker.style.pointerEvents = "auto";
   hiddenDatePicker.style.width = rect.width + "px";
   hiddenDatePicker.style.height = rect.height + "px";
   hiddenDatePicker.style.left = rect.left + "px";
   hiddenDatePicker.style.top = rect.top + "px";
-
 
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -298,7 +296,10 @@ function saveEditedSubtask(e) {
   if (!input) return;
 
   const newText = input.value.trim();
-  if (newText === "") return;
+  if (newText === "") {
+    li.remove();
+    return;
+  }
 
   li.innerHTML = "";
   li.textContent = newText;
@@ -392,8 +393,9 @@ async function createTask() {
     });
     return;
   }
-  const description =
-    (document.getElementById("description")?.value || "").trim();
+  const description = (
+    document.getElementById("description")?.value || ""
+  ).trim();
   const category = (document.getElementById("category")?.value || "").trim();
   if (!category) {
     showToast("Please select a category.", {
@@ -407,8 +409,7 @@ async function createTask() {
   const priorityIcons = {
     urgent:
       "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
-    medium:
-      "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
+    medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
     low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
   };
   let priorityIcon = priorityIcons[priority] || priorityIcons.low;
@@ -427,7 +428,12 @@ async function createTask() {
     return { name, color };
   });
   const subtaskItems = document.querySelectorAll("#subtask-list li");
-  const subTasks = Array.from(subtaskItems).map((li) => li.textContent.trim());
+  const subTasks = Array.from(subtaskItems)
+    .map((li) => {
+      const textNode = li.firstChild;
+      return textNode?.textContent?.trim() || "";
+    })
+    .filter((text) => text !== "");
   const subtasksTotal = subTasks.length;
   const statusTarget = window.nextTaskTargetStatus || "todo";
   const task = {
