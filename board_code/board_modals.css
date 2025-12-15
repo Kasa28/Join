@@ -149,9 +149,6 @@
     }
   }
   
-  /* =========================================================
-   Board-Karte: Vorschau-Text begrenzen
-   ========================================================= */
 .task-card-description {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -161,15 +158,18 @@
   white-space: normal;
 }
 
+
+.task-card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .task-card {
   overflow: hidden;
 }
 
-/* =========================================================
-   Gemeinsames Modal-Layout (User Story + Technical Task)
-   ========================================================= */
-
-/* Äußere Box im Overlay (id/class bei dir z.B. task-modal-content) */
 .task-modal-content {
   max-height: 90vh;
   display: flex;
@@ -177,17 +177,16 @@
   box-sizing: border-box;
 }
 
-/* Der eigentliche Inhalt, der scrollen darf */
 .task-modal-content > .main_content_user_story,
 .task-modal-content > .main-container-technical-task {
   flex: 1;
-  overflow-y: auto;      /* nur dieser Bereich scrollt */
+  overflow-y: auto;     
   overflow-x: hidden;
   box-sizing: border-box;
-  padding-bottom: 16px;  /* etwas Platz über dem Footer */
+  padding-bottom: 16px;  
 }
 
-/* Lange Texte dürfen umbrechen */
+
 .title_user-story,
 .h3_user-story,
 .h1-technical-task,
