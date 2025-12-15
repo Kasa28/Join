@@ -225,6 +225,20 @@ document.addEventListener("click", (e) => {
 });
 
 // === Subtask Add ===
+document.addEventListener("keyup", (e) => {
+  if (e.key !== "Enter") return;
+
+  const subtaskInput = document.getElementById("subtask");
+  if (!subtaskInput) return;
+  if (document.activeElement === subtaskInput) {
+    const value = subtaskInput.value.trim();
+    if (value === "") return;
+    e.preventDefault();
+    const checkIcon = document.querySelector(".subtask-check-addTask_page");
+    if (checkIcon) checkIcon.click();
+  }
+});
+
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("subtask-check-addTask_page")) {
     const subtaskInput = document.getElementById("subtask");
@@ -281,6 +295,15 @@ function enableSubtaskEditing(e) {
 
   li.appendChild(input);
   li.appendChild(actions);
+  input.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      const value = input.value.trim();
+      if (value === "") return;
+      event.preventDefault();
+      const saveIcon = li.querySelector(".subtask-save-addTask_page");
+      if (saveIcon) saveIcon.click();
+    }
+  });
 }
 
 document.addEventListener("click", enableSubtaskEditing);

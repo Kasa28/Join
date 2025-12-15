@@ -33,8 +33,14 @@ function syncTemplateDueDateFromHidden() {
   validateDueDate();
 }
 
-hiddenDatePickerTemplate.addEventListener("change", syncTemplateDueDateFromHidden);
-hiddenDatePickerTemplate.addEventListener("input", syncTemplateDueDateFromHidden);
+hiddenDatePickerTemplate.addEventListener(
+  "change",
+  syncTemplateDueDateFromHidden
+);
+hiddenDatePickerTemplate.addEventListener(
+  "input",
+  syncTemplateDueDateFromHidden
+);
 // === Initialization and Field Validation ===
 /**
  * Initializes event handlers for the Add Task template, including title validation
@@ -101,7 +107,6 @@ function openPickerTemplate() {
     }
   }, 0);
 }
-
 
 // === Assign Dropdown Handling ===
 /**
@@ -441,6 +446,14 @@ document.addEventListener("click", (e) => {
     `;
     li.appendChild(input);
     li.appendChild(actions);
+    input.addEventListener("keyup", (event) => {
+      if (event.key !== "Enter") return;
+      const value = input.value.trim();
+      if (value === "") return;
+      event.preventDefault();
+      const saveIcon = li.querySelector(".subtask-save-addTask_template");
+      if (saveIcon) saveIcon.click();
+    });
   }
   if (e.target.classList.contains("subtask-save-addTask_template")) {
     const li = e.target.closest("li");
@@ -458,6 +471,20 @@ document.addEventListener("click", (e) => {
       <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template">
     `;
     li.appendChild(actions);
+  }
+});
+
+// === Subtask Add via Enter (Template) ===
+document.addEventListener("keyup", (e) => {
+  if (e.key !== "Enter") return;
+  const subtaskInput = document.getElementById("subtask");
+  if (!subtaskInput) return;
+  if (document.activeElement === subtaskInput) {
+    const value = subtaskInput.value.trim();
+    if (value === "") return;
+    e.preventDefault();
+    const checkIcon = document.querySelector(".subtask-check-addTask_template");
+    if (checkIcon) checkIcon.click();
   }
 });
 
