@@ -119,14 +119,13 @@ async function editContact() {
     PhoneNumber: phoneNumber,
   };
 
-  contacts[remindIndex] = updatedContact;
-  sortUserToAlphabeticalOrder(contacts);
-  setContactsIntoContactblock(contacts);
-  await persistContacts(contacts);
-  renderSingleContact(updatedContact.username);
-  renderContactList();
-  closeWhiteScreen();
-  showContactToast("Contact successfully saved");
+ contacts[remindIndex] = updatedContact;
+sortUserToAlphabeticalOrder(contacts);
+await persistContacts(contacts);          
+renderSingleContact(updatedContact.username);
+renderContactList();
+closeWhiteScreen();
+showContactToast("Contact successfully saved");
   return true;
 }
 

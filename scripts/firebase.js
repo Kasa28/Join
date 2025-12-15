@@ -200,27 +200,7 @@ async function loadContactsForActiveUser() {
     return await ensureGuestFriendsSeeded();
   }
   let contacts = (await getFriendsForCurrentUser()) || [];
-  const merged = [...GUEST_EXAMPLE_CONTACTS, ...contacts];
-  if (user.email) {
-    const email = user.email.toLowerCase();
-    const hasSelf = merged.some(
-      (c) => typeof c?.email === "string" && c.email.toLowerCase() === email
-    );
-    if (!hasSelf) {
-      const randomColor =
-        CONTACT_COLORS[Math.floor(Math.random() * CONTACT_COLORS.length)];
-      const selfContact = {
-        username: user.displayName || user.email.split("@")[0],
-        email: user.email,
-        PhoneNumber: user.phoneNumber || "",
-        color: randomColor,
-      };
-      const updatedContacts = [...contacts, selfContact];
-      await updateFriendsForCurrentUser(updatedContacts);
-      contacts = updatedContacts;
-    }
-  }
-  return merged;
+return contacts;
 }
 
 async function persistContactsForActiveUser(contacts) {

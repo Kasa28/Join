@@ -140,7 +140,6 @@ async function persistContacts(updatedFriends){
     await window.persistContactsForActiveUser(updatedFriends);
     setContactsIntoContactblock(updatedFriends);
 }
-
 /**
  * Sorts contacts in-place by username (case-insensitive).
  * @param {Contact[]} inputArray
@@ -234,16 +233,6 @@ function flattenContactBlockToArray() {
 }
 
 
-
-/**
- * Initializes contact blocks from input contacts (one-time).
- * @param {Contact[]|Record<string, Contact>} inputContacts
- * @returns {void}
- */
-function pushExampleContactsOneTimeInLocalStorage(inputContacts){
-
-    setContactsIntoContactblock(inputContacts);
-}
 /**
  * @typedef {Object} ToastOptions
  * @property {"ok"|"error"} [variant="ok"]
