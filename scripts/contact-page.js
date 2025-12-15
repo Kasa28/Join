@@ -8,9 +8,33 @@ let currentlySelectedContact = null;
  * @type {ContactBlock}
  */
 let contactBlock = {
-    A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [],
-    K: [], L: [], M: [], N: [], O: [], P: [], Q: [], R: [], S: [], T: [],
-    U: [], V: [], W: [], X: [], Y: [], Z: [], other: []
+  A: [],
+  B: [],
+  C: [],
+  D: [],
+  E: [],
+  F: [],
+  G: [],
+  H: [],
+  I: [],
+  J: [],
+  K: [],
+  L: [],
+  M: [],
+  N: [],
+  O: [],
+  P: [],
+  Q: [],
+  R: [],
+  S: [],
+  T: [],
+  U: [],
+  V: [],
+  W: [],
+  X: [],
+  Y: [],
+  Z: [],
+  other: [],
 };
 
 /**
@@ -60,26 +84,25 @@ let contactBlock = {
  * @async
  * @returns {Promise<Contact[]>} Updated friends list.
  */
-async function putUsernameInContactList(){
-    const profile = await loadCurrentUserProfile();
-    let getUserFriends = await loadContactsForActiveUser(); 
-    const nameExists = getUserFriends.some(contact =>
-    contact && profile && (contact.username === profile.name)
-    );
-    if (nameExists || !profile) return getUserFriends;
-    let colorIndex = getRandomInt(9);
-    let userJson = {
-        "username": profile.name,
-        "email": profile.email,
-        "PhoneNumber": "4915135468484",
-        "color": colors[colorIndex]
-    };
-    getUserFriends.push(userJson);
-    sortUserToAlphabeticalOrder(getUserFriends);
-     await persistContacts(getUserFriends);
-    return getUserFriends;
+async function putUsernameInContactList() {
+  const profile = await loadCurrentUserProfile();
+  let getUserFriends = await loadContactsForActiveUser();
+  const nameExists = getUserFriends.some(
+    (contact) => contact && profile && contact.username === profile.name
+  );
+  if (nameExists || !profile) return getUserFriends;
+  let colorIndex = getRandomInt(9);
+  let userJson = {
+    username: profile.name,
+    email: profile.email,
+    PhoneNumber: "4915135468484",
+    color: colors[colorIndex],
+  };
+  getUserFriends.push(userJson);
+  sortUserToAlphabeticalOrder(getUserFriends);
+  await persistContacts(getUserFriends);
+  return getUserFriends;
 }
-
 
 /**
  * Renders the full contact list grouped by first letter.
@@ -92,34 +115,36 @@ async function putUsernameInContactList(){
  * @async
  * @returns {Promise<void>}
  */
-async function renderContactList(){
-      if (window.authReady) await window.authReady;
-    const login = Boolean(window.currentUser);
-    let getContactsFromUser = [];
-    if (login) {
-        getContactsFromUser = await loadContactsForActiveUser();
-        if (!(window.currentUser?.isAnonymous)) {
-            getContactsFromUser = await putUsernameInContactList();
-        }
-         } else {
-        getContactsFromUser = window.GUEST_EXAMPLE_CONTACTS || [];
+async function renderContactList() {
+  if (window.authReady) await window.authReady;
+  const login = Boolean(window.currentUser);
+  let getContactsFromUser = [];
+  if (login) {
+    getContactsFromUser = await loadContactsForActiveUser();
+    if (!window.currentUser?.isAnonymous) {
+      getContactsFromUser = await putUsernameInContactList();
     }
-    let contactContainerRef = document.getElementById("contactContainerID");
-    contactContainerRef.innerHTML = "";
-    setContactsIntoContactblock(getContactsFromUser);
-    Object.keys(contactBlock).forEach((key) => {
-        let block = contactBlock[key];
-        if (!checkIfBlockIsFilled(block)) return;
+  } else {
+    getContactsFromUser = window.GUEST_EXAMPLE_CONTACTS || [];
+  }
+  let contactContainerRef = document.getElementById("contactContainerID");
+  contactContainerRef.innerHTML = "";
+  setContactsIntoContactblock(getContactsFromUser);
+  Object.keys(contactBlock).forEach((key) => {
+    let block = contactBlock[key];
+    if (!checkIfBlockIsFilled(block)) return;
 
-        contactContainerRef.innerHTML += `
+    contactContainerRef.innerHTML += `
             <div class="padding-small-contacts"><h2>${key}</h2></div>
             <separator class="separator"></separator>
         `;
 
-        block.forEach((contact) => {
-            contactContainerRef.innerHTML += `
+    block.forEach((contact) => {
+      contactContainerRef.innerHTML += `
                 <contact 
-                    onclick="handleContactClick('${contact.username}-contactID', '${contact.username}')"
+                    onclick="handleContactClick('${
+                      contact.username
+                    }-contactID', '${contact.username}')"
                     class="single-contact single-contact-hover display-flex-center-x padding-medium-up-down-contacts" 
                     id="${contact.username}-contactID">
 
@@ -138,10 +163,9 @@ async function renderContactList(){
                         </div>
                     </div>
                 </contact>`;
-        });
     });
+  });
 }
-
 
 /**
  * Toggles highlight for a given contact.
@@ -152,25 +176,32 @@ async function renderContactList(){
  * @returns {boolean} True if contact is now selected, false if deselected.
  */
 function toggleContactHighlight(contactId) {
-    const same = currentlySelectedContact === contactId;
-    if (currentlySelectedContact) {
-        const oldBase = currentlySelectedContact.replace("-contactID", "");
-        document.getElementById(currentlySelectedContact)?.classList.remove("backgroundcolor-blue");
-        document.getElementById(oldBase + "-usernameID")?.classList.remove("font-color-white");
-        document.getElementById(oldBase + "-emailID")?.classList.remove("font-color-white");
-    }
-    if (same) {
-        currentlySelectedContact = null;
-        return false;
-    }
-    const base = contactId.replace("-contactID", "");
-    document.getElementById(contactId)?.classList.add("backgroundcolor-blue");
-    document.getElementById(base + "-usernameID")?.classList.add("font-color-white");
-    document.getElementById(base + "-emailID")?.classList.add("font-color-white");
-    currentlySelectedContact = contactId;
-    return true;
+  const same = currentlySelectedContact === contactId;
+  if (currentlySelectedContact) {
+    const oldBase = currentlySelectedContact.replace("-contactID", "");
+    document
+      .getElementById(currentlySelectedContact)
+      ?.classList.remove("backgroundcolor-blue");
+    document
+      .getElementById(oldBase + "-usernameID")
+      ?.classList.remove("font-color-white");
+    document
+      .getElementById(oldBase + "-emailID")
+      ?.classList.remove("font-color-white");
+  }
+  if (same) {
+    currentlySelectedContact = null;
+    return false;
+  }
+  const base = contactId.replace("-contactID", "");
+  document.getElementById(contactId)?.classList.add("backgroundcolor-blue");
+  document
+    .getElementById(base + "-usernameID")
+    ?.classList.add("font-color-white");
+  document.getElementById(base + "-emailID")?.classList.add("font-color-white");
+  currentlySelectedContact = contactId;
+  return true;
 }
-
 
 /**
  * Handles click on a contact:
@@ -183,20 +214,22 @@ function toggleContactHighlight(contactId) {
  * @returns {void}
  */
 function handleContactClick(contactId, username) {
-    const becameSelected = toggleContactHighlight(contactId);
-    if (!becameSelected) {
-        const singleRef = document.getElementById("singleContactID");
-        if (singleRef) singleRef.innerHTML = "";
-    
-        closeWhiteScreen();
-        return;
-    }
-    renderSingleContact(username);
-    const contacts = flattenContactBlockToArray() || [];
-    const index = findIndexFromUsername(contacts, username);
-    if (index >= 0) setUserDataValue(index);
-}
+  const becameSelected = toggleContactHighlight(contactId);
+  if (!becameSelected) {
+    const singleRef = document.getElementById("singleContactID");
+    if (singleRef) singleRef.innerHTML = "";
 
+    closeWhiteScreen();
+    return;
+  }
+  renderSingleContact(username);
+  const contacts = flattenContactBlockToArray() || [];
+  const index = findIndexFromUsername(contacts, username);
+  if (index >= 0) {
+    window.currentContactIndex = index;
+    setUserDataValue(index);
+  }
+}
 
 /**
  * Renders a single contact into the detail view using singleContactTemplate().
@@ -204,10 +237,16 @@ function handleContactClick(contactId, username) {
  * @param {string} inputString - Username to render.
  * @returns {void}
  */
-function renderSingleContact(inputString){
-    const contacts = flattenContactBlockToArray() || [];
-    const rightIndex = findIndexFromUsername(contacts, inputString);
-    const contact = contacts[rightIndex];
+function renderSingleContact(inputString) {
+  const contacts = flattenContactBlockToArray() || [];
+  const rightIndex = findIndexFromUsername(contacts, inputString);
+  const contact = contacts[rightIndex];
 
-    singleContactTemplate(contact.color, contact.username, rightIndex, contact.email, contact.PhoneNumber);
+  singleContactTemplate(
+    contact.color,
+    contact.username,
+    rightIndex,
+    contact.email,
+    contact.PhoneNumber
+  );
 }

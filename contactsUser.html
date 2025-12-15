@@ -129,10 +129,10 @@
 
         <div id="singleContactWrapper">
             <div class="single-contact-header">
-               <h2 class="contact_information">Contact Information</h2>
-        <a href="#" onclick="closeContactOverlay(); return false;">
-               <img src="./assets/img/arrow_left.svg" class="back-btn-mobile" alt="Back">
-        </a>
+                <h2 class="contact_information">Contact Information</h2>
+                <a href="#" onclick="closeContactOverlay(); return false;">
+                    <img src="./assets/img/arrow_left.svg" class="back-btn-mobile" alt="Back">
+                </a>
             </div>
 
 
@@ -149,10 +149,11 @@
 
                 <div class="contact-fab-menu">
                     <button class="contact-fab-item"
-                        onclick="showEditContactFormular(), setUserDataValue(0), callWhiteScreen()">
+                        onclick="showEditContactFormular(), setUserDataValue(window.currentContactIndex), callWhiteScreen()">
                         <img src="./assets/img/edit.svg" alt="">
                         <span>Edit</span>
                     </button>
+
 
                     <button class="contact-fab-item" onclick="deleteContactinEditContactWindow()">
                         <img src="./assets/img/delete.svg" alt="">
