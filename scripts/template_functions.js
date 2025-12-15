@@ -176,3 +176,12 @@ function buildSubtasksTechnicalHTML(t) {
   }
   return html;
 }
+
+
+function markIfTruncated(element) {
+  requestAnimationFrame(() => {
+    if (element.scrollHeight > element.clientHeight) {
+      element.classList.add("is-truncated");
+    }
+  });
+}

@@ -324,3 +324,11 @@ addtask_template.css * {
   background: #ff3d00 !important;
   color: #ffffff !important;
 }
+
+.overlay-text {
+  max-height: calc(1.4em * 4); 
+  overflow-y: auto;
+  overflow-x: hidden;
+  line-height: 1.4;
+  padding-right: 6px; 
+}

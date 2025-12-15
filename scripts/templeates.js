@@ -312,8 +312,8 @@ function getBigCardDynamicHtml(t) {
       </headline>
   
       <h1 class="title_user-story">${t.title}</h1>
-      <h3 class="h3_user-story">${t.description}</h3>
-  
+       <h3 class="h3_user-story overlay-text" onclick="toggleOverlayText(this)">${t.description}</h3>
+
       <main class="main_content_user_story">
         <div class="date-input-wrapper_user-story">
           <p class="section-heading_user-story"><strong>Due date:</strong></p>
@@ -325,7 +325,9 @@ function getBigCardDynamicHtml(t) {
             <p class="section-heading_user-story"><strong>Priority:</strong></p>
             <button type="button" class="priority-btn-${t.priority}_user-story">
               ${t.priority.charAt(0).toUpperCase() + t.priority.slice(1)}
-              <img class="addTask-icons_user-story" src="${t.priorityIcon}" alt="${t.priority} icon">
+              <img class="addTask-icons_user-story" src="${
+                t.priorityIcon
+              }" alt="${t.priority} icon">
             </button>
           </div>
         </section>
@@ -383,7 +385,8 @@ function getBigCardDynamicTechnicalHtml(t) {
         </div>
 
         <div class="describtion-conatainer-technical-task">
-          <p class="description-font-technical-task">${t.description}</p>
+       <p class="description-font-technical-task overlay-text" onclick="toggleOverlayText(this)">${t.description}
+        </p>
         </div>
 
         <div class="date-container-technical-task">
