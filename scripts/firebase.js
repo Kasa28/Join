@@ -199,7 +199,7 @@ async function loadContactsForActiveUser() {
   if (user.isAnonymous) {
     return await ensureGuestFriendsSeeded();
   }
-  let contacts = (await getFriendsForCurrentUser()) || [];
+let contacts = await ensureRegisteredUserFriendsSeeded();
 return contacts;
 }
 
@@ -259,6 +259,18 @@ async function ensureGuestFriendsSeeded() {
   return [...GUEST_EXAMPLE_CONTACTS];
 }
 
+async function ensureRegisteredUserFriendsSeeded() {
+  if (window.authReady) await window.authReady;
+  const user = window.currentUser;
+  if (!user || user.isAnonymous) return [];
+
+  const existing = await getFriendsForCurrentUser();
+  if (existing.length > 0) return existing;
+
+  await updateFriendsForCurrentUser(window.GUEST_EXAMPLE_CONTACTS);
+  return [...window.GUEST_EXAMPLE_CONTACTS];
+}
+
 // Expose frequently used helpers for legacy (non-module) scripts
 Object.assign(window, {
   getAllTasks,
@@ -276,3 +288,4 @@ Object.assign(window, {
   isRegisteredUser: () =>
     Boolean(window.currentUser && !window.currentUser.isAnonymous),
 });
+
