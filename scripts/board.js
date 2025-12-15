@@ -1,5 +1,3 @@
-/* === board.js | Data management and Firebase synchronization === */
-
 /**
  * @type {Record<string, boolean[]>}
  */
@@ -18,7 +16,6 @@ const demoTasks = [
     status: "in-progress",
     dueDate: "10/05/2023",
     priority: "medium",
-
     subtasksDone: 1,
     subtasksTotal: 2,
     assignedTo: [
@@ -69,7 +66,7 @@ async function getBoardAuthQuery() {
 
 /**
  * Wrapper for auth-protected task requests.
- * @param {string} pathSuffix - e.g. "", "/123"
+ * @param {string} pathSuffix
  * @param {RequestInit} [options]
  * @returns {Promise<Response>}
  */
@@ -84,66 +81,78 @@ async function fetchBoardTasks(pathSuffix, options) {
   return fetch(url, options);
 }
 
-
-/* === Firebase: Tasks laden === */
 /**
+ * Loads tasks from Firebase or falls back to demo data.
  * @async
  * @returns {Promise<void>}
  */
 async function loadTasksFromFirebase() {
   try {
-    const response = await fetchBoardTasks("");
-    if (!response.ok) throw new Error(`Firebase responded ${response.status}`);
-    const data = await response.json();
-   const firebaseTasks = data && typeof data === "object"
-  ? Object.values(data).filter((t) => t && typeof t === "object" && "status" in t)
-  : [];
-
-    if (firebaseTasks.length === 0) {
-      const demoObject = demoTasks.reduce(
-        (acc, t) => ({ ...acc, [t.id]: t }),
-        {}
-      );
-        await fetchBoardTasks("", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(demoObject),
-      });
-      window.tasks = demoTasks.map((t) => ({ ...t }));
-    } else {
-      window.tasks = firebaseTasks;
-    } 
+    window.tasks = await downloadTasksOrDemo();
     render();
   } catch (error) {
-    console.error("Fehler beim Laden der Tasks aus Firebase:", error);
-    window.tasks = demoTasks.map((t) => ({ ...t }));
-    render();
+    handleFirebaseFallback(error);
   }
 }
 
+/**
+ * Downloads tasks from Firebase or returns demo tasks if none exist.
+ * @async
+ * @returns {Promise<Task[]>}
+ */
+async function downloadTasksOrDemo() {
+  const response = await fetchBoardTasks("");
+  if (!response.ok) throw new Error(`Firebase responded ${response.status}`);
+  const firebaseTasks = extractFirebaseTasks(await response.json());
+  if (firebaseTasks.length) return firebaseTasks;
+  await seedDemoTasks();
+  return demoTasks.map((t) => ({ ...t }));
+}
 
-/* === Firebase Realtime Subscription === */
+/**
+ * Extracts task objects from Firebase response.
+ * @param {unknown} data
+ * @returns {Task[]}
+ */
+function extractFirebaseTasks(data) {
+  if (!data || typeof data !== "object") return [];
+  return Object.values(data).filter(
+    (t) => t && typeof t === "object" && "status" in t
+  );
+}
+
+/**
+ * Seeds demo tasks into Firebase.
+ * @async
+ * @returns {Promise<void>}
+ */
+async function seedDemoTasks() {
+  const demoObject = demoTasks.reduce((acc, t) => ({ ...acc, [t.id]: t }), {});
+  await fetchBoardTasks("", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(demoObject),
+  });
+}
+
+/**
+ * Handles Firebase load errors by applying demo tasks.
+ * @param {unknown} error
+ * @returns {void}
+ */
+function handleFirebaseFallback(error) {
+  console.error("Fehler beim Laden der Tasks aus Firebase:", error);
+  window.tasks = demoTasks.map((t) => ({ ...t }));
+  render();
+}
+
 /**
  * @type {number|undefined}
  */
 let updateTimeout;
-/**
- * @param {Record<string, Task>|null} data
- * @returns {void}
- */
-/*
-subscribeToFirebaseUpdates((data) => {
-  clearTimeout(updateTimeout);
-  updateTimeout = setTimeout(() => {
-    if (!data) return;
-    window.tasks = Object.values(data);
-    render();
-  }, 200);
-});
-*/
 
-/* === Helper: Detect Demo Tasks === */
 /**
+ * Detects whether a task is a demo task by id.
  * @param {Task|number|string} taskOrId
  * @returns {boolean}
  */
@@ -154,8 +163,6 @@ function isDemoTask(taskOrId) {
   return Number.isFinite(numericId) && numericId > 0 && numericId <= 1000;
 }
 
-
-/* === Globale Zustände & Mappings === */
 /**
  * @type {string|null}
  */
@@ -194,6 +201,7 @@ let pendingDragTiltClass = null;
 let activeHighlightColumnId = null;
 
 /**
+ * Updates visibility and ARIA state of the clear search button.
  * @param {HTMLInputElement|null} inputEl
  * @returns {void}
  */
@@ -258,16 +266,15 @@ window.currentPrio = window.currentPrio || "low";
  */
 window.selectedUserColors = window.selectedUserColors || {};
 
-
-/* === Persist Tasks to Firebase === */
 /**
+ * Persists all tasks to Firebase and updates summary if available.
  * @async
  * @returns {Promise<void>}
  */
 async function persistTasks() {
   try {
     for (const t of window.tasks) {
-        await fetchBoardTasks(`/${t.id}`, {
+      await fetchBoardTasks(`/${t.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(t),
@@ -281,27 +288,26 @@ async function persistTasks() {
   }
 }
 
-
-/* === Subtasks-Progress handling === */
 /**
+ * Updates subtasks progress for a given task and syncs to Firebase.
  * @param {number|string} id
  * @param {HTMLElement} el
  * @returns {void}
  */
 window.updateSubtasks = (id, el) => {
-   const list = el?.closest?.(".subtask-list, .subtasks-task-container-technical-task");
+  const list = el?.closest?.(
+    ".subtask-list, .subtasks-task-container-technical-task"
+  );
   if (!list) {
     return;
   }
-  const subtaskListe = [
-        ...list.querySelectorAll('input[type="checkbox"]'),
-  ];
+  const subtaskListe = [...list.querySelectorAll('input[type="checkbox"]')];
   const done = subtaskListe.filter((x) => x.checked).length;
   const total = subtaskListe.length;
   const percent = total ? Math.round((done / total) * 100) : 0;
   const cardElement = document.getElementById("card-" + id);
   if (cardElement) {
-      const track = cardElement.querySelector(".progress-track");
+    const track = cardElement.querySelector(".progress-track");
     const fill = cardElement.querySelector(".progress-fill");
     const st = cardElement.querySelector(".subtasks");
     const hasSubtasks = total > 0;
@@ -314,7 +320,7 @@ window.updateSubtasks = (id, el) => {
   }
   saved[id] = subtaskListe.map((x) => x.checked);
   localStorage.setItem("checks", JSON.stringify(saved));
-  const task = window.tasks.find(t => t.id == id);
+  const task = window.tasks.find((t) => t.id == id);
   if (task) {
     task.subtasksDone = done;
     task.subtasksTotal = total;
@@ -329,13 +335,13 @@ window.updateSubtasks = (id, el) => {
   }
 };
 
-
-/* === Onload: gespeicherte Subtask-Stände anwenden === */
 /**
  * @type {((this: Window, ev: Event) => any)|null}
  */
 const prevOnload = window.onload;
+
 /**
+ * Window onload handler to initialize tasks and restore subtasks.
  * @async
  * @returns {Promise<void>}
  */
@@ -351,10 +357,4 @@ window.onload = async () => {
       task.subtasksDone = states.filter(Boolean).length;
     }
   }
-    /*updateSearchClearButtonState(document.getElementById("board-search"));
-    subscribeToFirebaseUpdates((data) => {
-      if (!data) return;
-      window.tasks = Object.values(data);
-      render();
-    });  */
 };
