@@ -6,9 +6,7 @@ if (isTouchDevice || window.innerWidth < 1200) {
   document.body.classList.add("touch-device");
 }
 
-/**
- * Performs a live search on all task cards, updates the UI and result count message.
- */
+/** Performs live search and updates UI + result message. @returns {void} */
 window.searchTasks = function () {
   const input = document.getElementById("board-search");
   const msg = document.getElementById("search-msg");
@@ -17,23 +15,27 @@ window.searchTasks = function () {
   render();
   if (!msg) return;
   if (!searchQuery) {
-    msg.textContent = "";
-    msg.className = "";
+    resetSearchMsg(msg);
     return;
   }
   const count = document.querySelectorAll(".task-card").length;
-  msg.textContent =
-    count === 0
-      ? "No results"
-      : count === 1
-      ? "1 result."
-      : count + " results.";
-  msg.className = count === 0 ? "msg-red" : "msg-green";
+  updateSearchResultMsg(msg, count);
 };
 
-/**
- * Clears the board search input and triggers a fresh search render.
- */
+/** Resets result message. @param {HTMLElement} msg @returns {void} */
+function resetSearchMsg(msg) {
+  msg.textContent = "";
+  msg.className = "";
+}
+
+/** Updates result message text + color. @param {HTMLElement} msg @param {number} count @returns {void} */
+function updateSearchResultMsg(msg, count) {
+  msg.textContent =
+    count === 0 ? "No results" : count === 1 ? "1 result." : count + " results.";
+  msg.className = count === 0 ? "msg-red" : "msg-green";
+}
+
+/** Clears search input and triggers search. @returns {void} */
 window.clearBoardSearch = function () {
   const input = document.getElementById("board-search");
   if (!input) return;
@@ -42,68 +44,48 @@ window.clearBoardSearch = function () {
   searchTasks();
 };
 
-/**
- * Initializes the search clear button state once the board has loaded.
- */
+/** Init search clear button on load. @returns {void} */
 window.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("board-search");
   if (input) updateSearchClearButtonState(input);
 });
 
-/* === Search Helper Function === */
-/**
- * Checks whether a task object matches the active search query.
- * @param {Object} t - The task object.
- * @returns {boolean} True if the task matches search terms.
- */
+/** Checks if task matches active search query. @param {Object} t @returns {boolean} */
 function matchesSearch(t) {
   if (!searchQuery) return true;
-  const title = String(t.title || "").toLowerCase();
-  const desc = String(t.description || "").toLowerCase();
-  const type = String(t.type || "").toLowerCase();
-  const prio = String(t.priority || "").toLowerCase();
-  const ass = (t.assignedTo || [])
-    .map((p) => String(p.name || "").toLowerCase())
-    .join(" ");
-  const idStr = String(t.id);
-  return (
-    title.includes(searchQuery) ||
-    desc.includes(searchQuery) ||
-    type.includes(searchQuery) ||
-    prio.includes(searchQuery) ||
-    ass.includes(searchQuery) ||
-    idStr.includes(searchQuery)
-  );
+  const ass = (t.assignedTo || []).map((p) => String(p.name || "")).join(" ");
+  const text = [
+    t.title || "",
+    t.description || "",
+    t.type || "",
+    t.priority || "",
+    String(t.id),
+    ass,
+  ]
+    .join(" ")
+    .toLowerCase();
+  return text.includes(searchQuery);
 }
 
 let longPressTimer = null;
 let longPressActive = false;
-
 let hoverStabilityTimeout = null;
 let lastStableHoverId = null;
 
+/** Stabilizes highlight to avoid flicker. @param {string} columnId @returns {void} */
 function stableHighlight(columnId) {
-  if (!columnId) return;
-  if (columnId === lastStableHoverId) return;
-
+  if (!columnId || columnId === lastStableHoverId) return;
   clearTimeout(hoverStabilityTimeout);
-
   hoverStabilityTimeout = setTimeout(() => {
     lastStableHoverId = columnId;
     highlight(columnId);
-  }, 80); // small delay to avoid flicker
+  }, 80);
 }
 
-/**
- * Allows dropping of dragged items onto valid drop zones.
- * @param {DragEvent} e - The dragover event.
- */
+/** Allows drop on drag areas. @param {DragEvent} e @returns {void} */
 window.allowDrop = (e) => e.preventDefault();
 
-/**
- * Highlights a drag-area column while dragging a task card.
- * @param {string} id - The ID of the column to highlight.
- */
+/** Highlights a drag-area column while dragging. @param {string} id @returns {void} */
 window.highlight = function (id) {
   if (!id) return;
   if (activeHighlightColumnId && activeHighlightColumnId !== id) {
@@ -118,15 +100,10 @@ window.highlight = function (id) {
   if (status) scheduleAutoMoveTo(status);
 };
 
-/**
- * Removes highlight styling from a drag-area column.
- * @param {string} id - The ID of the column to remove highlight from.
- */
+/** Removes highlight from column. @param {string} id @returns {void} */
 window.removeHighlight = function (id) {
   if (!id) return;
-  if (activeHighlightColumnId && activeHighlightColumnId !== id) {
-    return;
-  }
+  if (activeHighlightColumnId && activeHighlightColumnId !== id) return;
   const el = document.getElementById(id);
   if (el) el.classList.remove("drag-highlight");
   activeHighlightColumnId = null;
@@ -134,9 +111,7 @@ window.removeHighlight = function (id) {
   if (status) cancelScheduledAutoMove(status);
 };
 
-/**
- * Removes highlight styling from all drag-area columns.
- */
+/** Clears highlight from all columns. @returns {void} */
 function clearAllColumnHighlights() {
   document
     .querySelectorAll(".drag-area.drag-highlight")
@@ -144,13 +119,9 @@ function clearAllColumnHighlights() {
   activeHighlightColumnId = null;
 }
 
-/**
- * Starts desktop drag-and-drop behavior for a task card.
- * @param {DragEvent} event - The dragstart event.
- * @param {number} whichTaskId - ID of the dragged task.
- */
+/** Starts desktop drag behavior. @param {DragEvent} event @param {number|string} whichTaskId @returns {void} */
 window.onCardDragStart = function (event, whichTaskId) {
-  if (isTouchDevice) return; 
+  if (isTouchDevice) return;
   whichCardActuellDrop = whichTaskId;
   currentDragCardEl = event.currentTarget;
   lastDragPointerX = null;
@@ -161,24 +132,15 @@ window.onCardDragStart = function (event, whichTaskId) {
     event.dataTransfer.effectAllowed = "move";
   } catch (e) {}
   document.body.classList.add("dragging");
-  if (currentDragCardEl) {
-    currentDragCardEl.classList.add("is-dragging");
-  }
+  if (currentDragCardEl) currentDragCardEl.classList.add("is-dragging");
 };
 
-/**
- * Finalizes drag behavior and resets all drag UI states.
- */
+/** Ends drag behavior and resets UI states. @returns {void} */
 window.onCardDragEnd = function () {
   document.body.classList.remove("dragging");
   cancelScheduledAutoMove();
-  if (currentDragCardEl) {
-    currentDragCardEl.classList.remove(
-      "is-dragging",
-      "tilt-left",
-      "tilt-right"
-    );
-  }
+  if (currentDragCardEl)
+    currentDragCardEl.classList.remove("is-dragging", "tilt-left", "tilt-right");
   currentDragCardEl = null;
   lastDragPointerX = null;
   pendingDragTiltClass = null;
@@ -186,46 +148,32 @@ window.onCardDragEnd = function () {
   clearAllColumnHighlights();
 };
 
-/**
- * Moves the dragged task to a new status column.
- * @param {string} newStatus - Target status for the task.
- */
+/** Moves dragged task to new status column. @param {string} newStatus @returns {void} */
 window.moveTo = function (newStatus) {
   cancelScheduledAutoMove();
   applyStatusChangeForDraggedTask(newStatus, { keepDraggingState: false });
   clearAllColumnHighlights();
 };
 
-/**
- * Looks up the task currently being dragged based on stored id.
- * @returns {Task|null}
- */
+/** Gets task currently being dragged. @returns {Task|null} */
 function getDraggedTask() {
   if (whichCardActuellDrop == null || !Array.isArray(window.tasks)) return null;
   return window.tasks.find((t) => t.id === whichCardActuellDrop) || null;
 }
 
-/* === Task Status Update on Drop === */
-/**
- * Applies a status update to the dragged task and triggers re-rendering.
- * @param {string} newStatus - The new status to apply.
-  * @param {{keepDraggingState?: boolean}} [options={}] - Drag styling configuration.
- * @returns {boolean} True if the status changed.
- */
-function applyStatusChangeForDraggedTask(
-  newStatus,
-  { keepDraggingState } = {}
-) {
+/** Computes tilt class based on current drag state. @param {boolean} keepDraggingState @returns {string|null} */
+function computePendingTilt(keepDraggingState) {
+  if (!keepDraggingState || !currentDragCardEl) return null;
+  if (currentDragCardEl.classList.contains("tilt-right")) return "tilt-right";
+  if (currentDragCardEl.classList.contains("tilt-left")) return "tilt-left";
+  return null;
+}
+
+/** Applies status change for dragged task. @param {string} newStatus @param {{keepDraggingState?: boolean}} [options] @returns {boolean} */
+function applyStatusChangeForDraggedTask(newStatus, { keepDraggingState } = {}) {
   const draggedTask = getDraggedTask();
-  if (!draggedTask) return false;
-  if (draggedTask.status === newStatus) return false;
-  pendingDragTiltClass = keepDraggingState
-    ? currentDragCardEl?.classList.contains("tilt-right")
-      ? "tilt-right"
-      : currentDragCardEl?.classList.contains("tilt-left")
-      ? "tilt-left"
-      : null
-    : null;
+  if (!draggedTask || draggedTask.status === newStatus) return false;
+  pendingDragTiltClass = computePendingTilt(keepDraggingState);
   draggedTask.status = newStatus;
   persistTasks();
   needsDraggingClassAfterRender = Boolean(keepDraggingState);
@@ -233,19 +181,14 @@ function applyStatusChangeForDraggedTask(
   return true;
 }
 
-/* === Auto Move Scheduling === */
-/**
- * Schedules an automatic move of a dragged task when hovering over a column.
- * @param {string} status - The status associated with the hovered column.
- */
+/** Schedules automatic move on hover. @param {string} status @returns {void} */
 function scheduleAutoMoveTo(status) {
   if (!currentDragCardEl || whichCardActuellDrop == null) return;
   const draggedTask = getDraggedTask();
-  if (draggedTask && draggedTask.status === status) {
+  if ((draggedTask && draggedTask.status === status) || pendingAutoMoveStatus === status) {
     cancelScheduledAutoMove();
     return;
   }
-  if (pendingAutoMoveStatus === status) return;
   cancelScheduledAutoMove();
   pendingAutoMoveStatus = status;
   autoMoveTimeoutId = setTimeout(() => {
@@ -255,10 +198,7 @@ function scheduleAutoMoveTo(status) {
   }, 160);
 }
 
-/**
- * Cancels any scheduled automatic task move action.
- * @param {string} [expectedStatus] - Optional status to verify before canceling.
- */
+/** Cancels scheduled auto-move. @param {string} [expectedStatus] @returns {void} */
 function cancelScheduledAutoMove(expectedStatus) {
   if (
     pendingAutoMoveStatus &&
@@ -267,139 +207,131 @@ function cancelScheduledAutoMove(expectedStatus) {
   ) {
     return;
   }
-  if (autoMoveTimeoutId != null) {
-    clearTimeout(autoMoveTimeoutId);
-  }
+  if (autoMoveTimeoutId != null) clearTimeout(autoMoveTimeoutId);
   autoMoveTimeoutId = null;
   pendingAutoMoveStatus = null;
 }
 
 /* === Column Detection Logic === */
+
 const MAX_VERTICAL_SNAP_DISTANCE = 220;
 
-/**
- * Determines the closest valid drop column based on pointer coordinates.
- * @param {number} clientX - Pointer X coordinate.
- * @param {number} clientY - Pointer Y coordinate.
- * @returns {HTMLElement|null} The matched column or null.
- */
+/** Finds closest drop column by pointer coords. @param {number} clientX @param {number} clientY @returns {HTMLElement|null} */
 function findColumnByPointer(clientX, clientY) {
-  const columns = Array.from(document.querySelectorAll(".drag-area"));
+  const columns = document.querySelectorAll(".drag-area");
   let best = null;
   let bestDistance = Infinity;
   for (const col of columns) {
     const rect = col.getBoundingClientRect();
     if (clientX < rect.left || clientX > rect.right) continue;
     let distanceY = 0;
-    if (clientY < rect.top) {
-      distanceY = rect.top - clientY;
-    } else if (clientY > rect.bottom) {
-      distanceY = clientY - rect.bottom;
-    }
+    if (clientY < rect.top) distanceY = rect.top - clientY;
+    else if (clientY > rect.bottom) distanceY = clientY - rect.bottom;
     if (distanceY < bestDistance) {
       bestDistance = distanceY;
       best = col;
     }
   }
-  if (best && bestDistance <= MAX_VERTICAL_SNAP_DISTANCE) {
-    return best;
-  }
-  return null;
+  return best && bestDistance <= MAX_VERTICAL_SNAP_DISTANCE ? best : null;
 }
 
-/* === Dragover Highlight Handling === */
-/**
- * Handles card tilt animation and hover detection during desktop drag operations.
- */
-document.addEventListener("dragover", (event) => {
+/** Updates card tilt during drag. @param {number} clientX @returns {void} */
+function updateDragTilt(clientX) {
+  if (typeof clientX !== "number") return;
+  if (lastDragPointerX == null) {
+    lastDragPointerX = clientX;
+    return;
+  }
+  const deltaX = clientX - lastDragPointerX;
+  if (Math.abs(deltaX) < 2) return;
+  currentDragCardEl.classList.remove("tilt-left", "tilt-right");
+  currentDragCardEl.classList.add(deltaX > 0 ? "tilt-right" : "tilt-left");
+  lastDragPointerX = clientX;
+}
+
+/** Handles dragover: tilt + column detection + highlight. @param {DragEvent} event @returns {void} */
+function handleDragOver(event) {
   if (!currentDragCardEl) return;
   const { clientX, clientY } = event;
-  if (typeof clientX === "number") {
-    if (lastDragPointerX == null) {
-      lastDragPointerX = clientX;
-    } else {
-      const deltaX = clientX - lastDragPointerX;
-      if (Math.abs(deltaX) >= 2) {
-        currentDragCardEl.classList.remove("tilt-left", "tilt-right");
-        currentDragCardEl.classList.add(deltaX > 0 ? "tilt-right" : "tilt-left");
-        lastDragPointerX = clientX;
-      }
-    }
-  }
+  updateDragTilt(clientX);
   if (typeof clientX !== "number" || typeof clientY !== "number") return;
   let hoveredColumn = event.target?.closest?.(".drag-area") || null;
   if (!hoveredColumn) {
     const direct = document.elementFromPoint(clientX, clientY);
     hoveredColumn = direct?.closest?.(".drag-area") || null;
   }
-  if (!hoveredColumn) {
-    hoveredColumn = findColumnByPointer(clientX, clientY);
-  }
-  if (hoveredColumn?.id) {
-    if (activeHighlightColumnId === hoveredColumn.id) return;
-    highlight(hoveredColumn.id);
-    if (activeHighlightColumnId !== hoveredColumn.id) {
-      stableHighlight(hoveredColumn.id);
-    }
-  }
-});
+  if (!hoveredColumn) hoveredColumn = findColumnByPointer(clientX, clientY);
+  const id = hoveredColumn?.id;
+  if (!id || activeHighlightColumnId === id) return;
+  highlight(id);
+  if (activeHighlightColumnId !== id) stableHighlight(id);
+}
 
+document.addEventListener("dragover", (event) => handleDragOver(event));
 
 /* === Mobile Move Menu Logic === */
 
-window.openMoveMenu = function(event, taskId) {
-    event.stopPropagation();
-    window.moveMenuTaskId = taskId;
-    buildMoveMenuOptions(taskId);
-    const overlay = document.getElementById("move-menu-overlay");
-    if (overlay) overlay.classList.add("open");
+/** Opens mobile move menu. @param {MouseEvent} event @param {number|string} taskId @returns {void} */
+window.openMoveMenu = function (event, taskId) {
+  event.stopPropagation();
+  window.moveMenuTaskId = taskId;
+  buildMoveMenuOptions(taskId);
+  const overlay = document.getElementById("move-menu-overlay");
+  if (overlay) overlay.classList.add("open");
 };
 
-window.closeMoveMenu = function(event) {
-    const overlay = document.getElementById("move-menu-overlay");
-    if (!overlay) return;
-    if (event && event.currentTarget && event.currentTarget.classList.contains("move-menu-close-btn")) {
-        overlay.classList.remove("open");
-        return;
-    }
-    if (!event || event.target.id === "move-menu-overlay") {
-        overlay.classList.remove("open");
-    }
+/** Closes mobile move menu. @param {MouseEvent} [event] @returns {void} */
+window.closeMoveMenu = function (event) {
+  const overlay = document.getElementById("move-menu-overlay");
+  if (!overlay) return;
+  if (
+    event &&
+    event.currentTarget &&
+    event.currentTarget.classList.contains("move-menu-close-btn")
+  ) {
+    overlay.classList.remove("open");
+    return;
+  }
+  if (!event || event.target.id === "move-menu-overlay") {
+    overlay.classList.remove("open");
+  }
 };
 
-window.confirmMoveMenu = function() {
-    if (!window.selectedMoveStatus) return;
-    whichCardActuellDrop = window.moveMenuTaskId;
-    moveTo(window.selectedMoveStatus);
-    closeMoveMenu();
+/** Confirms move menu selection and moves task. @returns {void} */
+window.confirmMoveMenu = function () {
+  if (!window.selectedMoveStatus) return;
+  whichCardActuellDrop = window.moveMenuTaskId;
+  moveTo(window.selectedMoveStatus);
+  closeMoveMenu();
 };
 
+/** Creates a move-menu option button. @param {string} label @param {string} status @returns {HTMLDivElement} */
+function createMoveMenuButton(label, status) {
+  const btn = document.createElement("div");
+  btn.classList.add("move-menu-option");
+  btn.textContent = label;
+  btn.onclick = () => {
+    window.selectedMoveStatus = status;
+    document
+      .querySelectorAll(".move-menu-option")
+      .forEach((x) => x.classList.remove("selected"));
+    btn.classList.add("selected");
+  };
+  return btn;
+}
 
-/**
- * Builds the list of move targets inside the bottom sheet menu.
- */
-window.buildMoveMenuOptions = function(taskId) {
-    const optBox = document.getElementById("move-menu-options");
-    if (!optBox) return;
-    optBox.innerHTML = "";
-    window.selectedMoveStatus = null;
-    Object.entries(statusByColumnId).forEach(([columnId, status]) => {
-        const colHeader = document
-            .querySelector(`#${columnId}`)
-            ?.closest("section")
-            ?.querySelector("h2");
-        const label = colHeader ? colHeader.textContent.trim() : status;
-        const btn = document.createElement("div");
-        btn.classList.add("move-menu-option");
-        btn.textContent = label;
-        btn.onclick = () => {
-            window.selectedMoveStatus = status;
-            document
-                .querySelectorAll(".move-menu-option")
-                .forEach(x => x.classList.remove("selected"));
-            btn.classList.add("selected");
-        };
-        optBox.appendChild(btn);
-    });
+/** Builds move menu options list. @param {number|string} taskId @returns {void} */
+window.buildMoveMenuOptions = function (taskId) {
+  const optBox = document.getElementById("move-menu-options");
+  if (!optBox) return;
+  optBox.innerHTML = "";
+  window.selectedMoveStatus = null;
+  Object.entries(statusByColumnId).forEach(([columnId, status]) => {
+    const header = document
+      .querySelector(`#${columnId}`)
+      ?.closest("section")
+      ?.querySelector("h2");
+    const label = header ? header.textContent.trim() : status;
+    optBox.appendChild(createMoveMenuButton(label, status));
+  });
 };
-
