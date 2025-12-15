@@ -91,6 +91,11 @@
   text-overflow: ellipsis;
 }
 
+.task-subtask-addTask_page:focus {
+  outline: none;
+  border: none;
+}
+
 .subtask-icons-addTask_page {
   display: flex;
   align-items: center;

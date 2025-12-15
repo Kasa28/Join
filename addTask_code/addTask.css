@@ -138,6 +138,11 @@
   background-color: white;
 }
 
+.task-select-addTask_page:focus {
+  outline: none;
+  border: none;
+}
+
 .date-input-wrapper-addTask_page {
   position: relative;
   width: 100%;
