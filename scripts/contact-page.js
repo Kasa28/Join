@@ -95,7 +95,7 @@ async function putUsernameInContactList() {
   let userJson = {
     username: profile.name,
     email: profile.email,
-    PhoneNumber: "4915135468484",
+    PhoneNumber: " ",
     color: colors[colorIndex],
   };
   getUserFriends.push(userJson);
