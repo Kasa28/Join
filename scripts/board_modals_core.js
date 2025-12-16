@@ -1,9 +1,8 @@
-/* === board_modals_core.js | Handles opening and closing of task and add-task modals === */
-
 /**
  * Opens the task modal for a given task ID.
  * Looks up the task, collects DOM elements and delegates opening.
  * @param {number} id - Task ID to open in the modal.
+ * @returns {void}
  */
 function openModalById(id) {
   const task = findTaskById(id);
@@ -38,7 +37,7 @@ function findTaskById(id) {
 
 /**
  * Returns modal container and content elements for the task modal.
- * @returns {{modal: HTMLElement, content: HTMLElement}|null}
+ * @returns {{modal: HTMLElement, content: HTMLElement}|null} Modal and content elements or null.
  */
 function getTaskModalElements() {
   const modal = document.getElementById("task-modal");
@@ -51,6 +50,7 @@ function getTaskModalElements() {
 
 /**
  * Ensures the CSS for user-story big cards is loaded once.
+ * @returns {void}
  */
 function ensureUserStoryCss() {
   const link = document.getElementById("user-story-css");
@@ -66,6 +66,7 @@ function ensureUserStoryCss() {
 
 /**
  * Ensures the CSS for technical big cards is loaded once.
+ * @returns {void}
  */
 function ensureTechnicalCss() {
   const link = document.getElementById("technical-css");
@@ -84,6 +85,7 @@ function ensureTechnicalCss() {
  * @param {Task} task - Task object to show.
  * @param {number} id - Task ID.
  * @param {{modal: HTMLElement, content: HTMLElement}} els - Modal elements.
+ * @returns {void}
  */
 function openTaskModalWithTask(task, id, els) {
   const modal = els.modal;
@@ -100,11 +102,12 @@ function openTaskModalWithTask(task, id, els) {
 
 /**
  * Opens the dynamic big-card modal (user-story or technical).
- * @param {Task} task
- * @param {HTMLElement} modal
- * @param {HTMLElement} content
- * @param {boolean} isTech
- * @param {boolean} isStory
+ * @param {Task} task - Task to display.
+ * @param {HTMLElement} modal - Modal container element.
+ * @param {HTMLElement} content - Modal content element.
+ * @param {boolean} isTech - Whether the task is a technical task.
+ * @param {boolean} isStory - Whether the task is a user-story task.
+ * @returns {void}
  */
 function openDynamicTaskModal(task, modal, content, isTech, isStory) {
   if (isStory) {
@@ -125,6 +128,7 @@ function openDynamicTaskModal(task, modal, content, isTech, isStory) {
 /**
  * Ensures the correct CSS file is loaded for legacy templates.
  * @param {boolean} isTech - True for technical task.
+ * @returns {void}
  */
 function ensureCssForLegacy(isTech) {
   if (!isTech) {
@@ -137,8 +141,8 @@ function ensureCssForLegacy(isTech) {
 
 /**
  * Returns the HTML for legacy task templates.
- * @param {Task} task
- * @param {boolean} isTech
+ * @param {Task} task - Task to render.
+ * @param {boolean} isTech - Whether the task is a technical task.
  * @returns {string} HTML string for the modal content.
  */
 function getLegacyTaskHtml(task, isTech) {
@@ -155,11 +159,16 @@ function getLegacyTaskHtml(task, isTech) {
  * Restores saved checkbox states for subtasks in the modal.
  * @param {number} id - Task ID.
  * @param {HTMLElement} content - Modal content element.
+ * @returns {void}
  */
 function restoreSubtasksState(id, content) {
-  if (typeof saved === "undefined") { return; }
+  if (typeof saved === "undefined") {
+    return;
+  }
   const s = saved[id];
-  if (!s) { return; }
+  if (!s) {
+    return;
+  }
   const boxes = content.querySelectorAll(
     '.subtask-list input[type="checkbox"]'
   );
@@ -173,11 +182,12 @@ function restoreSubtasksState(id, content) {
 
 /**
  * Opens the legacy task modal and restores subtasks.
- * @param {Task} task
- * @param {number} id
- * @param {HTMLElement} modal
- * @param {HTMLElement} content
- * @param {boolean} isTech
+ * @param {Task} task - Task to display.
+ * @param {number} id - Task ID.
+ * @param {HTMLElement} modal - Modal container element.
+ * @param {HTMLElement} content - Modal content element.
+ * @param {boolean} isTech - Whether the task is a technical task.
+ * @returns {void}
  */
 function openLegacyTaskModal(task, id, modal, content, isTech) {
   ensureCssForLegacy(isTech);
@@ -190,6 +200,7 @@ function openLegacyTaskModal(task, id, modal, content, isTech) {
 
 /**
  * Closes the task modal and restores scrolling.
+ * @returns {void}
  */
 function closeModal() {
   const modal = document.getElementById("task-modal");
@@ -202,6 +213,7 @@ function closeModal() {
 /**
  * Wrapper for closing the task modal.
  * Can be used directly in HTML onclick attributes.
+ * @returns {void}
  */
 function closeTaskModal() {
   closeModal();
@@ -209,6 +221,7 @@ function closeTaskModal() {
 
 /**
  * Ensures CSS for the Add Task overlay is loaded once.
+ * @returns {void}
  */
 function ensureAddTaskCss() {
   const link = document.getElementById("addtask-css");
@@ -236,6 +249,7 @@ function getAddTaskHtml() {
 /**
  * Fills the Add Task content, renders contacts and sets focus.
  * @param {HTMLElement} content - Container for the Add Task template.
+ * @returns {void}
  */
 function setupAddTaskContent(content) {
   content.innerHTML = getAddTaskHtml();
@@ -251,6 +265,7 @@ function setupAddTaskContent(content) {
 
 /**
  * Opens the Add Task overlay and prevents background scrolling.
+ * @returns {void}
  */
 function openAddTask() {
   const overlay = document.getElementById("addtask-overlay");
@@ -266,6 +281,7 @@ function openAddTask() {
 
 /**
  * Resets global helper variables used by the Add Task overlay.
+ * @returns {void}
  */
 function resetAddTaskGlobals() {
   window.taskBeingEdited = null;
@@ -276,6 +292,7 @@ function resetAddTaskGlobals() {
 
 /**
  * Clears Add Task content and removes injected CSS after animation.
+ * @returns {void}
  */
 function clearAddTaskAfterAnimation() {
   const content = document.getElementById("addtask-content");
@@ -291,6 +308,7 @@ function clearAddTaskAfterAnimation() {
 
 /**
  * Closes the Add Task overlay and restores the page state.
+ * @returns {void}
  */
 function closeAddTask() {
   const overlay = document.getElementById("addtask-overlay");
