@@ -26,28 +26,33 @@
  * @property {string[]} [subTasks]
  */
 
+/**
+ * Reads subtasks from the subtask list in the edit form.
+ * @returns {string[]}
+ */
 function readSubtasksFromForm() {
   let list = document.getElementById("subtask-list");
-  if (!list) {
-    return [];
-  }
+  if (!list) return [];
   return Array.from(list.querySelectorAll("li"))
     .map(function (li) {
       let input = li.querySelector("input");
-      let raw = input
-        ? input.value
-        : (li.firstChild && li.firstChild.textContent) || li.textContent;
+      let raw =
+        input
+          ? input.value
+          : (li.firstChild && li.firstChild.textContent) || li.textContent;
       return String(raw || "").trim();
     })
     .filter(Boolean);
 }
 
-
+/**
+ * Populates the edit overlay with a task's data.
+ * @param {Task} task
+ * @returns {void}
+ */
 function populateEditOverlay(task) {
   let content = document.getElementById("addtask-content");
-  if (!content) {
-    return;
-  }
+  if (!content) return;
   fillBasicFields(content, task);
   hydrateAssignSection(task);
   fillSubtaskList(content, task);
@@ -67,33 +72,26 @@ function fillBasicFields(content, task) {
 
 function setEditHeading(content) {
   let heading = content.querySelector(".h1-addTask_template");
-  if (heading) {
-    heading.textContent = "Edit Task";
-  }
+  if (heading) heading.textContent = "Edit Task";
 }
 
 function fillTitleInput(content, task) {
   let titleInput = content.querySelector("#title");
-  if (!titleInput) {
-    return;
-  }
+  if (!titleInput) return;
   titleInput.value = task.title || "";
   let inputEvent = new Event("input", { bubbles: true });
   titleInput.dispatchEvent(inputEvent);
 }
+
 function fillDescriptionInput(content, task) {
   let descriptionInput = content.querySelector("#description");
-  if (!descriptionInput) {
-    return;
-  }
+  if (!descriptionInput) return;
   descriptionInput.value = task.description || "";
 }
 
 function fillDueDateInput(content, task) {
   let dueDateInput = content.querySelector("#due-date");
-  if (!dueDateInput) {
-    return;
-  }
+  if (!dueDateInput) return;
   dueDateInput.value = task.dueDate || "";
   if (typeof validateDueDate === "function") {
     requestAnimationFrame(function () {
@@ -104,20 +102,16 @@ function fillDueDateInput(content, task) {
 
 function fillCategorySelect(content, task) {
   let categorySelect = content.querySelector("#category");
-  if (!categorySelect) {
-    return;
-  }
+  if (!categorySelect) return;
   let typeString = String(task.type || "").toLowerCase();
-  let value = typeString === "technical task" ? "technical" : "user-story";
-  categorySelect.value = value;
+  categorySelect.value =
+    typeString === "technical task" ? "technical" : "user-story";
 }
 
 function setPriorityForEdit(task) {
   let priority = String(task.priority || "low").toLowerCase();
   window.currentPrio = priority;
-  if (typeof setPriorityAddTask === "function") {
-    setPriorityAddTask(priority);
-  }
+  if (typeof setPriorityAddTask === "function") setPriorityAddTask(priority);
 }
 
 function prepareAssignedUsers(task) {
@@ -137,9 +131,7 @@ function prepareAssignedUsers(task) {
 
 function fillSubtaskList(content, task) {
   let subtaskList = content.querySelector("#subtask-list");
-  if (!subtaskList) {
-    return;
-  }
+  if (!subtaskList) return;
   subtaskList.innerHTML = "";
   let subtasks = task.subTasks || [];
   for (let i = 0; i < subtasks.length; i++) {
@@ -153,16 +145,12 @@ function fillSubtaskList(content, task) {
 
 function resetSubtaskInput(content) {
   let subtaskInput = content.querySelector("#subtask");
-  if (subtaskInput) {
-    subtaskInput.value = "";
-  }
+  if (subtaskInput) subtaskInput.value = "";
 }
 
 function setupSubmitButton(content, task) {
   let submitBtn = content.querySelector(".btn-done-addTask_template");
-  if (!submitBtn) {
-    return;
-  }
+  if (!submitBtn) return;
   submitBtn.removeAttribute("onclick");
   submitBtn.onclick = function () {
     saveTaskEdits(task.id);
@@ -177,9 +165,7 @@ function setupSubmitButton(content, task) {
  * @returns {void}
  */
 function normaliseSubtaskProgress(task) {
-  if (!task) {
-    return;
-  }
+  if (!task) return;
   updateSubtaskCounts(task);
   syncSavedCheckboxes(task);
 }
@@ -192,13 +178,9 @@ function updateSubtaskCounts(task) {
 }
 
 function syncSavedCheckboxes(task) {
-  if (!window.saved) {
-    return;
-  }
+  if (!window.saved) return;
   let total = task.subtasksTotal || 0;
-  let prev = Array.isArray(window.saved[task.id])
-    ? window.saved[task.id]
-    : [];
+  let prev = Array.isArray(window.saved[task.id]) ? window.saved[task.id] : [];
   let next = buildCheckboxArray(prev, total);
   window.saved[task.id] = next;
   saveCheckboxState();
@@ -206,19 +188,15 @@ function syncSavedCheckboxes(task) {
 
 function buildCheckboxArray(prev, total) {
   let next = prev.slice(0, total);
-  while (next.length < total) {
-    next.push(false);
-  }
+  while (next.length < total) next.push(false);
   return next;
 }
 
 function saveCheckboxState() {
   try {
     localStorage.setItem("checks", JSON.stringify(window.saved));
-  } catch (e) {
-  }
+  } catch (e) {}
 }
-
 
 /**
  * Saves edits for an existing task.
@@ -227,39 +205,25 @@ function saveCheckboxState() {
  */
 function saveTaskEdits(id) {
   let task = getTaskForEdit(id);
-  if (!canEditTask(task)) {
-    return;
-  }
+  if (!canEditTask(task)) return;
   let formData = readEditForm(task);
-  if (!formData) {
-    return;
-  }
+  if (!formData) return;
   applyEditsAndPersist(task, formData);
 }
 
 function canEditTask(task) {
-  if (!task) {
-    return false;
-  }
-  if (!checkDemoTask(task)) {
-    return false;
-  }
+  if (!task) return false;
+  if (!checkDemoTask(task)) return false;
   return true;
 }
 
 function readEditForm(task) {
   let title = getTitleOrAlert();
-  if (!title) {
-    return null;
-  }
+  if (!title) return null;
   let dueDate = getDueDateOrAbort();
-  if (dueDate === null) {
-    return null;
-  }
+  if (dueDate === null) return null;
   let data = getEditFormData(task);
-  if (!data) {
-    return null;
-  }
+  if (!data) return null;
   data.title = title;
   data.dueDate = dueDate;
   return data;
@@ -269,12 +233,9 @@ function applyEditsAndPersist(task, data) {
   applyEditsToTask(task, data);
   normaliseSubtaskProgress(task);
   persistTasks();
-  if (typeof render === "function") {
-    render();
-  }
+  if (typeof render === "function") render();
   closeAddTask();
 }
-
 
 function getTaskForEdit(id) {
   if (!Array.isArray(window.tasks)) {
@@ -283,20 +244,19 @@ function getTaskForEdit(id) {
   }
   for (let i = 0; i < window.tasks.length; i++) {
     let t = window.tasks[i];
-    if (t && t.id === id) {
-      return t;
-    }
+    if (t && t.id === id) return t;
   }
   alert("Task not found.");
   return null;
 }
 
 function checkDemoTask(task) {
-  if (!task) {
-    return false;
-  }
+  if (!task) return false;
   if (typeof isDemoTask === "function" && isDemoTask(task)) {
-   showToast("Demo tasks can only be moved.", { variant: "error", duration: 1600 });
+    showToast("Demo tasks can only be moved.", {
+      variant: "error",
+      duration: 1600,
+    });
     return false;
   }
   return true;
@@ -319,15 +279,11 @@ function getTitleOrAlert() {
 
 function getDueDateOrAbort() {
   let input = document.getElementById("due-date");
-  if (!input) {
-    return "";
-  }
+  if (!input) return "";
   let value = input.value.trim();
   if (typeof validateDueDate === "function") {
     let ok = validateDueDate();
-    if (!ok) {
-      return null;
-    }
+    if (!ok) return null;
   }
   return value;
 }
@@ -343,44 +299,33 @@ function getEditFormData(task) {
     categoryValue: categoryValue,
     priority: priority,
     assigned: assigned,
-    subtasks: subtasks
+    subtasks: subtasks,
   };
 }
 
 function getDescriptionValue() {
   let input = document.getElementById("description");
-  if (!input) {
-    return "";
-  }
+  if (!input) return "";
   return input.value.trim();
 }
 
 function getCategoryValue() {
   let select = document.getElementById("category");
-  if (!select) {
-    return "";
-  }
+  if (!select) return "";
   return select.value;
 }
 
 function getPriorityValue(task) {
   let base = "low";
-  if (task && task.priority) {
-    base = task.priority;
-  }
-  if (window.currentPrio) {
-    base = window.currentPrio;
-  }
+  if (task && task.priority) base = task.priority;
+  if (window.currentPrio) base = window.currentPrio;
   return String(base).toLowerCase();
 }
 
 function getAssignedValue(task) {
-  if (typeof assignedToDataExtractSafe === "function") {
+  if (typeof assignedToDataExtractSafe === "function")
     return assignedToDataExtractSafe();
-  }
-  if (task && Array.isArray(task.assignedTo)) {
-    return task.assignedTo;
-  }
+  if (task && Array.isArray(task.assignedTo)) return task.assignedTo;
   return [];
 }
 
@@ -389,7 +334,7 @@ function applyEditsToTask(task, data) {
   task.description = data.description;
   task.dueDate = data.dueDate;
   task.type =
-  data.categoryValue === "technical" ? "Technical Task" : "User Story";
+    data.categoryValue === "technical" ? "Technical Task" : "User Story";
   task.priority = data.priority;
   task.priorityIcon = getPriorityIcon(data.priority, task.priorityIcon);
   task.assignedTo = data.assigned;
@@ -402,14 +347,12 @@ function getPriorityIcon(priority, fallbackIcon) {
       "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
     medium:
       "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
-    low:
-      "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
+    low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
   };
-  if (icons[priority]) {
-    return icons[priority];
-  }
+  if (icons[priority]) return icons[priority];
   return fallbackIcon || "";
 }
+
 /**
  * Starts editing a task by id.
  * @param {number|string} id
@@ -417,14 +360,13 @@ function getPriorityIcon(priority, fallbackIcon) {
  */
 function startEditTask(id) {
   let task = getTaskForEdit(id);
-  if (!task || !checkDemoTask(task)) {
-    return;
-  }
+  if (!task || !checkDemoTask(task)) return;
   prepareAssignedUsers(task);
   prepareEditState(task);
   openEditOverlay(task);
 }
 window.startEditTask = startEditTask;
+
 /**
  * Sets global state for the task that is being edited.
  * @param {Task} task
@@ -436,18 +378,16 @@ function prepareEditState(task) {
   window.nextTaskTargetStatus =
     task.status || (window.STATUS && window.STATUS.TODO) || "todo";
 }
+
 /**
  * Opens the Add Task overlay and fills it with task data.
  * @param {Task} task
  * @returns {void}
  */
 function openEditOverlay(task) {
-  if (typeof openAddTask !== "function") {
-    return;
-  }
+  if (typeof openAddTask !== "function") return;
   openAddTask();
   requestAnimationFrame(function () {
     populateEditOverlay(task);
   });
 }
-
