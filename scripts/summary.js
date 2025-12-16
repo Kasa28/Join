@@ -1,4 +1,3 @@
-
 /**
  * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
  */
@@ -29,42 +28,68 @@ window.addEventListener("DOMContentLoaded", () => {
   initSummaryPage();
 });
 
-
 async function initSummaryPage() {
   await waitForAuthGlobals();
   await updateSummary();
   startSummaryPolling();
 }
 
+/**
+ * @param {any} data
+ * @returns {Task[]}
+ */
+function toTaskArray(data) {
+  if (Array.isArray(data)) return data.filter(Boolean);
+  if (data && typeof data === "object") {
+    return Object.values(data).filter(
+      (t) => t && typeof t === "object" && "status" in t
+    );
+  }
+  return [];
+}
+
+/**
+ * @param {Task[]} tasks
+ */
+function normalizeTaskPriorities(tasks) {
+  tasks.forEach((t) => {
+    if (t && typeof t.priority === "string") {
+      t.priority = t.priority.toLowerCase();
+    }
+  });
+}
 
 /**
  * Loads tasks from Firebase. Normalizes priority to lowercase.
- * Falls back to a minimal demo task if Firebase returns empty.
+ * Falls back to an empty list if Firebase returns empty.
  * @async
  * @returns {Promise<Task[]>}
  */
 async function loadTasks() {
   try {
-    const { base, authQuery } = await getSummaryFetchConfig(); 
+    const { base, authQuery } = await getSummaryFetchConfig();
     const response = await fetch(`${base}tasks.json${authQuery}`);
     const data = await response.json();
-    const firebaseTasks = Array.isArray(data)
-  ? data.filter(Boolean)
-  : data && typeof data === "object"
-  ? Object.values(data).filter((t) => t && typeof t === "object" && "status" in t)
-  : [];
-    firebaseTasks.forEach((t) => {
-      if (t && typeof t.priority === "string") {
-        t.priority = t.priority.toLowerCase();
-      }
-    });
+    const firebaseTasks = toTaskArray(data);
+    normalizeTaskPriorities(firebaseTasks);
     return firebaseTasks;
   } catch (error) {
-    console.error("Fehler beim Laden der Tasks aus Firebase:", error);
+    console.error("Error while loading tasks from Firebase:", error);
     return [];
   }
 }
 
+/**
+ * @param {TaskStatus} status
+ * @returns {keyof TaskCounts | ""}
+ */
+function getStatusKey(status) {
+  if (status === "todo") return "todo";
+  if (status === "in-progress") return "inProgress";
+  if (status === "await-feedback") return "feedback";
+  if (status === "done") return "done";
+  return "";
+}
 
 /**
  * Calculates task counts for summary KPIs.
@@ -83,24 +108,27 @@ function getTaskCounts(tasks) {
   for (const t of tasks) {
     const prio = String(t.priority || "").toLowerCase();
     if (prio === "urgent") counts.urgent++;
-    switch (t.status) {
-      case "todo":
-        counts.todo++;
-        break;
-      case "in-progress":
-        counts.inProgress++;
-        break;
-      case "await-feedback":
-        counts.feedback++;
-        break;
-      case "done":
-        counts.done++;
-        break;
-    }
+    const key = getStatusKey(t.status);
+    if (key) counts[key]++;
   }
   return counts;
 }
 
+/**
+ * @param {Task[]} tasks
+ * @returns {Date[]}
+ */
+function getUrgentDueDates(tasks) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return tasks
+    .filter(
+      (t) =>
+        String(t.priority || "").toLowerCase() === "urgent" && t.dueDate
+    )
+    .map((t) => parseDueDate(t.dueDate))
+    .filter((d) => !isNaN(d.getTime()) && d >= today);
+}
 
 /**
  * Returns the closest due date among urgent tasks.
@@ -108,24 +136,11 @@ function getTaskCounts(tasks) {
  * @returns {Date|null}
  */
 function getNextDeadline(tasks) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const urgentFutureDates = tasks
-    .filter(
-      (t) =>
-        String(t.priority || "").toLowerCase() === "urgent" &&
-        t.dueDate
-    )
-    .map((t) => parseDueDate(t.dueDate))
-    .filter((d) => !isNaN(d.getTime()) && d >= today);   // Nur zukünftige Deadlines
-
+  const urgentFutureDates = getUrgentDueDates(tasks);
   if (!urgentFutureDates.length) return null;
-
-  urgentFutureDates.sort((a, b) => a - b);  // frühestes Datum zuerst
+  urgentFutureDates.sort((a, b) => a - b);
   return urgentFutureDates[0];
 }
-
 
 /**
  * Parses supported due date formats into a Date instance.
@@ -159,6 +174,34 @@ function setSummaryText(selector, value) {
   if (el) el.textContent = value;
 }
 
+/**
+ * @param {TaskCounts} counts
+ */
+function renderSummaryCounts(counts) {
+  const targets = [
+    [".urgent-task-card-summary .h2-font-summray", counts.urgent],
+    [".tasks-on-board-card-summary .h2-font-summray", counts.total],
+    [".summary-section-2-order .summary-card:nth-child(1) .h2-font-summray", counts.todo],
+    [".summary-section-2-order .summary-card:nth-child(2) .h2-font-summray", counts.inProgress],
+    [".summary-section-2-order .summary-card:nth-child(3) .h2-font-summray", counts.feedback],
+    [".summary-section-2-order .summary-card:nth-child(4) .h2-font-summray", counts.done]
+  ];
+  for (const [selector, value] of targets) setSummaryText(selector, value);
+}
+
+/**
+ * @param {Date|null} nextDeadline
+ */
+function renderSummaryDeadline(nextDeadline) {
+  const deadlineEl = document.querySelector(".date-font-summary");
+  if (!deadlineEl) return;
+  if (nextDeadline) {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    deadlineEl.textContent = nextDeadline.toLocaleDateString("en-US", options);
+  } else {
+    deadlineEl.textContent = "No urgent deadlines";
+  }
+}
 
 /**
  * Loads tasks, computes summary KPIs and renders them into the DOM.
@@ -169,40 +212,11 @@ async function updateSummary() {
   const tasks = await loadTasks();
   const counts = getTaskCounts(tasks);
   const nextDeadline = getNextDeadline(tasks);
-  setSummaryText(".urgent-task-card-summary .h2-font-summray", counts.urgent);
-  setSummaryText(".tasks-on-board-card-summary .h2-font-summray", counts.total);
-  setSummaryText(
-    ".summary-section-2-order .summary-card:nth-child(1) .h2-font-summray",
-    counts.todo
-  );
-  setSummaryText(
-    ".summary-section-2-order .summary-card:nth-child(2) .h2-font-summray",
-    counts.inProgress
-  );
-  setSummaryText(
-    ".summary-section-2-order .summary-card:nth-child(3) .h2-font-summray",
-    counts.feedback
-  );
-  setSummaryText(
-    ".summary-section-2-order .summary-card:nth-child(4) .h2-font-summray",
-    counts.done
-  );
-  const deadlineEl = document.querySelector(".date-font-summary");
-  if (deadlineEl) {
-    if (nextDeadline) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      deadlineEl.textContent = nextDeadline.toLocaleDateString(
-        "en-US",
-        options
-      );
-    } else {
-      deadlineEl.textContent = "No urgent deadlines";
-    }
-  }
+  renderSummaryCounts(counts);
+  renderSummaryDeadline(nextDeadline);
 }
 
 let lastDataString = "";
-
 
 /**
  * Polls Firebase for changes and updates summary if data differs.
@@ -211,7 +225,7 @@ let lastDataString = "";
  */
 async function pollSummary() {
   try {
-const { base, authQuery } = await getSummaryFetchConfig();
+    const { base, authQuery } = await getSummaryFetchConfig();
     const res = await fetch(`${base}tasks.json${authQuery}`);
     const data = await res.json();
     const json = JSON.stringify(data);
@@ -219,12 +233,11 @@ const { base, authQuery } = await getSummaryFetchConfig();
       lastDataString = json;
       await updateSummary();
     }
-  } catch (err) {
-  }
+  } catch (err) {}
 }
 
-
 let pollIntervalId;
+
 /**
  * Starts a polling interval for summary updates if not already running.
  * Uses a 5 second interval to keep the dashboard in sync with backend changes.
@@ -235,18 +248,27 @@ function startSummaryPolling() {
   pollIntervalId = setInterval(pollSummary, 5000);
 }
 
-
 /**
  * Ensures authentication has run (anonymous if needed) and returns
  * the configured Firebase base URL plus auth query string.
  * @returns {Promise<{base: string, authQuery: string}>}
  */
 async function getSummaryFetchConfig() {
-   await waitForAuthGlobals();
-  if (window.authReady) {
-    await window.authReady;
-  }
+  await ensureSummaryAuth();
+  const token = await window.auth?.currentUser?.getIdToken?.();
+  const base =
+    window.BASE_URL ||
+    "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
+  const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
+  return { base, authQuery };
+}
 
+/**
+ * @returns {Promise<void>}
+ */
+async function ensureSummaryAuth() {
+  await waitForAuthGlobals();
+  if (window.authReady) await window.authReady;
   if (!window.auth?.currentUser && typeof window.signInAnonymously === "function") {
     try {
       await window.signInAnonymously();
@@ -254,20 +276,14 @@ async function getSummaryFetchConfig() {
       console.warn("Anonymous sign-in for summary failed", err);
     }
   }
-
-  const token = await window.auth?.currentUser?.getIdToken?.();
-  const base =
-    window.BASE_URL ||
-    "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
-  const authQuery = token ? `?auth=${encodeURIComponent(token)}` : "";
-
-  return { base, authQuery };
 }
-
 
 let authGlobalsPromise;
 
-
+/**
+ * Waits until global auth helpers are available (authReady/signInAnonymously).
+ * @returns {Promise<void>}
+ */
 function waitForAuthGlobals() {
   if (!authGlobalsPromise) {
     authGlobalsPromise = new Promise((resolve) => {
@@ -275,7 +291,6 @@ function waitForAuthGlobals() {
         resolve();
         return;
       }
-
       const deadline = Date.now() + 3000;
       const interval = setInterval(() => {
         if (window.authReady || window.signInAnonymously || Date.now() > deadline) {
@@ -285,7 +300,5 @@ function waitForAuthGlobals() {
       }, 50);
     });
   }
-
   return authGlobalsPromise;
 }
-
