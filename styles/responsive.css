@@ -366,13 +366,13 @@ body::-webkit-scrollbar {
     padding-left: 0 !important;
     left: 17px !important;
   }
-}
 
 .side-overlay.open .side-panel {
   height: 100vh !important;
   max-width: 100vw;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+}
 }
 
 @media (max-width: 398px) {
