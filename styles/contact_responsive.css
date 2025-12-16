@@ -338,3 +338,15 @@
     right: 16px;
   }
 }
+contact .show-contact-logo-blue + div {
+  flex: 1;
+  min-width: 0;
+}
+
+.name-property,
+.name-property h2 {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
