@@ -1,488 +1,296 @@
 window.selectedUsers = window.selectedUsers || [];
 window.isDropdownOpen = window.isDropdownOpen || false;
 
-// === Title Validation ===
 document.addEventListener("DOMContentLoaded", () => {
-  const titleInput = document.getElementById("title");
-  if (!titleInput) return;
-  const errorMsg = document.getElementById("title-error");
-
-  function validateTitle() {
-    const value = titleInput.value.trim();
-    if (value === "") {
-      errorMsg.textContent = "This field is required.";
-      titleInput.style.borderBottom = "1px solid red";
-    } else {
-      errorMsg.textContent = "";
-      titleInput.style.borderBottom = "1px solid #d1d1d1";
-    }
-  }
-
-  titleInput.addEventListener("blur", validateTitle);
-  titleInput.addEventListener("input", validateTitle);
+  const input = document.getElementById("title"); if (!input) return;
+  const msg = document.getElementById("title-error");
+  const validate = () => { const ok = !!input.value.trim(); msg.textContent = ok ? "" : "This field is required."; input.style.borderBottom = ok ? "1px solid #d1d1d1" : "1px solid red"; };
+  input.addEventListener("blur", validate); input.addEventListener("input", validate);
 });
 
-// === Hidden Date Picker (Reusable) ===
 let hiddenDatePicker = document.createElement("input");
-hiddenDatePicker.type = "date";
-hiddenDatePicker.id = "hidden-date-picker";
-hiddenDatePicker.name = "hidden-date-picker";
-hiddenDatePicker.style.position = "fixed"; // an Feld-Position kleben
-hiddenDatePicker.style.opacity = "0";
-hiddenDatePicker.style.pointerEvents = "none";
-hiddenDatePicker.style.height = "0";
-hiddenDatePicker.style.width = "0";
-hiddenDatePicker.style.zIndex = "1100";
+hiddenDatePicker.type = "date"; hiddenDatePicker.id = "hidden-date-picker"; hiddenDatePicker.name = "hidden-date-picker";
+Object.assign(hiddenDatePicker.style, { position: "fixed", opacity: "0", pointerEvents: "none", height: "0", width: "0", zIndex: "1100" });
 document.body.appendChild(hiddenDatePicker);
 
-// === Due Date Validation & Input Formatting ===
-/**
- * Validates whether a string matches the date format dd/mm/yyyy.
- * @param {string} dateString - The input date string.
- * @returns {boolean} True if format is valid.
- */
-function isValidDateFormat(dateString) {
-  const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-  return regex.test(dateString);
-}
+/** @param {string} dateString @returns {boolean} */
+function isValidDateFormat(dateString) { return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString); }
 
-/**
- * Sanitizes and formats the due date input into dd/mm/yyyy as the user types.
- * @param {InputEvent} e - The input event.
- */
+/** @param {InputEvent} e */
 function sanitizeDueDateInput(e) {
-  let v = e.target.value.replace(/[^\d]/g, "");
-  if (v.length > 8) v = v.slice(0, 8);
-  if (v.length > 4) {
-    v = v.slice(0, 2) + "/" + v.slice(2, 4) + "/" + v.slice(4);
-  } else if (v.length > 2) {
-    v = v.slice(0, 2) + "/" + v.slice(2);
-  }
+  let v = e.target.value.replace(/[^\d]/g, ""); if (v.length > 8) v = v.slice(0, 8);
+  if (v.length > 4) v = v.slice(0, 2) + "/" + v.slice(2, 4) + "/" + v.slice(4);
+  else if (v.length > 2) v = v.slice(0, 2) + "/" + v.slice(2);
   e.target.value = v;
 }
 
-/**
- * Validates the due date input field for format and real date values.
- * @returns {boolean} True if the due date is valid.
- */
+/** @param {string} dateString @returns {boolean} */
+function isRealDate(dateString) {
+  const [d, m, y] = dateString.split("/").map(Number); const dt = new Date(y, m - 1, d);
+  return dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d;
+}
+
+/** @param {HTMLElement} msg @param {HTMLElement} parent @param {string} text @returns {boolean} */
+function setDueDateError(msg, parent, text) { msg.textContent = text; parent.style.borderBottom = "1px solid red"; return false; }
+
+/** @returns {boolean} */
 function validateDueDate() {
-  const dueDateInput = document.getElementById("due-date");
-  if (!dueDateInput) return false;
-  const parent = dueDateInput.parentElement;
-  const wrapper = dueDateInput.closest(".date-input-wrapper-addTask_page");
-  const errorMsg = wrapper.querySelector("#due-date-error");
-  const value = dueDateInput.value.trim();
-  if (value === "") {
-    errorMsg.textContent = "This field is required.";
-    parent.style.borderBottom = "1px solid red";
-    return false;
-  }
-  if (!isValidDateFormat(value)) {
-    errorMsg.textContent = "Please use format dd/mm/yyyy";
-    parent.style.borderBottom = "1px solid red";
-    return false;
-  }
-  if (!isRealDate(value)) {
-    errorMsg.textContent = "Please enter a valid calendar date";
-    parent.style.borderBottom = "1px solid red";
-    return false;
-  }
-  errorMsg.textContent = "";
-  parent.style.borderBottom = "1px solid #d1d1d1";
-  return true;
+  const input = document.getElementById("due-date"); if (!input) return false;
+  const wrap = input.closest(".date-input-wrapper-addTask_page"); const msg = wrap?.querySelector("#due-date-error"); const parent = input.parentElement;
+  if (!msg || !parent) return false; const v = input.value.trim();
+  if (!v) return setDueDateError(msg, parent, "This field is required.");
+  if (!isValidDateFormat(v)) return setDueDateError(msg, parent, "Please use format dd/mm/yyyy");
+  if (!isRealDate(v)) return setDueDateError(msg, parent, "Please enter a valid calendar date");
+  msg.textContent = ""; parent.style.borderBottom = "1px solid #d1d1d1"; return true;
 }
 
-/**
- * Opens the hidden native date picker and syncs the result
- * back into the visible due-date input as dd/mm/yyyy.
- * Der Picker „hängt“ an der Position des Due-Date-Feldes
- * (gelbe Linie).
- */
-function openPickerSimple() {
-  const dueInput = document.getElementById("due-date");
-  if (!dueInput) return;
+/** @param {HTMLInputElement} dueInput */
+function positionPicker(dueInput) {
+  const field = dueInput.closest(".date-field-addTask_page") || dueInput; const r = field.getBoundingClientRect();
+  Object.assign(hiddenDatePicker.style, { pointerEvents: "auto", width: r.width + "px", height: r.height + "px", left: r.left + "px", top: r.top + "px" });
+}
 
-  const dateField = dueInput.closest(".date-field-addTask_page") || dueInput;
-  const rect = dateField.getBoundingClientRect();
-  hiddenDatePicker.style.pointerEvents = "auto";
-  hiddenDatePicker.style.width = rect.width + "px";
-  hiddenDatePicker.style.height = rect.height + "px";
-  hiddenDatePicker.style.left = rect.left + "px";
-  hiddenDatePicker.style.top = rect.top + "px";
+function setPickerMinToday() {
+  const t = new Date(), y = t.getFullYear(), m = String(t.getMonth() + 1).padStart(2, "0"), d = String(t.getDate()).padStart(2, "0");
+  hiddenDatePicker.min = `${y}-${m}-${d}`;
+}
 
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const dd = String(today.getDate()).padStart(2, "0");
-  hiddenDatePicker.min = `${yyyy}-${mm}-${dd}`;
+function resetPickerValue() { hiddenDatePicker.removeAttribute("value"); hiddenDatePicker.value = ""; }
 
-  hiddenDatePicker.removeAttribute("value");
-  hiddenDatePicker.value = "";
+let pickerSyncId = null, pickerLast = "";
 
-  hiddenDatePicker.onchange = () => {
-    hiddenDatePicker.style.pointerEvents = "none";
-    if (!hiddenDatePicker.value) {
-      dueInput.value = "";
-      validateDueDate();
-      return;
-    }
-    const [year, month, day] = hiddenDatePicker.value.split("-");
-    dueInput.value = `${day}/${month}/${year}`;
-    validateDueDate();
-  };
+/** @param {HTMLInputElement} dueInput */
+function syncPickerToDue(dueInput) {
+  const v = hiddenDatePicker.value || "";
+  if (v === pickerLast) return; pickerLast = v;
+  if (!v) { dueInput.value = ""; validateDueDate(); return; }
+  const [y, m, d] = v.split("-"); dueInput.value = `${d}/${m}/${y}`; validateDueDate();
+}
 
+/** @param {HTMLInputElement} dueInput */
+function startPickerSync(dueInput) {
+  pickerLast = hiddenDatePicker.value || "";
+  clearInterval(pickerSyncId); pickerSyncId = setInterval(() => syncPickerToDue(dueInput), 80);
+}
+
+/** @param {HTMLInputElement} dueInput */
+function attachPickerChange(dueInput) {
+  const h = () => syncPickerToDue(dueInput);
+  hiddenDatePicker.oninput = h; hiddenDatePicker.onchange = h;
+  startPickerSync(dueInput);
+}
+
+
+function showPickerNow() {
   hiddenDatePicker.focus();
-  setTimeout(() => {
-    if (hiddenDatePicker.showPicker) {
-      hiddenDatePicker.showPicker();
-    } else {
-      hiddenDatePicker.click();
-    }
-  }, 0);
+  setTimeout(() => { if (hiddenDatePicker.showPicker) hiddenDatePicker.showPicker(); else hiddenDatePicker.click(); }, 0);
 }
 
+function openPickerSimple() {
+  const dueInput = document.getElementById("due-date"); if (!dueInput) return;
+  positionPicker(dueInput); setPickerMinToday(); resetPickerValue(); attachPickerChange(dueInput); showPickerNow();
+}
 window.openPickerSimple = openPickerSimple;
 
 hiddenDatePicker.addEventListener("blur", () => {
   hiddenDatePicker.style.pointerEvents = "none";
+  clearInterval(pickerSyncId); pickerSyncId = null;
 });
 
-// === Event-Handling ===
+
 const dueDateInput = document.getElementById("due-date");
 if (dueDateInput) {
-  dueDateInput.readOnly = true;
-  dueDateInput.addEventListener("click", openPickerSimple);
-  dueDateInput.addEventListener("input", (e) => {
-    sanitizeDueDateInput(e);
-    validateDueDate();
-  });
+  dueDateInput.readOnly = true; dueDateInput.addEventListener("click", openPickerSimple);
+  dueDateInput.addEventListener("input", (e) => { sanitizeDueDateInput(e); validateDueDate(); });
   dueDateInput.addEventListener("blur", validateDueDate);
 }
 
-/**
- * Checks whether a date string represents a real calendar date.
- * @param {string} dateString - Date string in dd/mm/yyyy format.
- * @returns {boolean} True if the date exists on the calendar.
- */
-function isRealDate(dateString) {
-  const [day, month, year] = dateString.split("/").map(Number);
-  const date = new Date(year, month - 1, day);
-  return (
-    date.getFullYear() === year &&
-    date.getMonth() === month - 1 &&
-    date.getDate() === day
-  );
-}
-
-// === Priority Selection ===
-/**
- * Sets the priority level for the task and applies visual styling.
- * @param {string} priority - One of "urgent", "medium", or "low".
- */
+/** @param {string} priority */
 function setPriorityAddTask(priority) {
-  const urgentBtn = document.querySelector(".priority-btn-urgent-addTask_page");
-  const mediumBtn = document.querySelector(".priority-btn-medium-addTask_page");
-  const lowBtn = document.querySelector(".priority-btn-low-addTask_page");
-
-  urgentBtn.style.backgroundColor = "white";
-  mediumBtn.style.backgroundColor = "white";
-  lowBtn.style.backgroundColor = "white";
-  urgentBtn.style.color = "black";
-  mediumBtn.style.color = "black";
-  lowBtn.style.color = "black";
-
-  urgentBtn.querySelector("img").style.filter = "";
-  mediumBtn.querySelector("img").style.filter =
-    "brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)"; // orange
-  lowBtn.querySelector("img").style.filter = "";
-
-  if (priority === "urgent") {
-    urgentBtn.style.backgroundColor = "#ff3d00";
-    urgentBtn.style.color = "white";
-    urgentBtn.querySelector("img").style.filter = "brightness(0) invert(1)";
-  } else if (priority === "medium") {
-    mediumBtn.style.backgroundColor = "#ffa800";
-    mediumBtn.style.color = "white";
-    mediumBtn.querySelector("img").style.filter = "brightness(0) invert(1)";
-  } else if (priority === "low") {
-    lowBtn.style.backgroundColor = "#00c853";
-    lowBtn.style.color = "white";
-    lowBtn.querySelector("img").style.filter = "brightness(0) invert(1)";
-  }
-
-  window.currentPriority = priority;
-  window.currentPrio = priority;
+  const u = document.querySelector(".priority-btn-urgent-addTask_page"), m = document.querySelector(".priority-btn-medium-addTask_page"), l = document.querySelector(".priority-btn-low-addTask_page");
+  [u, m, l].forEach((b) => { b.style.backgroundColor = "white"; b.style.color = "black"; const img = b.querySelector("img"); if (img) img.style.filter = ""; });
+  m.querySelector("img").style.filter = "brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)";
+  const map = { urgent: [u, "#ff3d00"], medium: [m, "#ffa800"], low: [l, "#00c853"] }, t = map[priority];
+  if (t) { t[0].style.backgroundColor = t[1]; t[0].style.color = "white"; t[0].querySelector("img").style.filter = "brightness(0) invert(1)"; }
+  window.currentPriority = priority; window.currentPrio = priority;
 }
 
-// === Subtask Delete ===
 document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("subtask-delete-addTask_page")) {
-    const subtaskInput = document.getElementById("subtask");
-    if (subtaskInput) {
-      subtaskInput.value = "";
-    }
-  }
+  if (!e.target.classList.contains("subtask-delete-addTask_page")) return;
+  const input = document.getElementById("subtask"); if (input) input.value = "";
 });
 
-// === Subtask Add ===
 document.addEventListener("keyup", (e) => {
   if (e.key !== "Enter") return;
+  const input = document.getElementById("subtask");
+  if (!input || document.activeElement !== input) return;
+  const v = input.value.trim(); if (!v) return;
+  e.preventDefault(); const icon = document.querySelector(".subtask-check-addTask_page"); if (icon) icon.click();
+});
 
-  const subtaskInput = document.getElementById("subtask");
-  if (!subtaskInput) return;
-  if (document.activeElement === subtaskInput) {
-    const value = subtaskInput.value.trim();
-    if (value === "") return;
-    e.preventDefault();
-    const checkIcon = document.querySelector(".subtask-check-addTask_page");
-    if (checkIcon) checkIcon.click();
-  }
+/** @param {HTMLElement} list @param {string} value */
+function appendSubtaskItem(list, value) {
+  if (!list) return;
+  const li = document.createElement("li"); li.textContent = value;
+  const a = document.createElement("div"); a.classList.add("subtask-actions-addTask_page");
+  a.innerHTML = `<img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page"><div class="subtask-divider-addTask_page"></div><img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">`;
+  li.appendChild(a); list.appendChild(li);
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("subtask-check-addTask_page")) return;
+  const input = document.getElementById("subtask"), list = document.getElementById("subtask-list");
+  const v = input?.value.trim() || ""; if (!v) return;
+  appendSubtaskItem(list, v); input.value = "";
 });
 
 document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("subtask-check-addTask_page")) {
-    const subtaskInput = document.getElementById("subtask");
-    const subtaskList = document.getElementById("subtask-list");
-    const value = subtaskInput.value.trim();
-
-    if (value !== "") {
-      const li = document.createElement("li");
-      li.textContent = value;
-
-      const actions = document.createElement("div");
-      actions.classList.add("subtask-actions-addTask_page");
-      actions.innerHTML = `
-        <img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page">
-        <div class="subtask-divider-addTask_page"></div>
-        <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
-      `;
-      li.appendChild(actions);
-
-      subtaskList.appendChild(li);
-      subtaskInput.value = "";
-    }
-  }
+  if (!e.target.classList.contains("subtask-remove-addTask_page")) return;
+  const li = e.target.closest("li"); if (li) li.remove();
 });
 
-// === Subtask Remove ===
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("subtask-remove-addTask_page")) {
-    const li = e.target.closest("li");
-    if (li) li.remove();
-  }
-});
+/** @param {string} value @returns {HTMLInputElement} */
+function createSubtaskEditInput(value) {
+  const i = document.createElement("input");
+  i.type = "text"; i.value = value; i.classList.add("task-subtask-addTask_page"); i.name = "subtask-edit"; i.setAttribute("aria-label", "Edit subtask");
+  return i;
+}
 
-// === Subtask Edit (Beginner-friendly, in-place editing) ===
+/** @returns {HTMLDivElement} */
+function createSubtaskEditActions() {
+  const a = document.createElement("div"); a.classList.add("subtask-actions-addTask_page");
+  a.innerHTML = `<img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page"><div class="subtask-divider-addTask_page"></div><img src="../assets/img/check.svg" alt="Save subtask" class="subtask-save-addTask_page">`;
+  return a;
+}
+
+/** @param {HTMLInputElement} input @param {HTMLLIElement} li */
+function attachSubtaskEditKeyup(input, li) {
+  input.addEventListener("keyup", (ev) => {
+    if (ev.key !== "Enter") return;
+    const v = input.value.trim(); if (!v) return;
+    ev.preventDefault(); const save = li.querySelector(".subtask-save-addTask_page"); if (save) save.click();
+  });
+}
+
+/** @param {MouseEvent} e */
 function enableSubtaskEditing(e) {
   if (!e.target.classList.contains("subtask-edit-addTask_page")) return;
-  const li = e.target.closest("li");
-  if (!li) return;
-  const oldText = li.firstChild.textContent;
-  li.innerHTML = "";
-  const input = document.createElement("input");
-  input.type = "text";
-  input.value = oldText.trim();
-  input.classList.add("task-subtask-addTask_page");
-  input.name = "subtask-edit";
-  input.setAttribute("aria-label", "Edit subtask");
-  const actions = document.createElement("div");
-  actions.classList.add("subtask-actions-addTask_page");
-  actions.innerHTML = `
-    <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
-    <div class="subtask-divider-addTask_page"></div>
-    <img src="../assets/img/check.svg" alt="Save subtask" class="subtask-save-addTask_page">
-  `;
-
-  li.appendChild(input);
-  li.appendChild(actions);
-  input.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      const value = input.value.trim();
-      if (value === "") return;
-      event.preventDefault();
-      const saveIcon = li.querySelector(".subtask-save-addTask_page");
-      if (saveIcon) saveIcon.click();
-    }
-  });
+  const li = e.target.closest("li"); if (!li || !li.firstChild) return;
+  const oldText = li.firstChild.textContent.trim(); li.innerHTML = "";
+  const input = createSubtaskEditInput(oldText), actions = createSubtaskEditActions();
+  li.append(input, actions); attachSubtaskEditKeyup(input, li);
 }
-
 document.addEventListener("click", enableSubtaskEditing);
 
-// === Subtask Save ===
+/** @returns {HTMLDivElement} */
+function createSubtaskDisplayActions() {
+  const a = document.createElement("div"); a.classList.add("subtask-actions-addTask_page");
+  a.innerHTML = `<img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page"><div class="subtask-divider-addTask_page"></div><img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">`;
+  return a;
+}
+
+/** @param {MouseEvent} e */
 function saveEditedSubtask(e) {
   if (!e.target.classList.contains("subtask-save-addTask_page")) return;
-
-  const li = e.target.closest("li");
-  if (!li) return;
-
-  const input = li.querySelector("input");
-  if (!input) return;
-
-  const newText = input.value.trim();
-  if (newText === "") {
-    li.remove();
-    return;
-  }
-
-  li.innerHTML = "";
-  li.textContent = newText;
-
-  const actions = document.createElement("div");
-  actions.classList.add("subtask-actions-addTask_page");
-  actions.innerHTML = `
-    <img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page">
-    <div class="subtask-divider-addTask_page"></div>
-    <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">
-  `;
-  li.appendChild(actions);
+  const li = e.target.closest("li"); if (!li) return;
+  const input = li.querySelector("input"); if (!input) return;
+  const v = input.value.trim(); if (!v) { li.remove(); return; }
+  li.innerHTML = ""; li.textContent = v; li.appendChild(createSubtaskDisplayActions());
 }
-
 document.addEventListener("click", saveEditedSubtask);
 
-// === Form Reset ===
-function clearForm() {
-  document.getElementById("title").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("due-date").value = "";
-  document.getElementById("subtask").value = "";
-  document.getElementById("subtask-list").innerHTML = "";
-  document.getElementById("assigned-avatars").innerHTML = "";
+function clearBasicFields() {
+  ["title", "description", "due-date", "subtask"].forEach((id) => { const el = document.getElementById(id); if (el) el.value = ""; });
+  const list = document.getElementById("subtask-list"); if (list) list.innerHTML = "";
+}
 
-  const category = document.getElementById("category");
-  if (category) category.selectedIndex = 0;
+function resetCategory() { const c = document.getElementById("category"); if (c) c.selectedIndex = 0; }
 
-  document
-    .querySelectorAll(".priority-group-addTask_page button")
-    .forEach((btn) => {
-      btn.style.backgroundColor = "white";
-      btn.style.color = "black";
-      const img = btn.querySelector("img");
-      if (img) img.style.filter = "";
-    });
+function resetPriorityButtons() {
+  document.querySelectorAll(".priority-group-addTask_page button").forEach((btn) => { btn.style.backgroundColor = "white"; btn.style.color = "black"; const img = btn.querySelector("img"); if (img) img.style.filter = ""; });
   setPriorityAddTask("medium");
-
-  selectedUsers = [];
-  const placeholder = document.querySelector(
-    ".assign-placeholder-addTask_page"
-  );
-  placeholder.textContent = "Select contact to assign";
-  placeholder.style.color = "black";
-  document
-    .querySelectorAll(".assign-check-addTask_page")
-    .forEach((cb) => (cb.checked = false));
-
-  document.querySelectorAll(".error-text").forEach((e) => (e.textContent = ""));
 }
 
-// === Toast (GLOBAL) ===
-function showToast(text, { variant = "ok", duration = 1000 } = {}) {
+function resetAssignSection() {
+  window.selectedUsers = [];
+  const p = document.querySelector(".assign-placeholder-addTask_page");
+  if (p) { p.textContent = "Select contact to assign"; p.style.color = "black"; }
+  document.querySelectorAll(".assign-check-addTask_page").forEach((cb) => (cb.checked = false));
+  const av = document.getElementById("assigned-avatars"); if (av) av.innerHTML = "";
+}
+
+function clearErrors() { document.querySelectorAll(".error-text").forEach((e) => (e.textContent = "")); }
+
+function clearForm() { clearBasicFields(); resetCategory(); resetPriorityButtons(); resetAssignSection(); clearErrors(); }
+
+/** @returns {HTMLElement} */
+function ensureToastRoot() {
   let root = document.getElementById("toast-root");
-  if (!root) {
-    root = document.createElement("div");
-    root.id = "toast-root";
-    document.body.appendChild(root);
-  }
-  const el = document.createElement("div");
-  el.className =
-    "toast toast--show" + (variant === "error" ? " toast--error" : "");
-  el.innerHTML = `<span>${text}</span><span class="toast-icon" aria-hidden="true"></span>`;
-  root.appendChild(el);
-
-  setTimeout(() => {
-    el.classList.remove("toast--show");
-    el.classList.add("toast--hide");
-    el.addEventListener("animationend", () => el.remove(), { once: true });
-  }, duration);
+  if (!root) { root = document.createElement("div"); root.id = "toast-root"; document.body.appendChild(root); }
+  return root;
 }
 
+/** @param {HTMLElement} el */
+function hideToast(el) {
+  el.classList.remove("toast--show"); el.classList.add("toast--hide");
+  el.addEventListener("animationend", () => el.remove(), { once: true });
+}
+
+/** @param {string} text @param {{variant?: "ok"|"error", duration?: number}} [options] */
+function showToast(text, { variant = "ok", duration = 1000 } = {}) {
+  const root = ensureToastRoot(); const el = document.createElement("div");
+  el.className = "toast toast--show" + (variant === "error" ? " toast--error" : "");
+  el.innerHTML = `<span>${text}</span><span class="toast-icon" aria-hidden="true"></span>`;
+  root.appendChild(el); setTimeout(() => hideToast(el), duration);
+}
 window.showToast = showToast;
 
-// === Create Task ===
-async function createTask() {
+/**
+ * @returns {{
+ *  title:string, dueDate:string, description:string, category:string, priority:string
+ * } | null}
+ */
+function readTaskForm() {
   const title = (document.getElementById("title")?.value || "").trim();
-  if (!title) {
-    showToast("Please enter a title", { variant: "error", duration: 1600 });
-    return;
-  }
   const dueDate = (document.getElementById("due-date")?.value || "").trim();
-  if (!dueDate) {
-    showToast("Please enter a due date", { variant: "error", duration: 1600 });
-    return;
-  }
-  if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) {
-    showToast("Please enter a valid date in format dd/mm/yyyy", {
-      variant: "error",
-      duration: 1600,
-    });
-    return;
-  }
-  const description = (
-    document.getElementById("description")?.value || ""
-  ).trim();
+  const description = (document.getElementById("description")?.value || "").trim();
   const category = (document.getElementById("category")?.value || "").trim();
-  if (!category) {
-    showToast("Please select a category.", {
-      variant: "error",
-      duration: 1600,
-    });
-    return;
-  }
-  const priority = (window.currentPrio || "medium").toLowerCase();
-
-  const priorityIcons = {
-    urgent:
-      "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
-    medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
-    low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg",
-  };
-  let priorityIcon = priorityIcons[priority] || priorityIcons.low;
-
-  const assignedTo = (window.selectedUsers || []).map((name) => {
-    const sourceAvatar = [
-      ...document.querySelectorAll(".assign-item-addTask_page"),
-    ]
-      .find(
-        (item) =>
-          item.querySelector(".assign-name-addTask_page").textContent.trim() ===
-          name
-      )
-      ?.querySelector(".assign-avatar-addTask_page");
-    const color = sourceAvatar ? sourceAvatar.style.backgroundColor : "#4589ff";
-    return { name, color };
-  });
-  const subtaskItems = document.querySelectorAll("#subtask-list li");
-  const subTasks = Array.from(subtaskItems)
-    .map((li) => {
-      const textNode = li.firstChild;
-      return textNode?.textContent?.trim() || "";
-    })
-    .filter((text) => text !== "");
-  const subtasksTotal = subTasks.length;
-  const statusTarget = window.nextTaskTargetStatus || "todo";
-  const task = {
-    id: Date.now(),
-    title,
-    description,
-    dueDate,
-    priority,
-    priorityIcon,
-    status: statusTarget,
-    type: category === "technical" ? "Technical Task" : "User Story",
-    subTasks,
-    subtasksDone: 0,
-    subtasksTotal,
-    assignedTo,
-  };
-  try {
-    await saveTask(task.id, task);
-    showToast("Task added to board", { duration: 1600 });
-    setTimeout(() => {
-      window.location.href = "../board_code/board.html";
-    }, 1700);
-  } catch (error) {
-    console.error("Error saving task:", error);
-    showToast("Error saving task", { variant: "error", duration: 2000 });
-  }
+  if (!title) { showToast("Please enter a title", { variant: "error", duration: 1600 }); return null; }
+  if (!dueDate) { showToast("Please enter a due date", { variant: "error", duration: 1600 }); return null; }
+  if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) { showToast("Please enter a valid date in format dd/mm/yyyy", { variant: "error", duration: 1600 }); return null; }
+  if (!category) { showToast("Please select a category.", { variant: "error", duration: 1600 }); return null; }
+  return { title, dueDate, description, category, priority: (window.currentPrio || "medium").toLowerCase() };
 }
 
+/** @returns {{name:string,color:string}[]} */
+function getAssignedUsers() {
+  const items = [...document.querySelectorAll(".assign-item-addTask_page")], selected = window.selectedUsers || [];
+  return selected.map((name) => {
+    const item = items.find((el) => el.querySelector(".assign-name-addTask_page").textContent.trim() === name);
+    const av = item?.querySelector(".assign-avatar-addTask_page"); return { name, color: av ? av.style.backgroundColor : "#4589ff" };
+  });
+}
+
+/** @returns {string[]} */
+function getSubtasks() {
+  return Array.from(document.querySelectorAll("#subtask-list li"))
+    .map((li) => li.firstChild?.textContent?.trim() || "").filter((t) => t !== "");
+}
+
+/** @param {{title:string,dueDate:string,description:string,category:string,priority:string}} data @returns {Object} */
+function buildTask(data) {
+  const icons = { urgent: "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg", medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg", low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg" };
+  const subTasks = getSubtasks(), status = window.nextTaskTargetStatus || "todo";
+  return { id: Date.now(), title: data.title, description: data.description, dueDate: data.dueDate, priority: data.priority, priorityIcon: icons[data.priority] || icons.low, status, type: data.category === "technical" ? "Technical Task" : "User Story", subTasks, subtasksDone: 0, subtasksTotal: subTasks.length, assignedTo: getAssignedUsers() };
+}
+
+function redirectToBoard() { window.location.href = "../board_code/board.html"; }
+
+/** @returns {Promise<void>} */
+async function createTask() {
+  const data = readTaskForm(); if (!data) return;
+  const task = buildTask(data);
+  try { await saveTask(task.id, task); showToast("Task added to board", { duration: 1600 }); setTimeout(redirectToBoard, 1700); }
+  catch (err) { console.error("Error saving task:", err); showToast("Error saving task", { variant: "error", duration: 2000 }); }
+}
 window.createTask = createTask;
