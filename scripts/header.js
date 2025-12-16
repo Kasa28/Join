@@ -1,11 +1,6 @@
-/* === header.js | Handles user menu, login state, and header rendering === */
-
 /**
  * Determines the correct base path for links depending on the current page location.
- * Returns `".."` if the current page is inside a nested folder (e.g., /board_code/ or /addTask_code/),
- * otherwise returns `"."` for root-level pages.
- *
- * @returns {string} The relative base path to use for link generation.
+ * @returns {string}
  */
 function getBasePath() {
   const path = window.location.pathname;
@@ -16,41 +11,17 @@ function getBasePath() {
 }
 
 /**
- * Returns the HTML template for the user menu displayed in the header.
- * @returns {string} The user menu HTML string.
+ * Builds the HTML string for the header user menu.
+ * @returns {string}
  */
-
 function userMenuTemplate() {
   const base = getBasePath();
-  return `<div class="user-menu-container-header">
-                <div class="user-menu-content-header">
-                    <div>
-                        <a class="button-sidebar padding-up-down-small button_help" href="${base}/help.html">
-                            <span class="sidebar-font">Help</span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="button-sidebar padding-up-down-small" href="${base}/legal.html">
-                            <span class="sidebar-font">Legal Notice</span>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="button-sidebar padding-up-down-small" href="${base}/privacy.html">
-                            <span class="sidebar-font">Privacy Policy</span>
-                        </a>
-                    </div>
-                    <div>
-                        <a onclick="deleteIdFromLocalStorage(), logout()" class="button-sidebar padding-up-down-small" href="${base}/index.html">
-                            <span class="sidebar-font">Logout</span>
-                        </a>
-                    </div>
-                </div>
-            </div>`;
+  return `<div class="user-menu-container-header"><div class="user-menu-content-header"><div><a class="button-sidebar padding-up-down-small button_help" href="${base}/help.html"><span class="sidebar-font">Help</span></a></div><div><a class="button-sidebar padding-up-down-small" href="${base}/legal.html"><span class="sidebar-font">Legal Notice</span></a></div><div><a class="button-sidebar padding-up-down-small" href="${base}/privacy.html"><span class="sidebar-font">Privacy Policy</span></a></div><div><a onclick="deleteIdFromLocalStorage(), logout()" class="button-sidebar padding-up-down-small" href="${base}/index.html"><span class="sidebar-font">Logout</span></a></div></div></div>`;
 }
 
-/* === Render User Menu === */
 /**
- * Renders the user menu popup into the header container.
+ * Renders the user menu into the header container.
+ * @returns {void}
  */
 function renderUserMenuePopupMenu() {
   const contentRef = document.getElementById("user-menue-header");
@@ -58,68 +29,51 @@ function renderUserMenuePopupMenu() {
   contentRef.innerHTML = userMenuTemplate();
 }
 
-/* === Toggle User Menu Visibility === */
 /**
  * Toggles the visibility of the user menu popup in the header.
+ * @returns {void}
  */
 function toggleUserMenuePopupMenu() {
   const contentRef = document.getElementById("user-menue-header");
   if (!contentRef) return;
   contentRef.classList.toggle("d_none");
-  if (!contentRef.classList.contains("d_none")) {
-    updateUserMenuPosition();
-  }
+  if (!contentRef.classList.contains("d_none")) updateUserMenuPosition();
 }
 
 /**
- * Positions the user menu directly beneath the avatar circle so it stays visually connected.
+ * Positions the user menu below the avatar circle.
+ * @returns {void}
  */
 function updateUserMenuPosition() {
   const wrapper = document.getElementById("user-menue-header");
   const menu = wrapper?.querySelector(".user-menu-container-header");
   const trigger = document.querySelector(".guest-logo-header");
-
-  if (!wrapper || !menu || !trigger || wrapper.classList.contains("d_none")) {
-    return;
-  }
-
+  if (!wrapper || !menu || !trigger || wrapper.classList.contains("d_none")) return;
   const rect = trigger.getBoundingClientRect();
-  const menuWidth =
-    menu.offsetWidth || menu.getBoundingClientRect().width || 181;
-  const calculatedLeft =
-    rect.left + rect.width / 2 - menuWidth / 2 + window.scrollX;
-  const minLeft = 8;
-
-  menu.style.position = "fixed";
-  menu.style.top = `${rect.bottom + 6 + window.scrollY}px`;
-  menu.style.left = `${Math.max(minLeft, calculatedLeft)}px`;
-  menu.style.right = "auto";
+  const menuWidth = menu.offsetWidth || menu.getBoundingClientRect().width || 181;
+  const left = rect.left + rect.width / 2 - menuWidth / 2 + window.scrollX;
+  const top = rect.bottom + 6 + window.scrollY;
+  const safeLeft = Math.max(8, left);
+  Object.assign(menu.style, { position: "fixed", top: `${top}px`, left: `${safeLeft}px`, right: "auto" });
 }
 
-/* === Logout Functionality === */
 /**
- * Signs out the current user and clears guest contacts from localStorage.
+ * Removes guest contacts from localStorage and signs out the user.
+ * @returns {Promise<void>}
  */
 async function deleteIdFromLocalStorage() {
   localStorage.removeItem(GUEST_CONTACTS_KEY);
-  if (typeof window.signOut === "function") {
-    await window.signOut();
-  }
+  if (typeof window.signOut === "function") await window.signOut();
 }
 
-/* === Login State Check === */
 /**
- * Checks whether a user is currently logged in by verifying stored user data.
- * Allows public access to help, legal, and privacy pages.
- * @returns {boolean} True if logged in, false otherwise.
+ * Checks if the current page is a public page (help, legal, privacy, index).
+ * @returns {boolean}
  */
 function isPublicPage() {
   const normalizedPath = window.location.pathname.toLowerCase();
   const publicPages = ["help", "legal", "privacy", "index", "/"];
-
-  if (normalizedPath === "/") {
-    return true;
-  }
+  if (normalizedPath === "/") return true;
   return publicPages.some(
     (page) =>
       normalizedPath.endsWith(`${page}.html`) ||
@@ -127,9 +81,12 @@ function isPublicPage() {
   );
 }
 
+/**
+ * Checks if a user is logged in and redirects to login for protected pages.
+ * @returns {boolean}
+ */
 function checkIfLogedIn() {
   const loggedIn = Boolean(window.currentUser);
-
   if (!loggedIn && !isPublicPage() && window.authReady) {
     window.authReady.then((user) => {
       if (!user) {
@@ -141,10 +98,9 @@ function checkIfLogedIn() {
   return loggedIn;
 }
 
-/* === User Initial Display === */
 /**
- * Initializes the header on page load by setting the user ball letter,
- * activating sidebar button behaviors, and highlighting the current page.
+ * Initializes the header after page load.
+ * @returns {Promise<void>}
  */
 async function onloadFunctionHeader() {
   if (window.authReady) await window.authReady;
@@ -159,40 +115,36 @@ async function onloadFunctionHeader() {
 }
 
 /**
- * Sets the displayed initial in the user avatar circle based on login state.
+ * Sets the avatar circle letter depending on login state and profile.
+ * @param {boolean} isLoggedIn
+ * @param {{name?:string,isGuest?:boolean}|null} [profile]
+ * @returns {Promise<void>}
  */
 async function setLetterInUserBall(isLoggedIn, profile) {
-  let contentRef = document.getElementById("user-ball-ID");
-  if (!contentRef) return;
+  const el = document.getElementById("user-ball-ID");
+  if (!el) return;
   if (!isLoggedIn) {
-    contentRef.innerHTML = "G";
+    el.innerHTML = "G";
     return;
   }
-  const isGuestUser = Boolean(
-    window.currentUser?.isAnonymous || profile?.isGuest
-  );
-  const displayName =
+  const isGuestUser = Boolean(window.currentUser?.isAnonymous || profile?.isGuest);
+  const name =
     profile?.name ||
     window.currentUser?.displayName ||
     window.currentUser?.email ||
     (isGuestUser ? "Guest" : "");
-  const userLetter = displayName.charAt(0).toUpperCase();
-  if (userLetter) {
-    contentRef.innerHTML = userLetter;
+  const letter = name.charAt(0).toUpperCase();
+  if (letter) {
+    el.innerHTML = letter;
     return;
   }
-  if (isGuestUser) {
-    contentRef.innerHTML = "G";
-    return;
-  }
-  contentRef.innerHTML = "?";
+  el.innerHTML = isGuestUser ? "G" : "?";
 }
 
-/* === Greeting Message Rendering === */
 /**
- * Capitalizes the first letter of a given string.
- * @param {string} inputString - The string to modify.
- * @returns {string} The string with its first letter capitalized.
+ * Capitalizes the first letter of the given string.
+ * @param {string} inputString
+ * @returns {string}
  */
 function makeFirstLetterBig(inputString) {
   return (
@@ -201,52 +153,46 @@ function makeFirstLetterBig(inputString) {
 }
 
 /**
- * Renders a greeting message in the header, personalized when the user is logged in.
+ * Renders a greeting in the header, optionally with the user name.
+ * @returns {Promise<void>}
  */
 async function greetUserName() {
   if (window.authReady) await window.authReady;
-  let contentRef = document.getElementById("greetID");
-  const now = new Date();
-  const hour = now.getHours();
-  let greeting = "";
-  if (hour < 12) {
-    greeting = "Good Morning";
-  } else if (hour < 18) {
-    greeting = "Good Afternoon";
-  } else {
-    greeting = "Good Evening";
-  }
+  const el = document.getElementById("greetID");
+  if (!el) return;
+  const hour = new Date().getHours();
+  const greeting =
+    hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
   if (!checkIfLogedIn()) {
-    contentRef.innerHTML = `<h1 class="summary-h1-font-guest">${greeting}</h1>`;
-  } else {
-    const profile = await loadCurrentUserProfile();
-    const baseName =
-      profile?.name ||
-      window.currentUser?.displayName ||
-      window.currentUser?.email ||
-      "User";
-    let userName = makeFirstLetterBig(baseName);
-    contentRef.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2>
-                            <h1 class="summary-h1-font-user">${userName}</h1>`;
+    el.innerHTML = `<h1 class="summary-h1-font-guest">${greeting}</h1>`;
+    return;
   }
+  const profile = await loadCurrentUserProfile();
+  const baseName =
+    profile?.name ||
+    window.currentUser?.displayName ||
+    window.currentUser?.email ||
+    "User";
+  const userName = makeFirstLetterBig(baseName);
+  el.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2><h1 class="summary-h1-font-user">${userName}</h1>`;
 }
 
 /**
- * Highlights the active sidebar button based on the current page URL.
+ * Highlights the active sidebar entry based on the current URL.
+ * @returns {void}
  */
 function setActiveSidebarByURL() {
   const currentPage = window.location.pathname.split("/").pop();
   document.querySelectorAll(".side-menu .button-sidebar").forEach((btn) => {
     const link = btn.getAttribute("href");
     btn.classList.remove("active");
-    if (link && link.includes(currentPage)) {
-      btn.classList.add("active");
-    }
+    if (link && link.includes(currentPage)) btn.classList.add("active");
   });
 }
 
 /**
- * Adds click listeners to sidebar buttons to visually indicate active selection.
+ * Adds click handlers to sidebar buttons to toggle the active class.
+ * @returns {void}
  */
 function addActiveClassToSidebarButtons() {
   document.querySelectorAll(".side-menu .button-sidebar").forEach((btn) => {
@@ -258,42 +204,23 @@ function addActiveClassToSidebarButtons() {
     });
   });
 }
-window.addEventListener("resize", updateUserMenuPosition);
-function toggleNavigationForGuest(isLoggedIn) {
-  const isPublic = isPublicPage();
-  const isGuestOnPublic = !isLoggedIn && isPublic;
 
-  const sidebarHighSection = document.querySelector(
-    ".sidebar-high-section-container"
-  );
+window.addEventListener("resize", updateUserMenuPosition);
+
+/**
+ * Shows or hides navigation parts for guests on public pages.
+ * @param {boolean} isLoggedIn
+ * @returns {void}
+ */
+function toggleNavigationForGuest(isLoggedIn) {
+  const isGuestOnPublic = !isLoggedIn && isPublicPage();
+  const sidebarHighSection = document.querySelector(".sidebar-high-section-container");
   const userAvatar = document.querySelector(".guest-logo-header");
   const loginLink = document.getElementById("guest-login-link");
   const headerHelpLink = document.getElementById("header-help-link");
-
-  // Klasse für Layout (unten / oben verteilen usw.)
   document.body.classList.toggle("guest-mode", isGuestOnPublic);
-
-  // === Sidebar oben (Summary, Add Task, Board, Contacts) ===
-  // Nur zeigen, wenn User eingeloggt ODER keine öffentliche Seite
-  if (sidebarHighSection) {
-    sidebarHighSection.classList.toggle("d_none", isGuestOnPublic);
-  }
-
-  // === Avatar-Kreis oben rechts ===
-  // Für Gäste auf öffentlichen Seiten ausblenden
-  if (userAvatar) {
-    userAvatar.classList.toggle("d_none", isGuestOnPublic);
-  }
-
-  // === Help-Icon (?) oben rechts ===
-  // Für Gäste auf öffentlichen Seiten ausblenden
-  if (headerHelpLink) {
-    headerHelpLink.classList.toggle("d_none", isGuestOnPublic);
-  }
-
-  // === Login-Link in der Sidebar ===
-  // Nur im Gast-Modus auf öffentlichen Seiten anzeigen
-  if (loginLink) {
-    loginLink.classList.toggle("d_none", !isGuestOnPublic);
-  }
+  if (sidebarHighSection) sidebarHighSection.classList.toggle("d_none", isGuestOnPublic);
+  if (userAvatar) userAvatar.classList.toggle("d_none", isGuestOnPublic);
+  if (headerHelpLink) headerHelpLink.classList.toggle("d_none", isGuestOnPublic);
+  if (loginLink) loginLink.classList.toggle("d_none", !isGuestOnPublic);
 }
