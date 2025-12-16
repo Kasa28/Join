@@ -1,10 +1,18 @@
-/* === Base URL Configuration === */
+/** @type {string} */
 const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
-// Expose for non-module scripts that rely on global variables
 window.BASE_URL = BASE_URL;
 
+/**
+ * @typedef {Object} FriendContact
+ * @property {string} username
+ * @property {string} email
+ * @property {string} PhoneNumber
+ * @property {string} color
+ */
+
+/** @type {FriendContact[]} */
 const GUEST_EXAMPLE_CONTACTS = [
   {
     username: "Peter",
@@ -62,6 +70,7 @@ const GUEST_EXAMPLE_CONTACTS = [
   },
 ];
 
+/** @type {string[]} */
 const CONTACT_COLORS = [
   "red",
   "blue",
@@ -74,19 +83,33 @@ const CONTACT_COLORS = [
   "pink",
 ];
 
-// Make guest demo contacts available globally for legacy scripts
 window.GUEST_EXAMPLE_CONTACTS = GUEST_EXAMPLE_CONTACTS;
 
+/**
+ * Removes a trailing slash from the given base URL, if present.
+ * @param {string} url
+ * @returns {string}
+ */
 function sanitizeBaseUrl(url) {
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
+/**
+ * Builds the auth query string for task requests using current Firebase user.
+ * @returns {Promise<string>}
+ */
 async function getTaskAuthQuery() {
   if (window.authReady) await window.authReady;
   const token = await window.auth?.currentUser?.getIdToken?.();
   return token ? `?auth=${encodeURIComponent(token)}` : "";
 }
 
+/**
+ * Performs a fetch call to the tasks path in Realtime Database.
+ * @param {string} path
+ * @param {RequestInit} [options]
+ * @returns {Promise<Response>}
+ */
 async function fetchTasksApi(path, options) {
   const base = sanitizeBaseUrl(window.BASE_URL || BASE_URL);
   const authQuery = await getTaskAuthQuery();
@@ -94,12 +117,22 @@ async function fetchTasksApi(path, options) {
   return fetch(url, options);
 }
 
+/**
+ * Builds the auth query string for generic RTDB requests using current user.
+ * @returns {Promise<string>}
+ */
 async function getAuthQuery() {
   if (window.authReady) await window.authReady;
   const token = await window.auth?.currentUser?.getIdToken?.();
   return token ? `?auth=${encodeURIComponent(token)}` : "";
 }
 
+/**
+ * Performs a fetch call to a generic Realtime Database path.
+ * @param {string} path
+ * @param {RequestInit} [options]
+ * @returns {Promise<Response>}
+ */
 async function fetchRtdbApi(path, options) {
   const base = sanitizeBaseUrl(window.BASE_URL || BASE_URL);
   const authQuery = await getAuthQuery();
@@ -107,13 +140,21 @@ async function fetchRtdbApi(path, options) {
   return fetch(url, options);
 }
 
-/* === Fetch All Tasks === */
+/**
+ * Loads all tasks from /tasks in Realtime Database.
+ * @returns {Promise<Record<string, import("./types").Task>|{}>}
+ */
 async function getAllTasks() {
   const response = await fetchTasksApi("tasks");
   return (await response.json()) || {};
 }
 
-/* === Save Task by ID (PUT Request) === */
+/**
+ * Saves a task by id at /tasks/{taskId} using PUT.
+ * @param {string|number} taskId
+ * @param {Object} taskData
+ * @returns {Promise<Object>}
+ */
 async function saveTask(taskId, taskData) {
   const response = await fetchTasksApi(`tasks/${taskId}`, {
     method: "PUT",
@@ -123,11 +164,14 @@ async function saveTask(taskId, taskData) {
   return await response.json();
 }
 
-/* === Delete Task by ID === */
+/**
+ * Deletes a task at /tasks/{taskId}.
+ * @param {string|number} taskId
+ * @returns {Promise<void>}
+ */
 async function deleteTask(taskId) {
   await fetchTasksApi(`tasks/${taskId}`, { method: "DELETE" });
 }
-/* === Auth-aware Friends (Contacts) API === */
 
 /**
  * Returns the Firebase Auth uid for the currently signed-in user.
@@ -192,6 +236,10 @@ async function updateFriendsForCurrentUser(friends) {
   await updateUserFriendslistByUid(uid, friends);
 }
 
+/**
+ * Loads contacts for the currently active user (guest or registered).
+ * @returns {Promise<Array<Object>>}
+ */
 async function loadContactsForActiveUser() {
   if (window.authReady) await window.authReady;
   const user = window.currentUser;
@@ -199,10 +247,16 @@ async function loadContactsForActiveUser() {
   if (user.isAnonymous) {
     return await ensureGuestFriendsSeeded();
   }
-let contacts = await ensureRegisteredUserFriendsSeeded();
-return contacts;
+  let contacts = await ensureRegisteredUserFriendsSeeded();
+  return contacts;
 }
 
+/**
+ * Persists the given contacts list for the currently active user.
+ * Guest contacts are sorted and stored under the guest uid.
+ * @param {Array<Object>} contacts
+ * @returns {Promise<void>}
+ */
 async function persistContactsForActiveUser(contacts) {
   if (window.authReady) await window.authReady;
   if (!window.currentUser) return;
@@ -222,6 +276,10 @@ async function persistContactsForActiveUser(contacts) {
   await updateFriendsForCurrentUser(contacts);
 }
 
+/**
+ * Loads the profile object for the currently signed-in user.
+ * @returns {Promise<Object|null>}
+ */
 async function loadCurrentUserProfile() {
   if (window.authReady) await window.authReady;
   const user = window.currentUser;
@@ -247,6 +305,10 @@ async function seedDemoFriendsIfEmpty(exampleContacts) {
   return existing;
 }
 
+/**
+ * Ensures that an anonymous user has demo friends seeded.
+ * @returns {Promise<Array<Object>>}
+ */
 async function ensureGuestFriendsSeeded() {
   if (window.authReady) await window.authReady;
   const user = window.currentUser;
@@ -259,6 +321,11 @@ async function ensureGuestFriendsSeeded() {
   return [...GUEST_EXAMPLE_CONTACTS];
 }
 
+/**
+ * Ensures that a registered user has an initial friends list seeded.
+ * Uses guest example contacts for first-time users.
+ * @returns {Promise<Array<Object>>}
+ */
 async function ensureRegisteredUserFriendsSeeded() {
   if (window.authReady) await window.authReady;
   const user = window.currentUser;
@@ -271,7 +338,6 @@ async function ensureRegisteredUserFriendsSeeded() {
   return [...window.GUEST_EXAMPLE_CONTACTS];
 }
 
-// Expose frequently used helpers for legacy (non-module) scripts
 Object.assign(window, {
   getAllTasks,
   saveTask,
@@ -288,4 +354,3 @@ Object.assign(window, {
   isRegisteredUser: () =>
     Boolean(window.currentUser && !window.currentUser.isAnonymous),
 });
-
