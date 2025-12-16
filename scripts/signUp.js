@@ -20,21 +20,57 @@ function isValidName(name) {
   return trimmed.length >= 2 && /^[\p{L}\p{M}\s'.-]+$/u.test(trimmed);
 }
 
+/**
+ * @param {string} local
+ * @returns {boolean}
+ */
+function hasValidLocal(local) {
+  if (!local) return false;
+  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) {
+    return false;
+  }
+  if (!/^[A-Za-z0-9._%+-]+$/.test(local)) return false;
+  if (!/[A-Za-z]/.test(local)) return false;
+  return true;
+}
+
+/**
+ * @param {string} domain
+ * @returns {boolean}
+ */
+function hasValidDomain(domain) {
+  if (!domain) return false;
+  if (!/^[A-Za-z0-9.-]+$/.test(domain)) return false;
+  const parts = domain.split(".");
+  if (parts.length < 2) return false;
+  if (parts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))) {
+    return false;
+  }
+  const tld = parts[parts.length - 1];
+  const mainDomain = parts[parts.length - 2];
+  if (!/^[A-Za-z]{2,}$/.test(tld)) return false;
+  if (!/[A-Za-z]/.test(mainDomain)) return false;
+  return true;
+}
+
+/**
+ * @param {string} email
+ * @returns {boolean}
+ */
 function isValidEmail(email) {
   if (!email) return false;
   const [local, domain] = String(email).trim().split("@");
   if (!local || !domain) return false;
-  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) return false;
-  if (!/^[A-Za-z0-9._%+-]+$/.test(local) || !/[A-Za-z]/.test(local)) return false;
-  if (!/^[A-Za-z0-9.-]+$/.test(domain)) return false;
-  const parts = domain.split(".");
-  if (parts.length < 2 || parts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))) return false;
-  const tld = parts[parts.length - 1], mainDomain = parts[parts.length - 2];
-  if (!/^[A-Za-z]{2,}$/.test(tld) || !/[A-Za-z]/.test(mainDomain)) return false;
-  return true;
+  return hasValidLocal(local) && hasValidDomain(domain);
 }
 
-
+/**
+ * @param {string} uid
+ * @param {string} name
+ * @param {string} email
+ * @param {string} idToken
+ * @returns {Promise<void>}
+ */
 async function writeUserProfile(uid, name, email, idToken) {
   const url = `${BASE_URL}users/${uid}/profile.json?auth=${encodeURIComponent(
     idToken
@@ -47,38 +83,24 @@ async function writeUserProfile(uid, name, email, idToken) {
 }
 
 /**
- * Handles signup form submit:
- * validates inputs, creates user, shows toast, and redirects to login.
- * @param {Event} [event]
- * @param {Event} [event] - Optional submit event to prevent default behavior.
- * @returns {void}
+ * @param {string} name
+ * @param {string} email
+ * @param {string} password
+ * @param {HTMLElement} errorEl
+ * @returns {Promise<void>}
  */
-async function onclickFunction(event) {
-  if (event) {
-    event.preventDefault();
-  }
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const errorEl = document.getElementById("error_message");
-  if (!validateEmailOnSubmit(email, errorEl)) return;
-  if (!validateNameAndPasswordOnSubmit(name, password, errorEl)) return;
-  resetError(errorEl);
+async function performSignup(name, email, password, errorEl) {
   try {
     if (window.authReady) await window.authReady;
-
     const cred = await createUserWithEmailAndPassword(
       window.auth,
       email,
       password
     );
-
     await updateProfile(cred.user, { displayName: name });
-
     const idToken = await cred.user.getIdToken();
     await writeUserProfile(cred.user.uid, name, email, idToken);
     await signOut(window.auth);
-
     showToast("You signed up successfully", { duration: 1000, dim: true });
     setTimeout(jumpToLogin, 1200);
   } catch (err) {
@@ -87,36 +109,46 @@ async function onclickFunction(event) {
 }
 
 /**
- * Validates email on submit and shows an error if needed.
+ * Handles signup form submit.
+ * @param {Event} [event]
+ * @returns {Promise<void>}
+ */
+async function onclickFunction(event) {
+  if (event) event.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const errorEl = document.getElementById("error_message");
+  if (!validateEmailOnSubmit(email, errorEl)) return;
+  if (!validateNameAndPasswordOnSubmit(name, password, errorEl)) return;
+  resetError(errorEl);
+  await performSignup(name, email, password, errorEl);
+}
+
+/**
  * @param {string} email
  * @param {HTMLElement} errorEl
  * @returns {boolean}
  */
 function validateEmailOnSubmit(email, errorEl) {
-  if (isValidEmail(email)) {
-    return true;
-  }
+  if (isValidEmail(email)) return true;
   showError(errorEl, "Please enter a valid email address!");
   return false;
 }
 
 /**
- * Validates name and password on submit and shows an error if needed.
  * @param {string} name
  * @param {string} password
  * @param {HTMLElement} errorEl
  * @returns {boolean}
  */
 function validateNameAndPasswordOnSubmit(name, password, errorEl) {
-  if (isValidName(name) && password) {
-    return true;
-  }
+  if (isValidName(name) && password) return true;
   showError(errorEl, "Please enter a valid name.");
   return false;
 }
 
 /**
- * Redirects to login page.
  * @returns {void}
  */
 function jumpToLogin() {
@@ -124,7 +156,6 @@ function jumpToLogin() {
 }
 
 /**
- * Shows the white-screen overlay.
  * @returns {void}
  */
 function getWhiteScreen() {
@@ -133,8 +164,6 @@ function getWhiteScreen() {
 }
 
 /**
- * Validates form fields + policy checkbox and enables/disables submit button.
- * Shows inline error messages if invalid.
  * @returns {void}
  */
 function checkPolicyandAnswers() {
@@ -145,7 +174,6 @@ function checkPolicyandAnswers() {
 }
 
 /**
- * Collects all signup form values and related elements.
  * @returns {{name:string,email:string,password:string,confirmPassword:string,checkbox:HTMLElement,button:HTMLButtonElement,errorEl:HTMLElement}}
  */
 function getSignupValues() {
@@ -162,7 +190,6 @@ function getSignupValues() {
 }
 
 /**
- * Calculates validation flags for the current form values.
  * @param {ReturnType<typeof getSignupValues>} values
  * @returns {{passwordSame:boolean,emailValid:boolean,nameValid:boolean}}
  */
@@ -174,22 +201,17 @@ function getValidationState(values) {
 }
 
 /**
- * Updates the inline error message depending on invalid field.
  * @param {ReturnType<typeof getSignupValues>} values
  * @param {{passwordSame:boolean,emailValid:boolean,nameValid:boolean}} state
  * @returns {void}
  */
 function updateErrorForSignup(values, state) {
   const errorEl = values.errorEl;
-  if (!state.emailValid && values.email.length > 0) {
+  if (!state.emailValid && values.email) {
     showError(errorEl, "Please enter a valid email address!");
-  } else if (values.name.length > 0 && !state.nameValid) {
+  } else if (values.name && !state.nameValid) {
     showError(errorEl, "Please enter a valid name with at least 3 letters!");
-  } else if (
-    values.password.length > 0 &&
-    values.confirmPassword.length > 0 &&
-    !state.passwordSame
-  ) {
+  } else if (values.password && values.confirmPassword && !state.passwordSame) {
     showError(errorEl, "The passwords do not match!");
   } else {
     resetError(errorEl);
@@ -197,7 +219,6 @@ function updateErrorForSignup(values, state) {
 }
 
 /**
- * Enables/disables the submit button based on validation state.
  * @param {ReturnType<typeof getSignupValues>} values
  * @param {{passwordSame:boolean,emailValid:boolean,nameValid:boolean}} state
  * @returns {void}
@@ -215,7 +236,6 @@ function updateButtonState(values, state) {
 }
 
 /**
- * Shows an error message element in red.
  * @param {HTMLElement} errorEl
  * @param {string} text
  * @returns {void}
@@ -227,7 +247,6 @@ function showError(errorEl, text) {
 }
 
 /**
- * Resets the error message element.
  * @param {HTMLElement} errorEl
  * @returns {void}
  */
@@ -250,25 +269,17 @@ function resetError(errorEl) {
  * @returns {void}
  */
 function showToast(text, options) {
-  if (!options) {
-    options = {};
-  }
+  if (!options) options = {};
   const duration = options.duration || 3000;
   const dim = options.dim === undefined ? true : options.dim;
   const root = ensureToastRoot();
-  const el = document.createElement("div");
-  el.className = "toast toast--show";
-  el.innerHTML = "<span>" + text + "</span>";
-  root.appendChild(el);
+  const el = createToastElement(root, text);
   const dimEl = document.getElementById("toast-dim");
-  if (dim && dimEl) {
-    dimEl.classList.add("dim--show");
-  }
+  if (dim && dimEl) dimEl.classList.add("dim--show");
   hideToastLater(el, dimEl, dim, duration);
 }
 
 /**
- * Makes sure the toast root element exists.
  * @returns {HTMLElement}
  */
 function ensureToastRoot() {
@@ -282,7 +293,19 @@ function ensureToastRoot() {
 }
 
 /**
- * Hides the toast after a delay.
+ * @param {HTMLElement} root
+ * @param {string} text
+ * @returns {HTMLElement}
+ */
+function createToastElement(root, text) {
+  const el = document.createElement("div");
+  el.className = "toast toast--show";
+  el.innerHTML = "<span>" + text + "</span>";
+  root.appendChild(el);
+  return el;
+}
+
+/**
  * Uses onanimationend instead of addEventListener.
  * @param {HTMLElement} el
  * @param {HTMLElement|null} dimEl
@@ -297,9 +320,7 @@ function hideToastLater(el, dimEl, dim, duration) {
     el.onanimationend = function () {
       el.remove();
     };
-    if (dim && dimEl) {
-      dimEl.classList.remove("dim--show");
-    }
+    if (dim && dimEl) dimEl.classList.remove("dim--show");
   }, duration);
 }
 
@@ -309,6 +330,11 @@ function hideToastLater(el, dimEl, dim, duration) {
  */
 window.showToast = showToast;
 
+/**
+ * Maps Firebase auth error to human readable message.
+ * @param {{code?: string}} err
+ * @returns {string}
+ */
 function mapAuthError(err) {
   const code = err?.code || "";
   if (code.includes("auth/email-already-in-use"))
