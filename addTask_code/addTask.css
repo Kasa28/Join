@@ -360,6 +360,10 @@
   flex: 1;
   font-size: 16px;
   color: #42526e;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .assign-check-addTask_page {
