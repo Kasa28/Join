@@ -1,13 +1,21 @@
+/** @type {string[]} */
 window.selectedUsers = window.selectedUsers || [];
+/** @type {boolean} */
 window.isDropdownOpen = window.isDropdownOpen || false;
 
-document.addEventListener("DOMContentLoaded", () => {
+/** @type {number|null} */
+let pickerSyncId = null, pickerLast = "";
+
+/** @param {Event} _e @returns {void} */
+document.addEventListener("DOMContentLoaded", (_e) => {
   const input = document.getElementById("title"); if (!input) return;
   const msg = document.getElementById("title-error");
+  /** @returns {void} */
   const validate = () => { const ok = !!input.value.trim(); msg.textContent = ok ? "" : "This field is required."; input.style.borderBottom = ok ? "1px solid #d1d1d1" : "1px solid red"; };
   input.addEventListener("blur", validate); input.addEventListener("input", validate);
 });
 
+/** @type {HTMLInputElement} */
 let hiddenDatePicker = document.createElement("input");
 hiddenDatePicker.type = "date"; hiddenDatePicker.id = "hidden-date-picker"; hiddenDatePicker.name = "hidden-date-picker";
 Object.assign(hiddenDatePicker.style, { position: "fixed", opacity: "0", pointerEvents: "none", height: "0", width: "0", zIndex: "1100" });
@@ -16,7 +24,7 @@ document.body.appendChild(hiddenDatePicker);
 /** @param {string} dateString @returns {boolean} */
 function isValidDateFormat(dateString) { return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString); }
 
-/** @param {InputEvent} e */
+/** @param {InputEvent} e @returns {void} */
 function sanitizeDueDateInput(e) {
   let v = e.target.value.replace(/[^\d]/g, ""); if (v.length > 8) v = v.slice(0, 8);
   if (v.length > 4) v = v.slice(0, 2) + "/" + v.slice(2, 4) + "/" + v.slice(4);
@@ -44,22 +52,22 @@ function validateDueDate() {
   msg.textContent = ""; parent.style.borderBottom = "1px solid #d1d1d1"; return true;
 }
 
-/** @param {HTMLInputElement} dueInput */
+/** @param {HTMLInputElement} dueInput @returns {void} */
 function positionPicker(dueInput) {
   const field = dueInput.closest(".date-field-addTask_page") || dueInput; const r = field.getBoundingClientRect();
   Object.assign(hiddenDatePicker.style, { pointerEvents: "auto", width: r.width + "px", height: r.height + "px", left: r.left + "px", top: r.top + "px" });
 }
 
+/** @returns {void} */
 function setPickerMinToday() {
   const t = new Date(), y = t.getFullYear(), m = String(t.getMonth() + 1).padStart(2, "0"), d = String(t.getDate()).padStart(2, "0");
   hiddenDatePicker.min = `${y}-${m}-${d}`;
 }
 
+/** @returns {void} */
 function resetPickerValue() { hiddenDatePicker.removeAttribute("value"); hiddenDatePicker.value = ""; }
 
-let pickerSyncId = null, pickerLast = "";
-
-/** @param {HTMLInputElement} dueInput */
+/** @param {HTMLInputElement} dueInput @returns {void} */
 function syncPickerToDue(dueInput) {
   const v = hiddenDatePicker.value || "";
   if (v === pickerLast) return; pickerLast = v;
@@ -67,45 +75,47 @@ function syncPickerToDue(dueInput) {
   const [y, m, d] = v.split("-"); dueInput.value = `${d}/${m}/${y}`; validateDueDate();
 }
 
-/** @param {HTMLInputElement} dueInput */
+/** @param {HTMLInputElement} dueInput @returns {void} */
 function startPickerSync(dueInput) {
   pickerLast = hiddenDatePicker.value || "";
   clearInterval(pickerSyncId); pickerSyncId = setInterval(() => syncPickerToDue(dueInput), 80);
 }
 
-/** @param {HTMLInputElement} dueInput */
+/** @param {HTMLInputElement} dueInput @returns {void} */
 function attachPickerChange(dueInput) {
   const h = () => syncPickerToDue(dueInput);
   hiddenDatePicker.oninput = h; hiddenDatePicker.onchange = h;
   startPickerSync(dueInput);
 }
 
-
+/** @returns {void} */
 function showPickerNow() {
   hiddenDatePicker.focus();
   setTimeout(() => { if (hiddenDatePicker.showPicker) hiddenDatePicker.showPicker(); else hiddenDatePicker.click(); }, 0);
 }
 
+/** @returns {void} */
 function openPickerSimple() {
   const dueInput = document.getElementById("due-date"); if (!dueInput) return;
   positionPicker(dueInput); setPickerMinToday(); resetPickerValue(); attachPickerChange(dueInput); showPickerNow();
 }
 window.openPickerSimple = openPickerSimple;
 
-hiddenDatePicker.addEventListener("blur", () => {
+/** @param {FocusEvent} _e @returns {void} */
+hiddenDatePicker.addEventListener("blur", (_e) => {
   hiddenDatePicker.style.pointerEvents = "none";
   clearInterval(pickerSyncId); pickerSyncId = null;
 });
 
-
 const dueDateInput = document.getElementById("due-date");
 if (dueDateInput) {
   dueDateInput.readOnly = true; dueDateInput.addEventListener("click", openPickerSimple);
+  /** @param {InputEvent} e @returns {void} */
   dueDateInput.addEventListener("input", (e) => { sanitizeDueDateInput(e); validateDueDate(); });
   dueDateInput.addEventListener("blur", validateDueDate);
 }
 
-/** @param {string} priority */
+/** @param {string} priority @returns {void} */
 function setPriorityAddTask(priority) {
   const u = document.querySelector(".priority-btn-urgent-addTask_page"), m = document.querySelector(".priority-btn-medium-addTask_page"), l = document.querySelector(".priority-btn-low-addTask_page");
   [u, m, l].forEach((b) => { b.style.backgroundColor = "white"; b.style.color = "black"; const img = b.querySelector("img"); if (img) img.style.filter = ""; });
@@ -115,11 +125,13 @@ function setPriorityAddTask(priority) {
   window.currentPriority = priority; window.currentPrio = priority;
 }
 
+/** @param {MouseEvent} e @returns {void} */
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("subtask-delete-addTask_page")) return;
   const input = document.getElementById("subtask"); if (input) input.value = "";
 });
 
+/** @param {KeyboardEvent} e @returns {void} */
 document.addEventListener("keyup", (e) => {
   if (e.key !== "Enter") return;
   const input = document.getElementById("subtask");
@@ -128,7 +140,7 @@ document.addEventListener("keyup", (e) => {
   e.preventDefault(); const icon = document.querySelector(".subtask-check-addTask_page"); if (icon) icon.click();
 });
 
-/** @param {HTMLElement} list @param {string} value */
+/** @param {HTMLElement} list @param {string} value @returns {void} */
 function appendSubtaskItem(list, value) {
   if (!list) return;
   const li = document.createElement("li"); li.textContent = value;
@@ -137,6 +149,7 @@ function appendSubtaskItem(list, value) {
   li.appendChild(a); list.appendChild(li);
 }
 
+/** @param {MouseEvent} e @returns {void} */
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("subtask-check-addTask_page")) return;
   const input = document.getElementById("subtask"), list = document.getElementById("subtask-list");
@@ -144,6 +157,7 @@ document.addEventListener("click", (e) => {
   appendSubtaskItem(list, v); input.value = "";
 });
 
+/** @param {MouseEvent} e @returns {void} */
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("subtask-remove-addTask_page")) return;
   const li = e.target.closest("li"); if (li) li.remove();
@@ -163,7 +177,7 @@ function createSubtaskEditActions() {
   return a;
 }
 
-/** @param {HTMLInputElement} input @param {HTMLLIElement} li */
+/** @param {HTMLInputElement} input @param {HTMLLIElement} li @returns {void} */
 function attachSubtaskEditKeyup(input, li) {
   input.addEventListener("keyup", (ev) => {
     if (ev.key !== "Enter") return;
@@ -172,7 +186,7 @@ function attachSubtaskEditKeyup(input, li) {
   });
 }
 
-/** @param {MouseEvent} e */
+/** @param {MouseEvent} e @returns {void} */
 function enableSubtaskEditing(e) {
   if (!e.target.classList.contains("subtask-edit-addTask_page")) return;
   const li = e.target.closest("li"); if (!li || !li.firstChild) return;
@@ -189,7 +203,7 @@ function createSubtaskDisplayActions() {
   return a;
 }
 
-/** @param {MouseEvent} e */
+/** @param {MouseEvent} e @returns {void} */
 function saveEditedSubtask(e) {
   if (!e.target.classList.contains("subtask-save-addTask_page")) return;
   const li = e.target.closest("li"); if (!li) return;
@@ -199,18 +213,22 @@ function saveEditedSubtask(e) {
 }
 document.addEventListener("click", saveEditedSubtask);
 
+/** @returns {void} */
 function clearBasicFields() {
   ["title", "description", "due-date", "subtask"].forEach((id) => { const el = document.getElementById(id); if (el) el.value = ""; });
   const list = document.getElementById("subtask-list"); if (list) list.innerHTML = "";
 }
 
+/** @returns {void} */
 function resetCategory() { const c = document.getElementById("category"); if (c) c.selectedIndex = 0; }
 
+/** @returns {void} */
 function resetPriorityButtons() {
   document.querySelectorAll(".priority-group-addTask_page button").forEach((btn) => { btn.style.backgroundColor = "white"; btn.style.color = "black"; const img = btn.querySelector("img"); if (img) img.style.filter = ""; });
   setPriorityAddTask("medium");
 }
 
+/** @returns {void} */
 function resetAssignSection() {
   window.selectedUsers = [];
   const p = document.querySelector(".assign-placeholder-addTask_page");
@@ -219,8 +237,10 @@ function resetAssignSection() {
   const av = document.getElementById("assigned-avatars"); if (av) av.innerHTML = "";
 }
 
+/** @returns {void} */
 function clearErrors() { document.querySelectorAll(".error-text").forEach((e) => (e.textContent = "")); }
 
+/** @returns {void} */
 function clearForm() { clearBasicFields(); resetCategory(); resetPriorityButtons(); resetAssignSection(); clearErrors(); }
 
 /** @returns {HTMLElement} */
@@ -230,13 +250,13 @@ function ensureToastRoot() {
   return root;
 }
 
-/** @param {HTMLElement} el */
+/** @param {HTMLElement} el @returns {void} */
 function hideToast(el) {
   el.classList.remove("toast--show"); el.classList.add("toast--hide");
   el.addEventListener("animationend", () => el.remove(), { once: true });
 }
 
-/** @param {string} text @param {{variant?: "ok"|"error", duration?: number}} [options] */
+/** @param {string} text @param {{variant?: "ok"|"error", duration?: number}} [options] @returns {void} */
 function showToast(text, { variant = "ok", duration = 1000 } = {}) {
   const root = ensureToastRoot(); const el = document.createElement("div");
   el.className = "toast toast--show" + (variant === "error" ? " toast--error" : "");
@@ -284,6 +304,7 @@ function buildTask(data) {
   return { id: Date.now(), title: data.title, description: data.description, dueDate: data.dueDate, priority: data.priority, priorityIcon: icons[data.priority] || icons.low, status, type: data.category === "technical" ? "Technical Task" : "User Story", subTasks, subtasksDone: 0, subtasksTotal: subTasks.length, assignedTo: getAssignedUsers() };
 }
 
+/** @returns {void} */
 function redirectToBoard() { window.location.href = "../board_code/board.html"; }
 
 /** @returns {Promise<void>} */
