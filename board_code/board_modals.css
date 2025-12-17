@@ -1,6 +1,3 @@
-/* === Board Modals and Overlays === */
-
-/* === Overlay and Side Panel === */
 .side-overlay {
     position: fixed;
     inset: 0;
@@ -36,7 +33,6 @@
     border-bottom-left-radius: 59px;
   }
   
-/* === Task Modal (Default View) === */
   #task-modal {
     position: fixed;
     inset: 0;
@@ -69,7 +65,6 @@
     border-radius: 24px;
   }
   
-  /* === Task Modal Layout and Inner Sections === */
   #task-modal-content .header-wrapper_user-story,
   #task-modal-content .title_user-story,
   #task-modal-content .h3_user-story,
@@ -97,8 +92,7 @@
     padding: 0 clamp(20px, 6vw, 40px) 24px;
     overflow-x: hidden; 
   }
-  
-  /* === Close Buttons === */
+
   .close-btn-addTask_template {
     position: absolute;
     top: 16px;
@@ -121,7 +115,6 @@
   }
 
 
-/* === Compact Mode (User Story Compact View) === */
 #task-modal-content.us-compact {
     width: min(480px, 92vw); 
     border-radius: 20px;
@@ -141,7 +134,6 @@
     overflow-x: hidden;
   }
 
-  /* === Responsive Behavior === */
   @media (max-width: 600px) {
     .side-panel {
       width: 100vw;       
@@ -197,20 +189,14 @@
   hyphens: auto;
 }
 
-/* =========================================================
-   USER STORY: Assigned + Subtasks scrollen
-   ========================================================= */
-
-/* eigener Scrollbereich für Kontakte */
 .assigned-users_user-story {
   max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 8px;    /* Platz für Scrollbar */
+  padding-right: 8px;    
   box-sizing: border-box;
 }
 
-/* eigener Scrollbereich für Subtasks */
 .subtask-list {
   max-height: 220px;
   overflow-y: auto;
@@ -219,14 +205,12 @@
   box-sizing: border-box;
 }
 
-/* Subtask-Zeilen ordentlich umbrechen */
 .subtask-list label {
   word-break: break-word;
   overflow-wrap: anywhere;
   hyphens: auto;
 }
 
-/* Delete / Edit unten „ankleben“ */
 .action-buttons_user-story {
   position: sticky;
   bottom: 0;
@@ -235,11 +219,6 @@
   box-sizing: border-box;
 }
 
-/* =========================================================
-   TECHNICAL TASK: Assigned + Subtasks scrollen
-   ========================================================= */
-
-/* der innere Block mit den Usern (das <div> in assigned-to-container) */
 .assigned-to-container-technical-task > div {
   max-height: 100px;
   overflow-y: auto;
@@ -248,7 +227,6 @@
   box-sizing: border-box;
 }
 
-/* eigener Scrollbereich für Subtasks */
 .subtasks-task-container-technical-task {
   max-height: 220px;
   overflow-y: auto;
@@ -263,7 +241,6 @@
   hyphens: auto;
 }
 
-/* Delete / Edit unten fix */
 .delete-edit-section-technical-task {
   position: sticky;
   bottom: 0;
@@ -273,10 +250,6 @@
 }
 
 
-
-/* ===== ÄUSSERE MODAL-BOX ================================== */
-/* Dein Wrapper: <div id="task-modal-content"> ... </div>     */
-
 #task-modal-content {
   max-height: 90vh;
   display: flex;
@@ -284,16 +257,15 @@
   box-sizing: border-box;
 }
 
-/* Der Teil, der scrollen soll: User Story + Technical Task   */
 #task-modal-content > .main_content_user_story,
 #task-modal-content > .main-container-technical-task {
   flex: 1;
-  overflow-y: auto;       /* nur der Mittelteil scrollt */
+  overflow-y: auto;      
   overflow-x: hidden;
   box-sizing: border-box;
   padding-bottom: 16px;
 }
-/* User Story – Assigned + Subtasks jeweils eigener Scrollbereich */
+
 .assigned-users_user-story {
   max-height: 140px;
   overflow-y: auto;
@@ -310,7 +282,6 @@
   box-sizing: border-box;
 }
 
-/* Delete / Edit bei User Story unten „ankleben“ */
 .action-buttons_user-story {
   position: sticky;
   bottom: 0;
@@ -319,7 +290,6 @@
   box-sizing: border-box;
 }
 
-/* einzelne Subtask-Zeilen schön umbrechen */
 #task-modal-content .task-input_user-story .subtask-list label {
   word-break: break-word;
   overflow-wrap: anywhere;
@@ -331,11 +301,8 @@
   overflow-x: hidden !important;
   padding-right: 8px;
   box-sizing: border-box;
-  /* zum Testen: */
-  /* border: 1px solid red; */
 }
 
-/* === TECHNICAL TASK: Beschreibung mit Scroll === */
 #task-modal-content .description-font-technical-task {
   overflow-y: auto;
   overflow-x: hidden;
@@ -343,20 +310,17 @@
   box-sizing: border-box;
 }
 
-
-/* Abstand zwischen den Subtasks – TECHNICAL TASK */
 .subtasks-task-container-technical-task .label-font-technical-task {
-  display: flex;          /* Checkbox + Text nebeneinander */
+  display: flex;        
   align-items: center;
-  gap: 8px;               /* Abstand zwischen Checkbox und Text */
-  margin-bottom: 10px;    /* Abstand zum nächsten Subtask */
+  gap: 8px;             
+  margin-bottom: 10px;    
 }
 
 .subtasks-task-container-technical-task .label-font-technical-task:last-child {
-  margin-bottom: 0;       /* unten kein extra Abstand */
+  margin-bottom: 0;       
 }
 
-/* (Optional) das Gleiche für User Story */
 .subtask-list label {
   display: flex;
   align-items: center;
