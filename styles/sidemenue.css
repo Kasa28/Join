@@ -1,4 +1,3 @@
-/* === SIDEBAR BASIS === */
 
 .padding-up-down-small {
   padding: 12px 0;
@@ -76,7 +75,6 @@
   background: #d2e3ff;
 }
 
-/* Login-Link in der Sidebar (Desktop) */
 .login-link {
   position: absolute;
   top: 24px;
@@ -90,7 +88,6 @@
   gap: 8px;
 }
 
-/* Gastmodus: oben normale Sidebar, aber ohne Hauptnavigation */
 .guest-mode .sidebar-high-section-container {
   display: none !important;
 }
@@ -99,7 +96,6 @@
   display: inline-flex !important;
 }
 
-/* Preload: Header & Sidebar kurz verstecken */
 body.preload header,
 body.preload .side-menu {
   visibility: hidden;
