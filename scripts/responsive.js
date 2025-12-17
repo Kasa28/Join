@@ -6,9 +6,8 @@
 
 /**
  * Shows a toast message.
- *
- * @param {string} text
- * @param {ToastOptions} [options]
+ * @param {string} text - Message text.
+ * @param {ToastOptions} [options] - Toast options.
  * @returns {void}
  */
 function showToast(text, { variant = "ok", duration = 2000 } = {}) {
@@ -20,32 +19,26 @@ function showToast(text, { variant = "ok", duration = 2000 } = {}) {
   }
 
   const el = document.createElement("div");
-  el.className =
-    "toast toast--show" + (variant === "error" ? " toast--error" : "");
+  el.className = `toast toast--show${variant === "error" ? " toast--error" : ""}`;
   el.innerHTML = `<span>${text}</span><span class="toast-icon" aria-hidden="true"></span>`;
   root.appendChild(el);
 
-  setTimeout(function () {
+  setTimeout(() => {
     el.classList.remove("toast--show");
     el.classList.add("toast--hide");
-    el.addEventListener(
-      "animationend",
-      function () {
-        el.remove();
-      },
-      { once: true }
-    );
+    el.addEventListener("animationend", () => el.remove(), { once: true });
   }, duration);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const detail = document.getElementById("singleContactID");    
-  const wrapper = document.getElementById("singleContactWrapper"); 
-  const maincontent = document.querySelector(".maincontent");      
-
-  if (!detail || !wrapper || !maincontent) {
-    return;
-  }
+/**
+ * DOMContentLoaded handler: wires mobile layout + FAB menu close behavior.
+ * @returns {void}
+ */
+function onContactsDomReady() {
+  const detail = document.getElementById("singleContactID");
+  const wrapper = document.getElementById("singleContactWrapper");
+  const maincontent = document.querySelector(".maincontent");
+  if (!detail || !wrapper || !maincontent) return;
 
   /**
    * Checks if we are in mobile layout.
@@ -56,33 +49,23 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Updates the layout:
-   * - Mobile + detail has content -> show detail, hide list
-   * - Mobile + no detail -> show list, hide detail
-   * - Desktop -> both controlled via CSS
+   * Updates the layout depending on mobile/desktop + whether detail has content.
    * @returns {void}
    */
   function updateMobileLayout() {
     const hasDetail = detail.innerHTML.trim() !== "";
-
-    if (isMobile() && hasDetail) {
-      wrapper.style.display = "block";
-      maincontent.style.display = "none";
-    } else if (isMobile() && !hasDetail) {
-      wrapper.style.display = "none";
-      maincontent.style.display = "block";
-    } else {
-      wrapper.style.display = "";
-      maincontent.style.display = "";
+    if (isMobile()) {
+      wrapper.style.display = hasDetail ? "block" : "none";
+      maincontent.style.display = hasDetail ? "none" : "block";
+      return;
     }
+    wrapper.style.display = "";
+    maincontent.style.display = "";
   }
 
   /**
-   * Called from the back arrow.
-   * - clears the detail view
-   * - resets the current highlight using toggleContactHighlight
-   * - removes focus
-   * - switches layout back to the list
+   * Called from the back arrow:
+   * clears detail, resets highlight, removes focus, updates layout.
    * @returns {void}
    */
   function closeContactOverlay() {
@@ -95,19 +78,36 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       toggleContactHighlight(currentlySelectedContact);
     }
-
     const active = document.activeElement;
-    if (active && active.closest("#contactContainerID")) {
-      active.blur();
-    }
+    if (active && active.closest("#contactContainerID")) active.blur();
     updateMobileLayout();
   }
 
   window.closeContactOverlay = closeContactOverlay;
-  const observer = new MutationObserver(updateMobileLayout);
+
+  /**
+   * MutationObserver callback to re-evaluate layout when detail content changes.
+   * @param {MutationRecord[]} _mutations
+   * @param {MutationObserver} _observer
+   * @returns {void}
+   */
+  function onDetailMutate(_mutations, _observer) {
+    updateMobileLayout();
+  }
+
+  const observer = new MutationObserver(onDetailMutate);
   observer.observe(detail, { childList: true, subtree: true });
 
-  window.addEventListener("resize", updateMobileLayout);
+  /**
+   * Window resize handler to re-evaluate layout.
+   * @param {UIEvent} _event
+   * @returns {void}
+   */
+  function onResize(_event) {
+    updateMobileLayout();
+  }
+
+  window.addEventListener("resize", onResize);
   updateMobileLayout();
 
   /**
@@ -134,11 +134,15 @@ document.addEventListener("DOMContentLoaded", function () {
    */
   function hideMenu() {
     const toggle = getMenuToggle();
-    if (!toggle) return;
-    toggle.checked = false;
+    if (toggle) toggle.checked = false;
   }
 
-  document.addEventListener("click", function (event) {
+  /**
+   * Document click handler to close FAB menu.
+   * @param {MouseEvent} event
+   * @returns {void}
+   */
+  function onDocClick(event) {
     const menu = getMenuElement();
     const toggle = getMenuToggle();
     if (!menu || !toggle) return;
@@ -147,17 +151,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const clickedInsideMenu = menu.contains(target);
     const clickedFabButton = target.closest(".contact-fab");
     const clickedFabItem = target.closest(".contact-fab-item");
-    if (clickedFabItem) {
-      hideMenu();
-      return;
-    }
-    if (
-      toggle.checked &&
-      !clickedInsideMenu &&
-      !clickedFabButton &&
-      target !== toggle
-    ) {
-      hideMenu();
-    }
-  });
-});
+
+    if (clickedFabItem) return hideMenu();
+    if (toggle.checked && !clickedInsideMenu && !clickedFabButton && target !== toggle) hideMenu();
+  }
+
+  document.addEventListener("click", onDocClick);
+}
+
+document.addEventListener("DOMContentLoaded", onContactsDomReady);
