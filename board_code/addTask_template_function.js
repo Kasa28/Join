@@ -1,554 +1,295 @@
-// === Global Variables and Priority Setter ===
 window.selectedUsers = window.selectedUsers || [];
 window.isDropdownOpen = window.isDropdownOpen || false;
 window.selectedUserColors = window.selectedUserColors || {};
+/** @param {"urgent"|"medium"|"low"|string} p @returns {void} */
+window.setPriority = function (p) { setPriorityAddTask(p); };
 
-window.setPriority = function (p) {
-  return setPriorityAddTask(p);
-};
+let hiddenDatePickerTemplate = createHiddenDatePickerTemplate();
+hiddenDatePickerTemplate.addEventListener("change", syncTemplateDueDateFromHidden);
+hiddenDatePickerTemplate.addEventListener("input", syncTemplateDueDateFromHidden);
 
-// === Hidden Date Picker for AddTask Template ===
-let hiddenDatePickerTemplate = document.createElement("input");
-hiddenDatePickerTemplate.type = "date";
-hiddenDatePickerTemplate.id = "hidden-date-picker-template";
-hiddenDatePickerTemplate.name = "hidden-date-picker-template";
-hiddenDatePickerTemplate.style.position = "absolute";
-hiddenDatePickerTemplate.style.opacity = "0";
-hiddenDatePickerTemplate.style.pointerEvents = "none";
-hiddenDatePickerTemplate.style.height = "0";
-hiddenDatePickerTemplate.style.width = "0";
-document.body.appendChild(hiddenDatePickerTemplate);
+document.addEventListener("input", handleAssignFilterInput);
+document.addEventListener("click", handleAssignOutsideClick);
+document.addEventListener("click", handleSubtaskClick);
+document.addEventListener("keyup", handleSubtaskEnter);
+
+/** @returns {HTMLInputElement} */
+function createHiddenDatePickerTemplate() {
+  const i = document.createElement("input"); i.type = "date"; i.id = "hidden-date-picker-template"; i.name = "hidden-date-picker-template";
+  Object.assign(i.style, { position: "absolute", opacity: "0", pointerEvents: "none", height: "0", width: "0" }); document.body.appendChild(i); return i;
+}
+
+/** @returns {void} */
 function syncTemplateDueDateFromHidden() {
-  const dueInput = document.getElementById("due-date");
-  if (!dueInput) return;
-
-  if (!hiddenDatePickerTemplate.value) {
-    dueInput.value = "";
-    validateDueDate();
-    return;
-  }
-
-  const [year, month, day] = hiddenDatePickerTemplate.value.split("-");
-  dueInput.value = `${day}/${month}/${year}`;
-  validateDueDate();
+  const dueInput = document.getElementById("due-date"); if (!dueInput) return;
+  if (!hiddenDatePickerTemplate.value) { dueInput.value = ""; validateDueDate(); return; }
+  const [y, m, d] = hiddenDatePickerTemplate.value.split("-"); dueInput.value = `${d}/${m}/${y}`; validateDueDate();
 }
 
-hiddenDatePickerTemplate.addEventListener(
-  "change",
-  syncTemplateDueDateFromHidden
-);
-hiddenDatePickerTemplate.addEventListener(
-  "input",
-  syncTemplateDueDateFromHidden
-);
-
-// === Initialization and Field Validation ===
-/**
- * Initializes event handlers for the Add Task template, including title validation
- * and due date formatting and validation.
- */
+/** @returns {void} */
 function initAddTaskTemplateHandlers() {
-  const titleInput = document.getElementById("title");
-  if (titleInput) {
-    const errorMsg = document.getElementById("title-error");
-    function validateTitle() {
-      const value = titleInput.value.trim();
-      if (value === "") {
-        errorMsg.textContent = "This field is required.";
-        titleInput.style.borderBottom = "1px solid red";
-      } else {
-        errorMsg.textContent = "";
-        titleInput.style.borderBottom = "1px solid #d1d1d1";
-      }
-    }
-    titleInput.addEventListener("blur", validateTitle);
-    titleInput.addEventListener("input", validateTitle);
-  }
-  const dueDateInput = document.getElementById("due-date");
-  if (dueDateInput) {
-    dueDateInput.readOnly = true;
-    dueDateInput.addEventListener("click", openPickerTemplate);
-    dueDateInput.addEventListener("input", (e) => {
-      sanitizeDueDateInput(e);
-      validateDueDate();
-    });
-    dueDateInput.addEventListener("blur", validateDueDate);
-  }
-  setPriorityAddTask("medium");
+  initTitleValidation(); initDueDateField(); setPriorityAddTask("medium");
 }
 
+/** @returns {void} */
+function initTitleValidation() {
+  const input = document.getElementById("title"), msg = document.getElementById("title-error"); if (!input || !msg) return;
+  input.addEventListener("blur", validateTitle); input.addEventListener("input", validateTitle); validateTitle();
+}
+
+/** @returns {void} */
+function validateTitle() {
+  const input = document.getElementById("title"), msg = document.getElementById("title-error"); if (!input || !msg) return;
+  const ok = !!input.value.trim(); msg.textContent = ok ? "" : "This field is required."; input.style.borderBottom = ok ? "1px solid #d1d1d1" : "1px solid red";
+}
+
+/** @returns {void} */
+function initDueDateField() {
+  const input = document.getElementById("due-date"); if (!input) return;
+  input.readOnly = true; input.addEventListener("click", openPickerTemplate);
+  input.addEventListener("input", (e) => { sanitizeDueDateInput(e); validateDueDate(); }); input.addEventListener("blur", validateDueDate);
+}
+
+/** @returns {void} */
 function openPickerTemplate() {
-  const dueInput = document.getElementById("due-date");
-  if (!dueInput) return;
-  const rect = dueInput.getBoundingClientRect();
-  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  hiddenDatePickerTemplate.style.left = rect.left + scrollLeft + "px";
-  hiddenDatePickerTemplate.style.top = rect.bottom + scrollTop + -3 + "px";
-
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const dd = String(today.getDate()).padStart(2, "0");
-  hiddenDatePickerTemplate.min = `${yyyy}-${mm}-${dd}`;
-
-  const existingValue = dueInput.value.trim();
-  if (isValidDateFormat(existingValue)) {
-    const [day, month, year] = existingValue.split("/");
-    hiddenDatePickerTemplate.value = `${year}-${month}-${day}`;
-  } else {
-    hiddenDatePickerTemplate.value = "";
-  }
-
-  setTimeout(() => {
-    if (hiddenDatePickerTemplate.showPicker) {
-      hiddenDatePickerTemplate.showPicker();
-    } else {
-      hiddenDatePickerTemplate.click();
-    }
-  }, 0);
+  const dueInput = document.getElementById("due-date"); if (!dueInput) return;
+  positionPickerToInput(dueInput, hiddenDatePickerTemplate); hiddenDatePickerTemplate.min = getTodayYMD();
+  setHiddenPickerFromDueValue(dueInput.value.trim()); openNativePicker(hiddenDatePickerTemplate);
 }
 
-// === Assign Dropdown Handling ===
-/**
- * Toggles the assign dropdown open or closed and updates placeholder and arrow UI.
- * @param {Event} event - The click event triggering the toggle.
- */
+/** @param {HTMLElement} input @param {HTMLElement} picker @returns {void} */
+function positionPickerToInput(input, picker) {
+  const r = input.getBoundingClientRect(), sl = window.pageXOffset || document.documentElement.scrollLeft, st = window.pageYOffset || document.documentElement.scrollTop;
+  picker.style.left = r.left + sl + "px"; picker.style.top = r.bottom + st + -3 + "px";
+}
+
+/** @returns {string} */
+function getTodayYMD() {
+  const t = new Date(), y = t.getFullYear(), m = String(t.getMonth() + 1).padStart(2, "0"), d = String(t.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+/** @param {string} value @returns {void} */
+function setHiddenPickerFromDueValue(value) {
+  if (isValidDateFormat(value)) { const [d, m, y] = value.split("/"); hiddenDatePickerTemplate.value = `${y}-${m}-${d}`; return; }
+  hiddenDatePickerTemplate.value = "";
+}
+
+/** @param {HTMLInputElement} picker @returns {void} */
+function openNativePicker(picker) {
+  setTimeout(() => { picker.showPicker ? picker.showPicker() : picker.click(); }, 0);
+}
+
+/** @param {Event} event @returns {void} */
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
-  const placeholder = document.querySelector(
-    ".assign-placeholder-addTask_template"
-  );
+  const placeholder = document.querySelector(".assign-placeholder-addTask_template");
   const arrow = document.querySelector(".assign-arrow-addTask_template");
   if (!dropdown || !placeholder || !arrow) return;
-  isDropdownOpen = dropdown.style.display !== "block";
-  dropdown.style.display = isDropdownOpen ? "block" : "none";
-  if (isDropdownOpen) {
-    placeholder.contentEditable = true;
-    placeholder.textContent = "";
-    placeholder.classList.add("typing");
-    placeholder.focus();
-    arrow.style.transform = "rotate(180deg)";
-    const items = document.querySelectorAll(".assign-item-addTask_template");
-    items.forEach((item) => (item.style.display = "flex"));
-  } else {
-    placeholder.contentEditable = false;
-    placeholder.classList.remove("typing");
-    placeholder.blur();
-    arrow.style.transform = "rotate(0deg)";
-    placeholder.textContent = "Select contact to assign";
-    placeholder.style.color = "black";
-  }
-  if (!isDropdownOpen) {
-    renderAssignedAvatars();
-  }
+  window.isDropdownOpen = dropdown.style.display !== "block"; dropdown.style.display = window.isDropdownOpen ? "block" : "none";
+  if (window.isDropdownOpen) { placeholder.contentEditable = true; placeholder.textContent = ""; placeholder.classList.add("typing"); placeholder.focus(); arrow.style.transform = "rotate(180deg)";
+    document.querySelectorAll(".assign-item-addTask_template").forEach((i) => (i.style.display = "flex")); return; }
+  placeholder.contentEditable = false; placeholder.classList.remove("typing"); placeholder.blur(); arrow.style.transform = "rotate(0deg)";
+  placeholder.textContent = "Select contact to assign"; placeholder.style.color = "black"; renderAssignedAvatars();
 }
 
-// === Shared helper: Extract avatar/user color ===
-/**
- * Extracts a background color from an assign item, avatar element, CSS variable,
- * or fallback sources.
- * @param {HTMLElement} item - The DOM element representing a contact item.
- * @returns {string} The resolved color value.
- */
+/** @param {HTMLElement} item @returns {string} */
 function getColorFromItem(item) {
   if (!item) return "#4589ff";
-  const avatarEl =
-    item.querySelector(".assign-avatar-addTask_template") ||
-    item.querySelector(".assign-avatar-addTask_page");
+  const avatarEl = item.querySelector(".assign-avatar-addTask_template") || item.querySelector(".assign-avatar-addTask_page");
   if (avatarEl) {
-    let c = avatarEl.style.backgroundColor;
-    if (!c) c = getComputedStyle(avatarEl).backgroundColor;
+    let c = avatarEl.style.backgroundColor || getComputedStyle(avatarEl).backgroundColor;
     if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
-    const varCol = getComputedStyle(avatarEl)
-      .getPropertyValue("--avatar-color")
-      .trim();
-    if (varCol) return varCol;
+    const v = getComputedStyle(avatarEl).getPropertyValue("--avatar-color").trim(); if (v) return v;
   }
-  const colorEl =
-    item.querySelector('[class*="color"]') ||
-    item.querySelector('[class*="avatar"]') ||
-    item;
+  const colorEl = item.querySelector('[class*="color"]') || item.querySelector('[class*="avatar"]') || item;
   if (colorEl) {
-    let c =
-      colorEl.style.backgroundColor ||
-      getComputedStyle(colorEl).backgroundColor;
+    const c = colorEl.style.backgroundColor || getComputedStyle(colorEl).backgroundColor;
     if (c && c !== "transparent" && c !== "rgba(0, 0, 0, 0)") return c;
   }
-  const dataColor = item.getAttribute("data-color");
-  if (dataColor) return dataColor;
-  return "#4589ff";
+  return item.getAttribute("data-color") || "#4589ff";
 }
 
-// === Assign User Selection ===
-/**
- * Selects or deselects a user from the assign dropdown and updates
- * selected user tracking and color mapping.
- * @param {string} name - The name of the user to select.
- * @param {Event} event - The click event that triggered the selection.
- */
+/** @param {string} name @param {Event} event @returns {void} */
 function selectAssignUser(name, event) {
-  const t = event?.target;
-  const el = t && t.nodeType === Node.TEXT_NODE ? t.parentElement : t;
-
-  let item =
-    (el &&
-      typeof el.closest === "function" &&
-      el.closest(".assign-item-addTask_template")) ||
-    (event?.currentTarget &&
-      typeof event.currentTarget.closest === "function" &&
-      event.currentTarget.closest(".assign-item-addTask_template")) ||
-    null;
-  if (!item) {
-    const candidates = document.querySelectorAll(
-      ".assign-item-addTask_template"
-    );
-    candidates.forEach((el) => {
-      const label = el
-        .querySelector(".assign-name-addTask_template")
-        .textContent.trim();
-      if (!item && label === name) item = el;
-    });
-  }
-  if (!item) return;
-
-  const checkbox = item.querySelector(".assign-check-addTask_template");
-
-  // Wenn der Klick direkt auf die Checkbox kam, nicht doppelt toggeln
-  if (event.target === checkbox) {
-    item.classList.toggle("selected", checkbox.checked);
-  } else {
-    checkbox.checked = !checkbox.checked;
-    item.classList.toggle("selected", checkbox.checked);
-  }
-  if (checkbox.checked) {
-    if (!selectedUsers.includes(name)) selectedUsers.push(name);
-    if (window.selectedUserColors) {
-      const color = getColorFromItem(item) || "#4589ff";
-      window.selectedUserColors[name] = color;
-    }
-  } else {
-    selectedUsers = selectedUsers.filter((user) => user !== name);
-    if (window.selectedUserColors) delete window.selectedUserColors[name];
-  }
+  const item = resolveAssignItem(name, event); if (!item) return;
+  const checkbox = item.querySelector(".assign-check-addTask_template"); if (!checkbox) return;
+  if (event.target === checkbox) item.classList.toggle("selected", checkbox.checked);
+  else { checkbox.checked = !checkbox.checked; item.classList.toggle("selected", checkbox.checked); }
+  if (checkbox.checked) { if (!window.selectedUsers.includes(name)) window.selectedUsers.push(name);
+    if (window.selectedUserColors) window.selectedUserColors[name] = getColorFromItem(item) || "#4589ff"; }
+  else { window.selectedUsers = window.selectedUsers.filter((u) => u !== name); if (window.selectedUserColors) delete window.selectedUserColors[name]; }
   updateAssignPlaceholder();
 }
 
-// === Assign Input Filtering ===
-/**
- * Updates the assign placeholder text depending on whether users are selected.
- */
-function updateAssignPlaceholder() {
-  const placeholder = document.querySelector(
-    ".assign-placeholder-addTask_template"
-  );
-  if (selectedUsers.length === 0) {
-    placeholder.textContent = "Select contact to assign";
-    placeholder.style.color = "black";
-  } else {
-    placeholder.textContent = "";
-  }
+/** @param {string} name @param {Event} event @returns {HTMLElement|null} */
+function resolveAssignItem(name, event) {
+  const t = event?.target, el = t && t.nodeType === Node.TEXT_NODE ? t.parentElement : t;
+  let item = (el?.closest && el.closest(".assign-item-addTask_template")) || (event?.currentTarget?.closest && event.currentTarget.closest(".assign-item-addTask_template")) || null;
+  if (item) return item;
+  return [...document.querySelectorAll(".assign-item-addTask_template")].find((x) => x.querySelector(".assign-name-addTask_template")?.textContent.trim() === name) || null;
 }
 
-/**
- * Handles live filtering of assign dropdown items based on user input.
- */
-document.addEventListener("input", (e) => {
-  if (e.target.classList.contains("assign-placeholder-addTask_template")) {
-    const searchValue = e.target.textContent.toLowerCase();
-    const items = document.querySelectorAll(".assign-item-addTask_template");
-    if (searchValue.trim() === "") {
-      items.forEach((item) => (item.style.display = "flex"));
-      return;
-    }
-    let anyMatch = false;
-    items.forEach((item) => {
-      const name = item
-        .querySelector(".assign-name-addTask_template")
-        .textContent.toLowerCase();
-      if (name.includes(searchValue)) {
-        item.style.display = "flex";
-        anyMatch = true;
-      } else {
-        item.style.display = "none";
-      }
-      if (
-        e.target.classList.contains("assign-placeholder-addTask_template") &&
-        e.target.textContent.trim() === ""
-      ) {
-        updateAssignPlaceholder();
-      }
-    });
-    if (!anyMatch) {
-      items.forEach((item) => (item.style.display = "flex"));
-    }
-  }
-});
+/** @returns {void} */
+function updateAssignPlaceholder() {
+  const placeholder = document.querySelector(".assign-placeholder-addTask_template"); if (!placeholder) return;
+  if (window.selectedUsers.length === 0) { placeholder.textContent = "Select contact to assign"; placeholder.style.color = "black"; return; }
+  placeholder.textContent = "";
+}
 
-// === Assign Dropdown Close Handling ===
-/**
- * Detects clicks outside the assign dropdown to close it and reset UI state.
- */
-document.addEventListener("click", (e) => {
+/** @param {InputEvent} e @returns {void} */
+function handleAssignFilterInput(e) {
+  const t = e.target; if (!t?.classList?.contains("assign-placeholder-addTask_template")) return;
+  const search = String(t.textContent || "").toLowerCase(), items = document.querySelectorAll(".assign-item-addTask_template");
+  if (!search.trim()) { items.forEach((i) => (i.style.display = "flex")); updateAssignPlaceholder(); return; }
+  let anyMatch = false;
+  items.forEach((item) => { const n = item.querySelector(".assign-name-addTask_template")?.textContent.toLowerCase() || "";
+    const ok = n.includes(search); item.style.display = ok ? "flex" : "none"; if (ok) anyMatch = true; });
+  if (!anyMatch) items.forEach((i) => (i.style.display = "flex"));
+}
+
+/** @param {MouseEvent} e @returns {void} */
+function handleAssignOutsideClick(e) {
   const dropdown = document.querySelector(".assign-dropdown-addTask_template");
   const assignSelect = document.getElementById("assign-select");
-  const placeholder = document.querySelector(
-    ".assign-placeholder-addTask_template"
-  );
+  const placeholder = document.querySelector(".assign-placeholder-addTask_template");
   const arrow = document.querySelector(".assign-arrow-addTask_template");
-  if (!dropdown || !assignSelect) return;
-  if (!assignSelect.contains(e.target) && !dropdown.contains(e.target)) {
-    dropdown.style.display = "none";
-    placeholder.contentEditable = false;
-    placeholder.classList.remove("typing");
-    arrow.style.transform = "rotate(0deg)";
-    renderAssignedAvatars();
-  }
-});
+  if (!dropdown || !assignSelect || !placeholder || !arrow) return;
+  if (assignSelect.contains(e.target) || dropdown.contains(e.target)) return;
+  dropdown.style.display = "none"; window.isDropdownOpen = false;
+  placeholder.contentEditable = false; placeholder.classList.remove("typing"); placeholder.blur();
+  arrow.style.transform = "rotate(0deg)"; renderAssignedAvatars();
+}
 
-// === Assigned Avatars Rendering ===
-/**
- * Renders avatars for all currently selected users, including initials and colors.
- */
+/** @returns {void} */
 function renderAssignedAvatars() {
-  const container = document.getElementById("assigned-avatars");
-  if (!container) return;
-  container.innerHTML = "";
-  const maxVisible = 3;
-  const users = window.selectedUsers || [];
-  const visible = users.slice(0, maxVisible);
-  visible.forEach((name) => {
-    const item = [
-      ...document.querySelectorAll(".assign-item-addTask_template"),
-    ].find(
-      (el) =>
-        el
-          .querySelector(".assign-name-addTask_template")
-          ?.textContent.trim() === name
-    );
-    let color = window.selectedUserColors?.[name];
-    if (!color) {
-      color = getColorFromItem(item) || "#4589ff";
-      if (window.selectedUserColors) window.selectedUserColors[name] = color;
-    }
-    const initials = name
-      .split(" ")
-      .map((n) => n[0]?.toUpperCase())
-      .join("");
-    const avatar = document.createElement("div");
-    avatar.textContent = initials;
-    avatar.classList.add("assign-avatar-addTask_template");
-    avatar.style.backgroundColor = color;
-    avatar.title = name;
-    container.appendChild(avatar);
-  });
-  if (users.length > maxVisible) {
-    const extra = users.length - maxVisible;
-    const bubble = document.createElement("div");
-    bubble.classList.add("assign-avatar-addTask_template");
-    bubble.style.backgroundColor = "#d1d1d1";
-    bubble.style.color = "black";
-    bubble.style.fontWeight = "bold";
-    bubble.textContent = `+${extra}`;
-    container.appendChild(bubble);
-  }
+  const container = document.getElementById("assigned-avatars"); if (!container) return;
+  container.innerHTML = ""; const maxVisible = 3, users = window.selectedUsers || [], visible = users.slice(0, maxVisible);
+  visible.forEach((name) => container.appendChild(buildAssignedAvatar(name)));
+  if (users.length > maxVisible) container.appendChild(buildExtraAvatar(users.length - maxVisible));
 }
 
-// === Priority Handling ===
-/**
- * Sets the priority for the task and updates corresponding button styles.
- * @param {string} priority - One of "urgent", "medium", or "low".
- */
+/** @param {string} name @returns {HTMLDivElement} */
+function buildAssignedAvatar(name) {
+  const item = [...document.querySelectorAll(".assign-item-addTask_template")].find((el) => el.querySelector(".assign-name-addTask_template")?.textContent.trim() === name);
+  let color = window.selectedUserColors?.[name]; if (!color) { color = getColorFromItem(item) || "#4589ff"; if (window.selectedUserColors) window.selectedUserColors[name] = color; }
+  const initials = String(name).split(" ").map((n) => n[0]?.toUpperCase()).join("");
+  const a = document.createElement("div"); a.textContent = initials; a.classList.add("assign-avatar-addTask_template"); a.style.backgroundColor = color; a.title = name; return a;
+}
+
+/** @param {number} extra @returns {HTMLDivElement} */
+function buildExtraAvatar(extra) {
+  const b = document.createElement("div"); b.classList.add("assign-avatar-addTask_template");
+  b.style.backgroundColor = "#d1d1d1"; b.style.color = "black"; b.style.fontWeight = "bold"; b.textContent = `+${extra}`; return b;
+}
+
+/** @param {"urgent"|"medium"|"low"|string} priority @returns {void} */
 function setPriorityAddTask(priority) {
-  const urgentBtn = document.querySelector(
-    ".priority-btn-urgent-addTask_template"
-  );
-  const mediumBtn = document.querySelector(
-    ".priority-btn-medium-addTask_template"
-  );
+  const urgentBtn = document.querySelector(".priority-btn-urgent-addTask_template");
+  const mediumBtn = document.querySelector(".priority-btn-medium-addTask_template");
   const lowBtn = document.querySelector(".priority-btn-low-addTask_template");
-  urgentBtn.style.backgroundColor = "white";
-  mediumBtn.style.backgroundColor = "white";
-  lowBtn.style.backgroundColor = "white";
-  urgentBtn.style.color = "black";
-  mediumBtn.style.color = "black";
-  lowBtn.style.color = "black";
-  urgentBtn.querySelector("img").style.filter = "";
-  mediumBtn.querySelector("img").style.filter =
-    "brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)";
-  lowBtn.querySelector("img").style.filter = "";
-  if (priority === "urgent") {
-    urgentBtn.style.backgroundColor = "#ff3d00";
-    urgentBtn.style.color = "white";
-    urgentBtn.querySelector("img").style.filter = "brightness(0) invert(1)";
-  } else if (priority === "medium") {
-    mediumBtn.style.backgroundColor = "#ffa800";
-    mediumBtn.style.color = "white";
-    mediumBtn.querySelector("img").style.filter = "brightness(0) invert(1)";
-  } else if (priority === "low") {
-    lowBtn.style.backgroundColor = "#00c853";
-    lowBtn.style.color = "white";
-    lowBtn.querySelector("img").style.filter = "brightness(0) invert(1)";
-  }
-  window.currentPriority = priority;
-  window.currentPrio = priority;
+  urgentBtn.style.backgroundColor = "white"; mediumBtn.style.backgroundColor = "white"; lowBtn.style.backgroundColor = "white";
+  urgentBtn.style.color = "black"; mediumBtn.style.color = "black"; lowBtn.style.color = "black";
+  urgentBtn.querySelector("img").style.filter = ""; mediumBtn.querySelector("img").style.filter = "brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)"; lowBtn.querySelector("img").style.filter = "";
+  if (priority === "urgent") { urgentBtn.style.backgroundColor = "#ff3d00"; urgentBtn.style.color = "white"; urgentBtn.querySelector("img").style.filter = "brightness(0) invert(1)"; }
+  else if (priority === "medium") { mediumBtn.style.backgroundColor = "#ffa800"; mediumBtn.style.color = "white"; mediumBtn.querySelector("img").style.filter = "brightness(0) invert(1)"; }
+  else if (priority === "low") { lowBtn.style.backgroundColor = "#00c853"; lowBtn.style.color = "white"; lowBtn.querySelector("img").style.filter = "brightness(0) invert(1)"; }
+  window.currentPriority = priority; window.currentPrio = priority;
 }
 
-// === Subtask Management (Add, Edit, Remove, Save) ===
-/**
- * Handles adding, editing, saving, and removing subtasks within the Add Task template.
- */
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("subtask-delete-addTask_template")) {
-    const subtaskInput = document.getElementById("subtask");
-    if (subtaskInput) subtaskInput.value = "";
-  }
-  if (e.target.classList.contains("subtask-check-addTask_template")) {
-    const subtaskInput = document.getElementById("subtask");
-    const subtaskList = document.getElementById("subtask-list");
-    const value = subtaskInput.value.trim();
-    if (value !== "") {
-      const li = document.createElement("li");
-      li.textContent = value;
-      const actions = document.createElement("div");
-      actions.classList.add("subtask-actions-addTask_template");
-      actions.innerHTML = `
-        <img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_template">
-        <div class="subtask-divider-addTask_template"></div>
-        <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template">
-      `;
-      li.appendChild(actions);
-      subtaskList.appendChild(li);
-      subtaskInput.value = "";
-    }
-  }
-  if (e.target.classList.contains("subtask-remove-addTask_template")) {
-    const li = e.target.closest("li");
-    if (li) li.remove();
-  }
-  if (e.target.classList.contains("subtask-edit-addTask_template")) {
-    const li = e.target.closest("li");
-    if (!li) return;
-    const oldText = li.firstChild.textContent;
-    li.innerHTML = "";
-    const input = document.createElement("input");
-    input.type = "text";
-    input.value = oldText.trim();
-    input.classList.add("task-subtask-addTask_template");
-    input.id = "subtask-edit-" + Date.now();
-    input.name = "subtask-edit-" + Date.now();
-    const actions = document.createElement("div");
-    actions.classList.add("subtask-actions-addTask_template");
-    actions.innerHTML = `
-      <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template">
-      <div class="subtask-divider-addTask_template"></div>
-      <img src="../assets/img/check.svg" alt="Save subtask" class="subtask-save-addTask_template">
-    `;
-    li.appendChild(input);
-    li.appendChild(actions);
-    input.addEventListener("keyup", (event) => {
-      if (event.key !== "Enter") return;
-      const value = input.value.trim();
-      if (value === "") return;
-      event.preventDefault();
-      const saveIcon = li.querySelector(".subtask-save-addTask_template");
-      if (saveIcon) saveIcon.click();
-    });
-  }
-  if (e.target.classList.contains("subtask-save-addTask_template")) {
-    const li = e.target.closest("li");
-    const input = li.querySelector("input");
-    const newText = input.value.trim();
-    if (!newText) return;
-    li.innerHTML = "";
-    li.textContent = newText;
+/** @param {MouseEvent} e @returns {void} */
+function handleSubtaskClick(e) {
+  const t = e.target; if (!t?.classList) return;
+  if (t.classList.contains("subtask-delete-addTask_template")) return clearSubtaskInput();
+  if (t.classList.contains("subtask-check-addTask_template")) return addSubtaskFromInput();
+  if (t.classList.contains("subtask-remove-addTask_template")) return removeSubtaskItem(t);
+  if (t.classList.contains("subtask-edit-addTask_template")) return startSubtaskEdit(t);
+  if (t.classList.contains("subtask-save-addTask_template")) return saveSubtaskEdit(t);
+}
 
-    const actions = document.createElement("div");
-    actions.classList.add("subtask-actions-addTask_template");
-    actions.innerHTML = `
-      <img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_template">
-      <div class="subtask-divider-addTask_template"></div>
-      <img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template">
-    `;
-    li.appendChild(actions);
-  }
-});
+/** @returns {void} */
+function clearSubtaskInput() {
+  const subtaskInput = document.getElementById("subtask"); if (subtaskInput) subtaskInput.value = "";
+}
 
-// === Subtask Add via Enter (Template) ===
-document.addEventListener("keyup", (e) => {
+/** @returns {void} */
+function addSubtaskFromInput() {
+  const input = document.getElementById("subtask"), list = document.getElementById("subtask-list");
+  if (!input || !list) return; const value = input.value.trim(); if (!value) return;
+  const li = document.createElement("li"); li.textContent = value; li.appendChild(buildSubtaskActionsView()); list.appendChild(li); input.value = "";
+}
+
+/** @returns {HTMLDivElement} */
+function buildSubtaskActionsView() {
+  const actions = document.createElement("div"); actions.classList.add("subtask-actions-addTask_template");
+  actions.innerHTML = `<img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_template"><div class="subtask-divider-addTask_template"></div><img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template">`;
+  return actions;
+}
+
+/** @param {HTMLElement} target @returns {void} */
+function removeSubtaskItem(target) {
+  const li = target.closest("li"); if (li) li.remove();
+}
+
+/** @param {HTMLElement} target @returns {void} */
+function startSubtaskEdit(target) {
+  const li = target.closest("li"); if (!li) return;
+  const oldText = li.firstChild?.textContent || ""; li.innerHTML = "";
+  const input = document.createElement("input"); input.type = "text"; input.value = oldText.trim(); input.classList.add("task-subtask-addTask_template");
+  const id = "subtask-edit-" + Date.now(); input.id = id; input.name = id; li.appendChild(input); li.appendChild(buildSubtaskActionsEdit());
+  input.addEventListener("keyup", (event) => { if (event.key !== "Enter") return; const v = input.value.trim(); if (!v) return; event.preventDefault(); li.querySelector(".subtask-save-addTask_template")?.click(); });
+}
+
+/** @returns {HTMLDivElement} */
+function buildSubtaskActionsEdit() {
+  const actions = document.createElement("div"); actions.classList.add("subtask-actions-addTask_template");
+  actions.innerHTML = `<img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_template"><div class="subtask-divider-addTask_template"></div><img src="../assets/img/check.svg" alt="Save subtask" class="subtask-save-addTask_template">`;
+  return actions;
+}
+
+/** @param {HTMLElement} target @returns {void} */
+function saveSubtaskEdit(target) {
+  const li = target.closest("li"); if (!li) return;
+  const input = li.querySelector("input"); if (!input) return;
+  const newText = input.value.trim(); if (!newText) return;
+  li.innerHTML = ""; li.textContent = newText; li.appendChild(buildSubtaskActionsView());
+}
+
+/** @param {KeyboardEvent} e @returns {void} */
+function handleSubtaskEnter(e) {
   if (e.key !== "Enter") return;
-  const subtaskInput = document.getElementById("subtask");
-  if (!subtaskInput) return;
-  if (document.activeElement === subtaskInput) {
-    const value = subtaskInput.value.trim();
-    if (value === "") return;
-    e.preventDefault();
-    const checkIcon = document.querySelector(".subtask-check-addTask_template");
-    if (checkIcon) checkIcon.click();
-  }
-});
-
-// === Due Date Validation and Formatting ===
-/**
- * Sanitizes date input to allow only digits and slashes, enforcing max length.
- * @param {InputEvent} e - The input event.
- */
-function sanitizeDueDateInput(e) {
-  const input = e.target;
-  input.value = input.value.replace(/[^0-9/]/g, "").slice(0, 10);
+  const input = document.getElementById("subtask"); if (!input) return;
+  if (document.activeElement !== input) return;
+  const v = input.value.trim(); if (!v) return;
+  e.preventDefault(); document.querySelector(".subtask-check-addTask_template")?.click();
 }
 
-/**
- * Checks if a date string matches the dd/mm/yyyy format.
- * @param {string} dateString - The date string to validate.
- * @returns {boolean} True if the format is valid.
- */
+/** @param {InputEvent} e @returns {void} */
+function sanitizeDueDateInput(e) {
+  const input = e.target; input.value = input.value.replace(/[^0-9/]/g, "").slice(0, 10);
+}
+
+/** @param {string} dateString @returns {boolean} */
 function isValidDateFormat(dateString) {
   return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString);
 }
 
-/**
- * Determines whether the given date string represents a real valid calendar date.
- * @param {string} dateString - A dd/mm/yyyy formatted date.
- * @returns {boolean} True if the date exists.
- */
+/** @param {string} dateString @returns {boolean} */
 function isRealDate(dateString) {
   const [d, m, y] = dateString.split("/").map(Number);
   const date = new Date(y, m - 1, d);
-  return (
-    date &&
-    date.getDate() === d &&
-    date.getMonth() === m - 1 &&
-    date.getFullYear() === y
-  );
+  return date && date.getDate() === d && date.getMonth() === m - 1 && date.getFullYear() === y;
 }
 
-/**
- * Validates the due date input field for presence, format, and correctness.
- * @returns {boolean} True if the due date passes all validations.
- */
+/** @returns {boolean|undefined} */
 function validateDueDate() {
   const dueDateInput = document.getElementById("due-date");
   const errorMsg = document.getElementById("due-date-error");
   if (!dueDateInput || !errorMsg) return;
   const value = dueDateInput.value.trim();
-  if (!value) {
-    errorMsg.textContent = "This field is required.";
-    dueDateInput.style.borderBottom = "1px solid red";
-    return false;
-  }
-  if (!isValidDateFormat(value)) {
-    errorMsg.textContent = "Use format dd/mm/yyyy.";
-    dueDateInput.style.borderBottom = "1px solid red";
-    return false;
-  }
-  if (!isRealDate(value)) {
-    errorMsg.textContent = "Invalid date.";
-    dueDateInput.style.borderBottom = "1px solid red";
-    return false;
-  }
-  errorMsg.textContent = "";
-  dueDateInput.style.borderBottom = "1px solid #d1d1d1";
-  return true;
+  if (!value) { errorMsg.textContent = "This field is required."; dueDateInput.style.borderBottom = "1px solid red"; return false; }
+  if (!isValidDateFormat(value)) { errorMsg.textContent = "Use format dd/mm/yyyy."; dueDateInput.style.borderBottom = "1px solid red"; return false; }
+  if (!isRealDate(value)) { errorMsg.textContent = "Invalid date."; dueDateInput.style.borderBottom = "1px solid red"; return false; }
+  errorMsg.textContent = ""; dueDateInput.style.borderBottom = "1px solid #d1d1d1"; return true;
 }
