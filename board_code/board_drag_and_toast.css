@@ -44,7 +44,7 @@
   
   @keyframes toast-up{
     from { opacity: 0; transform: translateY(100vh) scale(.98); }
-    to   { opacity: 1; transform: translateY(50vh)  scale(1); } /* Mitte */
+    to   { opacity: 1; transform: translateY(50vh)  scale(1); } 
   }
   
   @keyframes toast-down{

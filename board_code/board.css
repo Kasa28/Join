@@ -329,6 +329,7 @@ body.no-scroll {
 .clear-search-btn.is-visible {
   display: flex;
 }
+
 .searchbox {
   display: flex;
   align-items: center;
@@ -339,6 +340,7 @@ body.no-scroll {
   padding: 8px 12px;
   transition: border-color 0.2s ease;
 }
+
 .searchbox:hover {
   border-radius: 2px blue;
 }
@@ -346,14 +348,17 @@ body.no-scroll {
 .searchbox:hover {
   border-color: #4589ff;
 }
+
 .btn-icon:hover img,
 .btn-icon:focus-visible img {
   filter: brightness(0) saturate(100%) invert(45%) sepia(80%) saturate(900%)
     hue-rotate(190deg) brightness(100%);
 }
+
 .searchbox {
   position: relative;
 }
+
 .searchbox .btn-icon {
   border: none;
   border-left: 1px solid #d3cdcd;
@@ -371,6 +376,7 @@ body.no-scroll {
   color: #c6c3c3;
   opacity: 1;
 }
+
 .add-task-btn img {
   margin-left: 8px;
   display: inline-block;

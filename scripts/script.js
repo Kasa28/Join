@@ -15,24 +15,24 @@ window.currentPrio = window.currentPrio || "low";
 /** @type {Record<string,string>} */
 window.selectedUserColors = window.selectedUserColors || {};
 
+/**
+ * Opens AddTask overlay and sets target status for the new task.
+ * @param {"todo"|"in-progress"|"await-feedback"|"done"} status
+ * @returns {void}
+ */
 if (!window.openAddTaskWithStatus) {
-  /**
-   * Opens AddTask overlay and sets target status for the new task.
-   * @param {"todo"|"in-progress"|"await-feedback"|"done"} status
-   * @returns {void}
-   */
   window.openAddTaskWithStatus = function (status) {
     window.nextTaskTargetStatus = status || window.STATUS.TODO;
     if (typeof openAddTask === "function") openAddTask();
   };
 }
 
+/**
+ * Click handler for "+" buttons that open AddTask in a specific column.
+ * @param {MouseEvent} e
+ * @returns {void}
+ */
 if (!window.openAddTaskFromPlus) {
-  /**
-   * Click handler for "+" buttons that open AddTask in a specific column.
-   * @param {MouseEvent} e
-   * @returns {void}
-   */
   window.openAddTaskFromPlus = function (e) {
     const s = e?.currentTarget?.dataset?.target || window.STATUS.TODO;
     window.openAddTaskWithStatus(s);
@@ -55,7 +55,9 @@ function mapCategoryToType(value) {
  */
 function getDomColorForName(fullName) {
   for (const item of document.querySelectorAll(".assign-item-addTask_page")) {
-    const label = item.querySelector(".assign-name-addTask_page")?.textContent.trim();
+    const label = item
+      .querySelector(".assign-name-addTask_page")
+      ?.textContent.trim();
     if (label !== fullName) continue;
     const avatar = item.querySelector(".assign-avatar-addTask_page");
     if (avatar?.style?.backgroundColor) return avatar.style.backgroundColor;
@@ -81,12 +83,23 @@ function buildAssignedFromNames(names) {
  * @returns {{name:string,color:string}[]}
  */
 function buildAssignedFromAvatars() {
-  const out = [], users = window.selectedUsers || [], colors = window.selectedUserColors || {};
-  for (const el of document.querySelectorAll("#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page")) {
-    const initials = el.textContent.trim(), dataName = el.dataset?.fullName;
-    const fromList = users.find((n) => n === dataName || (!dataName && n && n.startsWith(initials)));
+  const out = [],
+    users = window.selectedUsers || [],
+    colors = window.selectedUserColors || {};
+  for (const el of document.querySelectorAll(
+    "#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page"
+  )) {
+    const initials = el.textContent.trim(),
+      dataName = el.dataset?.fullName;
+    const fromList = users.find(
+      (n) => n === dataName || (!dataName && n && n.startsWith(initials))
+    );
     const fullName = dataName || fromList || initials;
-    const color = el.dataset?.color || colors[fullName] || el.style.backgroundColor || "#4589ff";
+    const color =
+      el.dataset?.color ||
+      colors[fullName] ||
+      el.style.backgroundColor ||
+      "#4589ff";
     out.push({ name: fullName, color });
   }
   return out;
@@ -97,9 +110,14 @@ function buildAssignedFromAvatars() {
  * @returns {{name:string,color?:string,img?:string}[]}
  */
 function assignedToDataExtractSafe() {
-  if (typeof assignedToDataExtract === "function") return assignedToDataExtract();
-  const names = Array.isArray(window.selectedUsers) ? window.selectedUsers.slice() : [];
-  return names.length ? buildAssignedFromNames(names) : buildAssignedFromAvatars();
+  if (typeof assignedToDataExtract === "function")
+    return assignedToDataExtract();
+  const names = Array.isArray(window.selectedUsers)
+    ? window.selectedUsers.slice()
+    : [];
+  return names.length
+    ? buildAssignedFromNames(names)
+    : buildAssignedFromAvatars();
 }
 
 /**
@@ -131,11 +149,16 @@ function generateTaskId() {
  */
 function collectTaskFromForm() {
   const title = (document.getElementById("title")?.value || "").trim();
-  const description = (document.getElementById("description")?.value || "").trim();
+  const description = (
+    document.getElementById("description")?.value || ""
+  ).trim();
   const dueDate = (document.getElementById("due-date")?.value || "").trim();
   const categoryVal = document.getElementById("category")?.value || "";
   const subTasks = getSubtasksSafe();
-  return { id: generateTaskId(), title, description, type: mapCategoryToType(categoryVal), status: window.nextTaskTargetStatus, dueDate, priority: window.currentPrio, assignedTo: assignedToDataExtractSafe(), subtasksDone: 0, subtasksTotal: subTasks.length, subTasks };
+  return {
+    id: generateTaskId(), title, description, type: mapCategoryToType(categoryVal), status: window.nextTaskTargetStatus,
+    dueDate, priority: window.currentPrio, assignedTo: assignedToDataExtractSafe(), subtasksDone: 0, subtasksTotal: subTasks.length, subTasks,
+  };
 }
 
 /**
@@ -168,10 +191,20 @@ window.createTask = createTask;
  */
 window.setPriority = function (prio) {
   window.currentPrio = String(prio || "low").toLowerCase();
-  const wrap = document.querySelector(".priority-group-addTask_template, .priority-group-addTask_page");
+  const wrap = document.querySelector(
+    ".priority-group-addTask_template, .priority-group-addTask_page"
+  );
   if (!wrap) return;
-  wrap.querySelectorAll("button").forEach((b) => b.classList.remove("active-prio"));
-  const map = { urgent: ".priority-btn-urgent-addTask_template, .priority-btn-urgent-addTask_page", medium: ".priority-btn-medium-addTask_template, .priority-btn-medium-addTask_page", low: ".priority-btn-low-addTask_template, .priority-btn-low-addTask_page" };
+  wrap
+    .querySelectorAll("button")
+    .forEach((b) => b.classList.remove("active-prio"));
+  const map = {
+    urgent:
+      ".priority-btn-urgent-addTask_template, .priority-btn-urgent-addTask_page",
+    medium:
+      ".priority-btn-medium-addTask_template, .priority-btn-medium-addTask_page",
+    low: ".priority-btn-low-addTask_template, .priority-btn-low-addTask_page",
+  };
   const active = wrap.querySelector(map[window.currentPrio]);
   if (active) active.classList.add("active-prio");
 };

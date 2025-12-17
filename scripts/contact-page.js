@@ -281,7 +281,6 @@ function renderSingleContact(inputString) {
   const contacts = flattenContactBlockToArray() || [];
   const rightIndex = findIndexFromUsername(contacts, inputString);
   const contact = contacts[rightIndex];
-
   singleContactTemplate(
     contact.color,
     contact.username,

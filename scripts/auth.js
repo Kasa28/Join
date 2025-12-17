@@ -45,10 +45,8 @@ window.auth = auth;
  */
 window.authReady = new Promise((resolve) => {
   let didResolve = false;
-
   onAuthStateChanged(auth, (user) => {
     window.currentUser = user || null;
-
     if (!didResolve) {
       didResolve = true;
       resolve(window.currentUser);

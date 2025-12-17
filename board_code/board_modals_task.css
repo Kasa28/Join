@@ -7,7 +7,6 @@
   padding-bottom: 16px;  
 }
 
-
 .title_user-story,
 .h3_user-story,
 .h1-technical-task,
@@ -172,6 +171,7 @@
   max-height: none;
   overflow: visible;      
 }
+
 #task-modal-content .action-buttons_user-story {
   position: sticky;
   bottom: 0;
@@ -196,7 +196,6 @@
   hyphens: auto;
 }
 
-
 #task-modal-content,
 .task-modal-content {
   max-height: 90vh;
@@ -213,7 +212,6 @@
   max-height: none;
   overflow: visible;    
 }
-
 
 #task-modal-content .action-buttons_user-story,
 #task-modal-content .delete-edit-section-technical-task {
@@ -234,7 +232,6 @@
   margin-bottom: 8px;
   background: #e5e5e5;
 }
-
 
 #task-modal-content {
   max-height: 90vh;

@@ -17,12 +17,10 @@ function showToast(text, { variant = "ok", duration = 2000 } = {}) {
     root.id = "toast-root";
     document.body.appendChild(root);
   }
-
   const el = document.createElement("div");
   el.className = `toast toast--show${variant === "error" ? " toast--error" : ""}`;
   el.innerHTML = `<span>${text}</span><span class="toast-icon" aria-hidden="true"></span>`;
   root.appendChild(el);
-
   setTimeout(() => {
     el.classList.remove("toast--show");
     el.classList.add("toast--hide");
@@ -146,16 +144,13 @@ function onContactsDomReady() {
     const menu = getMenuElement();
     const toggle = getMenuToggle();
     if (!menu || !toggle) return;
-
     const target = /** @type {HTMLElement} */ (event.target);
     const clickedInsideMenu = menu.contains(target);
     const clickedFabButton = target.closest(".contact-fab");
     const clickedFabItem = target.closest(".contact-fab-item");
-
     if (clickedFabItem) return hideMenu();
     if (toggle.checked && !clickedInsideMenu && !clickedFabButton && target !== toggle) hideMenu();
   }
-
   document.addEventListener("click", onDocClick);
 }
 

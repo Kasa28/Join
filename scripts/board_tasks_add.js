@@ -8,13 +8,11 @@ function openModalDynamic(id) {
   if (!task) {
     return;
   }
-
   let modal = document.getElementById("task-modal");
   let content = document.getElementById("task-modal-content");
   if (!modal || !content) {
     return;
   }
-
   renderModalContent(content, task);
   showTaskModal(modal);
 }
@@ -28,11 +26,9 @@ function findTaskForModal(id) {
   if (!Array.isArray(window.tasks)) {
     return null;
   }
-
   let task = window.tasks.find(function (t) {
     return t && t.id === id;
   });
-
   return task || null;
 }
 
@@ -70,11 +66,9 @@ async function deleteDynamicTask(id) {
   if (!task) {
     return;
   }
-
   if (!canDeleteTask(task)) {
     return;
   }
-
   deleteTaskFromArray(task);
   removeTaskCard(task);
   closeTaskModal();
@@ -93,16 +87,13 @@ function getTaskForDelete(id) {
     alert("Task not found.");
     return null;
   }
-
   let task = window.tasks.find(function (t) {
     return t && t.id === id;
   });
-
   if (!task) {
     alert("Task not found.");
     return null;
   }
-
   return task;
 }
 

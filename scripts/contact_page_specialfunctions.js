@@ -260,12 +260,6 @@ function flattenContactBlockToArray() {
 }
 
 /**
- * @typedef {Object} ToastOptions
- * @property {"ok"|"error"} [variant="ok"]
- * @property {number} [duration=1500]
- */
-
-/**
  * Ensures the toast root element exists in the DOM.
  * @returns {HTMLDivElement}
  */

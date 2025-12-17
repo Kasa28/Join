@@ -64,7 +64,6 @@ function validateEmailOnSubmit(email, errorEl) {
     if (errorEl) showError(errorEl, "Please enter a valid email address!");
     return false;
   }
-
   if (errorEl) resetError(errorEl);
   return true;
 }

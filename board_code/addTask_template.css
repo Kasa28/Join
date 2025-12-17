@@ -56,7 +56,6 @@ addtask_template.css * {
   font-size: 32px;
 }
 
-/* === Main Container === */
 .main-addTask_template {
   position: relative;
   width: 440px;
