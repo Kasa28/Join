@@ -10,6 +10,36 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
 /**
+ * Expose auth functions globally (for inline HTML handlers).
+ * @type {(event?: Event) => Promise<void>}
+ */
+window.login = login;
+
+/**
+ * Expose guest login globally (for inline HTML handlers).
+ * @type {() => Promise<void>}
+ */
+window.loginAsGuest = loginAsGuest;
+
+/**
+ * Expose login button state check globally.
+ * @type {() => void}
+ */
+window.checkLogin = checkLogin;
+
+/**
+ * Expose protected-page guard globally.
+ * @type {() => Promise<void>}
+ */
+window.checkIfLogedInOnProtectedPage = checkIfLogedInOnProtectedPage;
+
+/**
+ * Expose logout globally.
+ * @type {() => Promise<void>}
+ */
+window.logout = logout;
+
+/**
  * Validates the email format.
  * @param {string} email
  * @returns {boolean}
@@ -54,6 +84,7 @@ if (window.auth) {
  * Shows a login error message.
  * @param {HTMLElement|null} el
  * @param {string} message
+ * @returns {void}
  */
 function showLoginError(el, message) {
   if (!el) return;
@@ -65,6 +96,7 @@ function showLoginError(el, message) {
 /**
  * Hides the login error message.
  * @param {HTMLElement|null} el
+ * @returns {void}
  */
 function hideLoginError(el) {
   if (!el) return;
@@ -129,6 +161,7 @@ async function logout() {
 
 /**
  * Enables or disables the login button based on input values.
+ * @returns {void}
  */
 function checkLogin() {
   const emailEl = document.getElementById("email"), passEl = document.getElementById("password"), button = document.getElementById("login_button");
@@ -149,9 +182,3 @@ if (emailInput) {
     checkLogin();
   });
 }
-
-window.login = login;
-window.loginAsGuest = loginAsGuest;
-window.checkLogin = checkLogin;
-window.checkIfLogedInOnProtectedPage = checkIfLogedInOnProtectedPage;
-window.logout = logout;
