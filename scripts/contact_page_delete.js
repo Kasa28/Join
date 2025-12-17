@@ -18,7 +18,6 @@ async function deleteContact(inputString){
 }
 
 
-// In Edit-Contact-Window is a other Deletefunktion because we dont have any arguments in the Template to give
 /**
  * Deletes a contact from within the edit-contact window.
  * Reads the username from the edit form, removes it from contacts,
