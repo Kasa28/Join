@@ -67,9 +67,23 @@
 
 .assign-name-addTask_template {
   flex: 1;
+  min-width: 0;           
   font-size: 16px;
   color: #42526e;
   font-family: "open sans";
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.assign-name-addTask_template::-webkit-scrollbar {
+  height: 6px;
+}
+
+.assign-name-addTask_template::-webkit-scrollbar-thumb {
+  background-color: #c1c7d0;
+  border-radius: 4px;
 }
 
 .assigned-avatars-addTask_template {

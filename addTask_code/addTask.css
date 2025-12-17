@@ -358,12 +358,26 @@
 
 .assign-name-addTask_page {
   flex: 1;
+  min-width: 0;
   font-size: 16px;
   color: #42526e;
-  min-width: 0;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;        
+}
+
+.assign-name-addTask_page::-webkit-scrollbar {
+  height: 6px;
+}
+
+.assign-name-addTask_page::-webkit-scrollbar-thumb {
+  background-color: #c1c7d0;
+  border-radius: 4px;
+}
+
+.assign-name-addTask_page::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .assign-check-addTask_page {

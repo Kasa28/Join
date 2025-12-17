@@ -395,3 +395,21 @@
   margin-left: 6px;
   margin-right: 6px;
 }
+
+.p-user-badge_user-story {
+  max-width: 150px;  
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: thin;
+}
+
+.p-user-badge_user-story::-webkit-scrollbar {
+  height: 6px;
+}
+
+.p-user-badge_user-story::-webkit-scrollbar-thumb {
+  background-color: #c1c7d0;
+  border-radius: 4px;
+}
