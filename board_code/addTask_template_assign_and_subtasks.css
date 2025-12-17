@@ -1,4 +1,3 @@
-/* === Assign Section === */
 .assign-select-addTask_template {
   display: flex;
   align-items: center;
@@ -125,7 +124,6 @@
   pointer-events: none;
 }
 
-/* === Subtask Section === */
 .subtask-wrapper-addTask_template {
   position: relative;
 }
