@@ -12,6 +12,15 @@ const BASE_URL =
   "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
+ * Public API (safe to place here because all are function declarations → hoisted)
+ * @type {(text: string, options?: ToastOptions) => void}
+ */
+window.showToast = showToast;
+
+window.onclickFunction = onclickFunction;
+window.checkPolicyandAnswers = checkPolicyandAnswers;
+
+/**
  * @param {string} name
  * @returns {boolean}
  */
@@ -325,12 +334,6 @@ function hideToastLater(el, dimEl, dim, duration) {
 }
 
 /**
- * Exposes showToast globally.
- * @type {(text: string, options?: ToastOptions) => void}
- */
-window.showToast = showToast;
-
-/**
  * Maps Firebase auth error to human readable message.
  * @param {{code?: string}} err
  * @returns {string}
@@ -347,6 +350,3 @@ function mapAuthError(err) {
     return "Email/password sign-in is not enabled in Firebase.";
   return "Signup failed. Please try again.";
 }
-
-window.onclickFunction = onclickFunction;
-window.checkPolicyandAnswers = checkPolicyandAnswers;
