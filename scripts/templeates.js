@@ -1,41 +1,7 @@
-/* === templates.js | Static and dynamic HTML templates for user stories, technical tasks, and the Add Task form === */
-/**
- * @typedef {Object} AssignedUser
- * @property {string} name
- * @property {string} [img]
- * @property {string} [color]
- */
-/**
- * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
- */
-/**
- * @typedef {"urgent"|"medium"|"low"} TaskPriority
- */
-/**
- * @typedef {Object} Task
- * @property {number|string} id
- * @property {string} title
- * @property {string} description
- * @property {string} type
- * @property {TaskStatus} status
- * @property {string} dueDate
- * @property {TaskPriority|string} priority
- * @property {string} [priorityIcon]
- * @property {number} subtasksDone
- * @property {number} subtasksTotal
- * @property {AssignedUser[]} assignedTo
- * @property {string[]} [subTasks]
- */
-/**
- * @typedef {Task & {
- *   assignedHTML?: string,
- *   subtasksHTML?: string,
- *   priorityText?: string
- * }} DynamicTask
- */
 /**
  * Returns the static big card HTML for a (demo) User Story.
- * @param {Task} t
+ * @param {Object} t - Task object (only id is used here).
+ * @param {number|string} t.id - Task ID.
  * @returns {string}
  */
 function bigCardHtml(t) {
@@ -110,6 +76,7 @@ function bigCardHtml(t) {
     </main>
   `;
 }
+
 /**
  * Returns the Add Task overlay HTML template.
  * @returns {string}
@@ -211,9 +178,11 @@ function getAddTaskTemplate() {
 </div>
    `;
 }
+
 /**
  * Returns the static big card HTML for a (demo) Technical Task.
- * @param {Task} t
+ * @param {Object} t - Task object (only id is used here).
+ * @param {number|string} t.id - Task ID.
  * @returns {string}
  */
 function getTechnicalTaskTemplate(t) {
@@ -297,10 +266,20 @@ function getTechnicalTaskTemplate(t) {
     </main>
   `;
 }
+
 /**
  * Returns dynamic big card HTML for user stories and technical tasks.
  * Uses t.assignedHTML and t.subtasksHTML if provided.
- * @param {DynamicTask} t
+ * @param {Object} t - Dynamic task data.
+ * @param {number|string} t.id - Task ID.
+ * @param {string} t.type - Task type label (e.g. "User Story", "Technical Task").
+ * @param {string} t.title - Task title.
+ * @param {string} t.description - Task description.
+ * @param {string} t.dueDate - Due date display string.
+ * @param {string} t.priority - Priority (e.g. "urgent", "medium", "low").
+ * @param {string} t.priorityIcon - Icon path/url for priority.
+ * @param {string} [t.assignedHTML] - Pre-rendered HTML for assigned users.
+ * @param {string} [t.subtasksHTML] - Pre-rendered HTML for subtasks.
  * @returns {string}
  */
 function getBigCardDynamicHtml(t) {
@@ -365,10 +344,17 @@ function getBigCardDynamicHtml(t) {
 /**
  * Returns dynamic big card HTML specifically styled for technical tasks.
  * Uses t.assignedHTML, t.subtasksHTML, and t.priorityText if provided.
- * @param {DynamicTask} t
+ * @param {Object} t - Dynamic technical task data.
+ * @param {number|string} t.id - Task ID.
+ * @param {string} t.title - Task title.
+ * @param {string} t.description - Task description.
+ * @param {string} t.dueDate - Due date display string.
+ * @param {string} t.priorityIcon - Icon path/url for priority.
+ * @param {string} t.priorityText - Priority label (e.g. "Urgent", "Medium", "Low").
+ * @param {string} [t.assignedHTML] - Pre-rendered HTML for assigned users.
+ * @param {string} [t.subtasksHTML] - Pre-rendered HTML for subtasks.
  * @returns {string}
  */
-
 function getBigCardDynamicTechnicalHtml(t) {
   return `
     <div class="task-modal-scroll">
