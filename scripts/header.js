@@ -1,12 +1,20 @@
+window.addEventListener("resize", handleHeaderResize);
+
+/**
+ * Handles window resize and repositions the user menu if it is open.
+ * @returns {void}
+ */
+function handleHeaderResize() {
+  updateUserMenuPosition();
+}
+
 /**
  * Determines the correct base path for links depending on the current page location.
  * @returns {string}
  */
 function getBasePath() {
   const path = window.location.pathname;
-  if (path.includes("/board_code/") || path.includes("/addTask_code/")) {
-    return "..";
-  }
+  if (path.includes("/board_code/") || path.includes("/addTask_code/")) return "..";
   return ".";
 }
 
@@ -74,11 +82,7 @@ function isPublicPage() {
   const normalizedPath = window.location.pathname.toLowerCase();
   const publicPages = ["help", "legal", "privacy", "index", "/"];
   if (normalizedPath === "/") return true;
-  return publicPages.some(
-    (page) =>
-      normalizedPath.endsWith(`${page}.html`) ||
-      normalizedPath.endsWith(`/${page}`)
-  );
+  return publicPages.some((page) => normalizedPath.endsWith(`${page}.html`) || normalizedPath.endsWith(`/${page}`));
 }
 
 /**
@@ -89,10 +93,7 @@ function checkIfLogedIn() {
   const loggedIn = Boolean(window.currentUser);
   if (!loggedIn && !isPublicPage() && window.authReady) {
     window.authReady.then((user) => {
-      if (!user) {
-        const loginPath = "/index.html";
-        window.location.href = loginPath;
-      }
+      if (!user) window.location.href = "/index.html";
     });
   }
   return loggedIn;
@@ -123,22 +124,12 @@ async function onloadFunctionHeader() {
 async function setLetterInUserBall(isLoggedIn, profile) {
   const el = document.getElementById("user-ball-ID");
   if (!el) return;
-  if (!isLoggedIn) {
-    el.innerHTML = "G";
-    return;
-  }
+  if (!isLoggedIn) return void (el.innerHTML = "G");
   const isGuestUser = Boolean(window.currentUser?.isAnonymous || profile?.isGuest);
   const name =
-    profile?.name ||
-    window.currentUser?.displayName ||
-    window.currentUser?.email ||
-    (isGuestUser ? "Guest" : "");
+    profile?.name || window.currentUser?.displayName || window.currentUser?.email || (isGuestUser ? "Guest" : "");
   const letter = name.charAt(0).toUpperCase();
-  if (letter) {
-    el.innerHTML = letter;
-    return;
-  }
-  el.innerHTML = isGuestUser ? "G" : "?";
+  el.innerHTML = letter ? letter : isGuestUser ? "G" : "?";
 }
 
 /**
@@ -147,9 +138,7 @@ async function setLetterInUserBall(isLoggedIn, profile) {
  * @returns {string}
  */
 function makeFirstLetterBig(inputString) {
-  return (
-    String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1)
-  );
+  return String(inputString).charAt(0).toUpperCase() + String(inputString).slice(1);
 }
 
 /**
@@ -161,18 +150,10 @@ async function greetUserName() {
   const el = document.getElementById("greetID");
   if (!el) return;
   const hour = new Date().getHours();
-  const greeting =
-    hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
-  if (!checkIfLogedIn()) {
-    el.innerHTML = `<h1 class="summary-h1-font-guest">${greeting}</h1>`;
-    return;
-  }
+  const greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
+  if (!checkIfLogedIn()) return void (el.innerHTML = `<h1 class="summary-h1-font-guest">${greeting}</h1>`);
   const profile = await loadCurrentUserProfile();
-  const baseName =
-    profile?.name ||
-    window.currentUser?.displayName ||
-    window.currentUser?.email ||
-    "User";
+  const baseName = profile?.name || window.currentUser?.displayName || window.currentUser?.email || "User";
   const userName = makeFirstLetterBig(baseName);
   el.innerHTML = `<h2 class="summary-h2-font-user">${greeting},&nbsp;</h2><h1 class="summary-h1-font-user">${userName}</h1>`;
 }
@@ -191,21 +172,24 @@ function setActiveSidebarByURL() {
 }
 
 /**
+ * Handles sidebar button clicks and updates the active state.
+ * @param {MouseEvent} ev
+ * @returns {void}
+ */
+function handleSidebarButtonClick(ev) {
+  document.querySelectorAll(".button-sidebar").forEach((b) => b.classList.remove("active"));
+  ev.currentTarget.classList.add("active");
+}
+
+/**
  * Adds click handlers to sidebar buttons to toggle the active class.
  * @returns {void}
  */
 function addActiveClassToSidebarButtons() {
   document.querySelectorAll(".side-menu .button-sidebar").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      document
-        .querySelectorAll(".button-sidebar")
-        .forEach((b) => b.classList.remove("active"));
-      this.classList.add("active");
-    });
+    btn.addEventListener("click", handleSidebarButtonClick);
   });
 }
-
-window.addEventListener("resize", updateUserMenuPosition);
 
 /**
  * Shows or hides navigation parts for guests on public pages.
