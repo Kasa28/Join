@@ -1,33 +1,6 @@
 /**
- * @typedef {Object} AssignedUser
- * @property {string} name
- * @property {string} [img]
- * @property {string} [color]
- */
-/**
- * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
- */
-/**
- * @typedef {"urgent"|"medium"|"low"} TaskPriority
- */
-/**
- * @typedef {Object} Task
- * @property {number|string} id
- * @property {string} title
- * @property {string} description
- * @property {string} type
- * @property {TaskStatus} status
- * @property {string} dueDate
- * @property {TaskPriority} priority
- * @property {string} [priorityIcon]
- * @property {number} subtasksDone
- * @property {number} subtasksTotal
- * @property {AssignedUser[]} assignedTo
- * @property {string[]} [subTasks]
- */
-/**
  * Renders a single task into a cloned card template.
- * @param {Task} t
+ * @param {{id:number|string,title:string,description:string,type:string,status:string,dueDate:string,priority:string,priorityIcon?:string,subtasksDone:number,subtasksTotal:number,assignedTo?:Array<{name:string,img?:string,color?:string}>,subTasks?:string[]}} t
  * @returns {DocumentFragment}
  */
 function renderCard(t){const tpl=document.getElementById("tmpl-card").content.cloneNode(true);
@@ -61,7 +34,6 @@ return li;}
 
 /**
  * Renders all board columns and visible task cards.
- * Respects current search filter and empty-column pills.
  * @returns {void}
  */
 function render(){const tasks=Array.isArray(window.tasks)?window.tasks:[];
@@ -86,12 +58,24 @@ const task=tasks.find((t)=>t.id==card.id.replace("card-",""));
 if(task)updateCardAfterRender(card,task);
 });}
 
+/**
+ * Updates a rendered card after DOM render.
+ * @param {Element} card
+ * @param {{id:number|string,title:string,description:string,type:string,status:string,dueDate:string,priority:string,priorityIcon?:string,subtasksDone:number,subtasksTotal:number,assignedTo?:Array<{name:string,img?:string,color?:string}>,subTasks?:string[]}} task
+ * @returns {void}
+ */
 function updateCardAfterRender(card,task){
 const assBox=card.querySelector(".assignees");
 if(assBox)fillAssignees(assBox,task);
 const pill=card.querySelector(".priority-pill");
 if(pill)fillPriorityPill(pill,task);}
 
+/**
+ * Fills assignee container with initials (+ overflow).
+ * @param {Element} assBox
+ * @param {{assignedTo?:Array<{name:string,img?:string,color?:string}>}} task
+ * @returns {void}
+ */
 function fillAssignees(assBox,task){
 const people=task.assignedTo||[],maxVisible=3,visible=people.slice(0,maxVisible);
 assBox.innerHTML=visible.map((p)=>{const initials=getInitialsFromName(p.name);
@@ -100,23 +84,16 @@ return `<span class="assigned-to-initials" title="${p.name}" style="${bg}">${ini
 if(people.length>maxVisible){const extra=people.length-maxVisible;
 assBox.innerHTML+=`<span class="assigned-to-initials" style="background-color: #d1d1d1;color: black;font-weight: 600;">+${extra}</span>`;}}
 
+/**
+ * Fills the priority pill with the correct icon.
+ * @param {Element} pill
+ * @param {{priority?:string,priorityIcon?:string}} task
+ * @returns {void}
+ */
 function fillPriorityPill(pill,task){
 const pr=(task.priority||"low").toLowerCase();
 const iconSrc=task.priorityIcon||prioritätIcon[pr]||prioritätIcon.low;
 pill.innerHTML=`<img src="${iconSrc}" alt="${pr}" class="prio-icon">`;}
-
-if (needsDraggingClassAfterRender && whichCardActuellDrop != null) {
-  const card = document.getElementById(`card-${whichCardActuellDrop}`);
-  if (card) {
-    currentDragCardEl = card;
-    card.classList.add("is-dragging");
-    if (pendingDragTiltClass) {
-      card.classList.add(pendingDragTiltClass);
-    }
-  }
-  needsDraggingClassAfterRender = false;
-  pendingDragTiltClass = null;
-}
 
 /**
  * Creates initials from a full name (max 2 letters).
@@ -131,10 +108,9 @@ return String(name||"")
 .slice(0,2)
 .join("");}
 
-
 /**
  * Hydrates the assign section in AddTask overlay based on task data.
- * @param {Task} task
+ * @param {{assignedTo?:Array<{name:string,color?:string}>}} task
  * @returns {void}
  */
 function hydrateAssignSection(task){
@@ -144,6 +120,12 @@ renderAssignAvatars(content,task);
 syncAssignCheckboxes(content);
 updateAssignPlaceholder(content);}
 
+/**
+ * Renders assigned avatars inside the AddTask overlay.
+ * @param {Element} content
+ * @param {{assignedTo?:Array<{name:string,color?:string}>}} task
+ * @returns {void}
+ */
 function renderAssignAvatars(content,task){
 const container=content.querySelector("#assigned-avatars");
 if(!container)return;
@@ -157,6 +139,11 @@ avatar.style.backgroundColor=color;
 avatar.dataset.fullName=name;avatar.dataset.color=color;avatar.title=name;
 container.appendChild(avatar);});}
 
+/**
+ * Syncs assign checkboxes with window.selectedUsers.
+ * @param {Element} content
+ * @returns {void}
+ */
 function syncAssignCheckboxes(content){
 const items=content.querySelectorAll(".assign-item-addTask_template");
 items.forEach((item)=>{
@@ -167,6 +154,11 @@ if(checkbox)checkbox.checked=selected;
 item.classList.toggle("selected",selected);
 });}
 
+/**
+ * Updates the assign placeholder text based on selection count.
+ * @param {Element} content
+ * @returns {void}
+ */
 function updateAssignPlaceholder(content){
 const placeholder=content.querySelector(".assign-placeholder-addTask_template");
 if(!placeholder)return;
