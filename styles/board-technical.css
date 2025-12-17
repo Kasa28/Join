@@ -206,7 +206,8 @@
 }
 
 .a-user-bagde-font-position-technical-task {
-  padding-left: 20px;
+  margin-left: 20px;  
+  padding-left: 0;   
   flex: 1;
   min-width: 0;
   max-width: 300px;
