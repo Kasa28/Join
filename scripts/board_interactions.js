@@ -1,26 +1,19 @@
+/** @type {boolean} */
 const isTouchDevice =
   window.matchMedia("(pointer: coarse)").matches ||
   navigator.maxTouchPoints > 0;
 
-if (isTouchDevice || window.innerWidth < 1200) {
-  document.body.classList.add("touch-device");
-}
+/** @type {number|null} */
+let longPressTimer = null;
+/** @type {boolean} */
+let longPressActive = false;
+/** @type {number|null} */
+let hoverStabilityTimeout = null;
+/** @type {string|null} */
+let lastStableHoverId = null;
 
-/** Performs live search and updates UI + result message. @returns {void} */
-window.searchTasks = function () {
-  const input = document.getElementById("board-search");
-  const msg = document.getElementById("search-msg");
-  searchQuery = (input?.value || "").trim().toLowerCase();
-  updateSearchClearButtonState(input);
-  render();
-  if (!msg) return;
-  if (!searchQuery) {
-    resetSearchMsg(msg);
-    return;
-  }
-  const count = document.querySelectorAll(".task-card").length;
-  updateSearchResultMsg(msg, count);
-};
+/** @type {number} */
+const MAX_VERTICAL_SNAP_DISTANCE = 220;
 
 /** Resets result message. @param {HTMLElement} msg @returns {void} */
 function resetSearchMsg(msg) {
@@ -34,21 +27,6 @@ function updateSearchResultMsg(msg, count) {
     count === 0 ? "No results" : count === 1 ? "1 result." : count + " results.";
   msg.className = count === 0 ? "msg-red" : "msg-green";
 }
-
-/** Clears search input and triggers search. @returns {void} */
-window.clearBoardSearch = function () {
-  const input = document.getElementById("board-search");
-  if (!input) return;
-  input.value = "";
-  input.focus();
-  searchTasks();
-};
-
-/** Init search clear button on load. @returns {void} */
-window.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("board-search");
-  if (input) updateSearchClearButtonState(input);
-});
 
 /** Checks if task matches active search query. @param {Object} t @returns {boolean} */
 function matchesSearch(t) {
@@ -67,11 +45,6 @@ function matchesSearch(t) {
   return text.includes(searchQuery);
 }
 
-let longPressTimer = null;
-let longPressActive = false;
-let hoverStabilityTimeout = null;
-let lastStableHoverId = null;
-
 /** Stabilizes highlight to avoid flicker. @param {string} columnId @returns {void} */
 function stableHighlight(columnId) {
   if (!columnId || columnId === lastStableHoverId) return;
@@ -82,35 +55,6 @@ function stableHighlight(columnId) {
   }, 80);
 }
 
-/** Allows drop on drag areas. @param {DragEvent} e @returns {void} */
-window.allowDrop = (e) => e.preventDefault();
-
-/** Highlights a drag-area column while dragging. @param {string} id @returns {void} */
-window.highlight = function (id) {
-  if (!id) return;
-  if (activeHighlightColumnId && activeHighlightColumnId !== id) {
-    const prev = document.getElementById(activeHighlightColumnId);
-    if (prev) prev.classList.remove("drag-highlight");
-  }
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.classList.add("drag-highlight");
-  activeHighlightColumnId = id;
-  const status = statusByColumnId[id];
-  if (status) scheduleAutoMoveTo(status);
-};
-
-/** Removes highlight from column. @param {string} id @returns {void} */
-window.removeHighlight = function (id) {
-  if (!id) return;
-  if (activeHighlightColumnId && activeHighlightColumnId !== id) return;
-  const el = document.getElementById(id);
-  if (el) el.classList.remove("drag-highlight");
-  activeHighlightColumnId = null;
-  const status = statusByColumnId[id];
-  if (status) cancelScheduledAutoMove(status);
-};
-
 /** Clears highlight from all columns. @returns {void} */
 function clearAllColumnHighlights() {
   document
@@ -118,42 +62,6 @@ function clearAllColumnHighlights() {
     .forEach((el) => el.classList.remove("drag-highlight"));
   activeHighlightColumnId = null;
 }
-
-/** Starts desktop drag behavior. @param {DragEvent} event @param {number|string} whichTaskId @returns {void} */
-window.onCardDragStart = function (event, whichTaskId) {
-  if (isTouchDevice) return;
-  whichCardActuellDrop = whichTaskId;
-  currentDragCardEl = event.currentTarget;
-  lastDragPointerX = null;
-  pendingDragTiltClass = null;
-  cancelScheduledAutoMove();
-  try {
-    event.dataTransfer.setData("text/plain", String(whichTaskId));
-    event.dataTransfer.effectAllowed = "move";
-  } catch (e) {}
-  document.body.classList.add("dragging");
-  if (currentDragCardEl) currentDragCardEl.classList.add("is-dragging");
-};
-
-/** Ends drag behavior and resets UI states. @returns {void} */
-window.onCardDragEnd = function () {
-  document.body.classList.remove("dragging");
-  cancelScheduledAutoMove();
-  if (currentDragCardEl)
-    currentDragCardEl.classList.remove("is-dragging", "tilt-left", "tilt-right");
-  currentDragCardEl = null;
-  lastDragPointerX = null;
-  pendingDragTiltClass = null;
-  needsDraggingClassAfterRender = false;
-  clearAllColumnHighlights();
-};
-
-/** Moves dragged task to new status column. @param {string} newStatus @returns {void} */
-window.moveTo = function (newStatus) {
-  cancelScheduledAutoMove();
-  applyStatusChangeForDraggedTask(newStatus, { keepDraggingState: false });
-  clearAllColumnHighlights();
-};
 
 /** Gets task currently being dragged. @returns {Task|null} */
 function getDraggedTask() {
@@ -185,7 +93,10 @@ function applyStatusChangeForDraggedTask(newStatus, { keepDraggingState } = {}) 
 function scheduleAutoMoveTo(status) {
   if (!currentDragCardEl || whichCardActuellDrop == null) return;
   const draggedTask = getDraggedTask();
-  if ((draggedTask && draggedTask.status === status) || pendingAutoMoveStatus === status) {
+  if (
+    (draggedTask && draggedTask.status === status) ||
+    pendingAutoMoveStatus === status
+  ) {
     cancelScheduledAutoMove();
     return;
   }
@@ -211,10 +122,6 @@ function cancelScheduledAutoMove(expectedStatus) {
   autoMoveTimeoutId = null;
   pendingAutoMoveStatus = null;
 }
-
-/* === Column Detection Logic === */
-
-const MAX_VERTICAL_SNAP_DISTANCE = 220;
 
 /** Finds closest drop column by pointer coords. @param {number} clientX @param {number} clientY @returns {HTMLElement|null} */
 function findColumnByPointer(clientX, clientY) {
@@ -267,9 +174,110 @@ function handleDragOver(event) {
   if (activeHighlightColumnId !== id) stableHighlight(id);
 }
 
-document.addEventListener("dragover", (event) => handleDragOver(event));
+/** Creates a move-menu option button. @param {string} label @param {string} status @returns {HTMLDivElement} */
+function createMoveMenuButton(label, status) {
+  const btn = document.createElement("div");
+  btn.classList.add("move-menu-option");
+  btn.textContent = label;
+  btn.onclick = () => {
+    window.selectedMoveStatus = status;
+    document
+      .querySelectorAll(".move-menu-option")
+      .forEach((x) => x.classList.remove("selected"));
+    btn.classList.add("selected");
+  };
+  return btn;
+}
 
-/* === Mobile Move Menu Logic === */
+/** Performs live search and updates UI + result message. @returns {void} */
+window.searchTasks = function () {
+  const input = document.getElementById("board-search");
+  const msg = document.getElementById("search-msg");
+  searchQuery = (input?.value || "").trim().toLowerCase();
+  updateSearchClearButtonState(input);
+  render();
+  if (!msg) return;
+  if (!searchQuery) {
+    resetSearchMsg(msg);
+    return;
+  }
+  const count = document.querySelectorAll(".task-card").length;
+  updateSearchResultMsg(msg, count);
+};
+
+/** Clears search input and triggers search. @returns {void} */
+window.clearBoardSearch = function () {
+  const input = document.getElementById("board-search");
+  if (!input) return;
+  input.value = "";
+  input.focus();
+  searchTasks();
+};
+
+/** Allows drop on drag areas. @param {DragEvent} e @returns {void} */
+window.allowDrop = (e) => e.preventDefault();
+
+/** Highlights a drag-area column while dragging. @param {string} id @returns {void} */
+window.highlight = function (id) {
+  if (!id) return;
+  if (activeHighlightColumnId && activeHighlightColumnId !== id) {
+    const prev = document.getElementById(activeHighlightColumnId);
+    if (prev) prev.classList.remove("drag-highlight");
+  }
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add("drag-highlight");
+  activeHighlightColumnId = id;
+  const status = statusByColumnId[id];
+  if (status) scheduleAutoMoveTo(status);
+};
+
+/** Removes highlight from column. @param {string} id @returns {void} */
+window.removeHighlight = function (id) {
+  if (!id) return;
+  if (activeHighlightColumnId && activeHighlightColumnId !== id) return;
+  const el = document.getElementById(id);
+  if (el) el.classList.remove("drag-highlight");
+  activeHighlightColumnId = null;
+  const status = statusByColumnId[id];
+  if (status) cancelScheduledAutoMove(status);
+};
+
+/** Starts desktop drag behavior. @param {DragEvent} event @param {number|string} whichTaskId @returns {void} */
+window.onCardDragStart = function (event, whichTaskId) {
+  if (isTouchDevice) return;
+  whichCardActuellDrop = whichTaskId;
+  currentDragCardEl = event.currentTarget;
+  lastDragPointerX = null;
+  pendingDragTiltClass = null;
+  cancelScheduledAutoMove();
+  try {
+    event.dataTransfer.setData("text/plain", String(whichTaskId));
+    event.dataTransfer.effectAllowed = "move";
+  } catch (e) {}
+  document.body.classList.add("dragging");
+  if (currentDragCardEl) currentDragCardEl.classList.add("is-dragging");
+};
+
+/** Ends drag behavior and resets UI states. @returns {void} */
+window.onCardDragEnd = function () {
+  document.body.classList.remove("dragging");
+  cancelScheduledAutoMove();
+  if (currentDragCardEl)
+    currentDragCardEl.classList.remove("is-dragging", "tilt-left", "tilt-right");
+  currentDragCardEl = null;
+  lastDragPointerX = null;
+  pendingDragTiltClass = null;
+  needsDraggingClassAfterRender = false;
+  clearAllColumnHighlights();
+};
+
+/** Moves dragged task to new status column. @param {string} newStatus @returns {void} */
+window.moveTo = function (newStatus) {
+  cancelScheduledAutoMove();
+  applyStatusChangeForDraggedTask(newStatus, { keepDraggingState: false });
+  clearAllColumnHighlights();
+};
 
 /** Opens mobile move menu. @param {MouseEvent} event @param {number|string} taskId @returns {void} */
 window.openMoveMenu = function (event, taskId) {
@@ -305,21 +313,6 @@ window.confirmMoveMenu = function () {
   closeMoveMenu();
 };
 
-/** Creates a move-menu option button. @param {string} label @param {string} status @returns {HTMLDivElement} */
-function createMoveMenuButton(label, status) {
-  const btn = document.createElement("div");
-  btn.classList.add("move-menu-option");
-  btn.textContent = label;
-  btn.onclick = () => {
-    window.selectedMoveStatus = status;
-    document
-      .querySelectorAll(".move-menu-option")
-      .forEach((x) => x.classList.remove("selected"));
-    btn.classList.add("selected");
-  };
-  return btn;
-}
-
 /** Builds move menu options list. @param {number|string} taskId @returns {void} */
 window.buildMoveMenuOptions = function (taskId) {
   const optBox = document.getElementById("move-menu-options");
@@ -335,3 +328,11 @@ window.buildMoveMenuOptions = function (taskId) {
     optBox.appendChild(createMoveMenuButton(label, status));
   });
 };
+
+/** Init search clear button on load. @returns {void} */
+window.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("board-search");
+  if (input) updateSearchClearButtonState(input);
+});
+
+document.addEventListener("dragover", (event) => handleDragOver(event));
