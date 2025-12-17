@@ -106,7 +106,11 @@ function onContactsDomReady() {
   function onResize(_event) {
     updateMobileLayout();
   }
-
+  
+/**
+ * Re-run mobile layout calculation when the viewport size changes.
+ * @type {(this: Window, ev: UIEvent) => any}
+ */
   window.addEventListener("resize", onResize);
   updateMobileLayout();
 
