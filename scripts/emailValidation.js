@@ -1,8 +1,11 @@
 if (!window.blockedEmailProviders) {
+  /** @type {string[]} */
   window.blockedEmailProviders = [];
 }
+
 if (!window.isAllowedEmailProvider) {
   /**
+   * Checks if the email provider is allowed (based on an optional blocklist).
    * @param {string} email
    * @returns {boolean}
    */
@@ -24,6 +27,11 @@ if (!window.isAllowedEmailProvider) {
   };
 }
 
+/**
+ * Validates email structure (local part + domain) with basic rules.
+ * @param {string} email
+ * @returns {boolean}
+ */
 function isValidEmail(email) {
   if (!email) return false;
   const [local, domain] = String(email).trim().split("@");
@@ -37,7 +45,6 @@ function isValidEmail(email) {
   if (!/^[A-Za-z]{2,}$/.test(tld) || !/[A-Za-z]/.test(mainDomain)) return false;
   return true;
 }
-
 
 /**
  * Full email validation for submit:
@@ -71,6 +78,12 @@ function validateEmailInForm(email) {
   return isValidEmail(email);
 }
 
+/**
+ * Shows an error message element with text and makes it visible.
+ * @param {HTMLElement} errorEl
+ * @param {string} text
+ * @returns {void}
+ */
 function showError(errorEl, text) {
   if (!errorEl) return;
 
@@ -79,6 +92,11 @@ function showError(errorEl, text) {
   errorEl.style.color = "red";
 }
 
+/**
+ * Resets an error message element and hides it.
+ * @param {HTMLElement} errorEl
+ * @returns {void}
+ */
 function resetError(errorEl) {
   if (!errorEl) return;
   errorEl.textContent = "";
