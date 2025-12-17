@@ -5,9 +5,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky ;
-  top: 0 ;
-  z-index: 1100 ;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
 }
 
 .header-right-part {
@@ -76,7 +76,7 @@ header {
   position: fixed;
   top: 96px !important;
   right: 24px;
-  z-index: 2000 ;
+  z-index: 2000;
 }
 
 .user-menu-content-header {
@@ -90,34 +90,37 @@ header {
   background-color: #ffffff;
   border-radius: 20px;
   border: 1px solid #e5e9f0;
-  box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.12),
-    0 14px 38px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 38px rgba(0, 0, 0, 0.16);
 }
 
 .d_none {
   display: none;
 }
+
 .guest-mode #header-help-link,
 .guest-mode .guest-logo-header {
   display: none !important;
 }
 
 .guest-mode .sidebar-high-section-container {
-    display: none !important;
+  display: none !important;
 }
 
 .guest-mode .side-menu {
-    justify-content: flex-start; 
+  justify-content: flex-start;
 }
 
 .guest-mode .sidebar-low-section-container {
-    margin-top: auto;             
+  margin-top: auto;
 }
-.login-link { display:none; }
-.guest-mode .login-link { display:inline-flex; }
 
+.login-link {
+  display: none;
+}
 
+.guest-mode .login-link {
+  display: inline-flex;
+}
 
 body:not(.guest-mode) .login-link {
   display: none !important;
@@ -125,5 +128,5 @@ body:not(.guest-mode) .login-link {
 
 body.guest-mode .login-link {
   display: inline-flex !important;
-  padding-top:30px;
+  padding-top: 30px;
 }

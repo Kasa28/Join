@@ -20,6 +20,7 @@
   .edit-contact-content {
     padding: 28px 16px 32px 16px;
   }
+
   .button-edit-contact-order {
     flex-direction: column;
     height: auto;
@@ -208,6 +209,7 @@ body.no-scroll .contact-actions-mobile {
     border-radius: 0 !important;
   }
 }
+
 @media (max-width: 500px) {
   html,
   body {
@@ -244,6 +246,7 @@ body.no-scroll .contact-actions-mobile {
     border-radius: 0 !important;
     height: 100%;
   }
+
   @media (max-width: 500px) {
     .main-container-edit-contact,
     .main-container-add-contact {
@@ -266,6 +269,7 @@ body.no-scroll .contact-actions-mobile {
     padding-bottom: 16px;
   }
 }
+
 @media (max-width: 500px) {
   .edit-contact-content,
   .add-contact-content {
@@ -280,6 +284,7 @@ body.no-scroll .contact-actions-mobile {
     padding-bottom: 16px;
   }
 }
+
 @media (max-width: 500px) {
   .main-container-edit-contact {
     height: auto;

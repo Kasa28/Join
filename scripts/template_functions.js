@@ -113,15 +113,12 @@ function buildAssignedTechnicalHTML(assignedTo) {
   for (let i = 0; i < list.length; i++) {
     const user = list[i], initials = getInitials(user.name);
     const bg = user.color
-      ? ' style="background-color:' + user.color + ';"'
-      : "";
+      ? ' style="background-color:' + user.color + ';"' : "";
     html += '<div class="user-container-technical-task"><div class="user-badge-and-name">' +
       '<div class="name-letter-ball-technical-task"' + bg + '>' +
       '<span class="name-letter-ball-font-technical-task name-letter-ball-font-position-technical-task">' +
-      initials +
-      '</span></div><span class="a-user-bagde-font-position-technical-task">' +
-      user.name +
-      '</span></div><input type="checkbox" class="checkbox-technical-task border-white-technical-task" disabled></div>';
+      initials + '</span></div><span class="a-user-bagde-font-position-technical-task">' +
+      user.name + '</span></div><input type="checkbox" class="checkbox-technical-task border-white-technical-task" disabled></div>';
   }
   return html;
 }
@@ -140,8 +137,7 @@ function buildSubtasksUserStoryHTML(t) {
     const sub = list[i], checked = i < done ? "checked" : "";
     html += '<label class="label_user-story">' +
       '<input type="checkbox" class="checkbox_user-story" ' +
-      'onchange="updateSubtasks(' + t.id + ', this)" ' + checked + ">" +
-      sub + "</label>";
+      'onchange="updateSubtasks(' + t.id + ', this)" ' + checked + ">" + sub + "</label>";
   }
   return html;
 }
@@ -162,8 +158,7 @@ function buildSubtasksTechnicalHTML(t) {
     const sub = list[i], checked = i < done ? "checked" : "";
     html += '<label class="label-font-technical-task">' +
       '<input type="checkbox" class="checkbox-technical-task border-blue-technical-task" ' +
-      'onchange="updateSubtasks(' + t.id + ', this)" ' + checked + ">" +
-      sub + "</label>";
+      'onchange="updateSubtasks(' + t.id + ', this)" ' + checked + ">" + sub + "</label>";
   }
   return html;
 }

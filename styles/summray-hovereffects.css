@@ -61,6 +61,7 @@
   transform: translateY(-2px) scale(1.04);
   z-index: 2;
 }
+
 .urgent-task-card-summary,
 .tasks-on-board-card-summary,
 .backgroundcolor-blue-light,
@@ -117,6 +118,7 @@
   transform: translateY(-2px) scale(1.04);
   z-index: 2;
 }
+
 .tasks-on-board-card-summary,
 .summary-card-the-last-three {
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.12);

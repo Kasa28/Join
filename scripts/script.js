@@ -89,17 +89,11 @@ function buildAssignedFromAvatars() {
   for (const el of document.querySelectorAll(
     "#assigned-avatars .assign-avatar-addTask_template, #assigned-avatars .assign-avatar-addTask_page"
   )) {
-    const initials = el.textContent.trim(),
-      dataName = el.dataset?.fullName;
+    const initials = el.textContent.trim(), dataName = el.dataset?.fullName;
     const fromList = users.find(
-      (n) => n === dataName || (!dataName && n && n.startsWith(initials))
-    );
+      (n) => n === dataName || (!dataName && n && n.startsWith(initials)));
     const fullName = dataName || fromList || initials;
-    const color =
-      el.dataset?.color ||
-      colors[fullName] ||
-      el.style.backgroundColor ||
-      "#4589ff";
+    const color = el.dataset?.color || colors[fullName] || el.style.backgroundColor || "#4589ff";
     out.push({ name: fullName, color });
   }
   return out;

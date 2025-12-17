@@ -48,10 +48,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   width: 448px;
   height: 36px;
-
   background-color: white;
 }
 
@@ -78,14 +76,11 @@
 .head-sign-technical-task {
   display: flex;
   align-items: center;
-
   width: 168px;
   height: 35px;
   border-radius: 8px;
-
   padding: 4px 24px 4px 24px;
   gap: 10px;
-
   color: white;
   background-color: #0038ff;
 }
@@ -117,7 +112,6 @@
   font-style: bold;
   line-height: 120%;
   letter-spacing: 0%;
-
   color: #42526e;
 }
 
@@ -131,7 +125,6 @@
 .priority-container-technical-task {
   display: flex;
   align-items: center;
-
   width: 448px;
   height: 31;
   gap: 25px;
@@ -140,7 +133,6 @@
 .actual-priority-container-technical-task {
   display: flex;
   align-items: center;
-
   width: 125px;
   height: 31px;
   border-radius: 10px;
@@ -151,7 +143,6 @@
 .assigned-to-container-technical-task {
   display: flex;
   flex-direction: column;
-
   width: 448px;
   gap: 8px;
 }
@@ -191,7 +182,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   height: 56px;
   border-radius: 10px;
   padding: 7px 16px 7px 16px;
@@ -200,7 +190,6 @@
 .user-badge-and-name {
   display: flex;
   align-items: center;
-
   width: 216px;
   height: 42px;
 }
@@ -229,7 +218,6 @@
 .subtasks-container-technical-task {
   display: flex;
   flex-direction: column;
-
   width: 448px;
   gap: 4px;
 }
@@ -244,7 +232,6 @@
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
-
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
@@ -309,6 +296,7 @@
   width: 24px;
   height: 24px;
 }
+
 .name-letter-ball-font-position-technical-task {
   position: absolute;
   top: 50%;
@@ -318,19 +306,21 @@
   height: auto;
   display: block;
 }
+
 .name-letter-ball-technical-task {
   width: 40px;
   height: 40px;
   border-radius: 40px;
-
   position: relative;  
   overflow: hidden;     
 }
+
 .label-font-technical-task {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 .subtasks-task-container-technical-task br {
   display: none;
 }

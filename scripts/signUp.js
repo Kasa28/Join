@@ -16,7 +16,6 @@ const BASE_URL =
  * @type {(text: string, options?: ToastOptions) => void}
  */
 window.showToast = showToast;
-
 window.onclickFunction = onclickFunction;
 window.checkPolicyandAnswers = checkPolicyandAnswers;
 

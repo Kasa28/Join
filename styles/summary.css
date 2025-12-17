@@ -132,7 +132,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-    width: 100%;
+  width: 100%;
   max-width: 912px;
   height: 591px;
   top: 265px;
@@ -219,6 +219,7 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
 .tasks-on-board-card-summary,
 .summary-cards-low-section {
   border-radius: 20px; 

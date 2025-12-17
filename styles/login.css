@@ -108,6 +108,7 @@ header {
     position: relative;
   z-index: 2;
 }
+
 .login_header {
   text-align: center;
 }
@@ -288,6 +289,7 @@ footer {
   width: 120px;
   height: 120px;
 }
+
 @media (max-width: 900px) {
   .login_icon,
   .login_icon .logo {
@@ -329,6 +331,7 @@ footer {
     padding: 22px 0 12px;
   }
 }
+
 .login_box {
   width: clamp(300px, 55vw, 480px);
   padding: 40px 32px;
@@ -340,6 +343,7 @@ footer {
   align-items: stretch; 
   row-gap: 10px;
 }
+
 header {
   opacity: 0;
   animation: header_fade_in 0.4s ease 1.6s forwards; 
