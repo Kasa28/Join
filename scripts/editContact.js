@@ -1,7 +1,9 @@
+/** @type {number|null} Index of the contact currently being edited (null = none selected). */
 let remindIndex = null;
 
 /**
  * Opens the Edit Contact form by removing the hidden class.
+ * @returns {void}
  */
 function showEditContactFormular() {
   document
@@ -9,11 +11,21 @@ function showEditContactFormular() {
     .classList.remove("hide-edit-contact");
 }
 
+/**
+ * Validates a person's name (min length + allowed characters).
+ * @param {string} name - Name input value.
+ * @returns {boolean} True if valid.
+ */
 function isValidName(name) {
   const trimmed = name.trim();
   return trimmed.length >= 2 && /^[\p{L}\p{M}\s'.-]+$/u.test(trimmed);
 }
 
+/**
+ * Validates an email address.
+ * @param {string} email - Email input value.
+ * @returns {boolean} True if valid.
+ */
 function isValidEmail(email) {
   if (!email) return false;
   const [local, domain] = String(email).trim().split("@");
@@ -24,7 +36,10 @@ function isValidEmail(email) {
     return false;
   if (!/^[A-Za-z0-9.-]+$/.test(domain)) return false;
   const parts = domain.split(".");
-  if (parts.length < 2 || parts.some((p) => !p || p.startsWith("-") || p.endsWith("-")))
+  if (
+    parts.length < 2 ||
+    parts.some((p) => !p || p.startsWith("-") || p.endsWith("-"))
+  )
     return false;
   const tld = parts[parts.length - 1];
   const mainDomain = parts[parts.length - 2];
@@ -32,6 +47,11 @@ function isValidEmail(email) {
   return true;
 }
 
+/**
+ * Validates a German phone number (starts with +49 or 0, then digits).
+ * @param {string} phone - Phone input value.
+ * @returns {boolean} True if valid.
+ */
 function isValidPhoneNumber(phone) {
   const trimmed = phone.trim();
   if (!trimmed) return false;
@@ -40,6 +60,7 @@ function isValidPhoneNumber(phone) {
 
 /**
  * Closes the Edit Contact form by adding the hidden class.
+ * @returns {void}
  */
 function hideEditContactFormular() {
   document
@@ -49,7 +70,8 @@ function hideEditContactFormular() {
 
 /**
  * Loads the selected contact's data into the Edit Contact form fields.
- * @param {number} inputIndex
+ * @param {number} inputIndex - Index in the flattened contacts array.
+ * @returns {void}
  */
 function setUserDataValue(inputIndex) {
   const contacts = flattenContactBlockToArray() || [];
@@ -60,7 +82,9 @@ function setUserDataValue(inputIndex) {
 }
 
 /**
- * @param {{username:string,color?:string}} contact
+ * Updates the avatar initials + color in the edit form.
+ * @param {{username:string,color?:string}} contact - Contact data.
+ * @returns {void}
  */
 function updateEditContactInitials(contact) {
   const initials = getInitials(contact.username);
@@ -74,7 +98,9 @@ function updateEditContactInitials(contact) {
 }
 
 /**
- * @param {{username:string,email?:string,PhoneNumber?:string}} contact
+ * Fills edit form inputs with contact data.
+ * @param {{username:string,email?:string,PhoneNumber?:string}} contact - Contact data.
+ * @returns {void}
  */
 function updateEditContactFields(contact) {
   const usernameInput = document.getElementById("edit-contact-usernameID");
@@ -87,8 +113,9 @@ function updateEditContactFields(contact) {
 }
 
 /**
- * @param {any[]} contacts
- * @returns {any|null}
+ * Returns the currently selected contact for editing (or null if none selected).
+ * @param {any[]} contacts - Flat contacts array.
+ * @returns {any|null} The selected contact or null.
  */
 function getSelectedContact(contacts) {
   if (remindIndex === null || !contacts[remindIndex]) {
@@ -99,21 +126,24 @@ function getSelectedContact(contacts) {
 }
 
 /**
- * @returns {{username:string,email:string,phoneNumber:string}}
+ * Reads trimmed values from the edit form inputs.
+ * @returns {{username:string,email:string,phoneNumber:string}} Collected form values.
  */
 function getEditFormValues() {
-  const username =
-    document.getElementById("edit-contact-usernameID").value.trim();
-  const email =
-    document.getElementById("edit-contact-mailID").value.trim();
-  const phoneNumber =
-    document.getElementById("edit-contact-phone-numberID").value.trim();
+  const username = document
+    .getElementById("edit-contact-usernameID")
+    .value.trim();
+  const email = document.getElementById("edit-contact-mailID").value.trim();
+  const phoneNumber = document
+    .getElementById("edit-contact-phone-numberID")
+    .value.trim();
   return { username, email, phoneNumber };
 }
 
 /**
- * @param {{username:string,email:string,phoneNumber:string}} values
- * @returns {boolean}
+ * Runs all edit-form validations.
+ * @param {{username:string,email:string,phoneNumber:string}} values - Form values.
+ * @returns {boolean} True if all values are valid.
  */
 function validateEditValues(values) {
   return (
@@ -124,21 +154,22 @@ function validateEditValues(values) {
 }
 
 /**
- * @param {string} username
- * @returns {boolean}
+ * Validates username and shows a toast on error.
+ * @param {string} username - Username input.
+ * @returns {boolean} True if valid.
  */
 function validateNameValue(username) {
   if (isValidName(username)) return true;
-  showContactToast(
-    "Please enter a valid name containing letters and no numbers",
-    { variant: "error" }
-  );
+  showContactToast("Please enter a valid name containing letters and no numbers", {
+    variant: "error",
+  });
   return false;
 }
 
 /**
- * @param {string} email
- * @returns {boolean}
+ * Validates email and shows a toast on error.
+ * @param {string} email - Email input.
+ * @returns {boolean} True if valid.
  */
 function validateEmailValue(email) {
   if (isValidEmail(email)) return true;
@@ -149,22 +180,23 @@ function validateEmailValue(email) {
 }
 
 /**
- * @param {string} phoneNumber
- * @returns {boolean}
+ * Validates phone number and shows a toast on error.
+ * @param {string} phoneNumber - Phone input.
+ * @returns {boolean} True if valid.
  */
 function validatePhoneValue(phoneNumber) {
   if (isValidPhoneNumber(phoneNumber)) return true;
-  showContactToast(
-    "Phone number must start with +49 or 0 and contain only numbers",
-    { variant: "error" }
-  );
+  showContactToast("Phone number must start with +49 or 0 and contain only numbers", {
+    variant: "error",
+  });
   return false;
 }
 
 /**
- * @param {any} contact
- * @param {{username:string,email:string,phoneNumber:string}} values
- * @returns {any}
+ * Creates an updated contact object from the existing one + form values.
+ * @param {any} contact - Existing contact object.
+ * @param {{username:string,email:string,phoneNumber:string}} values - Form values.
+ * @returns {any} Updated contact object.
  */
 function buildUpdatedContact(contact, values) {
   return {
@@ -176,8 +208,9 @@ function buildUpdatedContact(contact, values) {
 }
 
 /**
- * @param {any[]} contacts
- * @param {string} username
+ * Persists contacts, refreshes UI, closes overlay, and shows success toast.
+ * @param {any[]} contacts - Contacts array to persist.
+ * @param {string} username - Username to re-render in single view.
  * @returns {Promise<void>}
  */
 async function saveContactsAndRefresh(contacts, username) {
@@ -191,7 +224,7 @@ async function saveContactsAndRefresh(contacts, username) {
 
 /**
  * Saves edited contact data.
- * @returns {Promise<boolean>}
+ * @returns {Promise<boolean>} True if saved successfully.
  */
 async function editContact() {
   const contacts = flattenContactBlockToArray() || [];
@@ -206,7 +239,7 @@ async function editContact() {
 }
 
 /**
- * Deletes the currently selected contact.
+ * Deletes the currently selected contact from within the edit form.
  * @returns {Promise<void>}
  */
 async function deleteContactinEditContactWindow() {
