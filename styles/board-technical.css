@@ -207,6 +207,22 @@
 
 .a-user-bagde-font-position-technical-task {
   padding-left: 20px;
+  flex: 1;
+  min-width: 0;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.a-user-bagde-font-position-technical-task::-webkit-scrollbar {
+  height: 6px;
+}
+
+.a-user-bagde-font-position-technical-task::-webkit-scrollbar-thumb {
+  background-color: #c1c7d0;
+  border-radius: 4px;
 }
 
 .subtasks-container-technical-task {
