@@ -5,6 +5,61 @@ window.saved = JSON.parse(localStorage.getItem("checks") || "{}");
 const saved = window.saved;
 
 /**
+ * @type {number|undefined}
+ */
+let updateTimeout;
+
+/**
+ * @type {string|null}
+ */
+let whichCardActuellDrop = null;
+
+/**
+ * @type {string}
+ */
+let searchQuery = "";
+
+/**
+ * @type {HTMLElement|null}
+ */
+let currentDragCardEl = null;
+
+/**
+ * @type {number|null}
+ */
+let lastDragPointerX = null;
+
+/**
+ * @type {number|null}
+ */
+let autoMoveTimeoutId = null;
+
+/**
+ * @type {TaskStatus|null}
+ */
+let pendingAutoMoveStatus = null;
+
+/**
+ * @type {boolean}
+ */
+let needsDraggingClassAfterRender = false;
+
+/**
+ * @type {string|null}
+ */
+let pendingDragTiltClass = null;
+
+/**
+ * @type {string|null}
+ */
+let activeHighlightColumnId = null;
+
+/**
+ * @type {((this: Window, ev: Event) => any)|null}
+ */
+const prevOnload = window.onload;
+
+/**
  * @type {Task[]}
  */
 const demoTasks = [
@@ -40,6 +95,60 @@ const demoTasks = [
     ],
   },
 ];
+
+/**
+ * @type {Record<TaskStatus, {id: string, empty: string}>}
+ */
+const nameOfTheCard = {
+  todo: { id: "drag-area-todo", empty: "No tasks To do" },
+  "in-progress": { id: "drag-area-in-progress", empty: "No tasks in Progress" },
+  "await-feedback": {
+    id: "drag-area-await-feedback",
+    empty: "No tasks in Feedback",
+  },
+  done: { id: "drag-area-done", empty: "No task in Done" },
+};
+
+/**
+ * @type {Record<string, TaskStatus>}
+ */
+const statusByColumnId = Object.fromEntries(
+  Object.entries(nameOfTheCard).map(([status, { id }]) => [id, status])
+);
+
+/**
+ * @type {Record<TaskPriority, string>}
+ */
+const prioritätIcon = {
+  urgent: "../assets/img/Prio baja-urgent-red.svg",
+  medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
+  low: "../assets/img/Prio baja-low.svg",
+};
+
+/**
+ * @type {{TODO: TaskStatus, INPROGRESS: TaskStatus, AWAIT: TaskStatus, DONE: TaskStatus}}
+ */
+window.STATUS = window.STATUS || {
+  TODO: "todo",
+  INPROGRESS: "in-progress",
+  AWAIT: "await-feedback",
+  DONE: "done",
+};
+
+/**
+ * @type {TaskStatus}
+ */
+window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
+
+/**
+ * @type {TaskPriority}
+ */
+window.currentPrio = window.currentPrio || "low";
+
+/**
+ * @type {Record<string, string>}
+ */
+window.selectedUserColors = window.selectedUserColors || {};
 
 /**
  * Ensures there is an authenticated Firebase user (anonymous fallback).
@@ -147,11 +256,6 @@ function handleFirebaseFallback(error) {
 }
 
 /**
- * @type {number|undefined}
- */
-let updateTimeout;
-
-/**
  * Detects whether a task is a demo task by id.
  * @param {Task|number|string} taskOrId
  * @returns {boolean}
@@ -162,43 +266,6 @@ function isDemoTask(taskOrId) {
   const numericId = Number.parseInt(idValue, 10);
   return Number.isFinite(numericId) && numericId > 0 && numericId <= 1000;
 }
-
-/**
- * @type {string|null}
- */
-let whichCardActuellDrop = null;
-/**
- * @type {string}
- */
-let searchQuery = "";
-/**
- * @type {HTMLElement|null}
- */
-let currentDragCardEl = null;
-/**
- * @type {number|null}
- */
-let lastDragPointerX = null;
-/**
- * @type {number|null}
- */
-let autoMoveTimeoutId = null;
-/**
- * @type {TaskStatus|null}
- */
-let pendingAutoMoveStatus = null;
-/**
- * @type {boolean}
- */
-let needsDraggingClassAfterRender = false;
-/**
- * @type {string|null}
- */
-let pendingDragTiltClass = null;
-/**
- * @type {string|null}
- */
-let activeHighlightColumnId = null;
 
 /**
  * Updates visibility and ARIA state of the clear search button.
@@ -213,58 +280,6 @@ function updateSearchClearButtonState(inputEl) {
   clearBtn.classList.toggle("is-visible", shouldShow);
   clearBtn.setAttribute("aria-hidden", shouldShow ? "false" : "true");
 }
-
-/**
- * @type {Record<TaskStatus, {id: string, empty: string}>}
- */
-const nameOfTheCard = {
-  todo: { id: "drag-area-todo", empty: "No tasks To do" },
-  "in-progress": { id: "drag-area-in-progress", empty: "No tasks in Progress" },
-  "await-feedback": {
-    id: "drag-area-await-feedback",
-    empty: "No tasks in Feedback",
-  },
-  done: { id: "drag-area-done", empty: "No task in Done" },
-};
-
-/**
- * @type {Record<string, TaskStatus>}
- */
-const statusByColumnId = Object.fromEntries(
-  Object.entries(nameOfTheCard).map(([status, { id }]) => [id, status])
-);
-
-/**
- * @type {Record<TaskPriority, string>}
- */
-const prioritätIcon = {
-  urgent: "../assets/img/Prio baja-urgent-red.svg",
-  medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
-  low: "../assets/img/Prio baja-low.svg",
-};
-
-/**
- * @type {{TODO: TaskStatus, INPROGRESS: TaskStatus, AWAIT: TaskStatus, DONE: TaskStatus}}
- */
-window.STATUS = window.STATUS || {
-  TODO: "todo",
-  INPROGRESS: "in-progress",
-  AWAIT: "await-feedback",
-  DONE: "done",
-};
-
-/**
- * @type {TaskStatus}
- */
-window.nextTaskTargetStatus = window.nextTaskTargetStatus || window.STATUS.TODO;
-/**
- * @type {TaskPriority}
- */
-window.currentPrio = window.currentPrio || "low";
-/**
- * @type {Record<string, string>}
- */
-window.selectedUserColors = window.selectedUserColors || {};
 
 /**
  * Persists all tasks to Firebase and updates summary if available.
@@ -334,11 +349,6 @@ window.updateSubtasks = (id, el) => {
     });
   }
 };
-
-/**
- * @type {((this: Window, ev: Event) => any)|null}
- */
-const prevOnload = window.onload;
 
 /**
  * Window onload handler to initialize tasks and restore subtasks.
