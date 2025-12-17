@@ -1,7 +1,6 @@
-
 /**
- * Opens the task modal and shows content for the given task id.
- * @param {number|string} id - ID of the task to show.
+ * Opens the task modal and shows content for the given task ID.
+ * @param {number|string} id - Task ID to display in the modal.
  * @returns {void}
  */
 function openModalDynamic(id) {
@@ -21,8 +20,8 @@ function openModalDynamic(id) {
 }
 
 /**
- * Finds a task in window.tasks for the modal.
- * @param {number|string} id - ID to search for.
+ * Finds a task in window.tasks by task ID for the modal.
+ * @param {number|string} id - Task ID to search for.
  * @returns {Task|null}
  */
 function findTaskForModal(id) {
@@ -38,9 +37,9 @@ function findTaskForModal(id) {
 }
 
 /**
- * Renders the modal content for a given task.
+ * Renders the modal content for the given task.
  * @param {HTMLElement} content - Modal content container element.
- * @param {Task} task - Task to render.
+ * @param {Task} task - Task to render in the modal.
  * @returns {void}
  */
 function renderModalContent(content, task) {
@@ -62,8 +61,8 @@ function showTaskModal(modal) {
 }
 
 /**
- * Deletes a task (no demo task) from UI, server and local storage.
- * @param {number|string} id - ID of the task to delete.
+ * Deletes a task (non-demo task) from UI, server and local storage.
+ * @param {number|string} id - Task ID to delete.
  * @returns {Promise<void>}
  */
 async function deleteDynamicTask(id) {
@@ -85,8 +84,8 @@ async function deleteDynamicTask(id) {
 }
 
 /**
- * Looks up a task by id for deletion.
- * @param {number|string} id - Task id to search.
+ * Looks up a task by task ID for deletion.
+ * @param {number|string} id - Task ID to search for.
  * @returns {Task|null}
  */
 function getTaskForDelete(id) {
@@ -108,13 +107,13 @@ function getTaskForDelete(id) {
 }
 
 /**
- * Checks if a task may be deleted (not a demo task).
- * @param {Task} task - Task to check.
+ * Checks whether a task may be deleted (demo tasks cannot be deleted).
+ * @param {Task} task - Task to validate.
  * @returns {boolean}
  */
 function canDeleteTask(task) {
   if (typeof isDemoTask === "function" && isDemoTask(task)) {
-  showToast("Demo tasks can only be moved.", { variant: "error", duration: 1600 });
+    showToast("Demo tasks can only be moved.", { variant: "error", duration: 1600 });
     return false;
   }
   return true;
@@ -161,7 +160,7 @@ function requestBoardRender() {
  * @returns {Promise<void>}
  */
 async function deleteTaskOnServer(task) {
-   await fetchBoardTasks(`/${task.id}`, {
+  await fetchBoardTasks(`/${task.id}`, {
     method: "DELETE",
   });
 }
