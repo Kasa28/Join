@@ -8,7 +8,7 @@ import {
 
 /**
  * Firebase configuration for this project.
- * @type {object}
+ * @type {import("https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js").FirebaseOptions}
  */
 const firebaseConfig = {
   apiKey: "AIzaSyB4p7aUocctcQmfZDAxmylNeZGXbDAr9Mo",
