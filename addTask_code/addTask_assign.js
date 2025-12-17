@@ -1,4 +1,6 @@
-/** @returns {{dropdown:HTMLElement|null,placeholder:HTMLElement|null,arrow:HTMLElement|null}} */
+/**
+ * @returns {{dropdown: HTMLElement|null, placeholder: HTMLElement|null, arrow: HTMLElement|null}}
+ */
 function getAssignElements() {
   return {
     dropdown: document.querySelector(".assign-dropdown-addTask_page"),
@@ -7,7 +9,10 @@ function getAssignElements() {
   };
 }
 
-/** Toggles assign dropdown open/close. @param {Event} event */
+/**
+ * @param {Event} event
+ * @returns {void}
+ */
 function toggleAssignDropdown(event) {
   event.stopPropagation();
   const { dropdown, placeholder, arrow } = getAssignElements();
@@ -17,7 +22,13 @@ function toggleAssignDropdown(event) {
   if (!willOpen) renderAssignedAvatars();
 }
 
-/** Sets dropdown state and UI. @param {HTMLElement} d @param {HTMLElement} p @param {HTMLElement} a @param {boolean} open */
+/**
+ * @param {HTMLElement} d
+ * @param {HTMLElement} p
+ * @param {HTMLElement} a
+ * @param {boolean} open
+ * @returns {void}
+ */
 function setAssignDropdownState(d, p, a, open) {
   window.isDropdownOpen = open;
   d.style.display = open ? "block" : "none";
@@ -25,7 +36,11 @@ function setAssignDropdownState(d, p, a, open) {
   else closeAssignUI(p, a);
 }
 
-/** Prepares UI for open state. @param {HTMLElement} p @param {HTMLElement} a */
+/**
+ * @param {HTMLElement} p
+ * @param {HTMLElement} a
+ * @returns {void}
+ */
 function openAssignUI(p, a) {
   p.contentEditable = true;
   p.textContent = "";
@@ -35,7 +50,11 @@ function openAssignUI(p, a) {
   showAllAssignItems();
 }
 
-/** Prepares UI for closed state. @param {HTMLElement} p @param {HTMLElement} a */
+/**
+ * @param {HTMLElement} p
+ * @param {HTMLElement} a
+ * @returns {void}
+ */
 function closeAssignUI(p, a) {
   p.contentEditable = false;
   p.classList.remove("typing");
@@ -45,14 +64,19 @@ function closeAssignUI(p, a) {
   a.style.transform = "rotate(0deg)";
 }
 
-/** Shows all assign dropdown items. */
+/**
+ * @returns {void}
+ */
 function showAllAssignItems() {
   document
     .querySelectorAll(".assign-item-addTask_page")
     .forEach((item) => (item.style.display = "flex"));
 }
 
-/** Returns initials from name. @param {string} full @returns {string} */
+/**
+ * @param {string} full
+ * @returns {string}
+ */
 function getInitials(full) {
   const parts = full.split(/\s+/);
   const f = parts[0]?.charAt(0).toUpperCase() || "";
@@ -60,7 +84,10 @@ function getInitials(full) {
   return `${f}${l}`;
 }
 
-/** Renders contacts into dropdown. */
+/**
+ * @async
+ * @returns {Promise<void>}
+ */
 async function renderContactsInDropdown() {
   const merged = await getMergedContacts();
   if (!merged.length) return;
@@ -71,7 +98,10 @@ async function renderContactsInDropdown() {
   updateAssignPlaceholder();
 }
 
-/** Builds merged contact list. @returns {Promise<Object[]>} */
+/**
+ * @async
+ * @returns {Promise<Array<{username: string, color?: string}>>}
+ */
 async function getMergedContacts() {
   if (window.authReady) await window.authReady;
   const base = window.currentUser
@@ -88,7 +118,10 @@ async function getMergedContacts() {
   return merged;
 }
 
-/** Appends single contact DOM template. @param {{username:string,color?:string}} contact */
+/**
+ * @param {{username: string, color?: string}} contact
+ * @returns {void}
+ */
 function singleContactTemplate(contact) {
   const contentRef = document.getElementById("contacts-containerID");
   if (!contentRef) return;
@@ -111,7 +144,11 @@ function singleContactTemplate(contact) {
     </div>`;
 }
 
-/** Selects/deselects user in dropdown. @param {string} name @param {Event} event */
+/**
+ * @param {string} name
+ * @param {Event} event
+ * @returns {void}
+ */
 function selectAssignUser(name, event) {
   const item = findAssignItem(name, event);
   if (!item) return;
@@ -122,7 +159,11 @@ function selectAssignUser(name, event) {
   updateAssignPlaceholder();
 }
 
-/** Finds contact item element. @param {string} name @param {Event} [event] @returns {HTMLElement|null} */
+/**
+ * @param {string} name
+ * @param {Event} [event]
+ * @returns {HTMLElement|null}
+ */
 function findAssignItem(name, event) {
   if (event?.target) {
     const fromEvent = event.target.closest(".assign-item-addTask_page");
@@ -138,7 +179,11 @@ function findAssignItem(name, event) {
   return null;
 }
 
-/** Updates window.selectedUsers. @param {string} name @param {boolean} isSelected */
+/**
+ * @param {string} name
+ * @param {boolean} isSelected
+ * @returns {void}
+ */
 function updateSelectedUsersArray(name, isSelected) {
   if (!Array.isArray(window.selectedUsers)) window.selectedUsers = [];
   if (isSelected) {
@@ -148,7 +193,9 @@ function updateSelectedUsersArray(name, isSelected) {
   }
 }
 
-/** Updates placeholder text based on selection. */
+/**
+ * @returns {void}
+ */
 function updateAssignPlaceholder() {
   const placeholder = document.querySelector(
     ".assign-placeholder-addTask_page"
@@ -162,24 +209,37 @@ function updateAssignPlaceholder() {
 
 document.addEventListener("input", handleAssignInput);
 
-/** Handles input in assign placeholder. @param {InputEvent} e */
+/**
+ * @param {InputEvent} e
+ * @returns {void}
+ */
 function handleAssignInput(e) {
   if (!isAssignPlaceholderEvent(e)) return;
   const value = getAssignSearchValue(e.target);
   processAssignSearch(value, e.target);
 }
 
-/** Checks if event is from placeholder. @param {Event} e @returns {boolean} */
+/**
+ * @param {Event} e
+ * @returns {boolean}
+ */
 function isAssignPlaceholderEvent(e) {
   return e.target.classList.contains("assign-placeholder-addTask_page");
 }
 
-/** Gets lowercase trimmed search value. @param {HTMLElement} target @returns {string} */
+/**
+ * @param {HTMLElement} target
+ * @returns {string}
+ */
 function getAssignSearchValue(target) {
   return target.textContent.toLowerCase().trim();
 }
 
-/** Filters contacts by search. @param {string} value @param {HTMLElement} target */
+/**
+ * @param {string} value
+ * @param {HTMLElement} target
+ * @returns {void}
+ */
 function processAssignSearch(value, target) {
   const items = document.querySelectorAll(".assign-item-addTask_page");
   if (!value) {
@@ -191,13 +251,19 @@ function processAssignSearch(value, target) {
   if (target.textContent.trim() === "") updateAssignPlaceholder();
 }
 
-/** Resets search and shows all. */
+/**
+ * @returns {void}
+ */
 function resetAssignSearch() {
   showAllAssignItems();
   updateAssignPlaceholder();
 }
 
-/** Filters list and returns match flag. @param {NodeListOf<Element>} items @param {string} value @returns {boolean} */
+/**
+ * @param {NodeListOf<Element>} items
+ * @param {string} value
+ * @returns {boolean}
+ */
 function filterAssignList(items, value) {
   let anyMatch = false;
   items.forEach((item) => {
@@ -213,7 +279,10 @@ function filterAssignList(items, value) {
 
 document.addEventListener("click", handleAssignDropdownClick);
 
-/** Handles closing dropdown on outside click. @param {MouseEvent} e */
+/**
+ * @param {MouseEvent} e
+ * @returns {void}
+ */
 function handleAssignDropdownClick(e) {
   const { dropdown, placeholder, arrow } = getAssignElements();
   const assignSelect = document.getElementById("assign-select");
@@ -228,7 +297,12 @@ function handleAssignDropdownClick(e) {
   closeAssignDropdown(dropdown, placeholder, arrow);
 }
 
-/** Closes dropdown and resets UI. @param {HTMLElement} d @param {HTMLElement|null} p @param {HTMLElement|null} a */
+/**
+ * @param {HTMLElement} d
+ * @param {HTMLElement|null} p
+ * @param {HTMLElement|null} a
+ * @returns {void}
+ */
 function closeAssignDropdown(d, p, a) {
   d.style.display = "none";
   window.isDropdownOpen = false;
@@ -240,7 +314,9 @@ function closeAssignDropdown(d, p, a) {
   renderAssignedAvatars();
 }
 
-/** Renders selected avatars into container. */
+/**
+ * @returns {void}
+ */
 function renderAssignedAvatars() {
   const container = document.getElementById("assigned-avatars");
   if (!container) return;
@@ -257,7 +333,10 @@ function renderAssignedAvatars() {
   }
 }
 
-/** Collects avatar data. @param {string} name @returns {{color:string,initials:string}} */
+/**
+ * @param {string} name
+ * @returns {{color: string, initials: string}}
+ */
 function getAvatarData(name) {
   const item = [...document.querySelectorAll(".assign-item-addTask_page")].find(
     (el) =>
@@ -273,7 +352,11 @@ function getAvatarData(name) {
   return { color, initials };
 }
 
-/** Creates avatar node element. @param {string} initials @param {string} color @returns {HTMLDivElement} */
+/**
+ * @param {string} initials
+ * @param {string} color
+ * @returns {HTMLDivElement}
+ */
 function createAvatarNode(initials, color) {
   const avatar = document.createElement("div");
   avatar.classList.add("assign-avatar-addTask_page");
@@ -282,7 +365,10 @@ function createAvatarNode(initials, color) {
   return avatar;
 }
 
-/** Creates "+X" avatar bubble. @param {number} rest @returns {HTMLDivElement} */
+/**
+ * @param {number} rest
+ * @returns {HTMLDivElement}
+ */
 function createRestAvatar(rest) {
   const bubble = createAvatarNode(`+${rest}`, "#d1d1d1");
   bubble.style.color = "black";
@@ -290,7 +376,13 @@ function createRestAvatar(rest) {
   return bubble;
 }
 
-document.addEventListener("click", (e) => {
+document.addEventListener("click", handleAssignCheckboxClick);
+
+/**
+ * @param {MouseEvent} e
+ * @returns {void}
+ */
+function handleAssignCheckboxClick(e) {
   if (!e.target.classList.contains("assign-check-addTask_page")) return;
   e.stopPropagation();
   const item = e.target.closest(".assign-item-addTask_page");
@@ -299,4 +391,4 @@ document.addEventListener("click", (e) => {
     .querySelector(".assign-name-addTask_page")
     .textContent.trim();
   selectAssignUser(name, e);
-});
+}
