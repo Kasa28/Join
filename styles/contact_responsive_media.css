@@ -188,7 +188,7 @@ body.no-scroll .contact-actions-mobile {
     z-index: 2000;
   }
   .edit-contact-headcard {
-    padding: 95px 37px 65px;
+      padding: 85px 37px 65px;
   }
 
   .main-container-edit-contact,
