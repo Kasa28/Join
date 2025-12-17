@@ -41,6 +41,7 @@ hiddenDatePickerTemplate.addEventListener(
   "input",
   syncTemplateDueDateFromHidden
 );
+
 // === Initialization and Field Validation ===
 /**
  * Initializes event handlers for the Add Task template, including title validation
