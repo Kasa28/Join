@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scripts/contact_page_specialfunctions.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scripts/contact_page_specialfunctions.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Firebase base URL for all database requests.
+ * @type {string}
+ */
+const BASE_URL =
+  "https://join-a3ae3-default-rtdb.europe-west1.firebasedatabase.app";
+/**
+ * @typedef {Object} Contact
+ * @property {string} username
+ * @property {string} [email]
+ * @property {string} [phone]
+ * @property {string} [color]
+ */
+
+/**
+ * @typedef {Object} ContactBlock
+ * @property {Contact[]} A
+ * @property {Contact[]} B
+ * @property {Contact[]} C
+ * @property {Contact[]} D
+ * @property {Contact[]} E
+ * @property {Contact[]} F
+ * @property {Contact[]} G
+ * @property {Contact[]} H
+ * @property {Contact[]} I
+ * @property {Contact[]} J
+ * @property {Contact[]} K
+ * @property {Contact[]} L
+ * @property {Contact[]} M
+ * @property {Contact[]} N
+ * @property {Contact[]} O
+ * @property {Contact[]} P
+ * @property {Contact[]} Q
+ * @property {Contact[]} R
+ * @property {Contact[]} S
+ * @property {Contact[]} T
+ * @property {Contact[]} U
+ * @property {Contact[]} V
+ * @property {Contact[]} W
+ * @property {Contact[]} X
+ * @property {Contact[]} Y
+ * @property {Contact[]} Z
+ * @property {Contact[]} other
+ */
+
+/**
+ * Resets all contact blocks (A–Z + other) to empty arrays.
+ * Side effect: overwrites global `contactBlock`.
+ * @returns {void}
+ */
+function removeContentfromAllContactBlocks() {
+  contactBlock = {
+    A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: [], I: [], J: [],
+    K: [], L: [], M: [], N: [], O: [], P: [], Q: [], R: [], S: [], T: [],
+    U: [], V: [], W: [], X: [], Y: [], Z: [], other: []
+  };
+}
+
+/**
+ * Capitalizes the first character of a string.
+ * @param {string} inputString
+ * @returns {string}
+ */
+function makeFirstLetterBig(inputString) {
+  const value = String(inputString);
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+/**
+ * Returns a random integer in the range [0, max).
+ * @param {number} max
+ * @returns {number}
+ */
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+/**
+ * Shows the white-screen overlay.
+ * @returns {void}
+ */
+function callWhiteScreen() {
+  const contentRef = document.getElementById("white-screen");
+  if (contentRef) contentRef.classList.remove("d_none");
+}
+
+/**
+ * Hides the white-screen overlay and closes edit/add contact forms.
+ * @returns {void}
+ */
+function closeWhiteScreen() {
+  const contentRef = document.getElementById("white-screen");
+  if (contentRef) contentRef.classList.add("d_none");
+  hideEditContactFormular();
+  hideAddContactFormular();
+}
+
+/**
+ * Gets the color of a contact by index from the current user's friends.
+ * @param {number} inputIndex
+ * @returns {string|undefined}
+ */
+function getContactColorType(inputIndex) {
+  const contacts = flattenContactBlockToArray();
+  const contact = contacts[inputIndex];
+  return contact ? contact.color : undefined;
+}
+
+/**
+ * Checks if a contact block has at least one entry.
+ * @param {any[]} inputBlock
+ * @returns {boolean}
+ */
+function checkIfBlockIsFilled(inputBlock) {
+  return Array.isArray(inputBlock) &amp;&amp; inputBlock.length > 0;
+}
+
+/**
+ * Builds initials from a full name (first + last).
+ * @param {string} inputFullName
+ * @returns {string}
+ */
+function getInitials(inputFullName) {
+  const nameParts = String(inputFullName).trim().split(/\s+/);
+  const first = nameParts[0]?.charAt(0).toUpperCase() || "";
+  const last = nameParts[1]?.charAt(0).toUpperCase() || "";
+  return first + last;
+}
+
+/**
+ * Persists the current contacts for the active user (API or guest localStorage)
+ * @param {Contact[]} updatedFriends
+ * @returns {Promise&lt;void>}
+ */
+async function persistContacts(updatedFriends) {
+  await window.persistContactsForActiveUser(updatedFriends);
+  setContactsIntoContactblock(updatedFriends);
+}
+
+/**
+ * Sorts contacts in-place by username (case-insensitive).
+ * @param {Contact[]} inputArray
+ * @returns {void}
+ */
+function sortUserToAlphabeticalOrder(inputArray) {
+  inputArray.sort((a, b) => {
+    const aName = (a.username || "").toLowerCase();
+    const bName = (b.username || "").toLowerCase();
+    if (aName &lt; bName) return -1;
+    if (aName > bName) return 1;
+    return 0;
+  });
+}
+
+/**
+ * Finds the index of a contact by username.
+ * @param {Contact[]} inputContactArray
+ * @param {string} inputUsername
+ * @returns {number} Index or -1 if not found.
+ */
+function findIndexFromUsername(inputContactArray, inputUsername) {
+  for (let index = 0; index &lt; inputContactArray.length; index++) {
+    if (inputContactArray[index].username === inputUsername) return index;
+  }
+  return -1;
+}
+
+/**
+ * Normalizes incoming contacts (array or object) into an array.
+ * @param {Contact[]|Record&lt;string, Contact>} inputContacts
+ * @returns {Contact[]}
+ */
+function normalizeContacts(inputContacts) {
+  if (Array.isArray(inputContacts)) return inputContacts;
+  if (inputContacts &amp;&amp; typeof inputContacts === "object") {
+    return Object.values(inputContacts);
+  }
+  return [];
+}
+
+/**
+ * Adds a single contact into the correct contactBlock bucket.
+ * @param {Contact} contact
+ * @returns {void}
+ */
+function addContactToBlock(contact) {
+  if (!contact || typeof contact.username !== "string" || !contact.username.length) return;
+  const firstLetter = contact.username.charAt(0).toUpperCase();
+  if (contactBlock[firstLetter]) {
+    contactBlock[firstLetter].push(contact);
+  } else {
+    contactBlock.other.push(contact);
+  }
+}
+
+/**
+ * Sorts all buckets inside global contactBlock.
+ * @returns {void}
+ */
+function sortAllContactBuckets() {
+  Object.keys(contactBlock).forEach((key) => {
+    if (Array.isArray(contactBlock[key])) {
+      sortUserToAlphabeticalOrder(contactBlock[key]);
+    }
+  });
+}
+
+/**
+ * Splits contacts into alphabetical blocks in global `contactBlock`.
+ * Accepts either an array of contacts or an object of contacts.
+ * @param {Contact[]|Record&lt;string, Contact>} inputContacts
+ * @returns {void}
+ */
+function setContactsIntoContactblock(inputContacts) {
+  removeContentfromAllContactBlocks();
+  const contacts = normalizeContacts(inputContacts);
+  contacts.forEach(addContactToBlock);
+  sortAllContactBuckets();
+}
+
+/**
+ * Returns all alphabetical keys (A–Z) from contactBlock.
+ * @returns {string[]}
+ */
+function getAlphaContactKeys() {
+  return Object.keys(contactBlock)
+    .filter((k) => k !== "other")
+    .sort((a, b) => a.localeCompare(b));
+}
+
+/**
+ * Pushes valid contacts from a list into the result array.
+ * @param {Contact[]} list
+ * @param {Contact[]} result
+ * @returns {void}
+ */
+function pushValidContacts(list, result) {
+  list.forEach((contact) => {
+    if (contact &amp;&amp; typeof contact.username === "string") result.push(contact);
+  });
+}
+
+/**
+ * Flattens contactBlock into a single, alphabetically ordered array.
+ * Buckets A–Z first, then "other".
+ * @returns {Contact[]}
+ */
+function flattenContactBlockToArray() {
+  const result = [];
+  if (!contactBlock || typeof contactBlock !== "object") return result;
+  const alphaKeys = getAlphaContactKeys();
+  alphaKeys.forEach((key) => {
+    const list = Array.isArray(contactBlock[key]) ? contactBlock[key] : [];
+    pushValidContacts(list, result);
+  });
+  if (Array.isArray(contactBlock.other)) {
+    pushValidContacts(contactBlock.other, result);
+  }
+  return result;
+}
+
+/**
+ * Ensures the toast root element exists in the DOM.
+ * @returns {HTMLDivElement}
+ */
+function ensureToastRoot() {
+  let root = document.getElementById("toast-root");
+  if (!root) {
+    root = document.createElement("div");
+    root.id = "toast-root";
+    document.body.appendChild(root);
+  }
+  return /** @type {HTMLDivElement} */ (root);
+}
+
+/**
+ * Creates a toast element with the given text and variant.
+ * @param {string} text
+ * @param {"ok"|"error"} variant
+ * @returns {HTMLDivElement}
+ */
+function createToastElement(text, variant) {
+  const toast = document.createElement("div");
+  toast.className = "toast toast--show" + (variant === "error" ? " toast--error" : "");
+  toast.textContent = text;
+  return /** @type {HTMLDivElement} */ (toast);
+}
+
+/**
+ * Schedules removal of a toast element after given duration.
+ * @param {HTMLDivElement} toast
+ * @param {number} duration
+ * @returns {void}
+ */
+function scheduleToastRemoval(toast, duration) {
+  setTimeout(() => {
+    toast.classList.remove("toast--show");
+    toast.classList.add("toast--hide");
+    toast.addEventListener("animationend", () => toast.remove(), { once: true });
+  }, duration);
+}
+
+/**
+ * Shows a toast message in the contacts UI.
+ * @param {string} text
+ * @param {ToastOptions} [options]
+ * @returns {void}
+ */
+function showContactToast(text, { variant = "ok", duration = 1500 } = {}) {
+  const root = ensureToastRoot();
+  const toast = createToastElement(text, variant);
+  root.appendChild(toast);
+  scheduleToastRemoval(toast, duration);
+}
+
+/**
+ * Exposes showContactToast globally.
+ * @type {(text: string, options?: ToastOptions) => void}
+ */
+window.showContactToast = showContactToast;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#BASE_URL">BASE_URL</a></li><li><a href="global.html#CONTACT_COLORS">CONTACT_COLORS</a></li><li><a href="global.html#GUEST_EXAMPLE_CONTACTS">GUEST_EXAMPLE_CONTACTS</a></li><li><a href="global.html#MAX_VERTICAL_SNAP_DISTANCE">MAX_VERTICAL_SNAP_DISTANCE</a></li><li><a href="global.html#PRIORITY_ICONS">PRIORITY_ICONS</a></li><li><a href="global.html#activeHighlightColumnId">activeHighlightColumnId</a></li><li><a href="global.html#addActiveClassToSidebarButtons">addActiveClassToSidebarButtons</a></li><li><a href="global.html#addContactToBlock">addContactToBlock</a></li><li><a href="global.html#addNewContact">addNewContact</a></li><li><a href="global.html#addSubtaskFromInput">addSubtaskFromInput</a></li><li><a href="global.html#afterRender">afterRender</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#appendSubtaskItem">appendSubtaskItem</a></li><li><a href="global.html#applyEditsAndPersist">applyEditsAndPersist</a></li><li><a href="global.html#applyEditsToTask">applyEditsToTask</a></li><li><a href="global.html#applyHighlight">applyHighlight</a></li><li><a href="global.html#applyStatusChangeForDraggedTask">applyStatusChangeForDraggedTask</a></li><li><a href="global.html#assignedToDataExtractSafe">assignedToDataExtractSafe</a></li><li><a href="global.html#attachPickerChange">attachPickerChange</a></li><li><a href="global.html#attachSubtaskEditKeyup">attachSubtaskEditKeyup</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#authGlobalsPromise">authGlobalsPromise</a></li><li><a href="global.html#autoMoveTimeoutId">autoMoveTimeoutId</a></li><li><a href="global.html#bigCardDynamicHtml">bigCardDynamicHtml</a></li><li><a href="global.html#bigCardDynamicTechnicalHtml">bigCardDynamicTechnicalHtml</a></li><li><a href="global.html#bigCardHtml">bigCardHtml</a></li><li><a href="global.html#buildAssignedAvatar">buildAssignedAvatar</a></li><li><a href="global.html#buildAssignedFromAvatars">buildAssignedFromAvatars</a></li><li><a href="global.html#buildAssignedFromNames">buildAssignedFromNames</a></li><li><a href="global.html#buildAssignedTechnicalHTML">buildAssignedTechnicalHTML</a></li><li><a href="global.html#buildAssignedUserStoryHTML">buildAssignedUserStoryHTML</a></li><li><a href="global.html#buildCheckboxArray">buildCheckboxArray</a></li><li><a href="global.html#buildContactJson">buildContactJson</a></li><li><a href="global.html#buildExtraAvatar">buildExtraAvatar</a></li><li><a href="global.html#buildSubtaskActionsEdit">buildSubtaskActionsEdit</a></li><li><a href="global.html#buildSubtaskActionsView">buildSubtaskActionsView</a></li><li><a href="global.html#buildSubtaskListItem">buildSubtaskListItem</a></li><li><a href="global.html#buildSubtasksTechnicalHTML">buildSubtasksTechnicalHTML</a></li><li><a href="global.html#buildSubtasksUserStoryHTML">buildSubtasksUserStoryHTML</a></li><li><a href="global.html#buildTask">buildTask</a></li><li><a href="global.html#buildUpdatedContact">buildUpdatedContact</a></li><li><a href="global.html#callWhiteScreen">callWhiteScreen</a></li><li><a href="global.html#canDeleteTask">canDeleteTask</a></li><li><a href="global.html#canEditTask">canEditTask</a></li><li><a href="global.html#cancelScheduledAutoMove">cancelScheduledAutoMove</a></li><li><a href="global.html#checkDemoTask">checkDemoTask</a></li><li><a href="global.html#checkIfBlockIsFilled">checkIfBlockIsFilled</a></li><li><a href="global.html#checkIfLogedIn">checkIfLogedIn</a></li><li><a href="global.html#checkIfLogedInOnProtectedPage">checkIfLogedInOnProtectedPage</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#checkPolicyandAnswers">checkPolicyandAnswers</a></li><li><a href="global.html#clearAddTaskAfterAnimation">clearAddTaskAfterAnimation</a></li><li><a href="global.html#clearAllColumnHighlights">clearAllColumnHighlights</a></li><li><a href="global.html#clearBasicFields">clearBasicFields</a></li><li><a href="global.html#clearCurrentHighlight">clearCurrentHighlight</a></li><li><a href="global.html#clearErrors">clearErrors</a></li><li><a href="global.html#clearForm">clearForm</a></li><li><a href="global.html#clearSubtaskInput">clearSubtaskInput</a></li><li><a href="global.html#closeAddTask">closeAddTask</a></li><li><a href="global.html#closeAssignDropdown">closeAssignDropdown</a></li><li><a href="global.html#closeAssignUI">closeAssignUI</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#closeTaskModal">closeTaskModal</a></li><li><a href="global.html#closeWhiteScreen">closeWhiteScreen</a></li><li><a href="global.html#collectTaskFromForm">collectTaskFromForm</a></li><li><a href="global.html#colorCode">colorCode</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#computePendingTilt">computePendingTilt</a></li><li><a href="global.html#contactBlock">contactBlock</a></li><li><a href="global.html#createAvatarNode">createAvatarNode</a></li><li><a href="global.html#createHiddenDatePickerTemplate">createHiddenDatePickerTemplate</a></li><li><a href="global.html#createMoveMenuButton">createMoveMenuButton</a></li><li><a href="global.html#createRestAvatar">createRestAvatar</a></li><li><a href="global.html#createSubtaskDisplayActions">createSubtaskDisplayActions</a></li><li><a href="global.html#createSubtaskEditActions">createSubtaskEditActions</a></li><li><a href="global.html#createSubtaskEditInput">createSubtaskEditInput</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#createToastElement">createToastElement</a></li><li><a href="global.html#currentDragCardEl">currentDragCardEl</a></li><li><a href="global.html#currentlySelectedContact">currentlySelectedContact</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactinEditContactWindow">deleteContactinEditContactWindow</a></li><li><a href="global.html#deleteDynamicTask">deleteDynamicTask</a></li><li><a href="global.html#deleteIdFromLocalStorage">deleteIdFromLocalStorage</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteTaskFromArray">deleteTaskFromArray</a></li><li><a href="global.html#deleteTaskOnServer">deleteTaskOnServer</a></li><li><a href="global.html#demoTasks">demoTasks</a></li><li><a href="global.html#downloadTasksOrDemo">downloadTasksOrDemo</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emptyTheAddContactFormular">emptyTheAddContactFormular</a></li><li><a href="global.html#enableSubtaskEditing">enableSubtaskEditing</a></li><li><a href="global.html#ensureAddTaskCss">ensureAddTaskCss</a></li><li><a href="global.html#ensureBoardAuth">ensureBoardAuth</a></li><li><a href="global.html#ensureCssForLegacy">ensureCssForLegacy</a></li><li><a href="global.html#ensureGuestFriendsSeeded">ensureGuestFriendsSeeded</a></li><li><a href="global.html#ensureRegisteredUserFriendsSeeded">ensureRegisteredUserFriendsSeeded</a></li><li><a href="global.html#ensureSummaryAuth">ensureSummaryAuth</a></li><li><a href="global.html#ensureTechnicalCss">ensureTechnicalCss</a></li><li><a href="global.html#ensureToastRoot">ensureToastRoot</a></li><li><a href="global.html#ensureUserStoryCss">ensureUserStoryCss</a></li><li><a href="global.html#exampleContacts">exampleContacts</a></li><li><a href="global.html#extractFirebaseTasks">extractFirebaseTasks</a></li><li><a href="global.html#fallbackModal">fallbackModal</a></li><li><a href="global.html#fetchBoardTasks">fetchBoardTasks</a></li><li><a href="global.html#fetchRtdbApi">fetchRtdbApi</a></li><li><a href="global.html#fetchTasksApi">fetchTasksApi</a></li><li><a href="global.html#fillAssignees">fillAssignees</a></li><li><a href="global.html#fillBasicFields">fillBasicFields</a></li><li><a href="global.html#fillCategorySelect">fillCategorySelect</a></li><li><a href="global.html#fillDescriptionInput">fillDescriptionInput</a></li><li><a href="global.html#fillDueDateInput">fillDueDateInput</a></li><li><a href="global.html#fillPriorityPill">fillPriorityPill</a></li><li><a href="global.html#fillSubtaskList">fillSubtaskList</a></li><li><a href="global.html#fillTitleInput">fillTitleInput</a></li><li><a href="global.html#filterAssignList">filterAssignList</a></li><li><a href="global.html#findAssignItem">findAssignItem</a></li><li><a href="global.html#findColumnByPointer">findColumnByPointer</a></li><li><a href="global.html#findIndexFromUsername">findIndexFromUsername</a></li><li><a href="global.html#findTaskById">findTaskById</a></li><li><a href="global.html#findTaskForModal">findTaskForModal</a></li><li><a href="global.html#firebaseConfig">firebaseConfig</a></li><li><a href="global.html#flattenContactBlockToArray">flattenContactBlockToArray</a></li><li><a href="global.html#generateTaskId">generateTaskId</a></li><li><a href="global.html#getAddContactFormValues">getAddContactFormValues</a></li><li><a href="global.html#getAddTaskHtml">getAddTaskHtml</a></li><li><a href="global.html#getAddTaskTemplate">getAddTaskTemplate</a></li><li><a href="global.html#getAllTasks">getAllTasks</a></li><li><a href="global.html#getAlphaContactKeys">getAlphaContactKeys</a></li><li><a href="global.html#getAssignElements">getAssignElements</a></li><li><a href="global.html#getAssignSearchValue">getAssignSearchValue</a></li><li><a href="global.html#getAssignedUsers">getAssignedUsers</a></li><li><a href="global.html#getAssignedValue">getAssignedValue</a></li><li><a href="global.html#getAuthQuery">getAuthQuery</a></li><li><a href="global.html#getAvatarData">getAvatarData</a></li><li><a href="global.html#getBadgeClass">getBadgeClass</a></li><li><a href="global.html#getBaseCardData">getBaseCardData</a></li><li><a href="global.html#getBasePath">getBasePath</a></li><li><a href="global.html#getBigCardDynamicHtml">getBigCardDynamicHtml</a></li><li><a href="global.html#getBigCardDynamicTechnicalHtml">getBigCardDynamicTechnicalHtml</a></li><li><a href="global.html#getBoardAuthQuery">getBoardAuthQuery</a></li><li><a href="global.html#getCategoryValue">getCategoryValue</a></li><li><a href="global.html#getColorFromItem">getColorFromItem</a></li><li><a href="global.html#getContactColorType">getContactColorType</a></li><li><a href="global.html#getContactsForRendering">getContactsForRendering</a></li><li><a href="global.html#getCurrentUidOrThrow">getCurrentUidOrThrow</a></li><li><a href="global.html#getDescriptionValue">getDescriptionValue</a></li><li><a href="global.html#getDomColorForName">getDomColorForName</a></li><li><a href="global.html#getDraggedTask">getDraggedTask</a></li><li><a href="global.html#getDueDateOrAbort">getDueDateOrAbort</a></li><li><a href="global.html#getEditFormData">getEditFormData</a></li><li><a href="global.html#getEditFormValues">getEditFormValues</a></li><li><a href="global.html#getFriendsForCurrentUser">getFriendsForCurrentUser</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getLegacyTaskHtml">getLegacyTaskHtml</a></li><li><a href="global.html#getMergedContacts">getMergedContacts</a></li><li><a href="global.html#getNextDeadline">getNextDeadline</a></li><li><a href="global.html#getPriorityIcon">getPriorityIcon</a></li><li><a href="global.html#getPriorityValue">getPriorityValue</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getSelectedContact">getSelectedContact</a></li><li><a href="global.html#getSignupValues">getSignupValues</a></li><li><a href="global.html#getStatusKey">getStatusKey</a></li><li><a href="global.html#getSubtasks">getSubtasks</a></li><li><a href="global.html#getSubtasksSafe">getSubtasksSafe</a></li><li><a href="global.html#getSummaryFetchConfig">getSummaryFetchConfig</a></li><li><a href="global.html#getTaskAuthQuery">getTaskAuthQuery</a></li><li><a href="global.html#getTaskCounts">getTaskCounts</a></li><li><a href="global.html#getTaskForDelete">getTaskForDelete</a></li><li><a href="global.html#getTaskForEdit">getTaskForEdit</a></li><li><a href="global.html#getTaskModalElements">getTaskModalElements</a></li><li><a href="global.html#getTechnicalTaskTemplate">getTechnicalTaskTemplate</a></li><li><a href="global.html#getTitleOrAlert">getTitleOrAlert</a></li><li><a href="global.html#getTodayYMD">getTodayYMD</a></li><li><a href="global.html#getUrgentDueDates">getUrgentDueDates</a></li><li><a href="global.html#getUserFriendslistByUid">getUserFriendslistByUid</a></li><li><a href="global.html#getValidationState">getValidationState</a></li><li><a href="global.html#getWhiteScreen">getWhiteScreen</a></li><li><a href="global.html#greetUserName">greetUserName</a></li><li><a href="global.html#handleAddContact">handleAddContact</a></li><li><a href="global.html#handleAssignCheckboxClick">handleAssignCheckboxClick</a></li><li><a href="global.html#handleAssignDropdownClick">handleAssignDropdownClick</a></li><li><a href="global.html#handleAssignFilterInput">handleAssignFilterInput</a></li><li><a href="global.html#handleAssignInput">handleAssignInput</a></li><li><a href="global.html#handleAssignOutsideClick">handleAssignOutsideClick</a></li><li><a href="global.html#handleContactClick">handleContactClick</a></li><li><a href="global.html#handleDragOver">handleDragOver</a></li><li><a href="global.html#handleFirebaseFallback">handleFirebaseFallback</a></li><li><a href="global.html#handleHeaderResize">handleHeaderResize</a></li><li><a href="global.html#handleSidebarButtonClick">handleSidebarButtonClick</a></li><li><a href="global.html#handleSubtaskClick">handleSubtaskClick</a></li><li><a href="global.html#handleSubtaskEnter">handleSubtaskEnter</a></li><li><a href="global.html#hasValidDomain">hasValidDomain</a></li><li><a href="global.html#hasValidLocal">hasValidLocal</a></li><li><a href="global.html#hiddenDatePicker">hiddenDatePicker</a></li><li><a href="global.html#hideAddContactFormular">hideAddContactFormular</a></li><li><a href="global.html#hideEditContactFormular">hideEditContactFormular</a></li><li><a href="global.html#hideLoginError">hideLoginError</a></li><li><a href="global.html#hideToast">hideToast</a></li><li><a href="global.html#hideToastLater">hideToastLater</a></li><li><a href="global.html#hoverStabilityTimeout">hoverStabilityTimeout</a></li><li><a href="global.html#hydrateAssignSection">hydrateAssignSection</a></li><li><a href="global.html#initAddTaskTemplateHandlers">initAddTaskTemplateHandlers</a></li><li><a href="global.html#initDueDateField">initDueDateField</a></li><li><a href="global.html#initSummaryPage">initSummaryPage</a></li><li><a href="global.html#initTitleValidation">initTitleValidation</a></li><li><a href="global.html#isAssignPlaceholderEvent">isAssignPlaceholderEvent</a></li><li><a href="global.html#isDemoTask">isDemoTask</a></li><li><a href="global.html#isGuestUser">isGuestUser</a></li><li><a href="global.html#isPublicPage">isPublicPage</a></li><li><a href="global.html#isRealDate">isRealDate</a></li><li><a href="global.html#isRegisteredUser">isRegisteredUser</a></li><li><a href="global.html#isTechnicalType">isTechnicalType</a></li><li><a href="global.html#isTouchDevice">isTouchDevice</a></li><li><a href="global.html#isUserStoryType">isUserStoryType</a></li><li><a href="global.html#isValidDateFormat">isValidDateFormat</a></li><li><a href="global.html#isValidEmail">isValidEmail</a></li><li><a href="global.html#isValidName">isValidName</a></li><li><a href="global.html#isValidPhoneNumber">isValidPhoneNumber</a></li><li><a href="global.html#jumpToLogin">jumpToLogin</a></li><li><a href="global.html#lastDataString">lastDataString</a></li><li><a href="global.html#lastDragPointerX">lastDragPointerX</a></li><li><a href="global.html#lastStableHoverId">lastStableHoverId</a></li><li><a href="global.html#loadContactsForActiveUser">loadContactsForActiveUser</a></li><li><a href="global.html#loadCurrentUserProfile">loadCurrentUserProfile</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#loadTasksFromFirebase">loadTasksFromFirebase</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#loginAsGuest">loginAsGuest</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#longPressActive">longPressActive</a></li><li><a href="global.html#longPressTimer">longPressTimer</a></li><li><a href="global.html#makeFirstLetterBig">makeFirstLetterBig</a></li><li><a href="global.html#mapAuthError">mapAuthError</a></li><li><a href="global.html#mapCategoryToType">mapCategoryToType</a></li><li><a href="global.html#markIfTruncated">markIfTruncated</a></li><li><a href="global.html#matchesSearch">matchesSearch</a></li><li><a href="global.html#nameOfTheCard">nameOfTheCard</a></li><li><a href="global.html#needsDraggingClassAfterRender">needsDraggingClassAfterRender</a></li><li><a href="global.html#normaliseSubtaskProgress">normaliseSubtaskProgress</a></li><li><a href="global.html#normalizeContacts">normalizeContacts</a></li><li><a href="global.html#normalizeTaskPriorities">normalizeTaskPriorities</a></li><li><a href="global.html#normalizeTaskType">normalizeTaskType</a></li><li><a href="global.html#onContactsDomReady">onContactsDomReady</a></li><li><a href="global.html#onclickFunction">onclickFunction</a></li><li><a href="global.html#onloadFunctionHeader">onloadFunctionHeader</a></li><li><a href="global.html#openAddTask">openAddTask</a></li><li><a href="global.html#openAssignUI">openAssignUI</a></li><li><a href="global.html#openDynamicTaskModal">openDynamicTaskModal</a></li><li><a href="global.html#openEditOverlay">openEditOverlay</a></li><li><a href="global.html#openLegacyTaskModal">openLegacyTaskModal</a></li><li><a href="global.html#openModalById">openModalById</a></li><li><a href="global.html#openModalDynamic">openModalDynamic</a></li><li><a href="global.html#openNativePicker">openNativePicker</a></li><li><a href="global.html#openPickerSimple">openPickerSimple</a></li><li><a href="global.html#openPickerTemplate">openPickerTemplate</a></li><li><a href="global.html#openTaskModalWithTask">openTaskModalWithTask</a></li><li><a href="global.html#parseDueDate">parseDueDate</a></li><li><a href="global.html#pendingAutoMoveStatus">pendingAutoMoveStatus</a></li><li><a href="global.html#pendingDragTiltClass">pendingDragTiltClass</a></li><li><a href="global.html#performSignup">performSignup</a></li><li><a href="global.html#persistContacts">persistContacts</a></li><li><a href="global.html#persistContactsForActiveUser">persistContactsForActiveUser</a></li><li><a href="global.html#persistTasks">persistTasks</a></li><li><a href="global.html#pickerSyncId">pickerSyncId</a></li><li><a href="global.html#pollIntervalId">pollIntervalId</a></li><li><a href="global.html#pollSummary">pollSummary</a></li><li><a href="global.html#populateEditOverlay">populateEditOverlay</a></li><li><a href="global.html#positionPicker">positionPicker</a></li><li><a href="global.html#positionPickerToInput">positionPickerToInput</a></li><li><a href="global.html#prepareAssignedUsers">prepareAssignedUsers</a></li><li><a href="global.html#prepareEditState">prepareEditState</a></li><li><a href="global.html#prevOnload">prevOnload</a></li><li><a href="global.html#priorit%25C3%25A4tIcon">prioritätIcon</a></li><li><a href="global.html#processAssignSearch">processAssignSearch</a></li><li><a href="global.html#pushValidContacts">pushValidContacts</a></li><li><a href="global.html#putUsernameInContactList">putUsernameInContactList</a></li><li><a href="global.html#readEditForm">readEditForm</a></li><li><a href="global.html#readSubtasksFromForm">readSubtasksFromForm</a></li><li><a href="global.html#readTaskForm">readTaskForm</a></li><li><a href="global.html#redirectToBoard">redirectToBoard</a></li><li><a href="global.html#remindIndex">remindIndex</a></li><li><a href="global.html#removeContentfromAllContactBlocks">removeContentfromAllContactBlocks</a></li><li><a href="global.html#removeFontHighlight">removeFontHighlight</a></li><li><a href="global.html#removeSubtaskItem">removeSubtaskItem</a></li><li><a href="global.html#removeTaskCard">removeTaskCard</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAddContact">renderAddContact</a></li><li><a href="global.html#renderAssignAvatars">renderAssignAvatars</a></li><li><a href="global.html#renderAssignedAvatars">renderAssignedAvatars</a></li><li><a href="global.html#renderCard">renderCard</a></li><li><a href="global.html#renderContactBlock">renderContactBlock</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderContactListItem">renderContactListItem</a></li><li><a href="global.html#renderContactsInDropdown">renderContactsInDropdown</a></li><li><a href="global.html#renderEditContact">renderEditContact</a></li><li><a href="global.html#renderModalContent">renderModalContent</a></li><li><a href="global.html#renderSingleContact">renderSingleContact</a></li><li><a href="global.html#renderSummaryCounts">renderSummaryCounts</a></li><li><a href="global.html#renderSummaryDeadline">renderSummaryDeadline</a></li><li><a href="global.html#renderUserMenuePopupMenu">renderUserMenuePopupMenu</a></li><li><a href="global.html#requestBoardRender">requestBoardRender</a></li><li><a href="global.html#resetAddTaskGlobals">resetAddTaskGlobals</a></li><li><a href="global.html#resetAssignSearch">resetAssignSearch</a></li><li><a href="global.html#resetAssignSection">resetAssignSection</a></li><li><a href="global.html#resetCategory">resetCategory</a></li><li><a href="global.html#resetError">resetError</a></li><li><a href="global.html#resetPickerValue">resetPickerValue</a></li><li><a href="global.html#resetPriorityButtons">resetPriorityButtons</a></li><li><a href="global.html#resetSearchMsg">resetSearchMsg</a></li><li><a href="global.html#resetSubtaskInput">resetSubtaskInput</a></li><li><a href="global.html#resolveAssignItem">resolveAssignItem</a></li><li><a href="global.html#restoreSubtasksState">restoreSubtasksState</a></li><li><a href="global.html#sanitizeBaseUrl">sanitizeBaseUrl</a></li><li><a href="global.html#sanitizeDueDateInput">sanitizeDueDateInput</a></li><li><a href="global.html#saveAndRenderContacts">saveAndRenderContacts</a></li><li><a href="global.html#saveCheckboxState">saveCheckboxState</a></li><li><a href="global.html#saveContactsAndRefresh">saveContactsAndRefresh</a></li><li><a href="global.html#saveEditedSubtask">saveEditedSubtask</a></li><li><a href="global.html#saveSubtaskEdit">saveSubtaskEdit</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#saveTaskEdits">saveTaskEdits</a></li><li><a href="global.html#scheduleAutoMoveTo">scheduleAutoMoveTo</a></li><li><a href="global.html#scheduleToastRemoval">scheduleToastRemoval</a></li><li><a href="global.html#searchQuery">searchQuery</a></li><li><a href="global.html#seedDemoFriendsIfEmpty">seedDemoFriendsIfEmpty</a></li><li><a href="global.html#seedDemoTasks">seedDemoTasks</a></li><li><a href="global.html#selectAssignUser">selectAssignUser</a></li><li><a href="global.html#setActiveSidebarByURL">setActiveSidebarByURL</a></li><li><a href="global.html#setAssignDropdownState">setAssignDropdownState</a></li><li><a href="global.html#setContactsIntoContactblock">setContactsIntoContactblock</a></li><li><a href="global.html#setDueDateError">setDueDateError</a></li><li><a href="global.html#setEditHeading">setEditHeading</a></li><li><a href="global.html#setHiddenPickerFromDueValue">setHiddenPickerFromDueValue</a></li><li><a href="global.html#setLetterInUserBall">setLetterInUserBall</a></li><li><a href="global.html#setPickerMinToday">setPickerMinToday</a></li><li><a href="global.html#setPriorityAddTask">setPriorityAddTask</a></li><li><a href="global.html#setPriorityForEdit">setPriorityForEdit</a></li><li><a href="global.html#setSummaryText">setSummaryText</a></li><li><a href="global.html#setUserDataValue">setUserDataValue</a></li><li><a href="global.html#setupAddTaskContent">setupAddTaskContent</a></li><li><a href="global.html#setupSubmitButton">setupSubmitButton</a></li><li><a href="global.html#showAddContactFormular">showAddContactFormular</a></li><li><a href="global.html#showAllAssignItems">showAllAssignItems</a></li><li><a href="global.html#showContactToast">showContactToast</a></li><li><a href="global.html#showEditContactFormular">showEditContactFormular</a></li><li><a href="global.html#showError">showError</a></li><li><a href="global.html#showLoginError">showLoginError</a></li><li><a href="global.html#showPickerNow">showPickerNow</a></li><li><a href="global.html#showTaskModal">showTaskModal</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#singleContactTemplate">singleContactTemplate</a></li><li><a href="global.html#sortAllContactBuckets">sortAllContactBuckets</a></li><li><a href="global.html#sortUserToAlphabeticalOrder">sortUserToAlphabeticalOrder</a></li><li><a href="global.html#stableHighlight">stableHighlight</a></li><li><a href="global.html#startEditTask">startEditTask</a></li><li><a href="global.html#startPickerSync">startPickerSync</a></li><li><a href="global.html#startSubtaskEdit">startSubtaskEdit</a></li><li><a href="global.html#startSummaryPolling">startSummaryPolling</a></li><li><a href="global.html#statusByColumnId">statusByColumnId</a></li><li><a href="global.html#syncAssignCheckboxes">syncAssignCheckboxes</a></li><li><a href="global.html#syncPickerToDue">syncPickerToDue</a></li><li><a href="global.html#syncSavedCheckboxes">syncSavedCheckboxes</a></li><li><a href="global.html#syncTemplateDueDateFromHidden">syncTemplateDueDateFromHidden</a></li><li><a href="global.html#toTaskArray">toTaskArray</a></li><li><a href="global.html#toggleAssignDropdown">toggleAssignDropdown</a></li><li><a href="global.html#toggleContactHighlight">toggleContactHighlight</a></li><li><a href="global.html#toggleNavigationForGuest">toggleNavigationForGuest</a></li><li><a href="global.html#toggleUserMenuePopupMenu">toggleUserMenuePopupMenu</a></li><li><a href="global.html#updateAssignPlaceholder">updateAssignPlaceholder</a></li><li><a href="global.html#updateButtonState">updateButtonState</a></li><li><a href="global.html#updateCardAfterRender">updateCardAfterRender</a></li><li><a href="global.html#updateDragTilt">updateDragTilt</a></li><li><a href="global.html#updateEditContactFields">updateEditContactFields</a></li><li><a href="global.html#updateEditContactInitials">updateEditContactInitials</a></li><li><a href="global.html#updateErrorForSignup">updateErrorForSignup</a></li><li><a href="global.html#updateFriendsForCurrentUser">updateFriendsForCurrentUser</a></li><li><a href="global.html#updateSearchClearButtonState">updateSearchClearButtonState</a></li><li><a href="global.html#updateSearchResultMsg">updateSearchResultMsg</a></li><li><a href="global.html#updateSelectedUsersArray">updateSelectedUsersArray</a></li><li><a href="global.html#updateSubtaskCounts">updateSubtaskCounts</a></li><li><a href="global.html#updateSummary">updateSummary</a></li><li><a href="global.html#updateTimeout">updateTimeout</a></li><li><a href="global.html#updateUserFriendslistByUid">updateUserFriendslistByUid</a></li><li><a href="global.html#updateUserMenuPosition">updateUserMenuPosition</a></li><li><a href="global.html#userMenuTemplate">userMenuTemplate</a></li><li><a href="global.html#validateContactInputs">validateContactInputs</a></li><li><a href="global.html#validateDueDate">validateDueDate</a></li><li><a href="global.html#validateEditValues">validateEditValues</a></li><li><a href="global.html#validateEmailInForm">validateEmailInForm</a></li><li><a href="global.html#validateEmailOnSubmit">validateEmailOnSubmit</a></li><li><a href="global.html#validateEmailValue">validateEmailValue</a></li><li><a href="global.html#validateNameAndPasswordOnSubmit">validateNameAndPasswordOnSubmit</a></li><li><a href="global.html#validateNameValue">validateNameValue</a></li><li><a href="global.html#validatePhoneValue">validatePhoneValue</a></li><li><a href="global.html#validateTitle">validateTitle</a></li><li><a href="global.html#waitForAuthGlobals">waitForAuthGlobals</a></li><li><a href="global.html#whichCardActuellDrop">whichCardActuellDrop</a></li><li><a href="global.html#writeUserProfile">writeUserProfile</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 19:38:27 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

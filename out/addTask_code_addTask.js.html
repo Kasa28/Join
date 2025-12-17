@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: addTask_code/addTask.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: addTask_code/addTask.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @type {string[]} */
+window.selectedUsers = window.selectedUsers || [];
+/** @type {boolean} */
+window.isDropdownOpen = window.isDropdownOpen || false;
+
+/** @type {number|null} */
+let pickerSyncId = null, pickerLast = "";
+
+/** @param {Event} _e @returns {void} */
+document.addEventListener("DOMContentLoaded", (_e) => {
+  const input = document.getElementById("title"); if (!input) return;
+  const msg = document.getElementById("title-error");
+  /** @returns {void} */
+  const validate = () => { const ok = !!input.value.trim(); msg.textContent = ok ? "" : "This field is required."; input.style.borderBottom = ok ? "1px solid #d1d1d1" : "1px solid red"; };
+  input.addEventListener("blur", validate); input.addEventListener("input", validate);
+});
+
+/** @type {HTMLInputElement} */
+let hiddenDatePicker = document.createElement("input");
+hiddenDatePicker.type = "date"; hiddenDatePicker.id = "hidden-date-picker"; hiddenDatePicker.name = "hidden-date-picker";
+Object.assign(hiddenDatePicker.style, { position: "fixed", opacity: "0", pointerEvents: "none", height: "0", width: "0", zIndex: "1100" });
+document.body.appendChild(hiddenDatePicker);
+
+/** @param {string} dateString @returns {boolean} */
+function isValidDateFormat(dateString) { return /^\d{2}\/\d{2}\/\d{4}$/.test(dateString); }
+
+/** @param {InputEvent} e @returns {void} */
+function sanitizeDueDateInput(e) {
+  let v = e.target.value.replace(/[^\d]/g, ""); if (v.length > 8) v = v.slice(0, 8);
+  if (v.length > 4) v = v.slice(0, 2) + "/" + v.slice(2, 4) + "/" + v.slice(4);
+  else if (v.length > 2) v = v.slice(0, 2) + "/" + v.slice(2);
+  e.target.value = v;
+}
+
+/** @param {string} dateString @returns {boolean} */
+function isRealDate(dateString) {
+  const [d, m, y] = dateString.split("/").map(Number); const dt = new Date(y, m - 1, d);
+  return dt.getFullYear() === y &amp;&amp; dt.getMonth() === m - 1 &amp;&amp; dt.getDate() === d;
+}
+
+/** @param {HTMLElement} msg @param {HTMLElement} parent @param {string} text @returns {boolean} */
+function setDueDateError(msg, parent, text) { msg.textContent = text; parent.style.borderBottom = "1px solid red"; return false; }
+
+/** @returns {boolean} */
+function validateDueDate() {
+  const input = document.getElementById("due-date"); if (!input) return false;
+  const wrap = input.closest(".date-input-wrapper-addTask_page"); const msg = wrap?.querySelector("#due-date-error"); const parent = input.parentElement;
+  if (!msg || !parent) return false; const v = input.value.trim();
+  if (!v) return setDueDateError(msg, parent, "This field is required.");
+  if (!isValidDateFormat(v)) return setDueDateError(msg, parent, "Please use format dd/mm/yyyy");
+  if (!isRealDate(v)) return setDueDateError(msg, parent, "Please enter a valid calendar date");
+  msg.textContent = ""; parent.style.borderBottom = "1px solid #d1d1d1"; return true;
+}
+
+/** @param {HTMLInputElement} dueInput @returns {void} */
+function positionPicker(dueInput) {
+  const field = dueInput.closest(".date-field-addTask_page") || dueInput; const r = field.getBoundingClientRect();
+  Object.assign(hiddenDatePicker.style, { pointerEvents: "auto", width: r.width + "px", height: r.height + "px", left: r.left + "px", top: r.top + "px" });
+}
+
+/** @returns {void} */
+function setPickerMinToday() {
+  const t = new Date(), y = t.getFullYear(), m = String(t.getMonth() + 1).padStart(2, "0"), d = String(t.getDate()).padStart(2, "0");
+  hiddenDatePicker.min = `${y}-${m}-${d}`;
+}
+
+/** @returns {void} */
+function resetPickerValue() { hiddenDatePicker.removeAttribute("value"); hiddenDatePicker.value = ""; }
+
+/** @param {HTMLInputElement} dueInput @returns {void} */
+function syncPickerToDue(dueInput) {
+  const v = hiddenDatePicker.value || "";
+  if (v === pickerLast) return; pickerLast = v;
+  if (!v) { dueInput.value = ""; validateDueDate(); return; }
+  const [y, m, d] = v.split("-"); dueInput.value = `${d}/${m}/${y}`; validateDueDate();
+}
+
+/** @param {HTMLInputElement} dueInput @returns {void} */
+function startPickerSync(dueInput) {
+  pickerLast = hiddenDatePicker.value || "";
+  clearInterval(pickerSyncId); pickerSyncId = setInterval(() => syncPickerToDue(dueInput), 80);
+}
+
+/** @param {HTMLInputElement} dueInput @returns {void} */
+function attachPickerChange(dueInput) {
+  const h = () => syncPickerToDue(dueInput);
+  hiddenDatePicker.oninput = h; hiddenDatePicker.onchange = h;
+  startPickerSync(dueInput);
+}
+
+/** @returns {void} */
+function showPickerNow() {
+  hiddenDatePicker.focus();
+  setTimeout(() => { if (hiddenDatePicker.showPicker) hiddenDatePicker.showPicker(); else hiddenDatePicker.click(); }, 0);
+}
+
+/** @returns {void} */
+function openPickerSimple() {
+  const dueInput = document.getElementById("due-date"); if (!dueInput) return;
+  positionPicker(dueInput); setPickerMinToday(); resetPickerValue(); attachPickerChange(dueInput); showPickerNow();
+}
+window.openPickerSimple = openPickerSimple;
+
+/** @param {FocusEvent} _e @returns {void} */
+hiddenDatePicker.addEventListener("blur", (_e) => {
+  hiddenDatePicker.style.pointerEvents = "none";
+  clearInterval(pickerSyncId); pickerSyncId = null;
+});
+
+const dueDateInput = document.getElementById("due-date");
+if (dueDateInput) {
+  dueDateInput.readOnly = true; dueDateInput.addEventListener("click", openPickerSimple);
+  /** @param {InputEvent} e @returns {void} */
+  dueDateInput.addEventListener("input", (e) => { sanitizeDueDateInput(e); validateDueDate(); });
+  dueDateInput.addEventListener("blur", validateDueDate);
+}
+
+/** @param {string} priority @returns {void} */
+function setPriorityAddTask(priority) {
+  const u = document.querySelector(".priority-btn-urgent-addTask_page"), m = document.querySelector(".priority-btn-medium-addTask_page"), l = document.querySelector(".priority-btn-low-addTask_page");
+  [u, m, l].forEach((b) => { b.style.backgroundColor = "white"; b.style.color = "black"; const img = b.querySelector("img"); if (img) img.style.filter = ""; });
+  m.querySelector("img").style.filter = "brightness(0) saturate(100%) invert(68%) sepia(94%) saturate(312%) hue-rotate(360deg) brightness(101%) contrast(102%)";
+  const map = { urgent: [u, "#ff3d00"], medium: [m, "#ffa800"], low: [l, "#00c853"] }, t = map[priority];
+  if (t) { t[0].style.backgroundColor = t[1]; t[0].style.color = "white"; t[0].querySelector("img").style.filter = "brightness(0) invert(1)"; }
+  window.currentPriority = priority; window.currentPrio = priority;
+}
+
+/** @param {MouseEvent} e @returns {void} */
+document.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("subtask-delete-addTask_page")) return;
+  const input = document.getElementById("subtask"); if (input) input.value = "";
+});
+
+/** @param {KeyboardEvent} e @returns {void} */
+document.addEventListener("keyup", (e) => {
+  if (e.key !== "Enter") return;
+  const input = document.getElementById("subtask");
+  if (!input || document.activeElement !== input) return;
+  const v = input.value.trim(); if (!v) return;
+  e.preventDefault(); const icon = document.querySelector(".subtask-check-addTask_page"); if (icon) icon.click();
+});
+
+/** @param {HTMLElement} list @param {string} value @returns {void} */
+function appendSubtaskItem(list, value) {
+  if (!list) return;
+  const li = document.createElement("li"); li.textContent = value;
+  const a = document.createElement("div"); a.classList.add("subtask-actions-addTask_page");
+  a.innerHTML = `&lt;img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page">&lt;div class="subtask-divider-addTask_page">&lt;/div>&lt;img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">`;
+  li.appendChild(a); list.appendChild(li);
+}
+
+/** @param {MouseEvent} e @returns {void} */
+document.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("subtask-check-addTask_page")) return;
+  const input = document.getElementById("subtask"), list = document.getElementById("subtask-list");
+  const v = input?.value.trim() || ""; if (!v) return;
+  appendSubtaskItem(list, v); input.value = "";
+});
+
+/** @param {MouseEvent} e @returns {void} */
+document.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("subtask-remove-addTask_page")) return;
+  const li = e.target.closest("li"); if (li) li.remove();
+});
+
+/** @param {string} value @returns {HTMLInputElement} */
+function createSubtaskEditInput(value) {
+  const i = document.createElement("input");
+  i.type = "text"; i.value = value; i.classList.add("task-subtask-addTask_page"); i.name = "subtask-edit"; i.setAttribute("aria-label", "Edit subtask");
+  return i;
+}
+
+/** @returns {HTMLDivElement} */
+function createSubtaskEditActions() {
+  const a = document.createElement("div"); a.classList.add("subtask-actions-addTask_page");
+  a.innerHTML = `&lt;img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">&lt;div class="subtask-divider-addTask_page">&lt;/div>&lt;img src="../assets/img/check.svg" alt="Save subtask" class="subtask-save-addTask_page">`;
+  return a;
+}
+
+/** @param {HTMLInputElement} input @param {HTMLLIElement} li @returns {void} */
+function attachSubtaskEditKeyup(input, li) {
+  input.addEventListener("keyup", (ev) => {
+    if (ev.key !== "Enter") return;
+    const v = input.value.trim(); if (!v) return;
+    ev.preventDefault(); const save = li.querySelector(".subtask-save-addTask_page"); if (save) save.click();
+  });
+}
+
+/** @param {MouseEvent} e @returns {void} */
+function enableSubtaskEditing(e) {
+  if (!e.target.classList.contains("subtask-edit-addTask_page")) return;
+  const li = e.target.closest("li"); if (!li || !li.firstChild) return;
+  const oldText = li.firstChild.textContent.trim(); li.innerHTML = "";
+  const input = createSubtaskEditInput(oldText), actions = createSubtaskEditActions();
+  li.append(input, actions); attachSubtaskEditKeyup(input, li);
+}
+document.addEventListener("click", enableSubtaskEditing);
+
+/** @returns {HTMLDivElement} */
+function createSubtaskDisplayActions() {
+  const a = document.createElement("div"); a.classList.add("subtask-actions-addTask_page");
+  a.innerHTML = `&lt;img src="../assets/img/edit.svg" alt="Edit subtask" class="subtask-edit-addTask_page">&lt;div class="subtask-divider-addTask_page">&lt;/div>&lt;img src="../assets/img/delete.svg" alt="Delete subtask" class="subtask-remove-addTask_page">`;
+  return a;
+}
+
+/** @param {MouseEvent} e @returns {void} */
+function saveEditedSubtask(e) {
+  if (!e.target.classList.contains("subtask-save-addTask_page")) return;
+  const li = e.target.closest("li"); if (!li) return;
+  const input = li.querySelector("input"); if (!input) return;
+  const v = input.value.trim(); if (!v) { li.remove(); return; }
+  li.innerHTML = ""; li.textContent = v; li.appendChild(createSubtaskDisplayActions());
+}
+document.addEventListener("click", saveEditedSubtask);
+
+/** @returns {void} */
+function clearBasicFields() {
+  ["title", "description", "due-date", "subtask"].forEach((id) => { const el = document.getElementById(id); if (el) el.value = ""; });
+  const list = document.getElementById("subtask-list"); if (list) list.innerHTML = "";
+}
+
+/** @returns {void} */
+function resetCategory() { const c = document.getElementById("category"); if (c) c.selectedIndex = 0; }
+
+/** @returns {void} */
+function resetPriorityButtons() {
+  document.querySelectorAll(".priority-group-addTask_page button").forEach((btn) => { btn.style.backgroundColor = "white"; btn.style.color = "black"; const img = btn.querySelector("img"); if (img) img.style.filter = ""; });
+  setPriorityAddTask("medium");
+}
+
+/** @returns {void} */
+function resetAssignSection() {
+  window.selectedUsers = [];
+  const p = document.querySelector(".assign-placeholder-addTask_page");
+  if (p) { p.textContent = "Select contact to assign"; p.style.color = "black"; }
+  document.querySelectorAll(".assign-check-addTask_page").forEach((cb) => (cb.checked = false));
+  const av = document.getElementById("assigned-avatars"); if (av) av.innerHTML = "";
+}
+
+/** @returns {void} */
+function clearErrors() { document.querySelectorAll(".error-text").forEach((e) => (e.textContent = "")); }
+
+/** @returns {void} */
+function clearForm() { clearBasicFields(); resetCategory(); resetPriorityButtons(); resetAssignSection(); clearErrors(); }
+
+/** @returns {HTMLElement} */
+function ensureToastRoot() {
+  let root = document.getElementById("toast-root");
+  if (!root) { root = document.createElement("div"); root.id = "toast-root"; document.body.appendChild(root); }
+  return root;
+}
+
+/** @param {HTMLElement} el @returns {void} */
+function hideToast(el) {
+  el.classList.remove("toast--show"); el.classList.add("toast--hide");
+  el.addEventListener("animationend", () => el.remove(), { once: true });
+}
+
+/** @param {string} text @param {{variant?: "ok"|"error", duration?: number}} [options] @returns {void} */
+function showToast(text, { variant = "ok", duration = 1000 } = {}) {
+  const root = ensureToastRoot(); const el = document.createElement("div");
+  el.className = "toast toast--show" + (variant === "error" ? " toast--error" : "");
+  el.innerHTML = `&lt;span>${text}&lt;/span>&lt;span class="toast-icon" aria-hidden="true">&lt;/span>`;
+  root.appendChild(el); setTimeout(() => hideToast(el), duration);
+}
+window.showToast = showToast;
+
+/**
+ * @returns {{
+ *  title:string, dueDate:string, description:string, category:string, priority:string
+ * } | null}
+ */
+function readTaskForm() {
+  const title = (document.getElementById("title")?.value || "").trim();
+  const dueDate = (document.getElementById("due-date")?.value || "").trim();
+  const description = (document.getElementById("description")?.value || "").trim();
+  const category = (document.getElementById("category")?.value || "").trim();
+  if (!title) { showToast("Please enter a title", { variant: "error", duration: 1600 }); return null; }
+  if (!dueDate) { showToast("Please enter a due date", { variant: "error", duration: 1600 }); return null; }
+  if (!isValidDateFormat(dueDate) || !isRealDate(dueDate)) { showToast("Please enter a valid date in format dd/mm/yyyy", { variant: "error", duration: 1600 }); return null; }
+  if (!category) { showToast("Please select a category.", { variant: "error", duration: 1600 }); return null; }
+  return { title, dueDate, description, category, priority: (window.currentPrio || "medium").toLowerCase() };
+}
+
+/** @returns {{name:string,color:string}[]} */
+function getAssignedUsers() {
+  const items = [...document.querySelectorAll(".assign-item-addTask_page")], selected = window.selectedUsers || [];
+  return selected.map((name) => {
+    const item = items.find((el) => el.querySelector(".assign-name-addTask_page").textContent.trim() === name);
+    const av = item?.querySelector(".assign-avatar-addTask_page"); return { name, color: av ? av.style.backgroundColor : "#4589ff" };
+  });
+}
+
+/** @returns {string[]} */
+function getSubtasks() {
+  return Array.from(document.querySelectorAll("#subtask-list li"))
+    .map((li) => li.firstChild?.textContent?.trim() || "").filter((t) => t !== "");
+}
+
+/** @param {{title:string,dueDate:string,description:string,category:string,priority:string}} data @returns {Object} */
+function buildTask(data) {
+  const icons = { urgent: "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg", medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg", low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg" };
+  const subTasks = getSubtasks(), status = window.nextTaskTargetStatus || "todo";
+  return { id: Date.now(), title: data.title, description: data.description, dueDate: data.dueDate, priority: data.priority, priorityIcon: icons[data.priority] || icons.low, status, type: data.category === "technical" ? "Technical Task" : "User Story", subTasks, subtasksDone: 0, subtasksTotal: subTasks.length, assignedTo: getAssignedUsers() };
+}
+
+/** @returns {void} */
+function redirectToBoard() { window.location.href = "../board_code/board.html"; }
+
+/** @returns {Promise&lt;void>} */
+async function createTask() {
+  const data = readTaskForm(); if (!data) return;
+  const task = buildTask(data);
+  try { await saveTask(task.id, task); showToast("Task added to board", { duration: 1600 }); setTimeout(redirectToBoard, 1700); }
+  catch (err) { console.error("Error saving task:", err); showToast("Error saving task", { variant: "error", duration: 2000 }); }
+}
+window.createTask = createTask;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#BASE_URL">BASE_URL</a></li><li><a href="global.html#CONTACT_COLORS">CONTACT_COLORS</a></li><li><a href="global.html#GUEST_EXAMPLE_CONTACTS">GUEST_EXAMPLE_CONTACTS</a></li><li><a href="global.html#MAX_VERTICAL_SNAP_DISTANCE">MAX_VERTICAL_SNAP_DISTANCE</a></li><li><a href="global.html#PRIORITY_ICONS">PRIORITY_ICONS</a></li><li><a href="global.html#activeHighlightColumnId">activeHighlightColumnId</a></li><li><a href="global.html#addActiveClassToSidebarButtons">addActiveClassToSidebarButtons</a></li><li><a href="global.html#addContactToBlock">addContactToBlock</a></li><li><a href="global.html#addNewContact">addNewContact</a></li><li><a href="global.html#addSubtaskFromInput">addSubtaskFromInput</a></li><li><a href="global.html#afterRender">afterRender</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#appendSubtaskItem">appendSubtaskItem</a></li><li><a href="global.html#applyEditsAndPersist">applyEditsAndPersist</a></li><li><a href="global.html#applyEditsToTask">applyEditsToTask</a></li><li><a href="global.html#applyHighlight">applyHighlight</a></li><li><a href="global.html#applyStatusChangeForDraggedTask">applyStatusChangeForDraggedTask</a></li><li><a href="global.html#assignedToDataExtractSafe">assignedToDataExtractSafe</a></li><li><a href="global.html#attachPickerChange">attachPickerChange</a></li><li><a href="global.html#attachSubtaskEditKeyup">attachSubtaskEditKeyup</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#authGlobalsPromise">authGlobalsPromise</a></li><li><a href="global.html#autoMoveTimeoutId">autoMoveTimeoutId</a></li><li><a href="global.html#bigCardDynamicHtml">bigCardDynamicHtml</a></li><li><a href="global.html#bigCardDynamicTechnicalHtml">bigCardDynamicTechnicalHtml</a></li><li><a href="global.html#bigCardHtml">bigCardHtml</a></li><li><a href="global.html#buildAssignedAvatar">buildAssignedAvatar</a></li><li><a href="global.html#buildAssignedFromAvatars">buildAssignedFromAvatars</a></li><li><a href="global.html#buildAssignedFromNames">buildAssignedFromNames</a></li><li><a href="global.html#buildAssignedTechnicalHTML">buildAssignedTechnicalHTML</a></li><li><a href="global.html#buildAssignedUserStoryHTML">buildAssignedUserStoryHTML</a></li><li><a href="global.html#buildCheckboxArray">buildCheckboxArray</a></li><li><a href="global.html#buildContactJson">buildContactJson</a></li><li><a href="global.html#buildExtraAvatar">buildExtraAvatar</a></li><li><a href="global.html#buildSubtaskActionsEdit">buildSubtaskActionsEdit</a></li><li><a href="global.html#buildSubtaskActionsView">buildSubtaskActionsView</a></li><li><a href="global.html#buildSubtaskListItem">buildSubtaskListItem</a></li><li><a href="global.html#buildSubtasksTechnicalHTML">buildSubtasksTechnicalHTML</a></li><li><a href="global.html#buildSubtasksUserStoryHTML">buildSubtasksUserStoryHTML</a></li><li><a href="global.html#buildTask">buildTask</a></li><li><a href="global.html#buildUpdatedContact">buildUpdatedContact</a></li><li><a href="global.html#callWhiteScreen">callWhiteScreen</a></li><li><a href="global.html#canDeleteTask">canDeleteTask</a></li><li><a href="global.html#canEditTask">canEditTask</a></li><li><a href="global.html#cancelScheduledAutoMove">cancelScheduledAutoMove</a></li><li><a href="global.html#checkDemoTask">checkDemoTask</a></li><li><a href="global.html#checkIfBlockIsFilled">checkIfBlockIsFilled</a></li><li><a href="global.html#checkIfLogedIn">checkIfLogedIn</a></li><li><a href="global.html#checkIfLogedInOnProtectedPage">checkIfLogedInOnProtectedPage</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#checkPolicyandAnswers">checkPolicyandAnswers</a></li><li><a href="global.html#clearAddTaskAfterAnimation">clearAddTaskAfterAnimation</a></li><li><a href="global.html#clearAllColumnHighlights">clearAllColumnHighlights</a></li><li><a href="global.html#clearBasicFields">clearBasicFields</a></li><li><a href="global.html#clearCurrentHighlight">clearCurrentHighlight</a></li><li><a href="global.html#clearErrors">clearErrors</a></li><li><a href="global.html#clearForm">clearForm</a></li><li><a href="global.html#clearSubtaskInput">clearSubtaskInput</a></li><li><a href="global.html#closeAddTask">closeAddTask</a></li><li><a href="global.html#closeAssignDropdown">closeAssignDropdown</a></li><li><a href="global.html#closeAssignUI">closeAssignUI</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#closeTaskModal">closeTaskModal</a></li><li><a href="global.html#closeWhiteScreen">closeWhiteScreen</a></li><li><a href="global.html#collectTaskFromForm">collectTaskFromForm</a></li><li><a href="global.html#colorCode">colorCode</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#computePendingTilt">computePendingTilt</a></li><li><a href="global.html#contactBlock">contactBlock</a></li><li><a href="global.html#createAvatarNode">createAvatarNode</a></li><li><a href="global.html#createHiddenDatePickerTemplate">createHiddenDatePickerTemplate</a></li><li><a href="global.html#createMoveMenuButton">createMoveMenuButton</a></li><li><a href="global.html#createRestAvatar">createRestAvatar</a></li><li><a href="global.html#createSubtaskDisplayActions">createSubtaskDisplayActions</a></li><li><a href="global.html#createSubtaskEditActions">createSubtaskEditActions</a></li><li><a href="global.html#createSubtaskEditInput">createSubtaskEditInput</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#createToastElement">createToastElement</a></li><li><a href="global.html#currentDragCardEl">currentDragCardEl</a></li><li><a href="global.html#currentlySelectedContact">currentlySelectedContact</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactinEditContactWindow">deleteContactinEditContactWindow</a></li><li><a href="global.html#deleteDynamicTask">deleteDynamicTask</a></li><li><a href="global.html#deleteIdFromLocalStorage">deleteIdFromLocalStorage</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteTaskFromArray">deleteTaskFromArray</a></li><li><a href="global.html#deleteTaskOnServer">deleteTaskOnServer</a></li><li><a href="global.html#demoTasks">demoTasks</a></li><li><a href="global.html#downloadTasksOrDemo">downloadTasksOrDemo</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emptyTheAddContactFormular">emptyTheAddContactFormular</a></li><li><a href="global.html#enableSubtaskEditing">enableSubtaskEditing</a></li><li><a href="global.html#ensureAddTaskCss">ensureAddTaskCss</a></li><li><a href="global.html#ensureBoardAuth">ensureBoardAuth</a></li><li><a href="global.html#ensureCssForLegacy">ensureCssForLegacy</a></li><li><a href="global.html#ensureGuestFriendsSeeded">ensureGuestFriendsSeeded</a></li><li><a href="global.html#ensureRegisteredUserFriendsSeeded">ensureRegisteredUserFriendsSeeded</a></li><li><a href="global.html#ensureSummaryAuth">ensureSummaryAuth</a></li><li><a href="global.html#ensureTechnicalCss">ensureTechnicalCss</a></li><li><a href="global.html#ensureToastRoot">ensureToastRoot</a></li><li><a href="global.html#ensureUserStoryCss">ensureUserStoryCss</a></li><li><a href="global.html#exampleContacts">exampleContacts</a></li><li><a href="global.html#extractFirebaseTasks">extractFirebaseTasks</a></li><li><a href="global.html#fallbackModal">fallbackModal</a></li><li><a href="global.html#fetchBoardTasks">fetchBoardTasks</a></li><li><a href="global.html#fetchRtdbApi">fetchRtdbApi</a></li><li><a href="global.html#fetchTasksApi">fetchTasksApi</a></li><li><a href="global.html#fillAssignees">fillAssignees</a></li><li><a href="global.html#fillBasicFields">fillBasicFields</a></li><li><a href="global.html#fillCategorySelect">fillCategorySelect</a></li><li><a href="global.html#fillDescriptionInput">fillDescriptionInput</a></li><li><a href="global.html#fillDueDateInput">fillDueDateInput</a></li><li><a href="global.html#fillPriorityPill">fillPriorityPill</a></li><li><a href="global.html#fillSubtaskList">fillSubtaskList</a></li><li><a href="global.html#fillTitleInput">fillTitleInput</a></li><li><a href="global.html#filterAssignList">filterAssignList</a></li><li><a href="global.html#findAssignItem">findAssignItem</a></li><li><a href="global.html#findColumnByPointer">findColumnByPointer</a></li><li><a href="global.html#findIndexFromUsername">findIndexFromUsername</a></li><li><a href="global.html#findTaskById">findTaskById</a></li><li><a href="global.html#findTaskForModal">findTaskForModal</a></li><li><a href="global.html#firebaseConfig">firebaseConfig</a></li><li><a href="global.html#flattenContactBlockToArray">flattenContactBlockToArray</a></li><li><a href="global.html#generateTaskId">generateTaskId</a></li><li><a href="global.html#getAddContactFormValues">getAddContactFormValues</a></li><li><a href="global.html#getAddTaskHtml">getAddTaskHtml</a></li><li><a href="global.html#getAddTaskTemplate">getAddTaskTemplate</a></li><li><a href="global.html#getAllTasks">getAllTasks</a></li><li><a href="global.html#getAlphaContactKeys">getAlphaContactKeys</a></li><li><a href="global.html#getAssignElements">getAssignElements</a></li><li><a href="global.html#getAssignSearchValue">getAssignSearchValue</a></li><li><a href="global.html#getAssignedUsers">getAssignedUsers</a></li><li><a href="global.html#getAssignedValue">getAssignedValue</a></li><li><a href="global.html#getAuthQuery">getAuthQuery</a></li><li><a href="global.html#getAvatarData">getAvatarData</a></li><li><a href="global.html#getBadgeClass">getBadgeClass</a></li><li><a href="global.html#getBaseCardData">getBaseCardData</a></li><li><a href="global.html#getBasePath">getBasePath</a></li><li><a href="global.html#getBigCardDynamicHtml">getBigCardDynamicHtml</a></li><li><a href="global.html#getBigCardDynamicTechnicalHtml">getBigCardDynamicTechnicalHtml</a></li><li><a href="global.html#getBoardAuthQuery">getBoardAuthQuery</a></li><li><a href="global.html#getCategoryValue">getCategoryValue</a></li><li><a href="global.html#getColorFromItem">getColorFromItem</a></li><li><a href="global.html#getContactColorType">getContactColorType</a></li><li><a href="global.html#getContactsForRendering">getContactsForRendering</a></li><li><a href="global.html#getCurrentUidOrThrow">getCurrentUidOrThrow</a></li><li><a href="global.html#getDescriptionValue">getDescriptionValue</a></li><li><a href="global.html#getDomColorForName">getDomColorForName</a></li><li><a href="global.html#getDraggedTask">getDraggedTask</a></li><li><a href="global.html#getDueDateOrAbort">getDueDateOrAbort</a></li><li><a href="global.html#getEditFormData">getEditFormData</a></li><li><a href="global.html#getEditFormValues">getEditFormValues</a></li><li><a href="global.html#getFriendsForCurrentUser">getFriendsForCurrentUser</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getLegacyTaskHtml">getLegacyTaskHtml</a></li><li><a href="global.html#getMergedContacts">getMergedContacts</a></li><li><a href="global.html#getNextDeadline">getNextDeadline</a></li><li><a href="global.html#getPriorityIcon">getPriorityIcon</a></li><li><a href="global.html#getPriorityValue">getPriorityValue</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getSelectedContact">getSelectedContact</a></li><li><a href="global.html#getSignupValues">getSignupValues</a></li><li><a href="global.html#getStatusKey">getStatusKey</a></li><li><a href="global.html#getSubtasks">getSubtasks</a></li><li><a href="global.html#getSubtasksSafe">getSubtasksSafe</a></li><li><a href="global.html#getSummaryFetchConfig">getSummaryFetchConfig</a></li><li><a href="global.html#getTaskAuthQuery">getTaskAuthQuery</a></li><li><a href="global.html#getTaskCounts">getTaskCounts</a></li><li><a href="global.html#getTaskForDelete">getTaskForDelete</a></li><li><a href="global.html#getTaskForEdit">getTaskForEdit</a></li><li><a href="global.html#getTaskModalElements">getTaskModalElements</a></li><li><a href="global.html#getTechnicalTaskTemplate">getTechnicalTaskTemplate</a></li><li><a href="global.html#getTitleOrAlert">getTitleOrAlert</a></li><li><a href="global.html#getTodayYMD">getTodayYMD</a></li><li><a href="global.html#getUrgentDueDates">getUrgentDueDates</a></li><li><a href="global.html#getUserFriendslistByUid">getUserFriendslistByUid</a></li><li><a href="global.html#getValidationState">getValidationState</a></li><li><a href="global.html#getWhiteScreen">getWhiteScreen</a></li><li><a href="global.html#greetUserName">greetUserName</a></li><li><a href="global.html#handleAddContact">handleAddContact</a></li><li><a href="global.html#handleAssignCheckboxClick">handleAssignCheckboxClick</a></li><li><a href="global.html#handleAssignDropdownClick">handleAssignDropdownClick</a></li><li><a href="global.html#handleAssignFilterInput">handleAssignFilterInput</a></li><li><a href="global.html#handleAssignInput">handleAssignInput</a></li><li><a href="global.html#handleAssignOutsideClick">handleAssignOutsideClick</a></li><li><a href="global.html#handleContactClick">handleContactClick</a></li><li><a href="global.html#handleDragOver">handleDragOver</a></li><li><a href="global.html#handleFirebaseFallback">handleFirebaseFallback</a></li><li><a href="global.html#handleHeaderResize">handleHeaderResize</a></li><li><a href="global.html#handleSidebarButtonClick">handleSidebarButtonClick</a></li><li><a href="global.html#handleSubtaskClick">handleSubtaskClick</a></li><li><a href="global.html#handleSubtaskEnter">handleSubtaskEnter</a></li><li><a href="global.html#hasValidDomain">hasValidDomain</a></li><li><a href="global.html#hasValidLocal">hasValidLocal</a></li><li><a href="global.html#hiddenDatePicker">hiddenDatePicker</a></li><li><a href="global.html#hideAddContactFormular">hideAddContactFormular</a></li><li><a href="global.html#hideEditContactFormular">hideEditContactFormular</a></li><li><a href="global.html#hideLoginError">hideLoginError</a></li><li><a href="global.html#hideToast">hideToast</a></li><li><a href="global.html#hideToastLater">hideToastLater</a></li><li><a href="global.html#hoverStabilityTimeout">hoverStabilityTimeout</a></li><li><a href="global.html#hydrateAssignSection">hydrateAssignSection</a></li><li><a href="global.html#initAddTaskTemplateHandlers">initAddTaskTemplateHandlers</a></li><li><a href="global.html#initDueDateField">initDueDateField</a></li><li><a href="global.html#initSummaryPage">initSummaryPage</a></li><li><a href="global.html#initTitleValidation">initTitleValidation</a></li><li><a href="global.html#isAssignPlaceholderEvent">isAssignPlaceholderEvent</a></li><li><a href="global.html#isDemoTask">isDemoTask</a></li><li><a href="global.html#isGuestUser">isGuestUser</a></li><li><a href="global.html#isPublicPage">isPublicPage</a></li><li><a href="global.html#isRealDate">isRealDate</a></li><li><a href="global.html#isRegisteredUser">isRegisteredUser</a></li><li><a href="global.html#isTechnicalType">isTechnicalType</a></li><li><a href="global.html#isTouchDevice">isTouchDevice</a></li><li><a href="global.html#isUserStoryType">isUserStoryType</a></li><li><a href="global.html#isValidDateFormat">isValidDateFormat</a></li><li><a href="global.html#isValidEmail">isValidEmail</a></li><li><a href="global.html#isValidName">isValidName</a></li><li><a href="global.html#isValidPhoneNumber">isValidPhoneNumber</a></li><li><a href="global.html#jumpToLogin">jumpToLogin</a></li><li><a href="global.html#lastDataString">lastDataString</a></li><li><a href="global.html#lastDragPointerX">lastDragPointerX</a></li><li><a href="global.html#lastStableHoverId">lastStableHoverId</a></li><li><a href="global.html#loadContactsForActiveUser">loadContactsForActiveUser</a></li><li><a href="global.html#loadCurrentUserProfile">loadCurrentUserProfile</a></li><li><a href="global.html#loadTasks">loadTasks</a></li><li><a href="global.html#loadTasksFromFirebase">loadTasksFromFirebase</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#loginAsGuest">loginAsGuest</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#longPressActive">longPressActive</a></li><li><a href="global.html#longPressTimer">longPressTimer</a></li><li><a href="global.html#makeFirstLetterBig">makeFirstLetterBig</a></li><li><a href="global.html#mapAuthError">mapAuthError</a></li><li><a href="global.html#mapCategoryToType">mapCategoryToType</a></li><li><a href="global.html#markIfTruncated">markIfTruncated</a></li><li><a href="global.html#matchesSearch">matchesSearch</a></li><li><a href="global.html#nameOfTheCard">nameOfTheCard</a></li><li><a href="global.html#needsDraggingClassAfterRender">needsDraggingClassAfterRender</a></li><li><a href="global.html#normaliseSubtaskProgress">normaliseSubtaskProgress</a></li><li><a href="global.html#normalizeContacts">normalizeContacts</a></li><li><a href="global.html#normalizeTaskPriorities">normalizeTaskPriorities</a></li><li><a href="global.html#normalizeTaskType">normalizeTaskType</a></li><li><a href="global.html#onContactsDomReady">onContactsDomReady</a></li><li><a href="global.html#onclickFunction">onclickFunction</a></li><li><a href="global.html#onloadFunctionHeader">onloadFunctionHeader</a></li><li><a href="global.html#openAddTask">openAddTask</a></li><li><a href="global.html#openAssignUI">openAssignUI</a></li><li><a href="global.html#openDynamicTaskModal">openDynamicTaskModal</a></li><li><a href="global.html#openEditOverlay">openEditOverlay</a></li><li><a href="global.html#openLegacyTaskModal">openLegacyTaskModal</a></li><li><a href="global.html#openModalById">openModalById</a></li><li><a href="global.html#openModalDynamic">openModalDynamic</a></li><li><a href="global.html#openNativePicker">openNativePicker</a></li><li><a href="global.html#openPickerSimple">openPickerSimple</a></li><li><a href="global.html#openPickerTemplate">openPickerTemplate</a></li><li><a href="global.html#openTaskModalWithTask">openTaskModalWithTask</a></li><li><a href="global.html#parseDueDate">parseDueDate</a></li><li><a href="global.html#pendingAutoMoveStatus">pendingAutoMoveStatus</a></li><li><a href="global.html#pendingDragTiltClass">pendingDragTiltClass</a></li><li><a href="global.html#performSignup">performSignup</a></li><li><a href="global.html#persistContacts">persistContacts</a></li><li><a href="global.html#persistContactsForActiveUser">persistContactsForActiveUser</a></li><li><a href="global.html#persistTasks">persistTasks</a></li><li><a href="global.html#pickerSyncId">pickerSyncId</a></li><li><a href="global.html#pollIntervalId">pollIntervalId</a></li><li><a href="global.html#pollSummary">pollSummary</a></li><li><a href="global.html#populateEditOverlay">populateEditOverlay</a></li><li><a href="global.html#positionPicker">positionPicker</a></li><li><a href="global.html#positionPickerToInput">positionPickerToInput</a></li><li><a href="global.html#prepareAssignedUsers">prepareAssignedUsers</a></li><li><a href="global.html#prepareEditState">prepareEditState</a></li><li><a href="global.html#prevOnload">prevOnload</a></li><li><a href="global.html#priorit%25C3%25A4tIcon">prioritätIcon</a></li><li><a href="global.html#processAssignSearch">processAssignSearch</a></li><li><a href="global.html#pushValidContacts">pushValidContacts</a></li><li><a href="global.html#putUsernameInContactList">putUsernameInContactList</a></li><li><a href="global.html#readEditForm">readEditForm</a></li><li><a href="global.html#readSubtasksFromForm">readSubtasksFromForm</a></li><li><a href="global.html#readTaskForm">readTaskForm</a></li><li><a href="global.html#redirectToBoard">redirectToBoard</a></li><li><a href="global.html#remindIndex">remindIndex</a></li><li><a href="global.html#removeContentfromAllContactBlocks">removeContentfromAllContactBlocks</a></li><li><a href="global.html#removeFontHighlight">removeFontHighlight</a></li><li><a href="global.html#removeSubtaskItem">removeSubtaskItem</a></li><li><a href="global.html#removeTaskCard">removeTaskCard</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAddContact">renderAddContact</a></li><li><a href="global.html#renderAssignAvatars">renderAssignAvatars</a></li><li><a href="global.html#renderAssignedAvatars">renderAssignedAvatars</a></li><li><a href="global.html#renderCard">renderCard</a></li><li><a href="global.html#renderContactBlock">renderContactBlock</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderContactListItem">renderContactListItem</a></li><li><a href="global.html#renderContactsInDropdown">renderContactsInDropdown</a></li><li><a href="global.html#renderEditContact">renderEditContact</a></li><li><a href="global.html#renderModalContent">renderModalContent</a></li><li><a href="global.html#renderSingleContact">renderSingleContact</a></li><li><a href="global.html#renderSummaryCounts">renderSummaryCounts</a></li><li><a href="global.html#renderSummaryDeadline">renderSummaryDeadline</a></li><li><a href="global.html#renderUserMenuePopupMenu">renderUserMenuePopupMenu</a></li><li><a href="global.html#requestBoardRender">requestBoardRender</a></li><li><a href="global.html#resetAddTaskGlobals">resetAddTaskGlobals</a></li><li><a href="global.html#resetAssignSearch">resetAssignSearch</a></li><li><a href="global.html#resetAssignSection">resetAssignSection</a></li><li><a href="global.html#resetCategory">resetCategory</a></li><li><a href="global.html#resetError">resetError</a></li><li><a href="global.html#resetPickerValue">resetPickerValue</a></li><li><a href="global.html#resetPriorityButtons">resetPriorityButtons</a></li><li><a href="global.html#resetSearchMsg">resetSearchMsg</a></li><li><a href="global.html#resetSubtaskInput">resetSubtaskInput</a></li><li><a href="global.html#resolveAssignItem">resolveAssignItem</a></li><li><a href="global.html#restoreSubtasksState">restoreSubtasksState</a></li><li><a href="global.html#sanitizeBaseUrl">sanitizeBaseUrl</a></li><li><a href="global.html#sanitizeDueDateInput">sanitizeDueDateInput</a></li><li><a href="global.html#saveAndRenderContacts">saveAndRenderContacts</a></li><li><a href="global.html#saveCheckboxState">saveCheckboxState</a></li><li><a href="global.html#saveContactsAndRefresh">saveContactsAndRefresh</a></li><li><a href="global.html#saveEditedSubtask">saveEditedSubtask</a></li><li><a href="global.html#saveSubtaskEdit">saveSubtaskEdit</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#saveTaskEdits">saveTaskEdits</a></li><li><a href="global.html#scheduleAutoMoveTo">scheduleAutoMoveTo</a></li><li><a href="global.html#scheduleToastRemoval">scheduleToastRemoval</a></li><li><a href="global.html#searchQuery">searchQuery</a></li><li><a href="global.html#seedDemoFriendsIfEmpty">seedDemoFriendsIfEmpty</a></li><li><a href="global.html#seedDemoTasks">seedDemoTasks</a></li><li><a href="global.html#selectAssignUser">selectAssignUser</a></li><li><a href="global.html#setActiveSidebarByURL">setActiveSidebarByURL</a></li><li><a href="global.html#setAssignDropdownState">setAssignDropdownState</a></li><li><a href="global.html#setContactsIntoContactblock">setContactsIntoContactblock</a></li><li><a href="global.html#setDueDateError">setDueDateError</a></li><li><a href="global.html#setEditHeading">setEditHeading</a></li><li><a href="global.html#setHiddenPickerFromDueValue">setHiddenPickerFromDueValue</a></li><li><a href="global.html#setLetterInUserBall">setLetterInUserBall</a></li><li><a href="global.html#setPickerMinToday">setPickerMinToday</a></li><li><a href="global.html#setPriorityAddTask">setPriorityAddTask</a></li><li><a href="global.html#setPriorityForEdit">setPriorityForEdit</a></li><li><a href="global.html#setSummaryText">setSummaryText</a></li><li><a href="global.html#setUserDataValue">setUserDataValue</a></li><li><a href="global.html#setupAddTaskContent">setupAddTaskContent</a></li><li><a href="global.html#setupSubmitButton">setupSubmitButton</a></li><li><a href="global.html#showAddContactFormular">showAddContactFormular</a></li><li><a href="global.html#showAllAssignItems">showAllAssignItems</a></li><li><a href="global.html#showContactToast">showContactToast</a></li><li><a href="global.html#showEditContactFormular">showEditContactFormular</a></li><li><a href="global.html#showError">showError</a></li><li><a href="global.html#showLoginError">showLoginError</a></li><li><a href="global.html#showPickerNow">showPickerNow</a></li><li><a href="global.html#showTaskModal">showTaskModal</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#singleContactTemplate">singleContactTemplate</a></li><li><a href="global.html#sortAllContactBuckets">sortAllContactBuckets</a></li><li><a href="global.html#sortUserToAlphabeticalOrder">sortUserToAlphabeticalOrder</a></li><li><a href="global.html#stableHighlight">stableHighlight</a></li><li><a href="global.html#startEditTask">startEditTask</a></li><li><a href="global.html#startPickerSync">startPickerSync</a></li><li><a href="global.html#startSubtaskEdit">startSubtaskEdit</a></li><li><a href="global.html#startSummaryPolling">startSummaryPolling</a></li><li><a href="global.html#statusByColumnId">statusByColumnId</a></li><li><a href="global.html#syncAssignCheckboxes">syncAssignCheckboxes</a></li><li><a href="global.html#syncPickerToDue">syncPickerToDue</a></li><li><a href="global.html#syncSavedCheckboxes">syncSavedCheckboxes</a></li><li><a href="global.html#syncTemplateDueDateFromHidden">syncTemplateDueDateFromHidden</a></li><li><a href="global.html#toTaskArray">toTaskArray</a></li><li><a href="global.html#toggleAssignDropdown">toggleAssignDropdown</a></li><li><a href="global.html#toggleContactHighlight">toggleContactHighlight</a></li><li><a href="global.html#toggleNavigationForGuest">toggleNavigationForGuest</a></li><li><a href="global.html#toggleUserMenuePopupMenu">toggleUserMenuePopupMenu</a></li><li><a href="global.html#updateAssignPlaceholder">updateAssignPlaceholder</a></li><li><a href="global.html#updateButtonState">updateButtonState</a></li><li><a href="global.html#updateCardAfterRender">updateCardAfterRender</a></li><li><a href="global.html#updateDragTilt">updateDragTilt</a></li><li><a href="global.html#updateEditContactFields">updateEditContactFields</a></li><li><a href="global.html#updateEditContactInitials">updateEditContactInitials</a></li><li><a href="global.html#updateErrorForSignup">updateErrorForSignup</a></li><li><a href="global.html#updateFriendsForCurrentUser">updateFriendsForCurrentUser</a></li><li><a href="global.html#updateSearchClearButtonState">updateSearchClearButtonState</a></li><li><a href="global.html#updateSearchResultMsg">updateSearchResultMsg</a></li><li><a href="global.html#updateSelectedUsersArray">updateSelectedUsersArray</a></li><li><a href="global.html#updateSubtaskCounts">updateSubtaskCounts</a></li><li><a href="global.html#updateSummary">updateSummary</a></li><li><a href="global.html#updateTimeout">updateTimeout</a></li><li><a href="global.html#updateUserFriendslistByUid">updateUserFriendslistByUid</a></li><li><a href="global.html#updateUserMenuPosition">updateUserMenuPosition</a></li><li><a href="global.html#userMenuTemplate">userMenuTemplate</a></li><li><a href="global.html#validateContactInputs">validateContactInputs</a></li><li><a href="global.html#validateDueDate">validateDueDate</a></li><li><a href="global.html#validateEditValues">validateEditValues</a></li><li><a href="global.html#validateEmailInForm">validateEmailInForm</a></li><li><a href="global.html#validateEmailOnSubmit">validateEmailOnSubmit</a></li><li><a href="global.html#validateEmailValue">validateEmailValue</a></li><li><a href="global.html#validateNameAndPasswordOnSubmit">validateNameAndPasswordOnSubmit</a></li><li><a href="global.html#validateNameValue">validateNameValue</a></li><li><a href="global.html#validatePhoneValue">validatePhoneValue</a></li><li><a href="global.html#validateTitle">validateTitle</a></li><li><a href="global.html#waitForAuthGlobals">waitForAuthGlobals</a></li><li><a href="global.html#whichCardActuellDrop">whichCardActuellDrop</a></li><li><a href="global.html#writeUserProfile">writeUserProfile</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 19:38:27 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
