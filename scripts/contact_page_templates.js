@@ -54,6 +54,7 @@ function singleContactTemplate(
 /**
  * Renders the Edit Contact form template into the UI, including input fields
  * and action buttons for saving or deleting the contact.
+ * @returns {void}
  */
 function renderEditContact() {
   let contentRef = document.getElementById("edit-contactID");
@@ -108,6 +109,7 @@ function renderEditContact() {
 /**
  * Renders the Add Contact form template into the UI, including input fields
  * and action buttons for creating a new contact.
+ * @returns {void}
  */
 function renderAddContact() {
   let contentRef = document.getElementById("add-contactID");
