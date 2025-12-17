@@ -1,4 +1,4 @@
-/* === Global Reset & Fonts === */
+
 * {
   margin: 0;
   padding: 0;
@@ -39,7 +39,6 @@
   min-height: 100vh;
 }
 
-/* === Header and Search Area === */
 .main-header-wrapper {
   display: flex;
   flex-direction: column;
@@ -123,7 +122,6 @@
   font-size: 16px;
 }
 
-/* === Board Grid and Columns === */
 .board {
   display: grid;
   grid-template-columns: repeat(4, minmax(240px, 1fr));
@@ -183,7 +181,6 @@
   box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.02);
 }
 
-/* === Drag and Drop Styling === */
 .drag-area {
   border-radius: 16px;
   box-shadow: inset 0 0 0 2px transparent;
@@ -201,7 +198,6 @@
   visibility: hidden;
 }
 
-/* === Text Styles === */
 .h3_small_text_board {
   font-family: "open sans";
   font-weight: 400;
@@ -236,7 +232,6 @@
   position: relative;
 }
 
-/* === Badge Colors === */
 .badge-user {
   background-color: #ff7a00;
   color: white;
@@ -252,7 +247,6 @@ body.no-scroll {
   position: relative;
 }
 
-/* === Assigned User Initials === */
 .assigned-to-initials {
   display: inline-flex;
   align-items: center;
@@ -268,7 +262,6 @@ body.no-scroll {
   border: 2px solid #ffffff;
 }
 
-/* === Subtasks === */
 .subtask-list-addTask_page li:has(input) {
   background-color: transparent;
 }
@@ -285,7 +278,6 @@ body.no-scroll {
   display: flex;
 }
 
-/* === Search Clear Button Styling === */
 .clear-search-btn {
   border: 0;
   background: transparent;
