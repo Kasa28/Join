@@ -322,9 +322,12 @@ async function ensureGuestFriendsSeeded() {
 }
 
 /**
- * Ensures that a registered user has an initial friends list seeded.
- * Uses guest example contacts for first-time users.
- * @returns {Promise<Array<Object>>}
+ * Ensures that a registered (non-anonymous) user has an initial friends list.
+ * Waits for auth readiness, checks for existing friends, and seeds from guest
+ * example contacts if the list is empty.
+ *
+ * @async
+ * @returns {Promise<Object[]>} The existing friends list, or the seeded list.
  */
 async function ensureRegisteredUserFriendsSeeded() {
   if (window.authReady) await window.authReady;
@@ -338,6 +341,11 @@ async function ensureRegisteredUserFriendsSeeded() {
   return [...window.GUEST_EXAMPLE_CONTACTS];
 }
 
+/**
+ * Exposes selected functions to the global `window` object for cross-file access.
+ *
+ * @type {void}
+ */
 Object.assign(window, {
   getAllTasks,
   saveTask,
@@ -350,7 +358,11 @@ Object.assign(window, {
   persistContactsForActiveUser,
   loadCurrentUserProfile,
   seedDemoFriendsIfEmpty,
+
+  /** @returns {boolean} True if the current user is anonymous (guest). */
   isGuestUser: () => Boolean(window.currentUser?.isAnonymous),
+
+  /** @returns {boolean} True if the current user exists and is not anonymous. */
   isRegisteredUser: () =>
     Boolean(window.currentUser && !window.currentUser.isAnonymous),
 });
