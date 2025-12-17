@@ -1,50 +1,7 @@
 /**
- * @typedef {Object} AssignedUser
- * @property {string} name
- * @property {string} [img]
- * @property {string} [color]
- */
-
-/**
- * @typedef {"urgent"|"medium"|"low"} TaskPriority
- */
-
-/**
- * @typedef {Object} Task
- * @property {number|string} id
- * @property {string} [title]
- * @property {string} [description]
- * @property {string} [dueDate]
- * @property {TaskPriority|string} [priority]
- * @property {string} [priorityIcon]
- * @property {string} [type]
- * @property {AssignedUser[]} [assignedTo]
- * @property {string[]} [subTasks]
- * @property {number} [subtasksDone]
- * @property {number} [subtasksTotal]
- */
-
-/**
- * @typedef {Object} DynamicBigCardData
- * @property {number|string} id
- * @property {string} title
- * @property {string} description
- * @property {string} dueDate
- * @property {string} priority
- * @property {string} priorityIcon
- * @property {string} type
- * @property {string} assignedHTML
- * @property {string} subtasksHTML
- */
-
-/**
- * @typedef {DynamicBigCardData & { priorityText?: string }} DynamicTechnicalBigCardData
- */
-
-/**
  * Builds and returns the dynamic big card HTML for user-story tasks.
  * Uses helper functions to build assigned users and subtasks HTML.
- * @param {Task} t
+ * @param {{id:(number|string), title?:string, description?:string, dueDate?:string, priority?:string, priorityIcon?:string, type?:string, assignedTo?:Array<{name:string, img?:string, color?:string}>, subTasks?:string[], subtasksDone?:number, subtasksTotal?:number}} t
  * @returns {string} HTML string for the big user-story card.
  */
 function bigCardDynamicHtml(t) {
@@ -59,7 +16,7 @@ function bigCardDynamicHtml(t) {
 /**
  * Builds and returns the dynamic big card HTML for technical tasks.
  * Adds priorityText and uses technical helpers for HTML parts.
- * @param {Task} t
+ * @param {{id:(number|string), title?:string, description?:string, dueDate?:string, priority?:string, priorityIcon?:string, type?:string, assignedTo?:Array<{name:string, img?:string, color?:string}>, subTasks?:string[], subtasksDone?:number, subtasksTotal?:number}} t
  * @returns {string} HTML string for the big technical-task card.
  */
 function bigCardDynamicTechnicalHtml(t) {
@@ -73,12 +30,21 @@ function bigCardDynamicTechnicalHtml(t) {
   return getBigCardDynamicTechnicalHtml(base);
 }
 
+/**
+ * Icon paths for known priorities.
+ * @type {{urgent:string, medium:string, low:string}}
+ */
 const PRIORITY_ICONS = {
   urgent: "../addTask_code/icons_addTask/separatedAddTaskIcons/urgent_icon.svg",
   medium: "../addTask_code/icons_addTask/separatedAddTaskIcons/3_striche.svg",
   low: "../addTask_code/icons_addTask/separatedAddTaskIcons/low_icon.svg"
 };
 
+/**
+ * Normalizes raw task input into the base data object used by big cards.
+ * @param {{id:(number|string), title?:string, description?:string, dueDate?:string, priority?:string, priorityIcon?:string, type?:string}} t
+ * @returns {{id:(number|string), title:string, description:string, dueDate:string, priority:string, priorityIcon:string, type:string}}
+ */
 function getBaseCardData(t) {
   const data = {};
   data.id = t.id;
@@ -92,6 +58,11 @@ function getBaseCardData(t) {
   return data;
 }
 
+/**
+ * Creates initials from a name string (e.g. "Max Mustermann" -> "MM").
+ * @param {string} name
+ * @returns {string}
+ */
 function getInitials(name) {
   const text = String(name || "").trim();
   const parts = text.split(" ");
@@ -107,6 +78,11 @@ function getInitials(name) {
   return letters;
 }
 
+/**
+ * Builds assigned-users HTML for user-story cards.
+ * @param {Array<{name:string, img?:string, color?:string}>|undefined|null} assignedTo
+ * @returns {string}
+ */
 function buildAssignedUserStoryHTML(assignedTo) {
   const list = assignedTo || [];
   if (!list.length) { return "<p>No one assigned.</p>"; }
@@ -123,6 +99,11 @@ function buildAssignedUserStoryHTML(assignedTo) {
   return html;
 }
 
+/**
+ * Builds assigned-users HTML for technical-task cards.
+ * @param {Array<{name:string, img?:string, color?:string}>|undefined|null} assignedTo
+ * @returns {string}
+ */
 function buildAssignedTechnicalHTML(assignedTo) {
   const list = assignedTo || [];
   if (!list.length) {
@@ -145,6 +126,11 @@ function buildAssignedTechnicalHTML(assignedTo) {
   return html;
 }
 
+/**
+ * Builds subtasks HTML for user-story cards.
+ * @param {{id:(number|string), subTasks?:string[], subtasksDone?:number}} t
+ * @returns {string}
+ */
 function buildSubtasksUserStoryHTML(t) {
   const list = t.subTasks || [];
   if (!list.length) { return "<p>No subtasks added.</p>"; }
@@ -160,6 +146,11 @@ function buildSubtasksUserStoryHTML(t) {
   return html;
 }
 
+/**
+ * Builds subtasks HTML for technical-task cards.
+ * @param {{id:(number|string), subTasks?:string[], subtasksDone?:number}} t
+ * @returns {string}
+ */
 function buildSubtasksTechnicalHTML(t) {
   const list = t.subTasks || [];
   if (!list.length) {
@@ -177,7 +168,11 @@ function buildSubtasksTechnicalHTML(t) {
   return html;
 }
 
-
+/**
+ * Adds "is-truncated" class if the element content overflows vertically.
+ * @param {HTMLElement} element
+ * @returns {void}
+ */
 function markIfTruncated(element) {
   requestAnimationFrame(() => {
     if (element.scrollHeight > element.clientHeight) {
