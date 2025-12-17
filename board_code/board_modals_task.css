@@ -1,0 +1,314 @@
+.task-modal-content > .main_content_user_story,
+.task-modal-content > .main-container-technical-task {
+  flex: 1;
+  overflow-y: auto;     
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-bottom: 16px;  
+}
+
+
+.title_user-story,
+.h3_user-story,
+.h1-technical-task,
+.description-font-technical-task,
+.status-font-technical-task {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.assigned-users_user-story {
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;    
+  box-sizing: border-box;
+}
+
+.subtask-list {
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.subtask-list label {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.action-buttons_user-story {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding: 12px 0;
+  box-sizing: border-box;
+}
+
+.assigned-to-container-technical-task > div {
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.subtasks-task-container-technical-task {
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.subtasks-task-container-technical-task label {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.delete-edit-section-technical-task {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding: 12px 0;
+  box-sizing: border-box;
+}
+
+
+#task-modal-content {
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+#task-modal-content > .main_content_user_story,
+#task-modal-content > .main-container-technical-task {
+  flex: 1;
+  overflow-y: auto;      
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-bottom: 16px;
+}
+
+.assigned-users_user-story {
+  max-height: 140px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.subtask-list {
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.action-buttons_user-story {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding: 12px 0;
+  box-sizing: border-box;
+}
+
+#task-modal-content .task-input_user-story .subtask-list label {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+#task-modal-content .task-input_user-story .subtask-list {
+  max-height: 92px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+#task-modal-content .description-font-technical-task {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+.subtasks-task-container-technical-task .label-font-technical-task {
+  display: flex;        
+  align-items: center;
+  gap: 8px;             
+  margin-bottom: 10px;    
+}
+
+.subtasks-task-container-technical-task .label-font-technical-task:last-child {
+  margin-bottom: 0;       
+}
+
+.subtask-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.subtask-list label:last-child {
+  margin-bottom: 0;
+}
+
+.description-font-technical-task {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+#task-modal-content .main_content_user_story {
+  max-height: none;
+  overflow: visible;      
+}
+#task-modal-content .action-buttons_user-story {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+}
+
+#task-modal-content .action-buttons_user-story::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: 8px;
+  background: #e5e5e5;
+}
+
+#task-modal-content .title_user-story,
+#task-modal-content .h3_user-story {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+
+#task-modal-content,
+.task-modal-content {
+  max-height: 90vh;
+  width: min(528px, 100vw - 48px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;      
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+#task-modal-content .main_content_user_story,
+#task-modal-content .main-container-technical-task {
+  max-height: none;
+  overflow: visible;    
+}
+
+
+#task-modal-content .action-buttons_user-story,
+#task-modal-content .delete-edit-section-technical-task {
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+  font-family: 'Open Sans';
+}
+
+#task-modal-content .action-buttons_user-story::before,
+#task-modal-content .delete-edit-section-technical-task::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: 8px;
+  background: #e5e5e5;
+}
+
+
+#task-modal-content {
+  max-height: 90vh;
+  width: min(528px, 100vw - 48px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;          
+  box-sizing: border-box;
+  border-radius: 24px;
+}
+
+.task-modal-scroll {
+  flex: 1;
+  overflow-y: auto;         
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.title_user-story,
+.h3_user-story,
+.h1-technical-task,
+.description-font-technical-task {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.action-buttons_user-story,
+.delete-edit-section-technical-task {
+  padding: 12px clamp(20px, 6vw, 40px) 16px;
+  background: #ffffff;
+  box-sizing: border-box;
+  border-top: 1px solid #e5e5e5;
+}
+
+#task-modal-content .task-input_user-story .subtask-list {
+  max-height: 120px !important;  
+  overflow-x: hidden !important;  
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+#task-modal-content .task-input_user-story .subtask-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+#task-modal-content .task-input_user-story .subtask-list label:last-child {
+  margin-bottom: 0;
+}
+
+#task-modal-content .subtasks-task-container-technical-task {
+  max-height: 120px !important;      
+  overflow-y: auto !important;    
+  overflow-x: hidden !important;    
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+
+#task-modal-content .subtasks-task-container-technical-task label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+#task-modal-content .subtasks-task-container-technical-task label:last-child {
+  margin-bottom: 0;
+}
