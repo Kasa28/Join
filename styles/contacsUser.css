@@ -134,9 +134,13 @@
     font-size: 24px;
 }
 
-.mail-property{
-    font-size: 18px;
-    color: #4589FF;
+.mail-property {
+  font-size: 18px;
+  color: #4589FF;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .white-screen {
