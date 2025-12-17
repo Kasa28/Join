@@ -1,33 +1,23 @@
-/**
- * @typedef {"todo"|"in-progress"|"await-feedback"|"done"} TaskStatus
- */
+/** @type {string} */
+let lastDataString = "";
+
+/** @type {number|undefined} */
+let pollIntervalId;
+
+/** @type {Promise<void>|undefined} */
+let authGlobalsPromise;
 
 /**
- * @typedef {"urgent"|"medium"|"low"} TaskPriority
- */
-
-/**
- * @typedef {Object} Task
- * @property {number|string} id
- * @property {string} [title]
- * @property {TaskStatus} status
- * @property {TaskPriority|string} priority
- * @property {string} [dueDate] - Format: "dd/mm/yyyy"
- */
-
-/**
- * @typedef {Object} TaskCounts
- * @property {number} total
- * @property {number} urgent
- * @property {number} todo
- * @property {number} inProgress
- * @property {number} feedback
- * @property {number} done
+ * @returns {void}
  */
 window.addEventListener("DOMContentLoaded", () => {
   initSummaryPage();
 });
 
+/**
+ * @async
+ * @returns {Promise<void>}
+ */
 async function initSummaryPage() {
   await waitForAuthGlobals();
   await updateSummary();
@@ -36,7 +26,7 @@ async function initSummaryPage() {
 
 /**
  * @param {any} data
- * @returns {Task[]}
+ * @returns {Array<{status: string, priority?: string, dueDate?: string}>}
  */
 function toTaskArray(data) {
   if (Array.isArray(data)) return data.filter(Boolean);
@@ -49,7 +39,8 @@ function toTaskArray(data) {
 }
 
 /**
- * @param {Task[]} tasks
+ * @param {Array<{priority?: string}>} tasks
+ * @returns {void}
  */
 function normalizeTaskPriorities(tasks) {
   tasks.forEach((t) => {
@@ -60,10 +51,8 @@ function normalizeTaskPriorities(tasks) {
 }
 
 /**
- * Loads tasks from Firebase. Normalizes priority to lowercase.
- * Falls back to an empty list if Firebase returns empty.
  * @async
- * @returns {Promise<Task[]>}
+ * @returns {Promise<Array<{status: string, priority?: string, dueDate?: string}>>}
  */
 async function loadTasks() {
   try {
@@ -80,8 +69,8 @@ async function loadTasks() {
 }
 
 /**
- * @param {TaskStatus} status
- * @returns {keyof TaskCounts | ""}
+ * @param {"todo"|"in-progress"|"await-feedback"|"done"} status
+ * @returns {"todo"|"inProgress"|"feedback"|"done"|""}
  */
 function getStatusKey(status) {
   if (status === "todo") return "todo";
@@ -92,9 +81,8 @@ function getStatusKey(status) {
 }
 
 /**
- * Calculates task counts for summary KPIs.
- * @param {Task[]} tasks
- * @returns {TaskCounts}
+ * @param {Array<{status: "todo"|"in-progress"|"await-feedback"|"done", priority?: string}>} tasks
+ * @returns {{total:number, urgent:number, todo:number, inProgress:number, feedback:number, done:number}}
  */
 function getTaskCounts(tasks) {
   const counts = {
@@ -115,24 +103,20 @@ function getTaskCounts(tasks) {
 }
 
 /**
- * @param {Task[]} tasks
+ * @param {Array<{priority?: string, dueDate?: string}>} tasks
  * @returns {Date[]}
  */
 function getUrgentDueDates(tasks) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return tasks
-    .filter(
-      (t) =>
-        String(t.priority || "").toLowerCase() === "urgent" && t.dueDate
-    )
+    .filter((t) => String(t.priority || "").toLowerCase() === "urgent" && t.dueDate)
     .map((t) => parseDueDate(t.dueDate))
     .filter((d) => !isNaN(d.getTime()) && d >= today);
 }
 
 /**
- * Returns the closest due date among urgent tasks.
- * @param {Task[]} tasks
+ * @param {Array<{priority?: string, dueDate?: string}>} tasks
  * @returns {Date|null}
  */
 function getNextDeadline(tasks) {
@@ -143,9 +127,6 @@ function getNextDeadline(tasks) {
 }
 
 /**
- * Parses supported due date formats into a Date instance.
- * Supports "dd/mm/yyyy" and "yyyy-mm-dd" (HTML date input default).
- * Returns an invalid Date for unsupported formats.
  * @param {string} dueDate
  * @returns {Date}
  */
@@ -164,7 +145,6 @@ function parseDueDate(dueDate) {
 }
 
 /**
- * Sets textContent for a selector if element exists.
  * @param {string} selector
  * @param {string|number} value
  * @returns {void}
@@ -175,7 +155,8 @@ function setSummaryText(selector, value) {
 }
 
 /**
- * @param {TaskCounts} counts
+ * @param {{total:number, urgent:number, todo:number, inProgress:number, feedback:number, done:number}} counts
+ * @returns {void}
  */
 function renderSummaryCounts(counts) {
   const targets = [
@@ -184,13 +165,14 @@ function renderSummaryCounts(counts) {
     [".summary-section-2-order .summary-card:nth-child(1) .h2-font-summray", counts.todo],
     [".summary-section-2-order .summary-card:nth-child(2) .h2-font-summray", counts.inProgress],
     [".summary-section-2-order .summary-card:nth-child(3) .h2-font-summray", counts.feedback],
-    [".summary-section-2-order .summary-card:nth-child(4) .h2-font-summray", counts.done]
+    [".summary-section-2-order .summary-card:nth-child(4) .h2-font-summray", counts.done],
   ];
   for (const [selector, value] of targets) setSummaryText(selector, value);
 }
 
 /**
  * @param {Date|null} nextDeadline
+ * @returns {void}
  */
 function renderSummaryDeadline(nextDeadline) {
   const deadlineEl = document.querySelector(".date-font-summary");
@@ -204,7 +186,6 @@ function renderSummaryDeadline(nextDeadline) {
 }
 
 /**
- * Loads tasks, computes summary KPIs and renders them into the DOM.
  * @async
  * @returns {Promise<void>}
  */
@@ -216,10 +197,7 @@ async function updateSummary() {
   renderSummaryDeadline(nextDeadline);
 }
 
-let lastDataString = "";
-
 /**
- * Polls Firebase for changes and updates summary if data differs.
  * @async
  * @returns {Promise<void>}
  */
@@ -236,11 +214,7 @@ async function pollSummary() {
   } catch (err) {}
 }
 
-let pollIntervalId;
-
 /**
- * Starts a polling interval for summary updates if not already running.
- * Uses a 5 second interval to keep the dashboard in sync with backend changes.
  * @returns {void}
  */
 function startSummaryPolling() {
@@ -249,8 +223,7 @@ function startSummaryPolling() {
 }
 
 /**
- * Ensures authentication has run (anonymous if needed) and returns
- * the configured Firebase base URL plus auth query string.
+ * @async
  * @returns {Promise<{base: string, authQuery: string}>}
  */
 async function getSummaryFetchConfig() {
@@ -264,6 +237,7 @@ async function getSummaryFetchConfig() {
 }
 
 /**
+ * @async
  * @returns {Promise<void>}
  */
 async function ensureSummaryAuth() {
@@ -278,10 +252,7 @@ async function ensureSummaryAuth() {
   }
 }
 
-let authGlobalsPromise;
-
 /**
- * Waits until global auth helpers are available (authReady/signInAnonymously).
  * @returns {Promise<void>}
  */
 function waitForAuthGlobals() {
