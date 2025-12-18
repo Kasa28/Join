@@ -34,7 +34,8 @@ function initAddTaskTemplateHandlers() {
 /** @returns {void} */
 function initTitleValidation() {
   const input = document.getElementById("title"), msg = document.getElementById("title-error"); if (!input || !msg) return;
-  input.addEventListener("blur", validateTitle); input.addEventListener("input", validateTitle); validateTitle();
+ input.addEventListener("blur", validateTitle);
+  input.addEventListener("input", validateTitle);
 }
 
 /** @returns {void} */
